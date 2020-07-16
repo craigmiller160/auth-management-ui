@@ -1,4 +1,3 @@
-import { isSome } from 'fp-ts/es6/Option';
 import { getAuthUser } from '../../services/AuthService';
 import authSlice from './slice';
 import { Dispatch } from 'redux';
