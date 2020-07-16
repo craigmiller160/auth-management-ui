@@ -5,8 +5,13 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 import './Navbar.scss';
+import { useSelector } from 'react-redux';
+import { isAuthorized } from '../../../store/auth/selectors';
 
 const Navbar = () => {
+    const isAuth = useSelector(isAuthorized);
+    const authBtnText = isAuth ? 'Logout' : 'Login';
+
     return (
         <AppBar position="static" className="Navbar">
             <Toolbar>
@@ -16,25 +21,30 @@ const Navbar = () => {
                     </NavLink>
                 </Button>
                 <div className="left">
-                    <Button
-                        variant="text"
-                        color="inherit"
-                    >
-                        <NavLink to="/users" className="NavLink">Users</NavLink>
-                    </Button>
-                    <Button
-                        variant="text"
-                        color="inherit"
-                    >
-                        <NavLink to="/clients" className="NavLink">Clients</NavLink>
-                    </Button>
+                    {
+                        isAuth &&
+                            <>
+                                <Button
+                                    variant="text"
+                                    color="inherit"
+                                >
+                                    <NavLink to="/users" className="NavLink">Users</NavLink>
+                                </Button>
+                                <Button
+                                    variant="text"
+                                    color="inherit"
+                                >
+                                    <NavLink to="/clients" className="NavLink">Clients</NavLink>
+                                </Button>
+                            </>
+                    }
                 </div>
                 <div>
                     <Button
                         variant="text"
                         color="inherit"
                     >
-                        Login
+                        { authBtnText }
                     </Button>
                 </div>
             </Toolbar>
