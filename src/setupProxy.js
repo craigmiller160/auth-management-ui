@@ -4,6 +4,7 @@ const createProxy = (app) => {
     app.use(createProxyMiddleware('/api', {
         target: 'https://localhost:7004',
         changeOrigin: true,
+        secure: false,
         pathRewrite: {
             '^/api': ''
         },
