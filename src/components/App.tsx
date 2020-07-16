@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
-import { getClients } from '../services/ClientService';
-import { ClientList } from '../types/api';
-import { isSome, Option } from 'fp-ts/es6/Option';
+import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import store from '../store';
 
-const App = () => {
-    useEffect(() => {
-        getClients()
-            .then((res: Option<ClientList>) => {
-                if (isSome(res)) {
-                    console.log(res); // TODO delete this
-                }
-            });
-    }, []);
-
-    return (
-        <h1>Hello World</h1>
-    );
-};
+const App = () => (
+    <ReduxProvider store={ store }>
+        <BrowserRouter>
+            <h1>Hello World</h1>
+        </BrowserRouter>
+    </ReduxProvider>
+);
 
 export default App;
