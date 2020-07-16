@@ -10,13 +10,13 @@ const instance = axios.create({
 
 type SuppressErrorFn = (ex: Error) => Boolean
 
-interface RequestConfig {
+export interface RequestConfig {
     uri: string;
     config: AxiosRequestConfig;
     errorMsg?: string;
     suppressError?: SuppressErrorFn
 }
-interface RequestBodyConfig extends RequestConfig {
+export interface RequestBodyConfig extends RequestConfig {
     body: any;
 }
 
