@@ -10,9 +10,7 @@ const instance = axios.create({
 type SuppressErrorFn = (ex: Error) => Boolean
 interface ErrorResponse {
     status: number;
-    data: {
-        message: string;
-    };
+    message: string;
 }
 
 const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => {
