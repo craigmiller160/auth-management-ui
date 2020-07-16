@@ -26,3 +26,15 @@ export interface AuthUser {
     lastName: string;
     roles: Array<String>;
 }
+
+export interface User {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password?: string;
+}
+
+export interface UserList {
+    users: Array<User>;
+}
