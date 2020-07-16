@@ -45,7 +45,7 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
     }
 };
 
-const get = async (req: RequestConfig): Promise<any> => {
+const get = async <T>(req: RequestConfig): Promise<T | undefined> => {
     try {
         const res = await instance.get(req.uri, req.config);
         return res.data;
