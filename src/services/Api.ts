@@ -56,33 +56,33 @@ const get = async <R>(req: RequestConfig): Promise<Option<R>> => {
     }
 };
 
-const post = async <B,R>(req: RequestBodyConfig<B>): Promise<R | undefined> => {
+const post = async <B,R>(req: RequestBodyConfig<B>): Promise<Option<R>> => {
     try {
         const res = await instance.post(req.uri, req.body, req.config);
-        return res.data;
+        return some(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return undefined;
+        return none;
     }
 };
 
-const put = async <B,R>(req: RequestBodyConfig<B>): Promise<R | undefined> => {
+const put = async <B,R>(req: RequestBodyConfig<B>): Promise<Option<R>> => {
     try {
         const res = await instance.put(req.uri, req.body, req.config);
-        return res.data;
+        return some(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return undefined;
+        return none;
     }
 };
 
-const doDelete = async <R>(req: RequestConfig): Promise<R | undefined> => {
+const doDelete = async <R>(req: RequestConfig): Promise<Option<R>> => {
     try {
         const res = await instance.delete(req.uri, req.config);
-        return res.data;
+        return some(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return undefined;
+        return none;
     }
 };
 
