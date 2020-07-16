@@ -2,16 +2,14 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import store from '../store';
 import alertSlice from '../store/alert/slice';
 import MessageBuilder from '../utils/MessageBuilder';
+import { ErrorResponse } from '../types/api';
 
 const instance = axios.create({
     baseURL: '/api'
 });
 
 type SuppressErrorFn = (ex: Error) => Boolean
-interface ErrorResponse {
-    status: number;
-    message: string;
-}
+
 interface RequestConfig {
     uri: string;
     config: AxiosRequestConfig;
