@@ -3,15 +3,18 @@ import { AuthUser } from '../../types/api';
 import { none, Option } from 'fp-ts/es6/Option';
 
 const initialState: StateType = {
-    userData: none
+    userData: none,
+    hasChecked: false
 };
 
 interface StateType {
-    userData: Option<AuthUser>
+    userData: Option<AuthUser>,
+    hasChecked: boolean;
 }
 
 const setUserData = (state: StateType, action: PayloadAction<Option<AuthUser>>) => {
     state.userData = action.payload;
+    state.hasChecked = true;
 };
 
 export default createSlice({

@@ -7,9 +7,11 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.scss';
 import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
+import { RootState } from '../../../store';
 
 const Navbar = () => {
     const isAuth = useSelector(isAuthorized);
+    const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     const authBtnText = isAuth ? 'Logout' : 'Login';
 
     return (
@@ -40,12 +42,15 @@ const Navbar = () => {
                     }
                 </div>
                 <div>
-                    <Button
-                        variant="text"
-                        color="inherit"
-                    >
-                        { authBtnText }
-                    </Button>
+                    {
+                        hasChecked &&
+                        <Button
+                            variant="text"
+                            color="inherit"
+                        >
+                            { authBtnText }
+                        </Button>
+                    }
                 </div>
             </Toolbar>
         </AppBar>
