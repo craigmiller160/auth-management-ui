@@ -16,8 +16,8 @@ export interface RequestConfig {
     errorMsg?: string;
     suppressError?: SuppressErrorFn
 }
-export interface RequestBodyConfig extends RequestConfig {
-    body: any;
+export interface RequestBodyConfig<B> extends RequestConfig {
+    body: B;
 }
 
 const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => {
@@ -45,7 +45,7 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
     }
 };
 
-const get = async <T>(req: RequestConfig): Promise<T | undefined> => {
+const get = async <R>(req: RequestConfig): Promise<R | undefined> => {
     try {
         const res = await instance.get(req.uri, req.config);
         return res.data;
@@ -55,7 +55,7 @@ const get = async <T>(req: RequestConfig): Promise<T | undefined> => {
     }
 };
 
-const post = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
+const post = async <B,R>(req: RequestBodyConfig<B>): Promise<R | undefined> => {
     try {
         const res = await instance.post(req.uri, req.body, req.config);
         return res.data;
@@ -65,7 +65,7 @@ const post = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
     }
 };
 
-const put = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
+const put = async <B,R>(req: RequestBodyConfig<B>): Promise<R | undefined> => {
     try {
         const res = await instance.put(req.uri, req.body, req.config);
         return res.data;
@@ -75,7 +75,7 @@ const put = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
     }
 };
 
-const doDelete = async <T>(req: RequestConfig): Promise<T | undefined> => {
+const doDelete = async <R>(req: RequestConfig): Promise<R | undefined> => {
     try {
         const res = await instance.delete(req.uri, req.config);
         return res.data;
