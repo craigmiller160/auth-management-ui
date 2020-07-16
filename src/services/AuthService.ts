@@ -1,13 +1,14 @@
+import { Option } from 'fp-ts/es6/Option';
 import api, { isAxiosError } from './Api';
 import { AuthUser } from '../types/api';
 
-export const logout = (): Promise<void | undefined> =>
+export const logout = (): Promise<Option<void>> =>
     api.get<void>({
         uri: '/oauth/logout',
         errorMsg: 'Error logging out'
     });
 
-export const getAuthUser = (): Promise<AuthUser | undefined> =>
+export const getAuthUser = (): Promise<Option<AuthUser>> =>
     api.get<AuthUser>({
         uri: '/oauth/user',
         errorMsg: 'Error getting authenticated user',

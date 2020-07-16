@@ -1,19 +1,20 @@
 import api from './Api';
 import { Client, ClientList } from '../types/api';
+import { Option } from 'fp-ts/es6/Option';
 
-export const getClients = (): Promise<ClientList | undefined> =>
+export const getClients = (): Promise<Option<ClientList>> =>
     api.get<ClientList>({
         uri: '/clients',
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = (id: number): Promise<Client | undefined> =>
+export const getClient = (id: number): Promise<Option<Client>> =>
     api.get<Client>({
         uri: `/clients/${id}`,
         errorMsg: `Error getting client ${id}`
     });
 
-export const generateGuid = (): Promise<string | undefined> =>
+export const generateGuid = (): Promise<Option<string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'

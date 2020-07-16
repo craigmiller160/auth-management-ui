@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { Option, none, some } from 'fp-ts/es6/Option';
 import store from '../store';
 import alertSlice from '../store/alert/slice';
 import MessageBuilder from '../utils/MessageBuilder';
@@ -45,13 +46,13 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
     }
 };
 
-const get = async <R>(req: RequestConfig): Promise<R | undefined> => {
+const get = async <R>(req: RequestConfig): Promise<Option<R>> => {
     try {
         const res = await instance.get(req.uri, req.config);
-        return res.data;
+        return some(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return undefined;
+        return none;
     }
 };
 
