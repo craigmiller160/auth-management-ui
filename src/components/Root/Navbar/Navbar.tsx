@@ -15,6 +15,28 @@ const Navbar = () => {
                         <Typography variant="h6" noWrap>OAuth Management</Typography>
                     </NavLink>
                 </Button>
+                <div className="left">
+                    <Button
+                        variant="text"
+                        color="inherit"
+                    >
+                        <NavLink to="/users" className="NavLink">Users</NavLink>
+                    </Button>
+                    <Button
+                        variant="text"
+                        color="inherit"
+                    >
+                        <NavLink to="/clients" className="NavLink">Clients</NavLink>
+                    </Button>
+                </div>
+                <div>
+                    <Button
+                        variant="text"
+                        color="inherit"
+                    >
+                        Login
+                    </Button>
+                </div>
             </Toolbar>
         </AppBar>
     );
