@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { getClients } from '../services/ClientService';
 import { ClientList } from '../types/api';
-import { Option } from 'fp-ts/es6/Option';
+import { isSome, Option } from 'fp-ts/es6/Option';
 
 const App = () => {
     useEffect(() => {
         getClients()
             .then((res: Option<ClientList>) => {
-                console.log(res); // TODO delete this
+                if (isSome(res)) {
+                    console.log(res); // TODO delete this
+                }
             });
     }, []);
 
