@@ -19,3 +19,10 @@ export interface Client {
 export interface ClientList {
     clients: Array<Client>
 }
+
+export interface AuthUser {
+    username: string;
+    firstName: string;
+    lastName: string;
+    roles: Array<String>;
+}

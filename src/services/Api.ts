@@ -20,7 +20,7 @@ export interface RequestBodyConfig<B> extends RequestConfig {
     body: B;
 }
 
-const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => {
+export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => {
     return ex.response !== undefined;
 };
 
