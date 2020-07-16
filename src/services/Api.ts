@@ -12,7 +12,7 @@ type SuppressErrorFn = (ex: Error) => Boolean
 
 export interface RequestConfig {
     uri: string;
-    config: AxiosRequestConfig;
+    config?: AxiosRequestConfig;
     errorMsg?: string;
     suppressError?: SuppressErrorFn
 }
