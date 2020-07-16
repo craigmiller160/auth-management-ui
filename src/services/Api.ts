@@ -55,7 +55,7 @@ const get = async <T>(req: RequestConfig): Promise<T | undefined> => {
     }
 };
 
-const post = async (req: RequestBodyConfig): Promise<any> => {
+const post = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
     try {
         const res = await instance.post(req.uri, req.body, req.config);
         return res.data;
@@ -65,7 +65,7 @@ const post = async (req: RequestBodyConfig): Promise<any> => {
     }
 };
 
-const put = async (req: RequestBodyConfig): Promise<any> => {
+const put = async <T>(req: RequestBodyConfig): Promise<T | undefined> => {
     try {
         const res = await instance.put(req.uri, req.body, req.config);
         return res.data;
@@ -75,7 +75,7 @@ const put = async (req: RequestBodyConfig): Promise<any> => {
     }
 };
 
-const doDelete = async (req: RequestConfig): Promise<any> => {
+const doDelete = async <T>(req: RequestConfig): Promise<T | undefined> => {
     try {
         const res = await instance.delete(req.uri, req.config);
         return res.data;
