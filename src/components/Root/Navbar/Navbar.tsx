@@ -13,7 +13,7 @@ import authSlice from '../../../store/auth/slice';
 import { none } from 'fp-ts/es6/Option';
 
 const isActive = (pathname: string, path: string, exact: boolean = false): boolean =>
-    exact ? pathname === path : pathname !== '/' && path.startsWith(pathname);
+    exact ? pathname === path : pathname !== '/' && pathname.startsWith(path);
 
 const Navbar = () => {
     const dispatch = useDispatch();
