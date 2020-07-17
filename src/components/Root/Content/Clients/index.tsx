@@ -11,6 +11,7 @@ import { isSome } from 'fp-ts/es6/Option';
 import TableBody from '@material-ui/core/TableBody';
 import theme from '../../../theme';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router';
 
 interface State {
     clients: Array<Client>
@@ -33,6 +34,8 @@ const useStyles = makeStyles({
 });
 
 const Clients = () => {
+    const classes = useStyles();
+    const history = useHistory();
     const [state, setState] = useState<State>({
         clients: []
     });
@@ -54,18 +57,14 @@ const Clients = () => {
         action();
     }, []);
 
-    const headerStyle: React.CSSProperties = {
-        backgroundColor: theme.palette.primary.main
-    };
-
-    const classes = useStyles();
+    const rowClick = (id: number) => history.push(`/clients/${id}`);
 
     return (
         <div>
             <PageHeader title="Clients" />
             <TableContainer>
                 <Table>
-                    <TableHead style={ headerStyle } className={ classes.TableHeader } color="primary">
+                    <TableHead className={ classes.TableHeader } color="primary">
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Key</TableCell>
@@ -74,7 +73,7 @@ const Clients = () => {
                     <TableBody className={ classes.TableBody }>
                         {
                             state.clients.map((client) => (
-                                <TableRow key={ client.id }>
+                                <TableRow key={ client.id } onClick={ () => rowClick(client.id) }>
                                     <TableCell>{ client.name }</TableCell>
                                     <TableCell>{ client.clientKey }</TableCell>
                                 </TableRow>
