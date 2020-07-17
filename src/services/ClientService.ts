@@ -20,7 +20,7 @@ export const generateGuid = (): Promise<Option<string>> =>
         errorMsg: 'Error generating GUID'
     });
 
-export const updateClient = (id: string, client: Client): Promise<Option<Client>> =>
+export const updateClient = (id: number, client: Client): Promise<Option<Client>> =>
     api.put<Client,Client>({
         uri: `/clients/${id}`,
         body: client,
@@ -36,6 +36,6 @@ export const createClient = (client: Client): Promise<Option<Client>> =>
 
 export const deleteClient = (id: number): Promise<Option<Client>> =>
     api.delete<Client>({
-        uri: `'/clients/${id}`,
+        uri: `/clients/${id}`,
         errorMsg: `Error deleting client ${id}`
     });
