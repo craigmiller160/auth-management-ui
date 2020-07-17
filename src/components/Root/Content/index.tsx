@@ -1,11 +1,11 @@
 import React from 'react';
-import PageHeader from '../../ui/PageHeader/PageHeader';
 import Container from '@material-ui/core/Container';
-import { Switch } from 'react-router';
-import ProtectedRoute, { Rule } from '../../routing/ProtectedRoute';
+import { Route, Switch } from 'react-router';
+import ProtectedRoute from '../../routing/ProtectedRoute';
 import Clients from './Clients';
 import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
+import Home from './Home';
 
 const Content = () => {
     const isAuth = useSelector(isAuthorized);
@@ -17,7 +17,6 @@ const Content = () => {
 
     return (
         <Container>
-            <PageHeader title="Welcome to OAuth Management" />
             <Switch>
                 <ProtectedRoute
                     path="/clients"
@@ -25,6 +24,11 @@ const Content = () => {
                     rules={ [
                         isAuthRule
                     ] }
+                />
+                <Route
+                    path="/"
+                    exact
+                    component={ Home }
                 />
             </Switch>
         </Container>
