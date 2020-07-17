@@ -5,18 +5,24 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 import './Navbar.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
 import { RootState } from '../../../store';
 import { logout } from '../../../services/AuthService';
+import authSlice from '../../../store/auth/slice';
+import { none } from 'fp-ts/es6/Option';
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const isAuth = useSelector(isAuthorized);
     const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     const authBtnText = isAuth ? 'Logout' : 'Login';
 
     const doLogin = () => window.location.href = '/api/oauth/authcode/login';
-    const doLogout = () => logout();
+    const doLogout = async () => {
+        await logout();
+        dispatch(authSlice.actions.setUserData(none));
+    };
     const authAction = isAuth ? doLogout : doLogin;
 
     return (
