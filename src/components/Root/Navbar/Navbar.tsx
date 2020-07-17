@@ -57,7 +57,7 @@ const Navbar = () => {
                                         variant={ clientsActive ? 'contained' : 'text' }
                                         color={ clientsActive ? 'default' : 'inherit' }
                                     >
-                                        <NavLink to="/clients" className="NavLink">Clients</NavLink>
+                                        Clients
                                     </Button>
                                 </NavLink>
                             </>
