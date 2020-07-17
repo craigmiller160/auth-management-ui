@@ -9,12 +9,28 @@ import { Client } from '../../../../types/api';
 import { getClients } from '../../../../services/ClientService';
 import { isSome } from 'fp-ts/es6/Option';
 import TableBody from '@material-ui/core/TableBody';
-import './Clients.scss';
 import theme from '../../../theme';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface State {
     clients: Array<Client>
 }
+
+const useStyles = makeStyles({
+    TableHeader: {
+        '& th': {
+            fontWeight: 'bold'
+        }
+    },
+    TableBody: {
+        '& tr': {
+            cursor: 'pointer'
+        },
+        '& tr:hover': {
+            backgroundColor: theme.palette.secondary.light
+        }
+    }
+});
 
 const Clients = () => {
     const [state, setState] = useState<State>({
@@ -42,18 +58,20 @@ const Clients = () => {
         backgroundColor: theme.palette.primary.main
     };
 
+    const classes = useStyles();
+
     return (
-        <div className="Clients">
+        <div>
             <PageHeader title="Clients" />
             <TableContainer>
                 <Table>
-                    <TableHead style={ headerStyle } className="TableHeader" color="primary">
+                    <TableHead style={ headerStyle } className={ classes.TableHeader } color="primary">
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Key</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody className="TableBody">
+                    <TableBody className={ classes.TableBody }>
                         {
                             state.clients.map((client) => (
                                 <TableRow key={ client.id }>
