@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
 import Home from './Home';
 import Users from './Users';
+import ClientDetails from './Clients/ClientDetails';
 
 const Content = () => {
     const isAuth = useSelector(isAuthorized);
@@ -21,7 +22,15 @@ const Content = () => {
             <Switch>
                 <ProtectedRoute
                     path="/clients"
+                    exact
                     component={ Clients }
+                    rules={ [
+                        isAuthRule
+                    ] }
+                />
+                <ProtectedRoute
+                    path="/clients/:id"
+                    component={ ClientDetails }
                     rules={ [
                         isAuthRule
                     ] }
