@@ -14,12 +14,10 @@ const Root = () => {
 
     return (
         <div>
+            <Navbar />
             {
                 hasChecked &&
-                <>
-                    <Navbar />
-                    <Content />
-                </>
+                <Content />
             }
         </div>
     );
