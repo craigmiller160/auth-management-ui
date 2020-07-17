@@ -8,11 +8,16 @@ import './Navbar.scss';
 import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
 import { RootState } from '../../../store';
+import { logout } from '../../../services/AuthService';
 
 const Navbar = () => {
     const isAuth = useSelector(isAuthorized);
     const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     const authBtnText = isAuth ? 'Logout' : 'Login';
+
+    const doLogin = () => window.location.href = '/api/oauth/authcode/login';
+    const doLogout = () => logout();
+    const authAction = isAuth ? doLogout : doLogin;
 
     return (
         <AppBar position="static" className="Navbar">
@@ -47,6 +52,7 @@ const Navbar = () => {
                         <Button
                             variant="text"
                             color="inherit"
+                            onClick={ authAction }
                         >
                             { authBtnText }
                         </Button>
