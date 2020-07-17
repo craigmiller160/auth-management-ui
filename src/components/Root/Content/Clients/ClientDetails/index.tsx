@@ -25,7 +25,7 @@ const ClientDetails = () => {
         client: {}
     });
     const { register, handleSubmit, errors } = useForm();
-    const onSubmit = (data: any) => console.log('Submit', data);
+    const onSubmit = (data: any) => console.log('Submit', data); // TODO input argument should not be any, find an alternative
 
     useEffect(() => {
         const action = async () => {
