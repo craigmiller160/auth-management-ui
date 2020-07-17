@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router';
-import { Client } from '../../../../../types/api';
-import { none, Option } from 'fp-ts/es6/Option';
+import { isSome } from 'fp-ts/es6/Option';
 import { getClient } from '../../../../../services/ClientService';
+import PageHeader from '../../../../ui/PageHeader/PageHeader';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import { Client } from '../../../../../types/api';
 
 interface State {
-    client: Option<Client>
+    client: Partial<Client>
 }
 
 interface MatchParams {
@@ -14,23 +17,53 @@ interface MatchParams {
 
 const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
+    const id = match.params.id;
     const [state, setState] = useState<State>({
-        client: none
+        client: {}
     });
 
     useEffect(() => {
         const action = async () => {
-            const result = await getClient(parseInt(match.params.id));
-            setState({
-                client: result
-            });
+            // TODO need to handle the 'new' scenario
+            const result = await getClient(parseInt(id));
+            if (isSome(result)) {
+                setState({
+                    client: result.value
+                });
+            } else {
+                setState({
+                    client: {}
+                });
+            }
         };
 
         action();
-    }, []);
+    }, [id]);
+
+    const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setState({
+            client: {
+                ...state.client,
+                [event.target.name]: event.target.value
+            }
+        });
+    };
 
     return (
-        <h1>Client Details</h1>
+        <div>
+            <PageHeader title="Client Details" />
+            <Grid
+                container
+                direction="row"
+            >
+                <TextField
+                    label="Client Key"
+                    name="clientKey"
+                    value={ state.client.clientKey ?? '' }
+                    onChange={ inputChange }
+                />
+            </Grid>
+        </div>
     );
 };
 
