@@ -9,7 +9,7 @@ export interface Rule {
 interface Props<T extends object> {
     rules?: Array<Rule>;
     path: string;
-    componentProps: T;
+    componentProps?: T;
     component: ElementType | ComponentType;
     exact?: boolean;
     routeKey?: string;
@@ -31,7 +31,7 @@ const ProtectedRoute = <T extends object>(props: Props<T>) => {
             render={ (routeProps) => (
                 <Component
                     { ...routeProps }
-                    { ...props.componentProps }
+                    { ...(props.componentProps ?? {}) }
                 />
             ) }
         />
