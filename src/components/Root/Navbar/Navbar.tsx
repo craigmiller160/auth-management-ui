@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './Navbar.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
@@ -12,8 +12,12 @@ import { logout } from '../../../services/AuthService';
 import authSlice from '../../../store/auth/slice';
 import { none } from 'fp-ts/es6/Option';
 
+const isActive = (pathname: string, path: string, exact: boolean = false): boolean =>
+    exact ? pathname === path : pathname !== '/' && path.startsWith(pathname);
+
 const Navbar = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const isAuth = useSelector(isAuthorized);
     const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     const authBtnText = isAuth ? 'Logout' : 'Login';
@@ -24,6 +28,9 @@ const Navbar = () => {
         dispatch(authSlice.actions.setUserData(none));
     };
     const authAction = isAuth ? doLogout : doLogin;
+
+    const usersActive = isActive(location.pathname, '/users');
+    const clientsActive = isActive(location.pathname, '/clients');
 
     return (
         <AppBar position="static" className="Navbar">
@@ -38,14 +45,14 @@ const Navbar = () => {
                         isAuth &&
                             <>
                                 <Button
-                                    variant="text"
-                                    color="inherit"
+                                    variant={ usersActive ? 'contained' : 'text' }
+                                    color={ usersActive ? 'default' : 'inherit' }
                                 >
                                     <NavLink to="/users" className="NavLink">Users</NavLink>
                                 </Button>
                                 <Button
-                                    variant="text"
-                                    color="inherit"
+                                    variant={ clientsActive ? 'contained' : 'text' }
+                                    color={ clientsActive ? 'default' : 'inherit' }
                                 >
                                     <NavLink to="/clients" className="NavLink">Clients</NavLink>
                                 </Button>
