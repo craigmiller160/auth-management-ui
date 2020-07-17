@@ -1,11 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router';
 import { isSome } from 'fp-ts/es6/Option';
-import { getClient } from '../../../../../services/ClientService';
+import { generateGuid, getClient } from '../../../../../services/ClientService';
 import PageHeader from '../../../../ui/PageHeader/PageHeader';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Client } from '../../../../../types/api';
+import { useForm } from 'react-hook-form';
+import './ClientDetails.scss';
+import Button from '@material-ui/core/Button';
 
 interface State {
     client: Partial<Client>
@@ -21,6 +24,8 @@ const ClientDetails = () => {
     const [state, setState] = useState<State>({
         client: {}
     });
+    const { register, handleSubmit, errors } = useForm();
+    const onSubmit = (data: any) => console.log('Submit', data);
 
     useEffect(() => {
         const action = async () => {
@@ -49,20 +54,86 @@ const ClientDetails = () => {
         });
     };
 
+    const generateClientKey = async () => {
+        const guid = await generateGuid();
+        if (isSome(guid)) {
+            setState({
+                client: {
+                    ...state.client,
+                    clientKey: guid.value
+                }
+            });
+        }
+    };
+
+    const generateClientSecret = async () => {
+        const guid = await generateGuid();
+        if (isSome(guid)) {
+            setState({
+                client: {
+                    ...state.client,
+                    clientSecret: guid.value
+                }
+            });
+        }
+    };
+
     return (
-        <div>
+        <div className="ClientDetails">
             <PageHeader title="Client Details" />
-            <Grid
-                container
-                direction="row"
-            >
-                <TextField
-                    label="Client Key"
-                    name="clientKey"
-                    value={ state.client.clientKey ?? '' }
-                    onChange={ inputChange }
-                />
-            </Grid>
+            <form onSubmit={ handleSubmit(onSubmit) }>
+                <Grid
+                    container
+                    direction="row"
+                >
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        className="half-row"
+                    >
+                        <TextField
+                            className="grow"
+                            label="Client Key"
+                            name="clientKey"
+                            value={ state.client.clientKey ?? '' }
+                            onChange={ inputChange }
+                            inputRef={ register({ required: true }) }
+                            error={ !!errors.clientKey }
+                        />
+                        <Button
+                            variant="text"
+                            color="default"
+                            onClick={ generateClientKey }
+                        >
+                            Generate
+                        </Button>
+                    </Grid>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        className="half-row"
+                    >
+                        <TextField
+                            className="grow"
+                            label="Client Secret"
+                            name="clientSecret"
+                            value={ state.client.clientSecret ?? '' }
+                            onChange={ inputChange }
+                            inputRef={ register }
+                            error={ !!errors.clientSecret }
+                        />
+                        <Button
+                            variant="text"
+                            color="default"
+                            onClick={ generateClientSecret }
+                        >
+                            Generate
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
         </div>
     );
 };
