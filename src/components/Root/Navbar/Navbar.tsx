@@ -44,18 +44,22 @@ const Navbar = () => {
                     {
                         isAuth &&
                             <>
-                                <Button
-                                    variant={ usersActive ? 'contained' : 'text' }
-                                    color={ usersActive ? 'default' : 'inherit' }
-                                >
-                                    <NavLink to="/users" className="NavLink">Users</NavLink>
-                                </Button>
-                                <Button
-                                    variant={ clientsActive ? 'contained' : 'text' }
-                                    color={ clientsActive ? 'default' : 'inherit' }
-                                >
-                                    <NavLink to="/clients" className="NavLink">Clients</NavLink>
-                                </Button>
+                                <NavLink to="/users" className="NavLink">
+                                    <Button
+                                        variant={ usersActive ? 'contained' : 'text' }
+                                        color={ usersActive ? 'default' : 'inherit' }
+                                    >
+                                        Users
+                                    </Button>
+                                </NavLink>
+                                <NavLink to="/clients" className="NavLink">
+                                    <Button
+                                        variant={ clientsActive ? 'contained' : 'text' }
+                                        color={ clientsActive ? 'default' : 'inherit' }
+                                    >
+                                        <NavLink to="/clients" className="NavLink">Clients</NavLink>
+                                    </Button>
+                                </NavLink>
                             </>
                     }
                 </div>
