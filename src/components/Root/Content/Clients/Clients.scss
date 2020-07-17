@@ -4,4 +4,14 @@
       font-weight: bold;
     }
   }
+
+  .TableBody {
+    tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: blue;
+      }
+    }
+  }
 }
