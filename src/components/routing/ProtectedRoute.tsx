@@ -6,16 +6,16 @@ export interface Rule {
     redirect: string;
 }
 
-interface Props {
+interface Props<T extends object> {
     rules?: Array<Rule>;
     path: string;
-    componentProps: object; // TODO make this generic
+    componentProps: T;
     component: ElementType | ComponentType;
     exact?: boolean;
     routeKey?: string;
 }
 
-const ProtectedRoute = (props: Props) => {
+const ProtectedRoute = <T extends object>(props: Props<T>) => {
     const failedRule = props.rules?.find((rule: Rule) => !rule.allow());
     if (failedRule) {
         return <Redirect to={ failedRule.redirect } />;
