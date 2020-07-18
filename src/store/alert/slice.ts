@@ -1,26 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+export interface AlertState {
+    show: boolean;
+    type: 'success' | 'error' | 'warning' | 'info';
+    message: string;
+}
+
+const initialState: AlertState = {
     show: false,
     message: '',
-    type: ''
+    type: 'success'
 };
 
-type StateType = typeof initialState;
-
-const showErrorAlert = (state: StateType, action: PayloadAction<string>) => {
+const showErrorAlert = (state: AlertState, action: PayloadAction<string>) => {
     state.show = true;
     state.type = 'error';
     state.message = action.payload;
 };
 
-const showSuccessAlert = (state: StateType, action: PayloadAction<string>) => {
+const showSuccessAlert = (state: AlertState, action: PayloadAction<string>) => {
     state.show = true;
     state.type = 'success';
     state.message = action.payload;
 };
 
-const hideAlert = (state: StateType) => {
+const hideAlert = (state: AlertState) => {
     state.show = false;
 };
 
