@@ -15,6 +15,8 @@ interface Props {
     onCancel?: () => void;
 }
 
+// TODO whenever this appears there is a console error. figure it out
+
 const ConfirmDialog = (props: Props) => {
     return (
         <Dialog open={ props.open } className="ConfirmDialog">
