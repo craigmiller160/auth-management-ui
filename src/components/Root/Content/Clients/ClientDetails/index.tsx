@@ -12,6 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
+import { useImmer } from 'use-immer';
 
 interface State {
     client: Partial<Client>;
@@ -29,7 +30,7 @@ interface MatchParams {
 const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
-    const [state, setState] = useState<State>({
+    const [state, setState] = useImmer<State>({
         client: {},
         dialog: {
             show: false,
@@ -45,14 +46,12 @@ const ClientDetails = () => {
             // TODO need to handle the 'new' scenario
             const result = await getClient(parseInt(id));
             if (isSome(result)) {
-                setState({
-                    ...state,
-                    client: result.value
+                setState((draft) => {
+                    draft.client = result.value;
                 });
             } else {
-                setState({
-                    ...state,
-                    client: {}
+                setState((draft) => {
+                    draft.client = {};
                 });
             }
         };
@@ -61,34 +60,22 @@ const ClientDetails = () => {
     }, [id]);
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setState({
-            ...state,
-            client: {
-                ...state.client,
-                [event.target.name]: event.target.value
-            }
+        setState((draft) => {
+            // state.client[event.target.name] = event.target.value; // TODO work on this
         });
     };
 
     const checkboxChange = (event: ChangeEvent<any>) => {
-        setState({
-            ...state,
-            client: {
-                ...state.client,
-                [event.target.name]: event.target.checked
-            }
+        setState((draft) => {
+            // state.client[event.target.name] = event.target.value; // TODO work on this
         });
     };
 
     const generateClientKey = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            setState({
-                ...state,
-                client: {
-                    ...state.client,
-                    clientKey: guid.value
-                }
+            setState((draft) => {
+                draft.client.clientKey = guid.value;
             });
         }
     };
@@ -96,12 +83,8 @@ const ClientDetails = () => {
     const generateClientSecret = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            setState({
-                ...state,
-                client: {
-                    ...state.client,
-                    clientSecret: guid.value
-                }
+            setState((draft) => {
+                draft.client.clientSecret = guid.value;
             });
         }
     };
