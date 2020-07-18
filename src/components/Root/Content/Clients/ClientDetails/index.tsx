@@ -2,7 +2,6 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router';
 import { isSome } from 'fp-ts/es6/Option';
 import { generateGuid, getClient } from '../../../../../services/ClientService';
-import PageHeader from '../../../../ui/PageHeader/PageHeader';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Client } from '../../../../../types/api';
@@ -11,6 +10,7 @@ import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { PageHeader, SectionHeader } from '../../../../ui/Header';
 
 interface State {
     client: Partial<Client>
@@ -92,7 +92,7 @@ const ClientDetails = () => {
     return (
         <div className="ClientDetails">
             <PageHeader title="Client Details" />
-            <PageHeader title="Keys" variant="h5" />
+            <SectionHeader title="Keys" />
             <form onSubmit={ handleSubmit(onSubmit) }>
                 <Grid
                     container
@@ -145,7 +145,7 @@ const ClientDetails = () => {
                         </Button>
                     </Grid>
                 </Grid>
-                <PageHeader title="Grants" variant="h5" />
+                <SectionHeader title="Grants" />
                 <Grid
                     container
                     direction="row"
@@ -196,7 +196,7 @@ const ClientDetails = () => {
                         }
                     />
                 </Grid>
-                <PageHeader title="Timeouts" variant="h5" />
+                <SectionHeader title="Timeouts" />
                 <Grid
                     container
                     direction="row"
@@ -223,7 +223,7 @@ const ClientDetails = () => {
                         error={ !!errors.refreshTokenTimeoutSecs }
                     />
                 </Grid>
-                <PageHeader title="Actions" variant="h5" />
+                <SectionHeader title="Actions" />
                 <Grid
                     container
                     direction="row"

@@ -1,6 +1,6 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
-import './PageHeader.scss';
+import './Header.scss';
 import Typography from '@material-ui/core/Typography';
 import { Variant } from '@material-ui/core/styles/createTypography';
 
@@ -14,7 +14,7 @@ interface PublicProps {
 }
 
 const Header = ({ title, variant }: HeaderProps) => (
-    <div className="PageHeader">
+    <div className="Header">
         <Typography variant={ variant }>{ title }</Typography>
         <Divider />
     </div>

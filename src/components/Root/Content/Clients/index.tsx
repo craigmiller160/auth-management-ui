@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PageHeader from '../../../ui/PageHeader/PageHeader';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Table from '@material-ui/core/Table';
@@ -12,6 +11,7 @@ import TableBody from '@material-ui/core/TableBody';
 import theme from '../../../theme';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
+import { PageHeader } from '../../../ui/Header';
 
 interface State {
     clients: Array<Client>

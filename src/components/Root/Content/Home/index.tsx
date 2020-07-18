@@ -1,5 +1,5 @@
 import React from 'react';
-import PageHeader from '../../../ui/PageHeader/PageHeader';
+import { PageHeader } from '../../../ui/Header';
 
 const Home = () => (
     <div>
