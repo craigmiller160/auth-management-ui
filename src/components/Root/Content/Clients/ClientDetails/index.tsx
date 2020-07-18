@@ -209,7 +209,7 @@ const ClientDetails = () => {
                         <TextField
                             className="grow-sm"
                             label="Client Name"
-                            name="name"
+                            name={ NAME }
                             value={ state.client.name ?? '' }
                             onChange={ inputChange }
                             inputRef={ register({ required: 'Required' }) }
@@ -231,7 +231,7 @@ const ClientDetails = () => {
                             <TextField
                                 className="grow"
                                 label="Client Key"
-                                name="clientKey"
+                                name={ CLIENT_KEY }
                                 value={ state.client.clientKey ?? '' }
                                 onChange={ inputChange }
                                 inputRef={ register({ required: 'Required' }) }
@@ -256,7 +256,7 @@ const ClientDetails = () => {
                             <TextField
                                 className="grow"
                                 label="Client Secret"
-                                name="clientSecret"
+                                name={ CLIENT_SECRET }
                                 value={ state.client.clientSecret ?? '' }
                                 onChange={ inputChange }
                                 inputRef={ register }
@@ -283,7 +283,7 @@ const ClientDetails = () => {
                             label="Enabled"
                             control={
                                 <Checkbox
-                                    name="enabled"
+                                    name={ ENABLED }
                                     checked={ state.client.enabled ?? false }
                                     onChange={ inputChange }
                                     color="primary"
@@ -294,7 +294,7 @@ const ClientDetails = () => {
                             label="Client Credentials Grant"
                             control={
                                 <Checkbox
-                                    name="allowClientCredentials"
+                                    name={ ALLOW_CLIENT_CREDS }
                                     checked={ state.client.allowClientCredentials ?? false }
                                     onChange={ inputChange }
                                     color="primary"
@@ -305,7 +305,7 @@ const ClientDetails = () => {
                             label="Password Grant"
                             control={
                                 <Checkbox
-                                    name="allowPassword"
+                                    name={ ALLOW_PASSWORD }
                                     checked={ state.client.allowPassword ?? false }
                                     onChange={ inputChange }
                                     color="primary"
@@ -316,7 +316,7 @@ const ClientDetails = () => {
                             label="Authorization Code Grant"
                             control={
                                 <Checkbox
-                                    name="allowAuthCode"
+                                    name={ ALLOW_AUTH_CODE }
                                     checked={ state.client.allowAuthCode ?? false }
                                     onChange={ inputChange }
                                     color="primary"
@@ -334,7 +334,7 @@ const ClientDetails = () => {
                             className="timeouts"
                             type="number"
                             label="Access Token Timeout (Secs)"
-                            name="accessTokenTimeoutSecs"
+                            name={ ACCESS_TOKEN_TIMEOUT }
                             value={ state.client.accessTokenTimeoutSecs ?? '' }
                             onChange={ inputChange }
                             inputRef={ register({
@@ -350,7 +350,7 @@ const ClientDetails = () => {
                             className="timeouts"
                             type="number"
                             label="Refresh Token Timeout (Secs)"
-                            name="refreshTokenTimeoutSecs"
+                            name={ REFRESH_TOKEN_TIMEOUT }
                             value={ state.client.refreshTokenTimeoutSecs ?? '' }
                             onChange={ inputChange }
                             inputRef={ register({
