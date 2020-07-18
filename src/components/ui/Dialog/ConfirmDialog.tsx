@@ -1,10 +1,40 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
-const ConfirmDialog = () => {
+interface Props {
+    open: boolean;
+    title: string;
+    message: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+}
+
+const ConfirmDialog = (props: Props) => {
     return (
-        <Dialog open={ true }>
-            <h1>Hello World</h1>
+        <Dialog open={ props.open }>
+            <DialogTitle>{ props.title }</DialogTitle>
+            <DialogContent>
+                <DialogContentText>{ props.message }</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={ props.onConfirm }
+                    color="primary"
+                >
+                    Confirm
+                </Button>
+                <Button
+                    onClick={ props.onCancel }
+                    color="primary"
+                >
+                    Cancel
+                </Button>
+            </DialogActions>
         </Dialog>
     );
 };

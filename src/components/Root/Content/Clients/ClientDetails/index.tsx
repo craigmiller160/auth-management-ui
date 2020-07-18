@@ -250,7 +250,11 @@ const ClientDetails = () => {
                     </Button>
                 </Grid>
             </form>
-            <ConfirmDialog />
+            <ConfirmDialog
+                open
+                title="Confirm Stuff"
+                message="Are you sure?"
+            />
         </div>
     );
 };
