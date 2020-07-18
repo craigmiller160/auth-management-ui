@@ -10,6 +10,7 @@ import Users from './Users';
 import ClientDetails from './Clients/ClientDetails';
 import Alert from '../../ui/Alert';
 import './Content.scss';
+import UserDetails from './Users/UserDetails';
 
 const Content = () => {
     const isAuth = useSelector(isAuthorized);
@@ -41,6 +42,13 @@ const Content = () => {
                 <ProtectedRoute
                     path="/users"
                     component={ Users }
+                    rules={ [
+                        isAuthRule
+                    ] }
+                />
+                <ProtectedRoute
+                    path="/users/:id"
+                    component={ UserDetails }
                     rules={ [
                         isAuthRule
                     ] }
