@@ -27,6 +27,19 @@ interface MatchParams {
 
 interface ClientForm extends Omit<Client, 'id'> { }
 
+const defaultClient: Client = {
+    id: 0,
+    name: '',
+    clientKey: '',
+    clientSecret: '',
+    enabled: false,
+    allowClientCredentials: false,
+    allowAuthCode: false,
+    allowPassword: false,
+    refreshTokenTimeoutSecs: 0,
+    accessTokenTimeoutSecs: 0
+};
+
 // TODO when navigating away from this page with any link there should be the cancel modal
 
 const ClientDetails = () => {
@@ -54,10 +67,14 @@ const ClientDetails = () => {
     };
 
     const onSubmit = () => {
+        const payload: Client = {
+            ...defaultClient,
+            ...state.client
+        };
         if (id === 'new') {
-            doSubmit(() => createClient(state.client));
+            doSubmit(() => createClient(payload));
         } else {
-            doSubmit(() => updateClient(parseInt(id), state.cient));
+            doSubmit(() => updateClient(parseInt(id), payload));
         }
     };
 
