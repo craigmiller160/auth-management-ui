@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect } from 'react';
-import { useRouteMatch } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import { isSome } from 'fp-ts/es6/Option';
 import { generateGuid, getClient } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
@@ -17,11 +17,7 @@ import { greaterThanZero } from '../../../../../utils/validations';
 
 interface State {
     client: Partial<Client>;
-    dialog: {
-        show: boolean;
-        title: string;
-        message: string;
-    };
+    showCancelDialog: boolean;
 }
 
 interface MatchParams {
@@ -31,15 +27,12 @@ interface MatchParams {
 interface ClientForm extends Omit<Client, 'id'> { }
 
 const ClientDetails = () => {
+    const history = useHistory();
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         client: {},
-        dialog: {
-            show: false,
-            title: '',
-            message: ''
-        }
+        showCancelDialog: false
     });
     const { register, handleSubmit, errors } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -64,6 +57,16 @@ const ClientDetails = () => {
 
         action();
     }, [id, setState]);
+
+    const doCancel = () => {
+        setState((draft) => {
+            draft.showCancelDialog = false;
+        });
+        history.push('/clients');
+    };
+    const toggleCancelDialog = (show: boolean) => setState((draft) => {
+        draft.showCancelDialog = show;
+    });
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -301,6 +304,7 @@ const ClientDetails = () => {
                     <Button
                         variant="contained"
                         color="primary"
+                        onClick={ () => toggleCancelDialog(true) }
                     >
                         Cancel
                     </Button>
@@ -320,9 +324,11 @@ const ClientDetails = () => {
                 </Grid>
             </form>
             <ConfirmDialog
-                open={ state.dialog.show }
-                title={ state.dialog.title }
-                message={ state.dialog.message }
+                open={ state.showCancelDialog }
+                title="Cancel Changes"
+                message="Are you sure you want to cancel all changes?"
+                onConfirm={ doCancel }
+                onCancel={ () => toggleCancelDialog(false) }
             />
         </div>
     );
