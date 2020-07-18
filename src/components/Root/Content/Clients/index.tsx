@@ -12,6 +12,9 @@ import theme from '../../../theme';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import './Clients.scss';
 
 interface State {
     clients: Array<Client>
@@ -58,30 +61,49 @@ const Clients = () => {
     }, []);
 
     const rowClick = (id: number) => history.push(`/clients/${id}`);
+    const newClick = () => history.push('/clients/new');
 
     return (
-        <div>
+        <div className="Clients">
             <PageHeader title="Clients" />
-            <TableContainer>
-                <Table>
-                    <TableHead className={ classes.TableHeader } color="primary">
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Key</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={ classes.TableBody }>
-                        {
-                            state.clients.map((client) => (
-                                <TableRow key={ client.id } onClick={ () => rowClick(client.id) }>
-                                    <TableCell>{ client.name }</TableCell>
-                                    <TableCell>{ client.clientKey }</TableCell>
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Grid
+                container
+                direction="row"
+            >
+                <TableContainer>
+                    <Table>
+                        <TableHead className={ classes.TableHeader } color="primary">
+                            <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Key</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody className={ classes.TableBody }>
+                            {
+                                state.clients.map((client) => (
+                                    <TableRow key={ client.id } onClick={ () => rowClick(client.id) }>
+                                        <TableCell>{ client.name }</TableCell>
+                                        <TableCell>{ client.clientKey }</TableCell>
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Grid>
+            <Grid
+                container
+                direction="row"
+                className="actions"
+            >
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ newClick }
+                >
+                    New Client
+                </Button>
+            </Grid>
         </div>
     );
 };

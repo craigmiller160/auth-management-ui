@@ -26,6 +26,8 @@ interface MatchParams {
 
 interface ClientForm extends Omit<Client, 'id'> { }
 
+// TODO when navigating away from this page with any link there should be the cancel modal
+
 const ClientDetails = () => {
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
@@ -42,16 +44,31 @@ const ClientDetails = () => {
 
     useEffect(() => {
         const action = async () => {
-            // TODO need to handle the 'new' scenario
-            const result = await getClient(parseInt(id));
-            if (isSome(result)) {
-                setState((draft) => {
-                    draft.client = result.value;
-                });
+            if (id === 'new') {
+                const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
+                if (isSome(key) && isSome(secret)) {
+                    setState((draft) => {
+                        draft.client = {
+                            name: 'New Client',
+                            clientKey: key.value,
+                            clientSecret: secret.value,
+                            enabled: true,
+                            accessTokenTimeoutSecs: 300,
+                            refreshTokenTimeoutSecs: 3600
+                        };
+                    });
+                }
             } else {
-                setState((draft) => {
-                    draft.client = {};
-                });
+                const result = await getClient(parseInt(id));
+                if (isSome(result)) {
+                    setState((draft) => {
+                        draft.client = result.value;
+                    });
+                } else {
+                    setState((draft) => {
+                        draft.client = {};
+                    });
+                }
             }
         };
 
@@ -171,6 +188,7 @@ const ClientDetails = () => {
                             inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.clientKey }
                             helperText={ errors.clientKey?.message ?? '' }
+                            disabled
                         />
                         <Button
                             variant="text"
@@ -195,6 +213,7 @@ const ClientDetails = () => {
                             inputRef={ register }
                             error={ !!errors.clientSecret }
                             helperText={ errors.clientSecret?.message ?? '' }
+                            disabled
                         />
                         <Button
                             variant="text"
