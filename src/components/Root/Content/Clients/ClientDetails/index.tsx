@@ -223,6 +223,31 @@ const ClientDetails = () => {
                         error={ !!errors.refreshTokenTimeoutSecs }
                     />
                 </Grid>
+                <PageHeader title="Actions" variant="h5" />
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                    >
+                        Delete
+                    </Button>
+                </Grid>
             </form>
         </div>
     );
