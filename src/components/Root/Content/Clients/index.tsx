@@ -42,10 +42,11 @@ const Clients = () => {
     const newClick = () => history.push('/clients/new');
 
     const body = useMemo(() => {
-        return state.clients.map((client) => ([
-            client.name, client.clientKey
-        ]));
-    },[state.clients]);
+        return state.clients.map((client) => ({
+            click: () => rowClick(client.id),
+            items: [ client.name, client.clientKey ]
+        }));
+    },[state.clients, rowClick]);
 
     return (
         <div className="Clients">

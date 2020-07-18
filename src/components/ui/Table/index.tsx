@@ -8,9 +8,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 
+interface BodyRow {
+    click: () => void;
+    items: Array<string | number | boolean>;
+}
+
 interface Props {
     header: Array<String>;
-    body: Array<Array<string | number | boolean>>
+    body: Array<BodyRow>;
 }
 
 const useStyles = makeStyles({
@@ -46,9 +51,9 @@ const Table = (props: Props) => {
                 <TableBody className={ classes.TableBody }>
                     {
                         props.body.map((row, index) => (
-                            <TableRow key={ index }>
+                            <TableRow key={ index } onClick={ row.click }>
                                 {
-                                    row.map((item, index) => (
+                                    row.items.map((item, index) => (
                                         <TableCell key={ index }>{ item }</TableCell>
                                     ))
                                 }
