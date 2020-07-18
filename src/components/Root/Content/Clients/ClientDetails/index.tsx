@@ -40,10 +40,11 @@ const ClientDetails = () => {
             message: ''
         }
     });
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm({
+        mode: 'onBlur',
+        reValidateMode: 'onChange'
+    });
     const onSubmit = (data: any) => console.log('Submit', data); // TODO input argument should not be any, find an alternative
-
-    console.log(errors); // TODO delete this
 
     useEffect(() => {
         const action = async () => {
@@ -123,8 +124,6 @@ const ClientDetails = () => {
         }
     };
 
-    // TODO access and refresh tokens should require value > 0
-
     return (
         <div className="ClientDetails">
             <PageHeader title="Client Details" />
@@ -146,8 +145,9 @@ const ClientDetails = () => {
                             name="clientKey"
                             value={ state.client.clientKey ?? '' }
                             onChange={ inputChange }
-                            inputRef={ register({ required: true }) }
+                            inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.clientKey }
+                            helperText={ errors.clientKey?.message ?? '' }
                         />
                         <Button
                             variant="text"
@@ -171,6 +171,7 @@ const ClientDetails = () => {
                             onChange={ inputChange }
                             inputRef={ register }
                             error={ !!errors.clientSecret }
+                            helperText={ errors.clientSecret?.message ?? '' }
                         />
                         <Button
                             variant="text"
@@ -246,7 +247,7 @@ const ClientDetails = () => {
                         value={ state.client.accessTokenTimeoutSecs ?? '' }
                         onChange={ inputChange }
                         inputRef={ register({
-                            required: true,
+                            required: 'Required',
                             validate: {
                                 greaterThanZero
                             }
@@ -262,12 +263,13 @@ const ClientDetails = () => {
                         value={ state.client.refreshTokenTimeoutSecs ?? '' }
                         onChange={ inputChange }
                         inputRef={ register({
-                            required: true,
+                            required: 'Required',
                             validate: {
                                 greaterThanZero
                             }
                         }) }
                         error={ !!errors.refreshTokenTimeoutSecs }
+                        helperText={ errors.refreshTokenTimeoutSecs?.message ?? '' }
                     />
                 </Grid>
                 <SectionHeader title="Actions" />
