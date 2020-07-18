@@ -70,6 +70,9 @@ const ClientDetails = () => {
         setState((draft) => {
             // draft.client[event.target.name] = event.target.value; // TODO find a way to make this work
             switch (name) {
+                case 'name':
+                    draft.client.name = value;
+                    break;
                 case 'clientKey':
                     draft.client.clientKey = value;
                     break;
@@ -128,8 +131,24 @@ const ClientDetails = () => {
     return (
         <div className="ClientDetails">
             <PageHeader title="Client Details" />
-            <SectionHeader title="Keys" />
             <form onSubmit={ handleSubmit(onSubmit) }>
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                >
+                    <TextField
+                        className="grow-sm"
+                        label="Client Name"
+                        name="name"
+                        value={ state.client.name ?? '' }
+                        onChange={ inputChange }
+                        inputRef={ register({ required: 'Required' }) }
+                        error={ !!errors.name }
+                        helperText={ errors.name?.message ?? '' }
+                    />
+                </Grid>
+                <SectionHeader title="Keys" />
                 <Grid
                     container
                     direction="row"
