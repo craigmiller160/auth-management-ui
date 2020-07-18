@@ -4,6 +4,7 @@ import Content from './Content';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAuthUser } from '../../store/auth/actions';
 import { RootState } from '../../store';
+import Alert from '../ui/Alert';
 
 const Root = () => {
     const dispatch = useDispatch();

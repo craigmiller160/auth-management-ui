@@ -8,6 +8,8 @@ import { isAuthorized } from '../../../store/auth/selectors';
 import Home from './Home';
 import Users from './Users';
 import ClientDetails from './Clients/ClientDetails';
+import Alert from '../../ui/Alert';
+import './Content.scss';
 
 const Content = () => {
     const isAuth = useSelector(isAuthorized);
@@ -18,7 +20,8 @@ const Content = () => {
     };
 
     return (
-        <Container>
+        <Container className="Content">
+            <Alert />
             <Switch>
                 <ProtectedRoute
                     path="/clients"

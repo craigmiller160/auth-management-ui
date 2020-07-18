@@ -1,15 +1,29 @@
 import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import MuiAlert from '@material-ui/lab/Alert';
-import { AlertState } from '../../../store/alert/slice';
+import alertSlice, { AlertState } from '../../../store/alert/slice';
+import AlertTitle from '@material-ui/lab/AlertTitle';
+import Collapse from '@material-ui/core/Collapse';
+
+const capitalize = (text: string) => {
+    const firstLetter = text.substring(0, 1).toUpperCase();
+    return `${firstLetter}${text.substring(1)}`;
+};
 
 const Alert = () => {
+    const dispatch = useDispatch();
     const alertState = useSelector<RootState,AlertState>((state) => state.alert, shallowEqual);
     return (
-        <div>
-            <MuiAlert severity={ alertState.type }>{ alertState.message }</MuiAlert>
-        </div>
+        <Collapse in={ alertState.show }>
+            <MuiAlert
+                severity={ alertState.type }
+                onClose={ () => dispatch(alertSlice.actions.hideAlert()) }
+            >
+                <AlertTitle>{ capitalize(alertState.type) }</AlertTitle>
+                { alertState.message }
+            </MuiAlert>
+        </Collapse>
     );
 };
 
