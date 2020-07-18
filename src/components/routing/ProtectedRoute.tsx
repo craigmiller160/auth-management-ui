@@ -1,5 +1,5 @@
-import React, { ElementType, ComponentType } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import React, { ElementType, ComponentType, useEffect } from 'react';
+import { Redirect, Route, useHistory } from 'react-router-dom';
 
 export interface Rule {
     allow: () => boolean;
@@ -16,10 +16,21 @@ interface Props<T extends object> {
 }
 
 const ProtectedRoute = <T extends object>(props: Props<T>) => {
-    const failedRule = props.rules?.find((rule: Rule) => !rule.allow());
-    if (failedRule) {
-        return <Redirect to={ failedRule.redirect } />;
-    }
+    const history = useHistory();
+    // TODO the protected routes don't work... the allow() methods capture the old value of isAuth
+    useEffect(() => {
+        const unlisten = history.listen((location, action) => {
+            console.log(location, action); // TODO delete this
+            const failedRule = props.rules?.find((rule: Rule) => !rule.allow());
+            if (failedRule) {
+                console.log('Failed rule'); // TODO delete this
+                // return <Redirect to={ failedRule.redirect } />;
+            }
+        });
+        return () => {
+            unlisten();
+        };
+    }, []);
 
     const Component = props.component;
 
