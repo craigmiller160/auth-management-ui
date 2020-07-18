@@ -57,7 +57,7 @@ const ClientDetails = () => {
         };
 
         action();
-    }, [id]);
+    }, [id, setState]);
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
