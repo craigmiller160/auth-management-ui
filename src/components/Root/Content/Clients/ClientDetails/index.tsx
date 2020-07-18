@@ -48,8 +48,6 @@ const defaultClient: Client = {
 
 const NEW = 'new';
 
-// TODO when navigating away from this page with any link there should be the cancel modal
-
 const ClientDetails = () => {
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
