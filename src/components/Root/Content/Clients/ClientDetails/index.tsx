@@ -28,6 +28,8 @@ interface MatchParams {
     id: string;
 }
 
+interface ClientForm extends Omit<Client, 'id'> { }
+
 const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
@@ -39,11 +41,11 @@ const ClientDetails = () => {
             message: ''
         }
     });
-    const { register, handleSubmit, errors } = useForm({
+    const { register, handleSubmit, errors } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
-    const onSubmit = (data: any) => console.log('Submit', data); // TODO input argument should not be any, find an alternative
+    const onSubmit = (data: ClientForm) => console.log('Submit', data);
 
     useEffect(() => {
         const action = async () => {
