@@ -61,13 +61,13 @@ const ClientDetails = () => {
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setState((draft) => {
-            // state.client[event.target.name] = event.target.value; // TODO work on this
+            draft.client[event.target.name] = event.target.value;
         });
     };
 
-    const checkboxChange = (event: ChangeEvent<any>) => {
+    const checkboxChange = (event: ChangeEvent<HTMLInputElement>) => {
         setState((draft) => {
-            // state.client[event.target.name] = event.target.value; // TODO work on this
+            draft.client[event.target.name] = event.target.checked;
         });
     };
 
