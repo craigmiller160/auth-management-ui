@@ -196,6 +196,33 @@ const ClientDetails = () => {
                         }
                     />
                 </Grid>
+                <PageHeader title="Timeouts" variant="h5" />
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <TextField
+                        className="timeouts"
+                        type="number"
+                        label="Access Token Timeout (Secs)"
+                        name="accessTokenTimeoutSecs"
+                        value={ state.client.accessTokenTimeoutSecs ?? '' }
+                        onChange={ inputChange }
+                        inputRef={ register({ required: true }) }
+                        error={ !!errors.accessTokenTimeoutSecs }
+                    />
+                    <TextField
+                        className="timeouts"
+                        type="number"
+                        label="Refresh Token Timeout (Secs)"
+                        name="refreshTokenTimeoutSecs"
+                        value={ state.client.refreshTokenTimeoutSecs ?? '' }
+                        onChange={ inputChange }
+                        inputRef={ register({ required: true }) }
+                        error={ !!errors.refreshTokenTimeoutSecs }
+                    />
+                </Grid>
             </form>
         </div>
     );
