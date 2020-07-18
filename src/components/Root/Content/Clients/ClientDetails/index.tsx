@@ -267,9 +267,9 @@ const ClientDetails = () => {
                 </Grid>
             </form>
             <ConfirmDialog
-                open
-                title="Confirm Stuff"
-                message="Are you sure?"
+                open={ state.dialog.show }
+                title={ state.dialog.title }
+                message={ state.dialog.message }
             />
         </div>
     );
