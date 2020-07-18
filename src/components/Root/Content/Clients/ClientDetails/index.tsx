@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { useRouteMatch } from 'react-router';
 import { isSome } from 'fp-ts/es6/Option';
 import { generateGuid, getClient } from '../../../../../services/ClientService';
