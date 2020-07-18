@@ -4,16 +4,21 @@ import './PageHeader.scss';
 import Typography from '@material-ui/core/Typography';
 import { Variant } from '@material-ui/core/styles/createTypography';
 
-interface Props {
+interface HeaderProps {
     title: string;
     variant?: Variant;
 }
 
-const PageHeader = ({ title, variant = 'h3' }: Props) => (
+interface PublicProps {
+    title: string;
+}
+
+const Header = ({ title, variant }: HeaderProps) => (
     <div className="PageHeader">
         <Typography variant={ variant }>{ title }</Typography>
         <Divider />
     </div>
 );
 
-export default PageHeader;
+export const PageHeader = ({ title }: PublicProps) => <Header title={ title } variant="h3" />;
+export const SectionHeader = ({ title }: PublicProps) => <Header title={ title } variant="h5" />;
