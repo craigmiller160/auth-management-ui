@@ -27,6 +27,8 @@ interface MatchParams {
     id: string;
 }
 
+const greaterThanZero = (value: number) => value > 0 || 'Must be greater than 0';
+
 const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
@@ -40,6 +42,8 @@ const ClientDetails = () => {
     });
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any) => console.log('Submit', data); // TODO input argument should not be any, find an alternative
+
+    console.log(errors); // TODO delete this
 
     useEffect(() => {
         const action = async () => {
@@ -241,8 +245,14 @@ const ClientDetails = () => {
                         name="accessTokenTimeoutSecs"
                         value={ state.client.accessTokenTimeoutSecs ?? '' }
                         onChange={ inputChange }
-                        inputRef={ register({ required: true }) }
+                        inputRef={ register({
+                            required: true,
+                            validate: {
+                                greaterThanZero
+                            }
+                        }) }
                         error={ !!errors.accessTokenTimeoutSecs }
+                        helperText={ errors.accessTokenTimeoutSecs?.message ?? '' }
                     />
                     <TextField
                         className="timeouts"
@@ -251,7 +261,12 @@ const ClientDetails = () => {
                         name="refreshTokenTimeoutSecs"
                         value={ state.client.refreshTokenTimeoutSecs ?? '' }
                         onChange={ inputChange }
-                        inputRef={ register({ required: true }) }
+                        inputRef={ register({
+                            required: true,
+                            validate: {
+                                greaterThanZero
+                            }
+                        }) }
                         error={ !!errors.refreshTokenTimeoutSecs }
                     />
                 </Grid>
@@ -270,6 +285,7 @@ const ClientDetails = () => {
                     <Button
                         variant="contained"
                         color="primary"
+                        type="submit"
                     >
                         Save
                     </Button>
