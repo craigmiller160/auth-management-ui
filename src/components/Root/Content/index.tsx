@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Route, Switch } from 'react-router';
-import ProtectedRoute from '../../routing/ProtectedRoute';
+import ProtectedRoute, { Rule } from '../../routing/ProtectedRoute';
 import Clients from './Clients';
 import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
@@ -12,11 +12,15 @@ import Alert from '../../ui/Alert';
 import './Content.scss';
 import UserDetails from './Users/UserDetails';
 
+interface RuleProps {
+    isAuth: boolean;
+}
+
 const Content = () => {
     const isAuth = useSelector(isAuthorized);
 
-    const isAuthRule = {
-        allow: () => isAuth,
+    const isAuthRule: Rule<RuleProps> = {
+        allow: (ruleProps?: RuleProps) => ruleProps?.isAuth ?? false,
         redirect: '/'
     };
 
@@ -28,6 +32,9 @@ const Content = () => {
                     path="/clients"
                     exact
                     component={ Clients }
+                    ruleProps={ {
+                        isAuth
+                    } }
                     rules={ [
                         isAuthRule
                     ] }
@@ -35,6 +42,9 @@ const Content = () => {
                 <ProtectedRoute
                     path="/clients/:id"
                     component={ ClientDetails }
+                    ruleProps={ {
+                        isAuth
+                    } }
                     rules={ [
                         isAuthRule
                     ] }
@@ -42,6 +52,9 @@ const Content = () => {
                 <ProtectedRoute
                     path="/users"
                     component={ Users }
+                    ruleProps={ {
+                        isAuth
+                    } }
                     rules={ [
                         isAuthRule
                     ] }
@@ -49,6 +62,9 @@ const Content = () => {
                 <ProtectedRoute
                     path="/users/:id"
                     component={ UserDetails }
+                    ruleProps={ {
+                        isAuth
+                    } }
                     rules={ [
                         isAuthRule
                     ] }
