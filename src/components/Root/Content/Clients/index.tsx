@@ -10,7 +10,7 @@ import './Clients.scss';
 import Table from '../../../ui/Table';
 
 interface State {
-    clients: Array<Client>
+    clients: Array<Client>;
 }
 
 const header = ['Name', 'Key'];
