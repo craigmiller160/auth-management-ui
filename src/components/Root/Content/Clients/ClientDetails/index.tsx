@@ -14,7 +14,12 @@ import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
 
 interface State {
-    client: Partial<Client>
+    client: Partial<Client>;
+    dialog: {
+        show: boolean;
+        title: string;
+        message: string;
+    };
 }
 
 interface MatchParams {
@@ -25,7 +30,12 @@ const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
     const [state, setState] = useState<State>({
-        client: {}
+        client: {},
+        dialog: {
+            show: false,
+            title: '',
+            message: ''
+        }
     });
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any) => console.log('Submit', data); // TODO input argument should not be any, find an alternative
@@ -36,10 +46,12 @@ const ClientDetails = () => {
             const result = await getClient(parseInt(id));
             if (isSome(result)) {
                 setState({
+                    ...state,
                     client: result.value
                 });
             } else {
                 setState({
+                    ...state,
                     client: {}
                 });
             }
@@ -50,6 +62,7 @@ const ClientDetails = () => {
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setState({
+            ...state,
             client: {
                 ...state.client,
                 [event.target.name]: event.target.value
@@ -59,6 +72,7 @@ const ClientDetails = () => {
 
     const checkboxChange = (event: ChangeEvent<any>) => {
         setState({
+            ...state,
             client: {
                 ...state.client,
                 [event.target.name]: event.target.checked
@@ -70,6 +84,7 @@ const ClientDetails = () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
             setState({
+                ...state,
                 client: {
                     ...state.client,
                     clientKey: guid.value
@@ -82,6 +97,7 @@ const ClientDetails = () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
             setState({
+                ...state,
                 client: {
                     ...state.client,
                     clientSecret: guid.value
