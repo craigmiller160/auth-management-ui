@@ -1,7 +1,13 @@
 import React, { ChangeEvent, useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
-import { createClient, generateGuid, getClient, updateClient } from '../../../../../services/ClientService';
+import {
+    createClient,
+    deleteClient,
+    generateGuid,
+    getClient,
+    updateClient
+} from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Client } from '../../../../../types/api';
@@ -40,6 +46,8 @@ const defaultClient: Client = {
     accessTokenTimeoutSecs: 0
 };
 
+const NEW = 'new';
+
 // TODO when navigating away from this page with any link there should be the cancel modal
 
 const ClientDetails = () => {
@@ -71,7 +79,7 @@ const ClientDetails = () => {
             ...defaultClient,
             ...state.client
         };
-        if (id === 'new') {
+        if (id === NEW) {
             doSubmit(() => createClient(payload));
         } else {
             doSubmit(() => updateClient(parseInt(id), payload));
@@ -80,7 +88,7 @@ const ClientDetails = () => {
 
     useEffect(() => {
         const action = async () => {
-            if (id === 'new') {
+            if (id === NEW) {
                 const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
                 if (isSome(key) && isSome(secret)) {
                     setState((draft) => {
@@ -175,6 +183,20 @@ const ClientDetails = () => {
     };
 
     const doCancel = () => history.push('/clients');
+
+    const toggleDeleteDialog = (show: boolean) => setState((draft) => {
+        draft.showDeleteDialog = show;
+    });
+
+    const doDelete = async () => {
+        const result = await deleteClient(parseInt(id));
+        if (isSome(result)) {
+            setState((draft) => {
+                draft.shouldBlockNavigation = false;
+            });
+            history.push('/clients');
+        }
+    };
 
     return (
         <>
@@ -367,18 +389,24 @@ const ClientDetails = () => {
                         >
                             Save
                         </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                        >
-                            Delete
-                        </Button>
+                        {
+                            id !== NEW &&
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={ () => toggleDeleteDialog(true) }
+                            >
+                                Delete
+                            </Button>
+                        }
                     </Grid>
                 </form>
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
                     message="Are you sure you want to delete this client?"
+                    onConfirm={ doDelete }
+                    onCancel={ () => toggleDeleteDialog(false) }
                 />
             </div>
         </>
