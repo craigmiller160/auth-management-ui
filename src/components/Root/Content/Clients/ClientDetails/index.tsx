@@ -20,6 +20,8 @@ import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
 import { useImmer } from 'use-immer';
 import { greaterThanZero } from '../../../../../utils/validations';
+import alertSlice from '../../../../../store/alert/slice';
+import { useDispatch } from 'react-redux';
 
 interface State {
     client: Partial<Client>;
@@ -77,6 +79,7 @@ const isBooleanProperty = (name: string): name is ClientBooleanProperty => {
 };
 
 const ClientDetails = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
@@ -97,6 +100,7 @@ const ClientDetails = () => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/clients');
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${result.value.id}`));
         }
     };
 
@@ -189,6 +193,7 @@ const ClientDetails = () => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/clients');
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
         }
     };
 
