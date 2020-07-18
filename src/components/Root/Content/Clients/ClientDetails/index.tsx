@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
+import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
 
 interface State {
     client: Partial<Client>
@@ -249,6 +250,7 @@ const ClientDetails = () => {
                     </Button>
                 </Grid>
             </form>
+            <ConfirmDialog />
         </div>
     );
 };
