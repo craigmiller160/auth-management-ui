@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { Option, none, some } from 'fp-ts/es6/Option';
 import store from '../store';
 import alertSlice from '../store/alert/slice';
+import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 
@@ -38,12 +39,19 @@ const getFullMessage = (errorMsg: string, ex: Error): string => {
         .message;
 };
 
+const handle401Error = (ex: Error) => {
+    if (isAxiosError(ex) && ex.response?.status === 401) {
+        store.dispatch(authSlice.actions.setUserData(none));
+    }
+};
+
 const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressErrorFn = (e) => false) => {
     if (!suppressError(ex)) {
         const fullMessage = getFullMessage(errorMsg, ex);
         console.log(fullMessage, ex);
         store.dispatch(alertSlice.actions.showErrorAlert(fullMessage));
     }
+    handle401Error(ex);
 };
 
 const get = async <R>(req: RequestConfig): Promise<Option<R>> => {
