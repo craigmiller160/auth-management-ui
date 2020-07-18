@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import './ConfirmDialog.scss';
 
 interface Props {
     open: boolean;
@@ -16,7 +17,7 @@ interface Props {
 
 const ConfirmDialog = (props: Props) => {
     return (
-        <Dialog open={ props.open }>
+        <Dialog open={ props.open } className="ConfirmDialog">
             <DialogTitle>{ props.title }</DialogTitle>
             <DialogContent>
                 <DialogContentText>{ props.message }</DialogContentText>
