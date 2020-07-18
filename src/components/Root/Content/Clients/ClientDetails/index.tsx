@@ -48,6 +48,21 @@ const defaultClient: Client = {
 
 const NEW = 'new';
 
+// TODO improve the use of literal strings here
+
+const isStringProperty = (name: string): name is 'name' | 'clientKey' | 'clientSecret' => {
+    return name === 'name' || name === 'clientKey' || name === 'clientSecret';
+};
+
+const isNumberProperty = (name: string): name is 'accessTokenTimeoutSecs' | 'refreshTokenTimeoutSecs' => {
+    return name === 'accessTokenTimeoutSecs' || name === 'refreshTokenTimeoutSecs';
+};
+
+const isBooleanProperty = (name: string): name is 'enabled' | 'allowClientCredentials' | 'allowPassword' | 'allowAuthCode' => {
+    return name === 'enabled' || name === 'allowClientCredentials'
+        || name === 'allowPassword' || name === 'allowAuthCode';
+};
+
 const ClientDetails = () => {
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
@@ -118,46 +133,14 @@ const ClientDetails = () => {
     }, [id, setState]);
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
+        const { name, value, checked } = event.target;
         setState((draft) => {
-            // draft.client[event.target.name] = event.target.value; // TODO find a way to make this work
-            switch (name) {
-                case 'name':
-                    draft.client.name = value;
-                    break;
-                case 'clientKey':
-                    draft.client.clientKey = value;
-                    break;
-                case 'clientSecret':
-                    draft.client.clientSecret = value;
-                    break;
-                case 'accessTokenTimeoutSecs':
-                    draft.client.accessTokenTimeoutSecs = value ? parseInt(value) : 0;
-                    break;
-                case 'refreshTokenTimeoutSecs':
-                    draft.client.refreshTokenTimeoutSecs = value ? parseInt(value) : 0;
-                    break;
-            }
-        });
-    };
-
-    const checkboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = event.target;
-        setState((draft) => {
-            // draft.client[event.target.name] = event.target.checked; // TODO find a way to make this work
-            switch (name) {
-                case 'enabled':
-                    draft.client.enabled = checked;
-                    break;
-                case 'allowClientCredentials':
-                    draft.client.allowClientCredentials = checked;
-                    break;
-                case 'allowPassword':
-                    draft.client.allowPassword = checked;
-                    break;
-                case 'allowAuthCode':
-                    draft.client.allowAuthCode = checked;
-                    break;
+            if (isStringProperty(name)) {
+                draft.client[name] = value;
+            } else if (isNumberProperty(name)) {
+                draft.client[name] = value ? parseInt(value) : 0;
+            } else if (isBooleanProperty(name)) {
+                draft.client[name] = checked;
             }
         });
     };
@@ -289,7 +272,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="enabled"
                                     checked={ state.client.enabled ?? false }
-                                    onChange={ checkboxChange }
+                                    onChange={ inputChange }
                                     color="primary"
                                 />
                             }
@@ -300,7 +283,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowClientCredentials"
                                     checked={ state.client.allowClientCredentials ?? false }
-                                    onChange={ checkboxChange }
+                                    onChange={ inputChange }
                                     color="primary"
                                 />
                             }
@@ -311,7 +294,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowPassword"
                                     checked={ state.client.allowPassword ?? false }
-                                    onChange={ checkboxChange }
+                                    onChange={ inputChange }
                                     color="primary"
                                 />
                             }
@@ -322,7 +305,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowAuthCode"
                                     checked={ state.client.allowAuthCode ?? false }
-                                    onChange={ checkboxChange }
+                                    onChange={ inputChange }
                                     color="primary"
                                 />
                             }
