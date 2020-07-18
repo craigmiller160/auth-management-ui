@@ -60,14 +60,44 @@ const ClientDetails = () => {
     }, [id]);
 
     const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
         setState((draft) => {
-            draft.client[event.target.name] = event.target.value;
+            // draft.client[event.target.name] = event.target.value; // TODO find a way to make this work
+            switch (name) {
+                case 'clientKey':
+                    draft.client.clientKey = value;
+                    break;
+                case 'clientSecret':
+                    draft.client.clientSecret = value;
+                    break;
+                case 'accessTokenTimeoutSecs':
+                    draft.client.accessTokenTimeoutSecs = value ? parseInt(value) : 0;
+                    break;
+                case 'refreshTokenTimeoutSecs':
+                    draft.client.refreshTokenTimeoutSecs = value ? parseInt(value) : 0;
+                    break;
+            }
         });
     };
 
     const checkboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, checked } = event.target;
         setState((draft) => {
-            draft.client[event.target.name] = event.target.checked;
+            // draft.client[event.target.name] = event.target.checked; // TODO find a way to make this work
+            switch (name) {
+                case 'enabled':
+                    draft.client.enabled = checked;
+                    break;
+                case 'allowClientCredentials':
+                    draft.client.allowClientCredentials = checked;
+                    break;
+                case 'allowPassword':
+                    draft.client.allowPassword = checked;
+                    break;
+                case 'allowAuthCode':
+                    draft.client.allowAuthCode = checked;
+                    break;
+            }
         });
     };
 
@@ -88,6 +118,8 @@ const ClientDetails = () => {
             });
         }
     };
+
+    // TODO access and refresh tokens should require value > 0
 
     return (
         <div className="ClientDetails">
