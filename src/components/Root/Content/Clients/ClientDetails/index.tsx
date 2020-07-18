@@ -13,6 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
 import { useImmer } from 'use-immer';
+import { greaterThanZero } from '../../../../../utils/validations';
 
 interface State {
     client: Partial<Client>;
@@ -26,8 +27,6 @@ interface State {
 interface MatchParams {
     id: string;
 }
-
-const greaterThanZero = (value: number) => value > 0 || 'Must be greater than 0';
 
 const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
