@@ -9,6 +9,8 @@ import { Client } from '../../../../../types/api';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 interface State {
     client: Partial<Client>
@@ -54,6 +56,15 @@ const ClientDetails = () => {
         });
     };
 
+    const checkboxChange = (event: ChangeEvent<any>) => {
+        setState({
+            client: {
+                ...state.client,
+                [event.target.name]: event.target.checked
+            }
+        });
+    };
+
     const generateClientKey = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
@@ -81,6 +92,7 @@ const ClientDetails = () => {
     return (
         <div className="ClientDetails">
             <PageHeader title="Client Details" />
+            <PageHeader title="Keys" variant="h5" />
             <form onSubmit={ handleSubmit(onSubmit) }>
                 <Grid
                     container
@@ -132,6 +144,57 @@ const ClientDetails = () => {
                             Generate
                         </Button>
                     </Grid>
+                </Grid>
+                <PageHeader title="Grants" variant="h5" />
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <FormControlLabel
+                        label="Enabled"
+                        control={
+                            <Checkbox
+                                name="enabled"
+                                checked={ state.client.enabled ?? false }
+                                onChange={ checkboxChange }
+                                color="primary"
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        label="Client Credentials Grant"
+                        control={
+                            <Checkbox
+                                name="allowClientCredentials"
+                                checked={ state.client.allowClientCredentials ?? false }
+                                onChange={ checkboxChange }
+                                color="primary"
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        label="Password Grant"
+                        control={
+                            <Checkbox
+                                name="allowPassword"
+                                checked={ state.client.allowPassword ?? false }
+                                onChange={ checkboxChange }
+                                color="primary"
+                            />
+                        }
+                    />
+                    <FormControlLabel
+                        label="Authorization Code Grant"
+                        control={
+                            <Checkbox
+                                name="allowAuthCode"
+                                checked={ state.client.allowAuthCode ?? false }
+                                onChange={ checkboxChange }
+                                color="primary"
+                            />
+                        }
+                    />
                 </Grid>
             </form>
         </div>
