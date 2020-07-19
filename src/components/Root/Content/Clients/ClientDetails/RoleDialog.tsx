@@ -20,6 +20,8 @@ interface RoleForm {
     name: string;
 }
 
+const ROLE_PREFIX = 'ROLE_';
+
 const RoleDialog = (props: Props) => {
     const {
         open,
@@ -40,12 +42,16 @@ const RoleDialog = (props: Props) => {
 
     useEffect(() => {
         setState((draft) => {
-            draft.role = role;
+            draft.role = {
+                ...role,
+                name: role.name.replace(ROLE_PREFIX, '')
+            }
         });
     }, [role]);
 
     const onSubmit = () => {
         // TODO save stuff
+        // TODO re-add prefix
         onClose();
     };
 
@@ -63,7 +69,7 @@ const RoleDialog = (props: Props) => {
     const setName = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setState((draft) => {
-            draft.role.name = value;
+            draft.role.name = value.toUpperCase();
         });
     };
 
@@ -79,7 +85,7 @@ const RoleDialog = (props: Props) => {
             actions={ actions }
         >
             <div className="RoleDialog">
-                <span className={ prefixClasses.join(' ') }>ROLE_</span>
+                <span className={ prefixClasses.join(' ') }>{ ROLE_PREFIX }</span>
                 <TextField
                     name="name"
                     label="Role Name"
