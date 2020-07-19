@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../../../theme';
+import { useHistory } from 'react-router';
 
 interface Props {
     users: Array<User>;
@@ -28,6 +29,8 @@ const ClientUsers = (props: Props) => {
         users
     } = props;
     const classes = useStyles();
+    const history = useHistory();
+    const userClick = (id: number) => history.push(`/users/${id}`);
 
     return (
         <Grid
@@ -38,7 +41,11 @@ const ClientUsers = (props: Props) => {
             <List>
                 {
                     users.map((user, index) => (
-                        <ListItem key={ index } className={ classes.ListItem }>
+                        <ListItem
+                            key={ index }
+                            className={ classes.ListItem }
+                            onClick={ () => userClick(user.id) }
+                        >
                             <ListItemAvatar>
                                 <PersonIcon />
                             </ListItemAvatar>
