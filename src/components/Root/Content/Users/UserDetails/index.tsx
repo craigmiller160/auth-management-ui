@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
-import { Client, User } from '../../../../../types/api';
+import { User } from '../../../../../types/api';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
 import { assignProperty } from '../../../../../utils/propertyTypes';
 import './UserDetails.scss';
-import { PageHeader } from '../../../../ui/Header';
-import { createClient, deleteClient, updateClient } from '../../../../../services/ClientService';
+import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import alertSlice from '../../../../../store/alert/slice';
 import { createUser, deleteUser, getUser, updateUser } from '../../../../../services/UserService';
@@ -19,13 +18,16 @@ interface State {
     user: Partial<User>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
+    confirmPassword: string;
 }
 
 interface MatchParams {
     id: string;
 }
 
-interface UserForm extends Omit<User, 'id'> { }
+interface UserForm extends Omit<User, 'id'> {
+    confirmPassword: string;
+}
 const NEW = 'new';
 
 const defaultUser: User = {
@@ -44,7 +46,8 @@ const UserDetails = () => {
     const [state, setState] = useImmer<State>({
         user: {},
         shouldBlockNavigation: true,
-        showDeleteDialog: false
+        showDeleteDialog: false,
+        confirmPassword: ''
     });
     const { register, handleSubmit, errors } = useForm<UserForm>({
         mode: 'onBlur',
@@ -61,6 +64,8 @@ const UserDetails = () => {
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${result.value.id}`));
         }
     };
+
+    // TODO check that passwords match before saving. also customize the required rule so that confirm is only required if password has a value
 
     const onSubmit = () => {
         const payload: User = {
@@ -144,6 +149,60 @@ const UserDetails = () => {
                             inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.email }
                             helperText={ errors.email?.message ?? '' }
+                        />
+                    </Grid>
+                    <SectionHeader title="Password" />
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                    >
+                        <TextField
+                            className="grow-sm"
+                            label="Password"
+                            name="password"
+                            value={ state.user.password ?? '' }
+                            onChange={ changeHandler.handleTextField }
+                            inputRef={ register({ required: 'Required' }) }
+                            error={ !!errors.password }
+                            helperText={ errors.password?.message ?? '' }
+                        />
+                        <TextField
+                            className="grow-sm"
+                            label="Password (Confirm)"
+                            name="confirmPassword"
+                            value={ state.confirmPassword ?? '' }
+                            onChange={ changeHandler.handleTextField }
+                            inputRef={ register({ required: 'Required' }) }
+                            error={ !!errors.confirmPassword }
+                            helperText={ errors.confirmPassword?.message ?? '' }
+                        />
+                    </Grid>
+                    <SectionHeader title="Personal" />
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                    >
+                        <TextField
+                            className="grow-sm"
+                            label="First Name"
+                            name="firstName"
+                            value={ state.user.firstName ?? '' }
+                            onChange={ changeHandler.handleTextField }
+                            inputRef={ register({ required: 'Required' }) }
+                            error={ !!errors.firstName }
+                            helperText={ errors.firstName?.message ?? '' }
+                        />
+                        <TextField
+                            className="grow-sm"
+                            label="Last Name"
+                            name="lastName"
+                            value={ state.user.lastName ?? '' }
+                            onChange={ changeHandler.handleTextField }
+                            inputRef={ register({ required: 'Required' }) }
+                            error={ !!errors.lastName }
+                            helperText={ errors.lastName?.message ?? '' }
                         />
                     </Grid>
                 </form>
