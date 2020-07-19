@@ -1,5 +1,6 @@
 
 // TODO rename this file
+// TODO make separate library
 
 type AnyPropName = {
     [name: string]: any
