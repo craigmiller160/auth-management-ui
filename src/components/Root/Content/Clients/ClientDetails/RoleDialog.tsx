@@ -27,12 +27,20 @@ const RoleDialog = (props: Props) => {
         reValidateMode: 'onChange'
     });
 
-    const onSubmit = (arg: any) => console.log(arg); // TODO delete this
+    const onSubmit = () => {
+        // TODO save stuff
+        onClose();
+    };
+
+    const onDelete = () => {
+        // TODO delete stuff
+        onClose();
+    };
 
     const actions: Array<DialogAction> = [
         { label: 'Save', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onClose },
-        { label: 'Delete', onClick: onClose } // TODO need delete behavior
+        { label: 'Delete', onClick: onDelete }
     ];
 
     const setName = (event: ChangeEvent<HTMLInputElement>) => {

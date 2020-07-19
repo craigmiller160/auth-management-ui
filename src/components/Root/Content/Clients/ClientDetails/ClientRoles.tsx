@@ -4,15 +4,21 @@ import { SectionHeader } from '../../../../ui/Header';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import PersonIcon from '@material-ui/icons/Person';
+import AssignIcon from '@material-ui/icons/AssignmentInd';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../../../theme';
 import Button from '@material-ui/core/Button';
+import RoleDialog from './RoleDialog';
+import { useImmer } from 'use-immer';
 
 interface Props {
     roles: Array<Role>;
+}
+
+interface State {
+    showRoleDialog: boolean;
 }
 
 const useStyles = makeStyles({
@@ -29,29 +35,47 @@ const ClientRoles = (props: Props) => {
         roles
     } = props;
     const classes = useStyles();
+    const [state, setState] = useImmer<State>({
+        showRoleDialog: false
+    });
+
+    const toggleRoleDialog = (value: boolean) =>
+        setState((draft) => {
+            draft.showRoleDialog = value;
+        });
 
     return (
-        <Grid
-            item
-            md={ 5 }
-        >
-            <SectionHeader title="Roles" />
-            <List>
-                {
-                    roles.map((role, index) => (
-                        <ListItem key={ index } className={ classes.ListItem }>
-                            <ListItemAvatar>
-                                <PersonIcon />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={ role.name }
-                            />
-                        </ListItem>
-                    ))
-                }
-            </List>
-            <Button variant="contained" color="primary">Add Role</Button>
-        </Grid>
+        <>
+            <Grid
+                item
+                md={ 5 }
+            >
+                <SectionHeader title="Roles" />
+                <List>
+                    {
+                        roles.map((role, index) => (
+                            <ListItem
+                                key={ index }
+                                className={ classes.ListItem }
+                                onClick={ () => toggleRoleDialog(true) }
+                            >
+                                <ListItemAvatar>
+                                    <AssignIcon />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={ role.name }
+                                />
+                            </ListItem>
+                        ))
+                    }
+                </List>
+                <Button variant="contained" color="primary">Add Role</Button>
+            </Grid>
+            <RoleDialog
+                open={ state.showRoleDialog }
+                onClose={ () => toggleRoleDialog(false) }
+            />
+        </>
     );
 };
 
