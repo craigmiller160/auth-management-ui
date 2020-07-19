@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import { assignProperty } from '../../../../../utils/propertyTypes';
 import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
 import ClientUsers from './ClientUsers';
+import ClientRoles from './ClientRoles';
 
 interface State {
     client: Partial<Client>;
@@ -383,12 +384,7 @@ const ClientDetails = () => {
                 >
                     <ClientUsers users={ state.users } />
                     <Grid item md={ 2 } />
-                    <Grid
-                        item
-                        md={ 5 }
-                    >
-                        <SectionHeader title="Roles" />
-                    </Grid>
+                    <ClientRoles roles={ state.roles } />
                 </Grid>
                 <ConfirmDialog
                     open={ state.showDeleteDialog }

@@ -1,17 +1,17 @@
 import React from 'react';
-import { User } from '../../../../../types/api';
-import Grid from '@material-ui/core/Grid';
+import { Role } from '../../../../../types/api';
 import { SectionHeader } from '../../../../ui/Header';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import PersonIcon from '@material-ui/icons/Person';
 import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../../../theme';
 
 interface Props {
-    users: Array<User>;
+    roles: Array<Role>;
 }
 
 const useStyles = makeStyles({
@@ -23,9 +23,9 @@ const useStyles = makeStyles({
     }
 });
 
-const ClientUsers = (props: Props) => {
+const ClientRoles = (props: Props) => {
     const {
-        users
+        roles
     } = props;
     const classes = useStyles();
 
@@ -34,17 +34,16 @@ const ClientUsers = (props: Props) => {
             item
             md={ 5 }
         >
-            <SectionHeader title="Users" />
+            <SectionHeader title="Roles" />
             <List>
                 {
-                    users.map((user, index) => (
+                    roles.map((role, index) => (
                         <ListItem key={ index } className={ classes.ListItem }>
                             <ListItemAvatar>
                                 <PersonIcon />
                             </ListItemAvatar>
                             <ListItemText
-                                primary={ user.email }
-                                secondary={ `${user.firstName} ${user.lastName}` }
+                                primary={ role.name }
                             />
                         </ListItem>
                     ))
@@ -54,4 +53,4 @@ const ClientUsers = (props: Props) => {
     );
 };
 
-export default ClientUsers;
+export default ClientRoles;
