@@ -54,6 +54,16 @@ const ClientRoles = (props: Props) => {
         });
     };
 
+    const newRole = () =>
+        setState((draft) => {
+            draft.selectedRole = {
+                id: 0,
+                name: '',
+                clientId
+            };
+            draft.showRoleDialog = true;
+        });
+
     const closeRoleDialog = () =>
         setState((draft) => {
             draft.showRoleDialog = false;
@@ -84,7 +94,13 @@ const ClientRoles = (props: Props) => {
                         ))
                     }
                 </List>
-                <Button variant="contained" color="primary">Add Role</Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ newRole }
+                >
+                    Add Role
+                </Button>
             </Grid>
             <RoleDialog
                 role={ state.selectedRole }

@@ -5,6 +5,8 @@ import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import './RoleDialog.scss';
 import { Role } from '../../../../../types/api';
+import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
+import { isSome, Option } from 'fp-ts/es6/Option';
 
 interface Props {
     open: boolean;
@@ -47,24 +49,39 @@ const RoleDialog = (props: Props) => {
                 name: role.name.replace(ROLE_PREFIX, '')
             }
         });
-    }, [role]);
+    }, [role, setState]);
 
-    const onSubmit = () => {
-        // TODO save stuff
-        // TODO re-add prefix
-        onClose();
+    const onSubmit = async () => {
+        const payload = {
+            ...state.role,
+            name: `${ROLE_PREFIX}${state.role.name}`
+        };
+        let result: Option<Role>;
+        if (state.role.id) {
+            result = await updateRole(payload.clientId, payload.id, payload);
+        } else {
+            result = await createRole(payload.clientId, payload);
+        }
+
+        if (isSome(result)) {
+            onClose();
+        }
     };
 
-    const onDelete = () => {
-        // TODO delete stuff
-        onClose();
+    const onDelete = async () => {
+        const result = await deleteRole(state.role.clientId, state.role.id);
+        if (isSome(result)) {
+            onClose();
+        }
     };
 
     const actions: Array<DialogAction> = [
         { label: 'Save', onClick: handleSubmit(onSubmit) },
-        { label: 'Cancel', onClick: onClose },
-        { label: 'Delete', onClick: onDelete }
+        { label: 'Cancel', onClick: onClose }
     ];
+    if (state.role.id) {
+        actions.push({ label: 'Delete', onClick: onDelete });
+    }
 
     const setName = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
