@@ -19,3 +19,11 @@ export const isStringProperty = (obj: object, name: string): obj is AnyPropStrin
     }
     return false;
 };
+
+export const assignStringProperty = (obj: object, name: string, value: string): boolean => {
+    if (isStringProperty(obj, name)) {
+        obj[name] = value;
+        return true;
+    }
+    return false;
+};
