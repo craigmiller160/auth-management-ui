@@ -52,6 +52,7 @@ const Content = () => {
                 <ProtectedRoute
                     path="/users"
                     component={ Users }
+                    exact
                     ruleProps={ {
                         isAuth
                     } }
