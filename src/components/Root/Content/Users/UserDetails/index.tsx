@@ -63,11 +63,9 @@ const UserDetails = () => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/users');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${result.value.id}`));
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${result.value.id}`));
         }
     };
-
-    // TODO check that passwords match before saving. also customize the required rule so that confirm is only required if password has a value
 
     const onSubmit = () => {
         const payload: User = {
@@ -115,7 +113,7 @@ const UserDetails = () => {
     };
     const changeHandler = createChangeHandler(inputChange);
 
-    const doCancel = () => history.push('/clients');
+    const doCancel = () => history.push('/users');
 
     const toggleDeleteDialog = (show: boolean) => setState((draft) => {
         draft.showDeleteDialog = show;
@@ -128,7 +126,7 @@ const UserDetails = () => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/users');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted user ${id}`));
         }
     };
 
