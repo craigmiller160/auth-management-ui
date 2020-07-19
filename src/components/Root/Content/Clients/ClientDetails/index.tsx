@@ -26,6 +26,7 @@ import { assignProperty } from '../../../../../utils/propertyTypes';
 import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
 import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
+import RoleDialog from './RoleDialog';
 
 interface State {
     client: Partial<Client>;
@@ -392,6 +393,10 @@ const ClientDetails = () => {
                     message="Are you sure you want to delete this client?"
                     onConfirm={ doDelete }
                     onCancel={ () => toggleDeleteDialog(false) }
+                />
+                <RoleDialog
+                    open={ true }
+                    onClose={ () => {} }
                 />
             </div>
         </>

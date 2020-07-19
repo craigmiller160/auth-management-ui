@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 interface Props {
     open: boolean;
-    title: string;
+    onClose: () => void;
 }
 
 interface RoleForm {
@@ -16,7 +16,7 @@ interface RoleForm {
 const RoleDialog = (props: Props) => {
     const {
         open,
-        title
+        onClose
     } = props;
     const [state, setState] = useImmer<RoleForm>({
         name: ''
@@ -29,7 +29,9 @@ const RoleDialog = (props: Props) => {
     const onSubmit = (arg: any) => console.log(arg); // TODO delete this
 
     const actions: Array<DialogAction> = [
-        { label: 'Save', onClick: handleSubmit(onSubmit) }
+        { label: 'Save', onClick: handleSubmit(onSubmit) },
+        { label: 'Cancel', onClick: onClose },
+        { label: 'Delete', onClick: onClose } // TODO need delete behavior
     ];
 
     const setName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,7 @@ const RoleDialog = (props: Props) => {
     return (
         <BaseDialog
             open={ open }
-            title={ title }
+            title="Role Details"
             actions={ actions }
         >
             <TextField
