@@ -58,3 +58,11 @@ export const isBooleanProperty = (obj: object, name: string): obj is AnyPropBool
     }
     return false;
 };
+
+export const assignBooleanProperty = (obj: object, name: string, value: boolean): boolean => {
+    if (isBooleanProperty(obj, name)) {
+        obj[name] = value;
+        return true;
+    }
+    return false;
+};

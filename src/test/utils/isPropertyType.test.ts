@@ -1,4 +1,5 @@
 import {
+    assignBooleanProperty,
     assignNumberProperty,
     assignStringProperty, isBooleanProperty,
     isNumberProperty,
@@ -82,11 +83,15 @@ describe('isPropertyType', () => {
 
     describe('assignBooleanProperty', () => {
         it('is boolean property', () => {
-            throw new Error();
+            const result= assignBooleanProperty(obj, 'three', true);
+            expect(result).toEqual(true);
+            expect(obj.three).toEqual(true);
         });
 
         it('is not boolean property', () => {
-            throw new Error();
+            const result = assignBooleanProperty(obj, 'one', true);
+            expect(result).toEqual(false);
+            expect(obj.three).toEqual(false);
         });
     });
 });
