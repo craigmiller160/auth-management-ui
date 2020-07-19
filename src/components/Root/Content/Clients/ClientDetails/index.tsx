@@ -24,11 +24,6 @@ import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
 import { assignProperty } from '../../../../../utils/propertyTypes';
 import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import PersonIcon from '@material-ui/icons/Person';
 import ClientUsers from './ClientUsers';
 
 interface State {
