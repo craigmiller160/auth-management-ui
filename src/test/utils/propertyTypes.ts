@@ -4,7 +4,7 @@ import {
     assignStringProperty, isBooleanProperty,
     isNumberProperty,
     isStringProperty
-} from '../../utils/isPropertyType';
+} from '../../utils/propertyTypes';
 
 interface TestObject {
     one: string;
