@@ -1,5 +1,5 @@
 import api from './Api';
-import { Client, ClientList } from '../types/api';
+import { Client, ClientList, FullClient } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 
 export const getClients = (): Promise<Option<ClientList>> =>
@@ -8,8 +8,8 @@ export const getClients = (): Promise<Option<ClientList>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = (id: number): Promise<Option<Client>> =>
-    api.get<Client>({
+export const getClient = (id: number): Promise<Option<FullClient>> =>
+    api.get<FullClient>({
         uri: `/clients/${id}`,
         errorMsg: `Error getting client ${id}`
     });

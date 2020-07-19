@@ -10,7 +10,7 @@ import {
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { Client } from '../../../../../types/api';
+import { Client, Role, User } from '../../../../../types/api';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
@@ -27,6 +27,8 @@ import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/ch
 
 interface State {
     client: Partial<Client>;
+    users: Array<User>;
+    roles: Array<Role>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
 }
@@ -58,6 +60,8 @@ const ClientDetails = () => {
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         client: {},
+        users: [],
+        roles: [],
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
@@ -109,11 +113,15 @@ const ClientDetails = () => {
                 const result = await getClient(parseInt(id));
                 if (isSome(result)) {
                     setState((draft) => {
-                        draft.client = result.value;
+                        draft.client = result.value.client;
+                        draft.users = result.value.users;
+                        draft.roles = result.value.roles;
                     });
                 } else {
                     setState((draft) => {
                         draft.client = {};
+                        draft.users = [];
+                        draft.roles = [];
                     });
                 }
             }
