@@ -38,3 +38,15 @@ export interface User {
 export interface UserList {
     users: Array<User>;
 }
+
+export interface Role {
+    id: number;
+    name: string;
+    clientId: number;
+}
+
+export interface FullClient {
+    client: Client;
+    users: Array<User>;
+    roles: Array<Role>;
+}
