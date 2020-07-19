@@ -1086,7 +1086,7 @@
     minimist "^1.2.0"
 
 "@craigmiller160/react-protected-route@file:.yalc/@craigmiller160/react-protected-route":
-  version "1.0.0-beta-494dda16"
+  version "1.0.0-beta-86d2ad93"
   dependencies:
     prop-types "^15.7.2"
     react "^16.13.1"
@@ -1317,6 +1317,13 @@
     prop-types "^15.7.2"
     react-is "^16.8.0"
     react-transition-group "^4.4.0"
+
+"@material-ui/icons@^4.9.1":
+  version "4.9.1"
+  resolved "http://localhost:30000/@material-ui%2ficons/-/icons-4.9.1.tgz#fdeadf8cb3d89208945b33dbc50c7c616d0bd665"
+  integrity sha512-GBitL3oBWO0hzBhvA9KxqcowRUsA0qzwKkURyC8nppnC3fw54KPKZ+d4V1Eeg/UnDRSzDaI9nGCdel/eh9AQMg==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
 
 "@material-ui/lab@^4.0.0-alpha.56":
   version "4.0.0-alpha.56"
