@@ -29,6 +29,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import PersonIcon from '@material-ui/icons/Person';
+import ClientUsers from './ClientUsers';
 
 interface State {
     client: Partial<Client>;
@@ -385,27 +386,7 @@ const ClientDetails = () => {
                     direction="row"
                     className="UsersAndRoles"
                 >
-                    <Grid
-                        item
-                        md={ 5 }
-                    >
-                        <SectionHeader title="Users" />
-                        <List>
-                            {
-                                state.users.map((user, index) => (
-                                    <ListItem key={ index }>
-                                        <ListItemAvatar>
-                                            <PersonIcon />
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={ user.email }
-                                            secondary={ `${user.firstName} ${user.lastName}` }
-                                        />
-                                    </ListItem>
-                                ))
-                            }
-                        </List>
-                    </Grid>
+                    <ClientUsers users={ state.users } />
                     <Grid item md={ 2 } />
                     <Grid
                         item
