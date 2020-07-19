@@ -17,6 +17,13 @@ export type AnyPropBoolean = {
     [name: string]: boolean;
 };
 
+export class PropertyTypeError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'PropertyTypeError';
+    }
+}
+
 export const objectHasProperty = (obj: object, name: string): obj is AnyPropName => {
     return obj.hasOwnProperty(name);
 };
@@ -65,3 +72,16 @@ export const assignBooleanProperty = (obj: object, name: string, value: boolean)
     }
     return false;
 };
+
+export const assignProperty = (obj: object, name: string, value: any): boolean => {
+    switch (typeof value) {
+        case 'string':
+            return assignStringProperty(obj, name, value);
+        case 'number':
+            return assignNumberProperty(obj, name, value);
+        case 'boolean':
+            return assignBooleanProperty(obj, name, value);
+        default:
+            throw new PropertyTypeError(`Unsupported value type: ${typeof value}`);
+    }
+}

@@ -1,9 +1,9 @@
 import {
     assignBooleanProperty,
-    assignNumberProperty,
+    assignNumberProperty, assignProperty,
     assignStringProperty, isBooleanProperty,
     isNumberProperty,
-    isStringProperty
+    isStringProperty, PropertyTypeError
 } from '../../utils/propertyTypes';
 
 interface TestObject {
@@ -92,6 +92,37 @@ describe('isPropertyType', () => {
             const result = assignBooleanProperty(obj, 'one', true);
             expect(result).toEqual(false);
             expect(obj.three).toEqual(false);
+        });
+    });
+
+    describe('assignProperty', () => {
+        it('string property', () => {
+            const result = assignProperty(obj, 'one', 'foo');
+            expect(result).toEqual(true);
+            expect(obj.one).toEqual('foo');
+        });
+
+        it('number property', () => {
+            const result = assignProperty(obj, 'two', 3);
+            expect(result).toEqual(true);
+            expect(obj.two).toEqual(3);
+        });
+
+        it('boolean property', () => {
+            const result = assignProperty(obj, 'three', true);
+            expect(result).toEqual(true);
+            expect(obj.three).toEqual(true);
+        });
+
+        it('unsupported property', () => {
+            try {
+                assignProperty(obj, 'one', {});
+            } catch (ex) {
+                expect(ex).toBeInstanceOf(PropertyTypeError);
+                expect(ex.message).toEqual('Unsupported value type: object');
+                return;
+            }
+            throw new Error('Test should\'ve thrown error');
         });
     });
 });
