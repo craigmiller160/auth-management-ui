@@ -97,9 +97,8 @@ const ClientRoles = (props: Props) => {
 
     const doDeleteRole = async () => {
         setState((draft) => {
-            draft.showRoleDialog = false;
+            draft.showDeleteDialog = false;
         });
-
         const result = await deleteRole(clientId, state.roleIdToDelete);
         if (isSome(result)) {
             reloadRoles();
@@ -107,6 +106,10 @@ const ClientRoles = (props: Props) => {
     };
 
     const checkDelete = (role: Role) => {
+        setState((draft) => {
+            draft.showRoleDialog = false;
+        });
+
         setState((draft) => {
             draft.showDeleteDialog = true;
             draft.roleIdToDelete = role.id;
