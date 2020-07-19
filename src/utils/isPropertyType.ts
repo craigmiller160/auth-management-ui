@@ -24,8 +24,7 @@ export const objectHasProperty = (obj: object, name: string): obj is AnyPropName
 
 export const isStringProperty = (obj: object, name: string): obj is AnyPropString => {
     if (objectHasProperty(obj, name)) {
-        const value = obj[name];
-        return typeof value === 'string';
+        return typeof obj[name] === 'string';
     }
     return false;
 };
@@ -40,8 +39,7 @@ export const assignStringProperty = (obj: object, name: string, value: string): 
 
 export const isNumberProperty = (obj: object, name: string): obj is AnyPropNumber => {
     if (objectHasProperty(obj, name)) {
-        const value = obj[name];
-        return typeof value === 'number';
+        return typeof obj[name] === 'number';
     }
     return false;
 };
@@ -56,8 +54,7 @@ export const assignNumberProperty = (obj: object, name: string, value: number): 
 
 export const isBooleanProperty = (obj: object, name: string): obj is AnyPropBoolean => {
     if (objectHasProperty(obj, name)) {
-        const value = obj[name];
-        return typeof value === 'boolean';
+        return typeof obj[name] === 'boolean';
     }
     return false;
 };
