@@ -14,6 +14,7 @@ import RoleDialog from './RoleDialog';
 import { useImmer } from 'use-immer';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
+import { ConfirmDialog } from '../../../../ui/Dialog';
 
 interface Props {
     clientId: number;
@@ -24,6 +25,8 @@ interface Props {
 interface State {
     showRoleDialog: boolean;
     selectedRole: Role;
+    showDeleteDialog: boolean;
+    roleIdToDelete: number;
 }
 
 const useStyles = makeStyles({
@@ -48,7 +51,9 @@ const ClientRoles = (props: Props) => {
             id: 0,
             name: '',
             clientId
-        }
+        },
+        showDeleteDialog: false,
+        roleIdToDelete: 0
     });
 
     const selectRole = (role: Role) => {
@@ -90,16 +95,28 @@ const ClientRoles = (props: Props) => {
         }
     };
 
-    const doDeleteRole = async (role: Role) => {
+    const doDeleteRole = async () => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });
 
-        const result = await deleteRole(role.clientId, role.id);
+        const result = await deleteRole(clientId, state.roleIdToDelete);
         if (isSome(result)) {
             reloadRoles();
         }
     };
+
+    const checkDelete = (role: Role) => {
+        setState((draft) => {
+            draft.showDeleteDialog = true;
+            draft.roleIdToDelete = role.id;
+        });
+    };
+
+    const hideDeleteDialog = () =>
+        setState((draft) => {
+            draft.showDeleteDialog = false;
+        });
 
     return (
         <>
@@ -139,7 +156,14 @@ const ClientRoles = (props: Props) => {
                 open={ state.showRoleDialog }
                 onClose={ closeRoleDialog }
                 onSave={ saveRole }
-                onDelete={ doDeleteRole }
+                onDelete={ checkDelete }
+            />
+            <ConfirmDialog
+                open={ state.showDeleteDialog }
+                title="Delete Role"
+                message="Are you sure you want to delete this role?"
+                onConfirm={ doDeleteRole }
+                onCancel={ hideDeleteDialog }
             />
         </>
     );
