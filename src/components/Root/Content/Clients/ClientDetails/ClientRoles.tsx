@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../../../theme';
 import Button from '@material-ui/core/Button';
-import RoleDialog from './RoleDialog';
+import ClientRoleDialog from './ClientRoleDialog';
 import { useImmer } from 'use-immer';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
@@ -154,7 +154,7 @@ const ClientRoles = (props: Props) => {
                     Add Role
                 </Button>
             </Grid>
-            <RoleDialog
+            <ClientRoleDialog
                 role={ state.selectedRole }
                 open={ state.showRoleDialog }
                 onClose={ closeRoleDialog }

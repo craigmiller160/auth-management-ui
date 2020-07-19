@@ -3,10 +3,8 @@ import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import TextField from '@material-ui/core/TextField';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
-import './RoleDialog.scss';
+import './ClientRoleDialog.scss';
 import { Role } from '../../../../../types/api';
-import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
-import { isSome, Option } from 'fp-ts/es6/Option';
 
 interface Props {
     open: boolean;
@@ -26,7 +24,7 @@ interface RoleForm {
 
 const ROLE_PREFIX = 'ROLE_';
 
-const RoleDialog = (props: Props) => {
+const ClientRoleDialog = (props: Props) => {
     const {
         open,
         onClose,
@@ -89,7 +87,7 @@ const RoleDialog = (props: Props) => {
             title="Role Details"
             actions={ actions }
         >
-            <div className="RoleDialog">
+            <div className="ClientRoleDialog">
                 <span className={ prefixClasses.join(' ') }>{ ROLE_PREFIX }</span>
                 <TextField
                     name="name"
@@ -105,4 +103,4 @@ const RoleDialog = (props: Props) => {
     );
 };
 
-export default RoleDialog;
+export default ClientRoleDialog;
