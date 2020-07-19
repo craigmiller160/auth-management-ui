@@ -13,6 +13,8 @@ import alertSlice from '../../../../../store/alert/slice';
 import { createUser, deleteUser, getUser, updateUser } from '../../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
 
 interface State {
     user: Partial<User>;
@@ -205,7 +207,45 @@ const UserDetails = () => {
                             helperText={ errors.lastName?.message ?? '' }
                         />
                     </Grid>
+                    <SectionHeader title="Actions" />
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={ doCancel }
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                        >
+                            Save
+                        </Button>
+                        {
+                            id !== NEW &&
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={ () => toggleDeleteDialog(true) }
+                            >
+                                Delete
+                            </Button>
+                        }
+                    </Grid>
                 </form>
+                <ConfirmDialog
+                    open={ state.showDeleteDialog }
+                    title="Delete Client"
+                    message="Are you sure you want to delete this user?"
+                    onConfirm={ doDelete }
+                    onCancel={ () => toggleDeleteDialog(false) }
+                />
             </div>
         </>
     );
