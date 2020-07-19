@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import {
@@ -23,12 +23,7 @@ import { greaterThanZero } from '../../../../../utils/validations';
 import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
 import { assignProperty } from '../../../../../utils/propertyTypes';
-import {
-    handleCheckbox,
-    HandledChangeEvent, handleNumberField,
-    handleTextField,
-    SupportedHandledChangeTypes
-} from '../../../../../utils/changeHandlers';
+import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
 
 interface State {
     client: Partial<Client>;
@@ -127,11 +122,12 @@ const ClientDetails = () => {
         action();
     }, [id, setState]);
 
-    const inputChange = (event: HandledChangeEvent<SupportedHandledChangeTypes>) => {
+    const inputChange = (event: HandledChangeEvent) => {
         setState((draft) => {
             assignProperty(draft.client, event.name, event.value);
         });
     };
+    const changeHandler = createChangeHandler(inputChange);
 
     const generateClientKey = async () => {
         const guid = await generateGuid();
@@ -187,7 +183,7 @@ const ClientDetails = () => {
                             label="Client Name"
                             name="name"
                             value={ state.client.name ?? '' }
-                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
+                            onChange={ changeHandler.handleTextField }
                             inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.name }
                             helperText={ errors.name?.message ?? '' }
@@ -209,7 +205,7 @@ const ClientDetails = () => {
                                 label="Client Key"
                                 name="clientKey"
                                 value={ state.client.clientKey ?? '' }
-                                onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
+                                onChange={ changeHandler.handleTextField }
                                 inputRef={ register({ required: 'Required' }) }
                                 error={ !!errors.clientKey }
                                 helperText={ errors.clientKey?.message ?? '' }
@@ -234,7 +230,7 @@ const ClientDetails = () => {
                                 label="Client Secret"
                                 name="clientSecret"
                                 value={ state.client.clientSecret ?? '' }
-                                onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
+                                onChange={ changeHandler.handleTextField }
                                 inputRef={ register }
                                 error={ !!errors.clientSecret }
                                 helperText={ errors.clientSecret?.message ?? '' }
@@ -261,7 +257,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="enabled"
                                     checked={ state.client.enabled ?? false }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
+                                    onChange={ changeHandler.handleCheckbox }
                                     color="primary"
                                 />
                             }
@@ -272,7 +268,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowClientCredentials"
                                     checked={ state.client.allowClientCredentials ?? false }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
+                                    onChange={ changeHandler.handleCheckbox }
                                     color="primary"
                                 />
                             }
@@ -283,7 +279,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowPassword"
                                     checked={ state.client.allowPassword ?? false }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
+                                    onChange={ changeHandler.handleCheckbox }
                                     color="primary"
                                 />
                             }
@@ -294,7 +290,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name="allowAuthCode"
                                     checked={ state.client.allowAuthCode ?? false }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
+                                    onChange={ changeHandler.handleCheckbox }
                                     color="primary"
                                 />
                             }
@@ -312,7 +308,7 @@ const ClientDetails = () => {
                             label="Access Token Timeout (Secs)"
                             name="accessTokenTimeoutSecs"
                             value={ state.client.accessTokenTimeoutSecs ?? '' }
-                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
+                            onChange={ changeHandler.handleNumberField }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
@@ -328,7 +324,7 @@ const ClientDetails = () => {
                             label="Refresh Token Timeout (Secs)"
                             name="refreshTokenTimeoutSecs"
                             value={ state.client.refreshTokenTimeoutSecs ?? '' }
-                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
+                            onChange={ changeHandler.handleNumberField }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
