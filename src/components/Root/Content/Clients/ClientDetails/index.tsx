@@ -374,7 +374,6 @@ const ClientDetails = () => {
                 >
                     <Grid
                         item
-                        direction="column"
                         md={ 5 }
                     >
                         <SectionHeader title="Users" />
@@ -382,7 +381,6 @@ const ClientDetails = () => {
                     <Grid item md={ 2 } />
                     <Grid
                         item
-                        direction="column"
                         md={ 5 }
                     >
                         <SectionHeader title="Roles" />
