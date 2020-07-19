@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../../../theme';
+import Button from '@material-ui/core/Button';
 
 interface Props {
     roles: Array<Role>;
@@ -49,6 +50,7 @@ const ClientRoles = (props: Props) => {
                     ))
                 }
             </List>
+            <Button variant="contained" color="primary">Add Role</Button>
         </Grid>
     );
 };
