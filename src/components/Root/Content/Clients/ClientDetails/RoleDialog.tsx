@@ -11,7 +11,9 @@ import { isSome, Option } from 'fp-ts/es6/Option';
 interface Props {
     open: boolean;
     role: Role;
-    onClose: (reload: boolean) => void;
+    onClose: () => void;
+    onSave: (role: Role) => void;
+    onDelete: (role: Role) => void;
 }
 
 interface State {
@@ -28,7 +30,9 @@ const RoleDialog = (props: Props) => {
     const {
         open,
         onClose,
-        role
+        role,
+        onSave,
+        onDelete
     } = props;
     const [state, setState] = useImmer<State>({
         role: {
@@ -56,31 +60,15 @@ const RoleDialog = (props: Props) => {
             ...state.role,
             name: `${ROLE_PREFIX}${state.role.name}`
         };
-        let result: Option<Role>;
-        if (state.role.id) {
-            result = await updateRole(payload.clientId, payload.id, payload);
-        } else {
-            result = await createRole(payload.clientId, payload);
-        }
-
-        if (isSome(result)) {
-            onClose(true);
-        }
-    };
-
-    const onDelete = async () => {
-        const result = await deleteRole(state.role.clientId, state.role.id);
-        if (isSome(result)) {
-            onClose(true);
-        }
+        onSave(payload);
     };
 
     const actions: Array<DialogAction> = [
         { label: 'Save', onClick: handleSubmit(onSubmit) },
-        { label: 'Cancel', onClick: () => onClose(false) }
+        { label: 'Cancel', onClick: onClose }
     ];
     if (state.role.id) {
-        actions.push({ label: 'Delete', onClick: onDelete });
+        actions.push({ label: 'Delete', onClick: () => onDelete(state.role) });
     }
 
     const setName = (event: ChangeEvent<HTMLInputElement>) => {

@@ -12,6 +12,8 @@ import theme from '../../../../theme';
 import Button from '@material-ui/core/Button';
 import RoleDialog from './RoleDialog';
 import { useImmer } from 'use-immer';
+import { isSome, Option } from 'fp-ts/es6/Option';
+import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
 
 interface Props {
     clientId: number;
@@ -66,15 +68,38 @@ const ClientRoles = (props: Props) => {
             draft.showRoleDialog = true;
         });
 
-    const closeRoleDialog = (reload: boolean) => {
+    const closeRoleDialog = () => {
+        setState((draft) => {
+            draft.showRoleDialog = false;
+        });
+    };
+
+    const saveRole = async (role: Role) => {
+        setState((draft) => {
+            draft.showRoleDialog = false;
+        });
+        let result: Option<Role>;
+        if (role.id) {
+            result = await updateRole(role.clientId, role.id, role);
+        } else {
+            result = await createRole(role.clientId, role);
+        }
+
+        if (isSome(result)) {
+            reloadRoles();
+        }
+    };
+
+    const doDeleteRole = async (role: Role) => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });
 
-        if (reload) {
+        const result = await deleteRole(role.clientId, role.id);
+        if (isSome(result)) {
             reloadRoles();
         }
-    }
+    };
 
     return (
         <>
@@ -113,6 +138,8 @@ const ClientRoles = (props: Props) => {
                 role={ state.selectedRole }
                 open={ state.showRoleDialog }
                 onClose={ closeRoleDialog }
+                onSave={ saveRole }
+                onDelete={ doDeleteRole }
             />
         </>
     );
