@@ -106,7 +106,11 @@ const UserDetails = () => {
 
     const inputChange = (event: HandledChangeEvent) => {
         setState((draft) => {
-            assignProperty(draft.user, event.name, event.value);
+            if (event.name === 'confirmPassword') {
+                assignProperty(draft, event.name, event.value);
+            } else {
+                assignProperty(draft.user, event.name, event.value);
+            }
         });
     };
     const changeHandler = createChangeHandler(inputChange);
@@ -161,6 +165,7 @@ const UserDetails = () => {
                     >
                         <TextField
                             className="grow-sm"
+                            type="password"
                             label="Password"
                             name="password"
                             value={ state.user.password ?? '' }
@@ -171,6 +176,7 @@ const UserDetails = () => {
                         />
                         <TextField
                             className="grow-sm"
+                            type="password"
                             label="Password (Confirm)"
                             name="confirmPassword"
                             value={ state.confirmPassword ?? '' }
