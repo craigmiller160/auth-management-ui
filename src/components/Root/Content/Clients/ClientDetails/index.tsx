@@ -214,7 +214,7 @@ const ClientDetails = () => {
                         <TextField
                             className="grow-sm"
                             label="Client Name"
-                            name={ NAME }
+                            name="name"
                             value={ state.client.name ?? '' }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                             inputRef={ register({ required: 'Required' }) }
@@ -236,7 +236,7 @@ const ClientDetails = () => {
                             <TextField
                                 className="grow"
                                 label="Client Key"
-                                name={ CLIENT_KEY }
+                                name="clientKey"
                                 value={ state.client.clientKey ?? '' }
                                 onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                                 inputRef={ register({ required: 'Required' }) }
@@ -261,7 +261,7 @@ const ClientDetails = () => {
                             <TextField
                                 className="grow"
                                 label="Client Secret"
-                                name={ CLIENT_SECRET }
+                                name="clientSecret"
                                 value={ state.client.clientSecret ?? '' }
                                 onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                                 inputRef={ register }
@@ -288,7 +288,7 @@ const ClientDetails = () => {
                             label="Enabled"
                             control={
                                 <Checkbox
-                                    name={ ENABLED }
+                                    name="enabled"
                                     checked={ state.client.enabled ?? false }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
@@ -299,7 +299,7 @@ const ClientDetails = () => {
                             label="Client Credentials Grant"
                             control={
                                 <Checkbox
-                                    name={ ALLOW_CLIENT_CREDS }
+                                    name="allowClientCredentials"
                                     checked={ state.client.allowClientCredentials ?? false }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
@@ -310,7 +310,7 @@ const ClientDetails = () => {
                             label="Password Grant"
                             control={
                                 <Checkbox
-                                    name={ ALLOW_PASSWORD }
+                                    name="allowPassword"
                                     checked={ state.client.allowPassword ?? false }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
@@ -321,7 +321,7 @@ const ClientDetails = () => {
                             label="Authorization Code Grant"
                             control={
                                 <Checkbox
-                                    name={ ALLOW_AUTH_CODE }
+                                    name="allowAuthCode"
                                     checked={ state.client.allowAuthCode ?? false }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
@@ -339,7 +339,7 @@ const ClientDetails = () => {
                             className="timeouts"
                             type="number"
                             label="Access Token Timeout (Secs)"
-                            name={ ACCESS_TOKEN_TIMEOUT }
+                            name="accessTokenTimeoutSecs"
                             value={ state.client.accessTokenTimeoutSecs ?? '' }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
                             inputRef={ register({
@@ -355,7 +355,7 @@ const ClientDetails = () => {
                             className="timeouts"
                             type="number"
                             label="Refresh Token Timeout (Secs)"
-                            name={ REFRESH_TOKEN_TIMEOUT }
+                            name="refreshTokenTimeoutSecs"
                             value={ state.client.refreshTokenTimeoutSecs ?? '' }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
                             inputRef={ register({
