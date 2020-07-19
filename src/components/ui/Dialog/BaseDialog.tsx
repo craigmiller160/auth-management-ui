@@ -1,4 +1,4 @@
-import React, { ElementType, MouseEvent, PropsWithChildren } from 'react';
+import React, { MouseEvent, PropsWithChildren } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';

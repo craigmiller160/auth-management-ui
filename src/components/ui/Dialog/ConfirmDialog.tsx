@@ -29,7 +29,7 @@ const ConfirmDialog = (props: Props) => {
             open={ open }
             title={ title }
             actions={ actions }>
-            <DialogContentText>{ props.message }</DialogContentText>
+            <DialogContentText>{ message }</DialogContentText>
         </BaseDialog>
     );
 };
