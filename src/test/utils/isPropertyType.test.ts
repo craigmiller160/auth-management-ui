@@ -1,8 +1,14 @@
-import { assignStringProperty, isStringProperty } from '../../utils/isPropertyType';
+import {
+    assignNumberProperty,
+    assignStringProperty, isBooleanProperty,
+    isNumberProperty,
+    isStringProperty
+} from '../../utils/isPropertyType';
 
 interface TestObject {
     one: string;
     two: number;
+    three: boolean;
 }
 
 describe('isPropertyType', () => {
@@ -11,7 +17,8 @@ describe('isPropertyType', () => {
     beforeEach(() => {
         obj = {
             one: 'hello',
-            two: 2
+            two: 2,
+            three: false
         };
     });
 
@@ -22,13 +29,6 @@ describe('isPropertyType', () => {
 
         it('is not a string property', () => {
             expect(isStringProperty(obj, 'two')).toEqual(false);
-        });
-
-        it('can assign value to string property', () => {
-            if (isStringProperty(obj, 'one')) {
-                obj['one'] = 'foo';
-            }
-            expect(obj.one).toEqual('foo');
         });
     });
 
@@ -48,39 +48,35 @@ describe('isPropertyType', () => {
 
     describe('isNumberProperty', () => {
         it('is a number property', () => {
-            throw new Error();
+            expect(isNumberProperty(obj, 'two')).toEqual(true);
         });
 
         it('is not a number property', () => {
-            throw new Error();
-        });
-
-        it('can assign value to number property', () => {
-            throw new Error();
+            expect(isNumberProperty(obj, 'one')).toEqual(false);
         });
     });
 
     describe('assignNumberProperty', () => {
         it('is number property', () => {
-            throw new Error();
+            const result= assignNumberProperty(obj, 'two', 3);
+            expect(result).toEqual(true);
+            expect(obj.two).toEqual(3);
         });
 
         it('is not number property', () => {
-            throw new Error();
+            const result = assignNumberProperty(obj, 'one', 3);
+            expect(result).toEqual(false);
+            expect(obj.two).toEqual(2);
         });
     });
 
     describe('isBooleanProperty', () => {
         it('is a boolean property', () => {
-            throw new Error();
+            expect(isBooleanProperty(obj, 'three')).toEqual(true);
         });
 
         it('is not a boolean property', () => {
-            throw new Error();
-        });
-
-        it('can assign value to boolean property', () => {
-            throw new Error();
+            expect(isBooleanProperty(obj, 'one')).toEqual(false);
         });
     });
 

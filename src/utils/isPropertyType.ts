@@ -14,6 +14,10 @@ export type AnyPropNumber = {
     [name: string]: number;
 };
 
+export type AnyPropBoolean = {
+    [name: string]: boolean;
+};
+
 export const objectHasProperty = (obj: object, name: string): obj is AnyPropName => {
     return obj.hasOwnProperty(name);
 };
@@ -46,6 +50,14 @@ export const assignNumberProperty = (obj: object, name: string, value: number): 
     if (isNumberProperty(obj, name)) {
         obj[name] = value;
         return true;
+    }
+    return false;
+};
+
+export const isBooleanProperty = (obj: object, name: string): obj is AnyPropBoolean => {
+    if (objectHasProperty(obj, name)) {
+        const value = obj[name];
+        return typeof value === 'boolean';
     }
     return false;
 };
