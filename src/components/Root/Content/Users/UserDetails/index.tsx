@@ -139,6 +139,8 @@ const UserDetails = () => {
         return state.user.password === value || 'Passwords must match';
     };
 
+    const passwordRules = id === NEW ? { required: 'Required' } : {};
+
     return (
         <>
             <Prompt
@@ -177,7 +179,7 @@ const UserDetails = () => {
                             name="password"
                             value={ state.user.password ?? '' }
                             onChange={ changeHandler.handleTextField }
-                            inputRef={ register({ required: 'Required' }) }
+                            inputRef={ register(passwordRules) }
                             error={ !!errors.password }
                             helperText={ errors.password?.message ?? '' }
                         />
