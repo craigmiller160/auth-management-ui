@@ -15,10 +15,6 @@ interface Props {
     onCancel?: () => void;
 }
 
-// TODO whenever this appears there is a console error. figure it out
-// TODO add a transition for when the modal appears
-// TODO make the modal appear near the top of the page
-
 const ConfirmDialog = (props: Props) => {
     return (
         <Dialog open={ props.open } className="ConfirmDialog">
