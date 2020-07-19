@@ -45,4 +45,52 @@ describe('isPropertyType', () => {
             expect(obj.two).toEqual(2);
         });
     });
+
+    describe('isNumberProperty', () => {
+        it('is a number property', () => {
+            throw new Error();
+        });
+
+        it('is not a number property', () => {
+            throw new Error();
+        });
+
+        it('can assign value to number property', () => {
+            throw new Error();
+        });
+    });
+
+    describe('assignNumberProperty', () => {
+        it('is number property', () => {
+            throw new Error();
+        });
+
+        it('is not number property', () => {
+            throw new Error();
+        });
+    });
+
+    describe('isBooleanProperty', () => {
+        it('is a boolean property', () => {
+            throw new Error();
+        });
+
+        it('is not a boolean property', () => {
+            throw new Error();
+        });
+
+        it('can assign value to boolean property', () => {
+            throw new Error();
+        });
+    });
+
+    describe('assignBooleanProperty', () => {
+        it('is boolean property', () => {
+            throw new Error();
+        });
+
+        it('is not boolean property', () => {
+            throw new Error();
+        });
+    });
 });
