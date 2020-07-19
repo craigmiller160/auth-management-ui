@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
-import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
+import { ConfirmDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
 import { greaterThanZero } from '../../../../../utils/validations';
 import alertSlice from '../../../../../store/alert/slice';

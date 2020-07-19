@@ -14,7 +14,7 @@ import { createUser, deleteUser, getUser, updateUser } from '../../../../../serv
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import ConfirmDialog from '../../../../ui/Dialog/ConfirmDialog';
+import { ConfirmDialog } from '../../../../ui/Dialog';
 
 interface State {
     user: Partial<User>;
