@@ -3,6 +3,7 @@ import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import TextField from '@material-ui/core/TextField';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
+import './RoleDialog.scss';
 
 interface Props {
     open: boolean;
@@ -41,21 +42,29 @@ const RoleDialog = (props: Props) => {
         });
     };
 
+    const prefixClasses = ['RolePrefix'];
+    if (errors.name) {
+        prefixClasses.push('error');
+    }
+
     return (
         <BaseDialog
             open={ open }
             title="Role Details"
             actions={ actions }
         >
-            <TextField
-                name="name"
-                label="Role Name"
-                value={ state.name }
-                onChange={ setName }
-                inputRef={ register({ required: 'Required' }) }
-                error={ !!errors.name }
-                helperText={ errors.name?.message ?? '' }
-            />
+            <div className="RoleDialog">
+                <span className={ prefixClasses.join(' ') }>ROLE_</span>
+                <TextField
+                    name="name"
+                    label="Role Name"
+                    value={ state.name }
+                    onChange={ setName }
+                    inputRef={ register({ required: 'Required' }) }
+                    error={ !!errors.name }
+                    helperText={ errors.name?.message ?? '' }
+                />
+            </div>
         </BaseDialog>
     );
 };
