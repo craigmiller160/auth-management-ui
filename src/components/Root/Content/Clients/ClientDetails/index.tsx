@@ -367,6 +367,28 @@ const ClientDetails = () => {
                         }
                     </Grid>
                 </form>
+                <Grid
+                    container
+                    direction="row"
+                    className="UsersAndRoles"
+                >
+                    <Grid
+                        container
+                        direction="column"
+                        md={ 6 }
+                    >
+                        <SectionHeader title="Users" />
+                    </Grid>
+                    <Grid
+                        container
+                        direction="column"
+                        md={ 6 }
+                    >
+                        <SectionHeader title="Roles" />
+                    </Grid>
+                </Grid>
+
+
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
