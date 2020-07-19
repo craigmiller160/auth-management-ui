@@ -388,8 +388,6 @@ const ClientDetails = () => {
                         <SectionHeader title="Roles" />
                     </Grid>
                 </Grid>
-
-
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
