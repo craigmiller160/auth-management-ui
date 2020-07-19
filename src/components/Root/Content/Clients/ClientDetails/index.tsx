@@ -373,16 +373,17 @@ const ClientDetails = () => {
                     className="UsersAndRoles"
                 >
                     <Grid
-                        container
+                        item
                         direction="column"
-                        md={ 6 }
+                        md={ 5 }
                     >
                         <SectionHeader title="Users" />
                     </Grid>
+                    <Grid item md={ 2 } />
                     <Grid
-                        container
+                        item
                         direction="column"
-                        md={ 6 }
+                        md={ 5 }
                     >
                         <SectionHeader title="Roles" />
                     </Grid>
