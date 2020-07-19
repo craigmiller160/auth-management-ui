@@ -4,10 +4,16 @@ import TextField from '@material-ui/core/TextField';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import './RoleDialog.scss';
+import { Role } from '../../../../../types/api';
 
 interface Props {
     open: boolean;
+    role?: Role;
     onClose: () => void;
+}
+
+interface State {
+    role: Role;
 }
 
 interface RoleForm {
@@ -17,10 +23,15 @@ interface RoleForm {
 const RoleDialog = (props: Props) => {
     const {
         open,
-        onClose
+        onClose,
+        role
     } = props;
-    const [state, setState] = useImmer<RoleForm>({
-        name: ''
+    const [state, setState] = useImmer<State>({
+        role: {
+            id: role?.id ?? 0,
+            name: role?.name ?? '',
+            clientId: role?.clientId ?? 0
+        }
     });
     const { register, handleSubmit, errors } = useForm<RoleForm>({
         mode: 'onBlur',
@@ -46,7 +57,7 @@ const RoleDialog = (props: Props) => {
     const setName = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setState((draft) => {
-            draft.name = value;
+            draft.role.name = value;
         });
     };
 
@@ -66,7 +77,7 @@ const RoleDialog = (props: Props) => {
                 <TextField
                     name="name"
                     label="Role Name"
-                    value={ state.name }
+                    value={ state.role.name }
                     onChange={ setName }
                     inputRef={ register({ required: 'Required' }) }
                     error={ !!errors.name }
