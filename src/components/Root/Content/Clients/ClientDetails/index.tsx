@@ -42,23 +42,6 @@ interface MatchParams {
 
 interface ClientForm extends Omit<Client, 'id'> { }
 const NEW = 'new';
-const NAME = 'name';
-const CLIENT_KEY = 'clientKey';
-const CLIENT_SECRET = 'clientSecret';
-const ACCESS_TOKEN_TIMEOUT = 'accessTokenTimeoutSecs';
-const REFRESH_TOKEN_TIMEOUT = 'refreshTokenTimeoutSecs';
-const ENABLED = 'enabled';
-const ALLOW_CLIENT_CREDS = 'allowClientCredentials';
-const ALLOW_PASSWORD = 'allowPassword';
-const ALLOW_AUTH_CODE = 'allowAuthCode';
-
-const STRING_PROPS = [NAME, CLIENT_KEY, CLIENT_SECRET];
-const NUMBER_PROPS = [ACCESS_TOKEN_TIMEOUT, REFRESH_TOKEN_TIMEOUT];
-const BOOLEAN_PROPS = [ENABLED, ALLOW_CLIENT_CREDS, ALLOW_PASSWORD, ALLOW_AUTH_CODE];
-
-type ClientStringProperty = typeof NAME | typeof CLIENT_KEY | typeof CLIENT_SECRET;
-type ClientNumberProperty = typeof ACCESS_TOKEN_TIMEOUT | typeof REFRESH_TOKEN_TIMEOUT;
-type ClientBooleanProperty = typeof ENABLED | typeof ALLOW_CLIENT_CREDS | typeof ALLOW_PASSWORD | typeof ALLOW_AUTH_CODE;
 
 const defaultClient: Client = {
     id: 0,
@@ -71,18 +54,6 @@ const defaultClient: Client = {
     allowPassword: false,
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
-};
-
-const isStringProperty = (name: string): name is ClientStringProperty => {
-    return STRING_PROPS.includes(name);
-};
-
-const isNumberProperty = (name: string): name is ClientNumberProperty => {
-    return NUMBER_PROPS.includes(name);
-};
-
-const isBooleanProperty = (name: string): name is ClientBooleanProperty => {
-    return BOOLEAN_PROPS.includes(name);
 };
 
 const ClientDetails = () => {
