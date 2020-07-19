@@ -1,4 +1,4 @@
-import React, { ElementType, MouseEvent } from 'react';
+import React, { ElementType, MouseEvent, PropsWithChildren } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,7 +14,6 @@ export interface DialogAction {
 interface Props {
     open: boolean;
     title: string;
-    children: ElementType;
     actions: Array<DialogAction>;
 }
 
@@ -22,7 +21,7 @@ interface Props {
 // TODO add a transition for when the modal appears
 // TODO make the modal appear near the top of the page
 
-const BaseDialog = (props: Props) => {
+const BaseDialog = (props: PropsWithChildren<Props>) => {
     const {
         open,
         title,
