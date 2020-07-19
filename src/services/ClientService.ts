@@ -1,5 +1,5 @@
 import api from './Api';
-import { Client, ClientList, FullClient, Role } from '../types/api';
+import { Client, ClientList, FullClient, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 
 export const getClients = (): Promise<Option<ClientList>> =>
@@ -58,4 +58,10 @@ export const deleteRole = (clientId: number, roleId: number): Promise<Option<Rol
     api.delete<Role>({
         uri: `/clients/${clientId}/roles/${roleId}`,
         errorMsg: `Error deleting role ${roleId} for client ${clientId}`
+    });
+
+export const getRoles = (clientId: number): Promise<Option<RoleList>> =>
+    api.get<RoleList>({
+        uri: `/clients/${clientId}/roles`,
+        errorMsg: `Error getting roles for client ${clientId}`
     });

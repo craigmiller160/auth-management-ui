@@ -11,7 +11,7 @@ import { isSome, Option } from 'fp-ts/es6/Option';
 interface Props {
     open: boolean;
     role: Role;
-    onClose: () => void;
+    onClose: (reload: boolean) => void;
 }
 
 interface State {
@@ -64,20 +64,20 @@ const RoleDialog = (props: Props) => {
         }
 
         if (isSome(result)) {
-            onClose();
+            onClose(true);
         }
     };
 
     const onDelete = async () => {
         const result = await deleteRole(state.role.clientId, state.role.id);
         if (isSome(result)) {
-            onClose();
+            onClose(true);
         }
     };
 
     const actions: Array<DialogAction> = [
         { label: 'Save', onClick: handleSubmit(onSubmit) },
-        { label: 'Cancel', onClick: onClose }
+        { label: 'Cancel', onClick: () => onClose(false) }
     ];
     if (state.role.id) {
         actions.push({ label: 'Delete', onClick: onDelete });

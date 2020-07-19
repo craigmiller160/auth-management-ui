@@ -16,6 +16,7 @@ import { useImmer } from 'use-immer';
 interface Props {
     clientId: number;
     roles: Array<Role>;
+    reloadRoles: () => void;
 }
 
 interface State {
@@ -35,7 +36,8 @@ const useStyles = makeStyles({
 const ClientRoles = (props: Props) => {
     const {
         clientId,
-        roles
+        roles,
+        reloadRoles
     } = props;
     const classes = useStyles();
     const [state, setState] = useImmer<State>({
@@ -64,10 +66,15 @@ const ClientRoles = (props: Props) => {
             draft.showRoleDialog = true;
         });
 
-    const closeRoleDialog = () =>
+    const closeRoleDialog = (reload: boolean) => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });
+
+        if (reload) {
+            reloadRoles();
+        }
+    }
 
     return (
         <>

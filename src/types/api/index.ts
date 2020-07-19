@@ -45,6 +45,10 @@ export interface Role {
     clientId: number;
 }
 
+export interface RoleList {
+    roles: Array<Role>;
+}
+
 export interface FullClient {
     client: Client;
     users: Array<User>;

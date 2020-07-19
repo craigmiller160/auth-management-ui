@@ -5,7 +5,7 @@ import {
     createClient,
     deleteClient,
     generateGuid,
-    getClient,
+    getClient, getRoles,
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
@@ -92,6 +92,15 @@ const ClientDetails = () => {
             doSubmit(() => createClient(payload));
         } else {
             doSubmit(() => updateClient(parseInt(id), payload));
+        }
+    };
+
+    const reloadRoles = async () => {
+        const result = await getRoles(parseInt(id));
+        if (isSome(result)) {
+            setState((draft) => {
+                draft.roles = result.value?.roles ?? [];
+            });
         }
     };
 
@@ -389,6 +398,7 @@ const ClientDetails = () => {
                         <ClientRoles
                             clientId={ state.client.id ?? 0 }
                             roles={ state.roles }
+                            reloadRoles={ reloadRoles }
                         />
                     </Grid>
                 }
