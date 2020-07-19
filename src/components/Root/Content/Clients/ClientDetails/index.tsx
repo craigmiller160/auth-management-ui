@@ -22,6 +22,13 @@ import { useImmer } from 'use-immer';
 import { greaterThanZero } from '../../../../../utils/validations';
 import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
+import { assignProperty } from '../../../../../utils/propertyTypes';
+import {
+    handleCheckbox,
+    HandledChangeEvent, handleNumberField,
+    handleTextField,
+    SupportedHandledChangeTypes
+} from '../../../../../utils/changeHandlers';
 
 interface State {
     client: Partial<Client>;
@@ -149,16 +156,9 @@ const ClientDetails = () => {
         action();
     }, [id, setState]);
 
-    const inputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value, checked } = event.target;
+    const inputChange = (event: HandledChangeEvent<SupportedHandledChangeTypes>) => {
         setState((draft) => {
-            if (isStringProperty(name)) {
-                draft.client[name] = value;
-            } else if (isNumberProperty(name)) {
-                draft.client[name] = value ? parseInt(value) : 0;
-            } else if (isBooleanProperty(name)) {
-                draft.client[name] = checked;
-            }
+            assignProperty(draft.client, event.name, event.value);
         });
     };
 
@@ -216,7 +216,7 @@ const ClientDetails = () => {
                             label="Client Name"
                             name={ NAME }
                             value={ state.client.name ?? '' }
-                            onChange={ inputChange }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                             inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.name }
                             helperText={ errors.name?.message ?? '' }
@@ -238,7 +238,7 @@ const ClientDetails = () => {
                                 label="Client Key"
                                 name={ CLIENT_KEY }
                                 value={ state.client.clientKey ?? '' }
-                                onChange={ inputChange }
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                                 inputRef={ register({ required: 'Required' }) }
                                 error={ !!errors.clientKey }
                                 helperText={ errors.clientKey?.message ?? '' }
@@ -263,7 +263,7 @@ const ClientDetails = () => {
                                 label="Client Secret"
                                 name={ CLIENT_SECRET }
                                 value={ state.client.clientSecret ?? '' }
-                                onChange={ inputChange }
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) => handleTextField(event, inputChange) }
                                 inputRef={ register }
                                 error={ !!errors.clientSecret }
                                 helperText={ errors.clientSecret?.message ?? '' }
@@ -290,7 +290,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name={ ENABLED }
                                     checked={ state.client.enabled ?? false }
-                                    onChange={ inputChange }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
                                 />
                             }
@@ -301,7 +301,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name={ ALLOW_CLIENT_CREDS }
                                     checked={ state.client.allowClientCredentials ?? false }
-                                    onChange={ inputChange }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
                                 />
                             }
@@ -312,7 +312,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name={ ALLOW_PASSWORD }
                                     checked={ state.client.allowPassword ?? false }
-                                    onChange={ inputChange }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
                                 />
                             }
@@ -323,7 +323,7 @@ const ClientDetails = () => {
                                 <Checkbox
                                     name={ ALLOW_AUTH_CODE }
                                     checked={ state.client.allowAuthCode ?? false }
-                                    onChange={ inputChange }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => handleCheckbox(event, inputChange) }
                                     color="primary"
                                 />
                             }
@@ -341,7 +341,7 @@ const ClientDetails = () => {
                             label="Access Token Timeout (Secs)"
                             name={ ACCESS_TOKEN_TIMEOUT }
                             value={ state.client.accessTokenTimeoutSecs ?? '' }
-                            onChange={ inputChange }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
@@ -357,7 +357,7 @@ const ClientDetails = () => {
                             label="Refresh Token Timeout (Secs)"
                             name={ REFRESH_TOKEN_TIMEOUT }
                             value={ state.client.refreshTokenTimeoutSecs ?? '' }
-                            onChange={ inputChange }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => handleNumberField(event, inputChange) }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
