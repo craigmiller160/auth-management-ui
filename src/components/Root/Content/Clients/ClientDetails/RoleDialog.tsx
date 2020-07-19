@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import TextField from '@material-ui/core/TextField';
 import { useImmer } from 'use-immer';
@@ -8,7 +8,7 @@ import { Role } from '../../../../../types/api';
 
 interface Props {
     open: boolean;
-    role?: Role;
+    role: Role;
     onClose: () => void;
 }
 
@@ -37,6 +37,12 @@ const RoleDialog = (props: Props) => {
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
+
+    useEffect(() => {
+        setState((draft) => {
+            draft.role = role;
+        });
+    }, [role]);
 
     const onSubmit = () => {
         // TODO save stuff

@@ -14,11 +14,13 @@ import RoleDialog from './RoleDialog';
 import { useImmer } from 'use-immer';
 
 interface Props {
+    clientId: number;
     roles: Array<Role>;
 }
 
 interface State {
     showRoleDialog: boolean;
+    selectedRole: Role;
 }
 
 const useStyles = makeStyles({
@@ -32,16 +34,29 @@ const useStyles = makeStyles({
 
 const ClientRoles = (props: Props) => {
     const {
+        clientId,
         roles
     } = props;
     const classes = useStyles();
     const [state, setState] = useImmer<State>({
-        showRoleDialog: false
+        showRoleDialog: false,
+        selectedRole: {
+            id: 0,
+            name: '',
+            clientId
+        }
     });
 
-    const toggleRoleDialog = (value: boolean) =>
+    const selectRole = (role: Role) => {
         setState((draft) => {
-            draft.showRoleDialog = value;
+            draft.selectedRole = role;
+            draft.showRoleDialog = true;
+        });
+    };
+
+    const closeRoleDialog = () =>
+        setState((draft) => {
+            draft.showRoleDialog = false;
         });
 
     return (
@@ -57,7 +72,7 @@ const ClientRoles = (props: Props) => {
                             <ListItem
                                 key={ index }
                                 className={ classes.ListItem }
-                                onClick={ () => toggleRoleDialog(true) }
+                                onClick={ () => selectRole(role) }
                             >
                                 <ListItemAvatar>
                                     <AssignIcon />
@@ -72,8 +87,9 @@ const ClientRoles = (props: Props) => {
                 <Button variant="contained" color="primary">Add Role</Button>
             </Grid>
             <RoleDialog
+                role={ state.selectedRole }
                 open={ state.showRoleDialog }
-                onClose={ () => toggleRoleDialog(false) }
+                onClose={ closeRoleDialog }
             />
         </>
     );

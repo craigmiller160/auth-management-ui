@@ -377,15 +377,21 @@ const ClientDetails = () => {
                         }
                     </Grid>
                 </form>
-                <Grid
-                    container
-                    direction="row"
-                    className="UsersAndRoles"
-                >
-                    <ClientUsers users={ state.users } />
-                    <Grid item md={ 2 } />
-                    <ClientRoles roles={ state.roles } />
-                </Grid>
+                {
+                    id !== NEW &&
+                    <Grid
+                        container
+                        direction="row"
+                        className="UsersAndRoles"
+                    >
+                        <ClientUsers users={ state.users } />
+                        <Grid item md={ 2 } />
+                        <ClientRoles
+                            clientId={ state.client.id ?? 0 }
+                            roles={ state.roles }
+                        />
+                    </Grid>
+                }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
