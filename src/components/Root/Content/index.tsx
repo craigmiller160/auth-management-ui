@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Route, Switch } from 'react-router';
-import ProtectedRoute, { Rule } from '../../routing/ProtectedRoute';
+import ProtectedRoute, { Rule } from '@craigmiller160/react-protected-route';
 import Clients from './Clients';
 import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
