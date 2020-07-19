@@ -132,6 +132,13 @@ const UserDetails = () => {
         }
     };
 
+    const confirmPasswordValidator = (value: string) => {
+        if (!value && state.user.password) {
+            return 'Required';
+        }
+        return state.user.password === value || 'Passwords must match';
+    };
+
     return (
         <>
             <Prompt
@@ -181,7 +188,11 @@ const UserDetails = () => {
                             name="confirmPassword"
                             value={ state.confirmPassword ?? '' }
                             onChange={ changeHandler.handleTextField }
-                            inputRef={ register({ required: 'Required' }) }
+                            inputRef={ register({
+                                validate: {
+                                    confirmPasswordValidator
+                                }
+                            }) }
                             error={ !!errors.confirmPassword }
                             helperText={ errors.confirmPassword?.message ?? '' }
                         />
