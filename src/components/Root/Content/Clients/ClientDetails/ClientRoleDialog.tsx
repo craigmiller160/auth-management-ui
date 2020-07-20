@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import TextField from '@material-ui/core/TextField';
-import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import './ClientRoleDialog.scss';
 import { Role } from '../../../../../types/api';
@@ -12,10 +11,6 @@ interface Props {
     onClose: () => void;
     onSave: (role: Role) => void;
     onDelete: (role: Role) => void;
-}
-
-interface State {
-    role: Role;
 }
 
 interface RoleForm {
@@ -32,31 +27,22 @@ const ClientRoleDialog = (props: Props) => {
         onSave,
         onDelete
     } = props;
-    const [state, setState] = useImmer<State>({
-        role: {
-            id: role?.id ?? 0,
-            name: role?.name ?? '',
-            clientId: role?.clientId ?? 0
-        }
-    });
-    const { register, handleSubmit, errors } = useForm<RoleForm>({
+    const { register, handleSubmit, errors, reset } = useForm<RoleForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
 
     useEffect(() => {
-        setState((draft) => {
-            draft.role = {
-                ...role,
-                name: role.name.replace(ROLE_PREFIX, '')
-            }
-        });
-    }, [role, setState]);
+        const form: RoleForm = {
+            name: role.name.replace(ROLE_PREFIX, '')
+        };
+        reset(form);
+    },[role, reset]);
 
-    const onSubmit = async () => {
-        const payload = {
-            ...state.role,
-            name: `${ROLE_PREFIX}${state.role.name}`
+    const onSubmit = async (values: RoleForm) => {
+        const payload: Role = {
+            ...role,
+            name: `${ROLE_PREFIX}${values.name}`
         };
         onSave(payload);
     };
@@ -65,16 +51,9 @@ const ClientRoleDialog = (props: Props) => {
         { label: 'Save', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onClose }
     ];
-    if (state.role.id) {
-        actions.push({ label: 'Delete', onClick: () => onDelete(state.role) });
+    if (role.id) {
+        actions.push({ label: 'Delete', onClick: () => onDelete(role) });
     }
-
-    const setName = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setState((draft) => {
-            draft.role.name = value.toUpperCase();
-        });
-    };
 
     const prefixClasses = ['RolePrefix'];
     if (errors.name) {
@@ -92,8 +71,6 @@ const ClientRoleDialog = (props: Props) => {
                 <TextField
                     name="name"
                     label="Role Name"
-                    value={ state.role.name }
-                    onChange={ setName }
                     inputRef={ register({ required: 'Required' }) }
                     error={ !!errors.name }
                     helperText={ errors.name?.message ?? '' }
