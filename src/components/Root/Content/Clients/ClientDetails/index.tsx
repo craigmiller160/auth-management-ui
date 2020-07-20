@@ -28,7 +28,7 @@ import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
 
 interface State {
-    client: Partial<Client>;
+    clientId: number;
     users: Array<User>;
     roles: Array<Role>;
     shouldBlockNavigation: boolean;
@@ -61,13 +61,13 @@ const ClientDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
-        client: {},
+        clientId: id !== NEW ? parseInt(id) : 0,
         users: [],
         roles: [],
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { register, handleSubmit, errors } = useForm<ClientForm>({
+    const { register, handleSubmit, errors, reset } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
@@ -84,15 +84,16 @@ const ClientDetails = () => {
     };
 
     const onSubmit = () => {
-        const payload: Client = {
-            ...defaultClient,
-            ...state.client
-        };
-        if (id === NEW) {
-            doSubmit(() => createClient(payload));
-        } else {
-            doSubmit(() => updateClient(parseInt(id), payload));
-        }
+        // TODO get values from form
+        // const payload: Client = {
+        //     ...defaultClient,
+        //     ...state.client
+        // };
+        // if (id === NEW) {
+        //     doSubmit(() => createClient(payload));
+        // } else {
+        //     doSubmit(() => updateClient(parseInt(id), payload));
+        // }
     };
 
     const reloadRoles = async () => {
@@ -110,27 +111,27 @@ const ClientDetails = () => {
                 const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
                 if (isSome(key) && isSome(secret)) {
                     setState((draft) => {
-                        draft.client = {
+                        reset({
                             name: 'New Client',
                             clientKey: key.value,
                             clientSecret: secret.value,
                             enabled: true,
                             accessTokenTimeoutSecs: 300,
                             refreshTokenTimeoutSecs: 3600
-                        };
+                        });
                     });
                 }
             } else {
                 const result = await getClient(parseInt(id));
                 if (isSome(result)) {
+                    reset(result.value.client);
                     setState((draft) => {
-                        draft.client = result.value.client;
                         draft.users = result.value.users;
                         draft.roles = result.value.roles;
                     });
                 } else {
+                    reset({});
                     setState((draft) => {
-                        draft.client = {};
                         draft.users = [];
                         draft.roles = [];
                     });
@@ -141,28 +142,23 @@ const ClientDetails = () => {
         action();
     }, [id, setState]);
 
-    const inputChange = (event: HandledChangeEvent) => {
-        setState((draft) => {
-            assignProperty(draft.client, event.name, event.value);
-        });
-    };
-    const changeHandler = createChangeHandler(inputChange);
-
     const generateClientKey = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            setState((draft) => {
-                draft.client.clientKey = guid.value;
-            });
+            // TODO fix this
+            // setState((draft) => {
+            //     draft.client.clientKey = guid.value;
+            // });
         }
     };
 
     const generateClientSecret = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            setState((draft) => {
-                draft.client.clientSecret = guid.value;
-            });
+            // TODO fix this
+            // setState((draft) => {
+            //     draft.client.clientSecret = guid.value;
+            // });
         }
     };
 
@@ -201,8 +197,6 @@ const ClientDetails = () => {
                             className="grow-sm"
                             label="Client Name"
                             name="name"
-                            value={ state.client.name ?? '' }
-                            onChange={ changeHandler.handleTextField }
                             inputRef={ register({ required: 'Required' }) }
                             error={ !!errors.name }
                             helperText={ errors.name?.message ?? '' }
@@ -223,8 +217,6 @@ const ClientDetails = () => {
                                 className="grow"
                                 label="Client Key"
                                 name="clientKey"
-                                value={ state.client.clientKey ?? '' }
-                                onChange={ changeHandler.handleTextField }
                                 inputRef={ register({ required: 'Required' }) }
                                 error={ !!errors.clientKey }
                                 helperText={ errors.clientKey?.message ?? '' }
@@ -248,8 +240,6 @@ const ClientDetails = () => {
                                 className="grow"
                                 label="Client Secret"
                                 name="clientSecret"
-                                value={ state.client.clientSecret ?? '' }
-                                onChange={ changeHandler.handleTextField }
                                 inputRef={ register }
                                 error={ !!errors.clientSecret }
                                 helperText={ errors.clientSecret?.message ?? '' }
@@ -275,8 +265,7 @@ const ClientDetails = () => {
                             control={
                                 <Checkbox
                                     name="enabled"
-                                    checked={ state.client.enabled ?? false }
-                                    onChange={ changeHandler.handleCheckbox }
+                                    inputRef={ register }
                                     color="primary"
                                 />
                             }
@@ -286,8 +275,7 @@ const ClientDetails = () => {
                             control={
                                 <Checkbox
                                     name="allowClientCredentials"
-                                    checked={ state.client.allowClientCredentials ?? false }
-                                    onChange={ changeHandler.handleCheckbox }
+                                    inputRef={ register }
                                     color="primary"
                                 />
                             }
@@ -297,8 +285,7 @@ const ClientDetails = () => {
                             control={
                                 <Checkbox
                                     name="allowPassword"
-                                    checked={ state.client.allowPassword ?? false }
-                                    onChange={ changeHandler.handleCheckbox }
+                                    inputRef={ register }
                                     color="primary"
                                 />
                             }
@@ -308,8 +295,7 @@ const ClientDetails = () => {
                             control={
                                 <Checkbox
                                     name="allowAuthCode"
-                                    checked={ state.client.allowAuthCode ?? false }
-                                    onChange={ changeHandler.handleCheckbox }
+                                    inputRef={ register }
                                     color="primary"
                                 />
                             }
@@ -326,8 +312,6 @@ const ClientDetails = () => {
                             type="number"
                             label="Access Token Timeout (Secs)"
                             name="accessTokenTimeoutSecs"
-                            value={ state.client.accessTokenTimeoutSecs ?? '' }
-                            onChange={ changeHandler.handleNumberField }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
@@ -342,8 +326,6 @@ const ClientDetails = () => {
                             type="number"
                             label="Refresh Token Timeout (Secs)"
                             name="refreshTokenTimeoutSecs"
-                            value={ state.client.refreshTokenTimeoutSecs ?? '' }
-                            onChange={ changeHandler.handleNumberField }
                             inputRef={ register({
                                 required: 'Required',
                                 validate: {
@@ -396,7 +378,7 @@ const ClientDetails = () => {
                         <ClientUsers users={ state.users } />
                         <Grid item md={ 2 } />
                         <ClientRoles
-                            clientId={ state.client.id ?? 0 }
+                            clientId={ state.clientId ?? 0 }
                             roles={ state.roles }
                             reloadRoles={ reloadRoles }
                         />
