@@ -11,7 +11,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Client, Role, User } from '../../../../../types/api';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -67,7 +67,7 @@ const ClientDetails = () => {
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { register, handleSubmit, errors, reset } = useForm<ClientForm>({
+    const { register, handleSubmit, errors, reset, control, getValues } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
@@ -110,15 +110,13 @@ const ClientDetails = () => {
             if (id === NEW) {
                 const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
                 if (isSome(key) && isSome(secret)) {
-                    setState((draft) => {
-                        reset({
-                            name: 'New Client',
-                            clientKey: key.value,
-                            clientSecret: secret.value,
-                            enabled: true,
-                            accessTokenTimeoutSecs: 300,
-                            refreshTokenTimeoutSecs: 3600
-                        });
+                    reset({
+                        name: 'New Client',
+                        clientKey: key.value,
+                        clientSecret: secret.value,
+                        enabled: true,
+                        accessTokenTimeoutSecs: 300,
+                        refreshTokenTimeoutSecs: 3600
                     });
                 }
             } else {
@@ -178,6 +176,8 @@ const ClientDetails = () => {
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
         }
     };
+
+    console.log('Values', getValues()); // TODO delete this
 
     return (
         <>
@@ -260,15 +260,22 @@ const ClientDetails = () => {
                         direction="row"
                         justify="space-around"
                     >
-                        <FormControlLabel
-                            label="Enabled"
-                            control={
-                                <Checkbox
-                                    name="enabled"
-                                    inputRef={ register }
-                                    color="primary"
+                        <Controller
+                            control={ control }
+                            name="enabled"
+                            render={ ({ onChange, onBlur, value }) => (
+                                <FormControlLabel
+                                    label="Enabled"
+                                    control={
+                                        <Checkbox
+                                            onChange={ (event) => onChange(event.target.checked) }
+                                            onBlur={ onBlur }
+                                            value={ value }
+                                            color="primary"
+                                        />
+                                    }
                                 />
-                            }
+                            ) }
                         />
                         <FormControlLabel
                             label="Client Credentials Grant"
