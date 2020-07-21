@@ -9,7 +9,7 @@ import {
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import MuiTextField from '@material-ui/core/TextField';
 import { Client, Role, User } from '../../../../../types/api';
 import { Controller, useForm } from 'react-hook-form';
 import './ClientDetails.scss';
@@ -67,11 +67,13 @@ const ClientDetails = () => {
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { register, handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
+    const { register, handleSubmit, errors, reset, control, setValue, getValues } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultClient
     });
+
+    console.log('State', getValues()); // TODO delete this
 
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
@@ -191,7 +193,7 @@ const ClientDetails = () => {
                             name="name"
                             rules={ { required: 'Required' } }
                             render={ ({ onChange, onBlur, value }) => (
-                                <TextField
+                                <MuiTextField
                                     className="grow-sm"
                                     label="Client Name"
                                     onChange={ onChange }
@@ -219,7 +221,7 @@ const ClientDetails = () => {
                                 name="clientKey"
                                 rules={ { required: 'Required' } }
                                 render={ ({ onChange, onBlur, value }) => (
-                                    <TextField
+                                    <MuiTextField
                                         className="grow"
                                         label="Client Key"
                                         onChange={ onChange }
@@ -249,7 +251,7 @@ const ClientDetails = () => {
                                 control={ control }
                                 name="clientSecret"
                                 render={ ({ onChange, onBlur, value }) => (
-                                    <TextField
+                                    <MuiTextField
                                         className="grow"
                                         label="Client Secret"
                                         onChange={ onChange }
@@ -352,7 +354,7 @@ const ClientDetails = () => {
                         direction="row"
                         justify="space-around"
                     >
-                        <TextField
+                        <MuiTextField
                             className="timeouts"
                             type="number"
                             label="Access Token Timeout (Secs)"
@@ -366,7 +368,7 @@ const ClientDetails = () => {
                             error={ !!errors.accessTokenTimeoutSecs }
                             helperText={ errors.accessTokenTimeoutSecs?.message ?? '' }
                         />
-                        <TextField
+                        <MuiTextField
                             className="timeouts"
                             type="number"
                             label="Refresh Token Timeout (Secs)"
