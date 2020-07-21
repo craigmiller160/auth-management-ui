@@ -84,7 +84,8 @@ const ClientDetails = () => {
         }
     };
 
-    const onSubmit = () => {
+    const onSubmit = (values: ClientForm) => {
+        console.log('Submit', values); // TODO delete this
         // TODO get values from form
         // const payload: Client = {
         //     ...defaultClient,
@@ -279,35 +280,56 @@ const ClientDetails = () => {
                                 />
                             ) }
                         />
-                        <FormControlLabel
-                            label="Client Credentials Grant"
-                            control={
-                                <Checkbox
-                                    name="allowClientCredentials"
-                                    inputRef={ register }
-                                    color="primary"
+                        <Controller
+                            control={ control }
+                            name="allowClientCredentials"
+                            render={ ({ onChange, onBlur, value }) => (
+                                <FormControlLabel
+                                    label="Client Credentials Grant"
+                                    control={
+                                        <Checkbox
+                                            onChange={ (event) => onChange(event.target.checked) }
+                                            onBlur={ onBlur }
+                                            checked={ value }
+                                            color="primary"
+                                        />
+                                    }
                                 />
-                            }
+                            ) }
                         />
-                        <FormControlLabel
-                            label="Password Grant"
-                            control={
-                                <Checkbox
-                                    name="allowPassword"
-                                    inputRef={ register }
-                                    color="primary"
+                        <Controller
+                            control={ control }
+                            name="allowPassword"
+                            render={ ({ onChange, onBlur, value }) => (
+                                <FormControlLabel
+                                    label="Password Grant"
+                                    control={
+                                        <Checkbox
+                                            onChange={ (event) => onChange(event.target.checked) }
+                                            onBlur={ onBlur }
+                                            checked={ value }
+                                            color="primary"
+                                        />
+                                    }
                                 />
-                            }
+                            ) }
                         />
-                        <FormControlLabel
-                            label="Authorization Code Grant"
-                            control={
-                                <Checkbox
-                                    name="allowAuthCode"
-                                    inputRef={ register }
-                                    color="primary"
+                        <Controller
+                            control={ control }
+                            name="allowAuthCode"
+                            render={ ({ onChange, onBlur, value }) => (
+                                <FormControlLabel
+                                    label="Authorization Code Grant"
+                                    control={
+                                        <Checkbox
+                                            onChange={ (event) => onChange(event.target.checked) }
+                                            onBlur={ onBlur }
+                                            checked={ value }
+                                            color="primary"
+                                        />
+                                    }
                                 />
-                            }
+                            ) }
                         />
                     </Grid>
                     <SectionHeader title="Timeouts" />
