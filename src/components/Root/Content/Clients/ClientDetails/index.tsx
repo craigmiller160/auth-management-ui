@@ -10,7 +10,6 @@ import {
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
-import MuiTextField from '@material-ui/core/TextField';
 import { Client, Role, User } from '../../../../../types/api';
 import { Controller, useForm } from 'react-hook-form';
 import './ClientDetails.scss';
@@ -67,13 +66,11 @@ const ClientDetails = () => {
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { register, handleSubmit, errors, reset, control, setValue, getValues } = useForm<ClientForm>({
+    const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultClient
     });
-
-    console.log('Values', getValues()); // TODO delete this
 
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
@@ -141,7 +138,7 @@ const ClientDetails = () => {
         };
 
         action();
-    }, [id, setState]);
+    }, [id, setState, reset]);
 
     const generateClientKey = async () => {
         const guid = await generateGuid();

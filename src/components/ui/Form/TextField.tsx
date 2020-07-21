@@ -1,7 +1,6 @@
 import React, { ReactText } from 'react';
 import { Control, Controller, FieldError } from 'react-hook-form';
 import MuiTextField from '@material-ui/core/TextField';
-import { DeepMap } from 'react-hook-form/dist/types/utils';
 import { FieldName, Validate, ValidationRule, ValidationValueMessage } from 'react-hook-form/dist/types/form';
 
 interface Rules {
