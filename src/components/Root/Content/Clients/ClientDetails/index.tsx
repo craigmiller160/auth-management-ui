@@ -69,7 +69,8 @@ const ClientDetails = () => {
     });
     const { register, handleSubmit, errors, reset, control, getValues } = useForm<ClientForm>({
         mode: 'onBlur',
-        reValidateMode: 'onChange'
+        reValidateMode: 'onChange',
+        defaultValues: defaultClient
     });
 
     const doSubmit = async (action: () => Promise<Option<any>>) => {
@@ -268,9 +269,10 @@ const ClientDetails = () => {
                                     label="Enabled"
                                     control={
                                         <Checkbox
+                                            name="enabled"
                                             onChange={ (event) => onChange(event.target.checked) }
                                             onBlur={ onBlur }
-                                            value={ value }
+                                            checked={ value }
                                             color="primary"
                                         />
                                     }
