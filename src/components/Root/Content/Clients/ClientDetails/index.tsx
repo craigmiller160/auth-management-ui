@@ -343,6 +343,7 @@ const ClientDetails = () => {
                                     greaterThanZero
                                 }
                             } }
+                            transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                         <TextField
                             className="timeouts"
@@ -357,6 +358,7 @@ const ClientDetails = () => {
                                     greaterThanZero
                                 }
                             } }
+                            transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                     </Grid>
                     <SectionHeader title="Actions" />
