@@ -73,8 +73,6 @@ const ClientDetails = () => {
         defaultValues: defaultClient
     });
 
-    console.log('State', getValues()); // TODO delete this
-
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
         if (isSome(result)) {
@@ -188,21 +186,13 @@ const ClientDetails = () => {
                         direction="row"
                         justify="center"
                     >
-                        <Controller
-                            control={ control }
+                        <TextField
+                            className="grow-sm"
                             name="name"
+                            control={ control }
+                            label="Client Name"
                             rules={ { required: 'Required' } }
-                            render={ ({ onChange, onBlur, value }) => (
-                                <MuiTextField
-                                    className="grow-sm"
-                                    label="Client Name"
-                                    onChange={ onChange }
-                                    onBlur={ onBlur }
-                                    value={ value }
-                                    error={ !!errors.name }
-                                    helperText={ errors.name?.message ?? '' }
-                                />
-                            ) }
+                            error={ errors.name }
                         />
                     </Grid>
                     <SectionHeader title="Keys" />
@@ -216,22 +206,14 @@ const ClientDetails = () => {
                             justify="center"
                             className="half-row"
                         >
-                            <Controller
-                                control={ control }
+                            <TextField
+                                className="grow"
                                 name="clientKey"
+                                control={ control }
+                                label="Client Key"
                                 rules={ { required: 'Required' } }
-                                render={ ({ onChange, onBlur, value }) => (
-                                    <MuiTextField
-                                        className="grow"
-                                        label="Client Key"
-                                        onChange={ onChange }
-                                        onBlur={ onBlur }
-                                        value={ value }
-                                        error={ !!errors.clientKey }
-                                        helperText={ errors.clientKey?.message ?? '' }
-                                        disabled
-                                    />
-                                ) }
+                                error={ errors.clientKey }
+                                disabled
                             />
                             <Button
                                 variant="text"
@@ -247,21 +229,13 @@ const ClientDetails = () => {
                             justify="center"
                             className="half-row"
                         >
-                            <Controller
-                                control={ control }
+                            <TextField
+                                className="grow"
                                 name="clientSecret"
-                                render={ ({ onChange, onBlur, value }) => (
-                                    <MuiTextField
-                                        className="grow"
-                                        label="Client Secret"
-                                        onChange={ onChange }
-                                        onBlur={ onBlur }
-                                        value={ value }
-                                        error={ !!errors.clientSecret }
-                                        helperText={ errors.clientSecret?.message ?? '' }
-                                        disabled
-                                    />
-                                ) }
+                                control={ control }
+                                label="Client Secret"
+                                error={ errors.clientSecret}
+                                disabled
                             />
                             <Button
                                 variant="text"
@@ -355,6 +329,7 @@ const ClientDetails = () => {
                         justify="space-around"
                     >
                         <TextField
+                            className="timeouts"
                             name="accessTokenTimeoutSecs"
                             control={ control }
                             label="Access Token Timeout (Secs)"
@@ -367,19 +342,19 @@ const ClientDetails = () => {
                                 }
                             } }
                         />
-                        <MuiTextField
+                        <TextField
                             className="timeouts"
-                            type="number"
-                            label="Refresh Token Timeout (Secs)"
                             name="refreshTokenTimeoutSecs"
-                            inputRef={ register({
+                            control={ control }
+                            label="Refresh Token Timeout (Secs)"
+                            type="number"
+                            error={ errors.refreshTokenTimeoutSecs }
+                            rules={ {
                                 required: 'Required',
                                 validate: {
                                     greaterThanZero
                                 }
-                            }) }
-                            error={ !!errors.refreshTokenTimeoutSecs }
-                            helperText={ errors.refreshTokenTimeoutSecs?.message ?? '' }
+                            } }
                         />
                     </Grid>
                     <SectionHeader title="Actions" />

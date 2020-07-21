@@ -22,6 +22,7 @@ interface Props<T> {
     error?: FieldError;
     rules?: Rules;
     type?: 'text' | 'number'
+    disabled?: boolean;
 }
 
 const TextField = <T extends object>(props: Props<T>) => {
@@ -32,7 +33,8 @@ const TextField = <T extends object>(props: Props<T>) => {
         label,
         error,
         rules,
-        type
+        type,
+        disabled
     } = props;
 
     return (
@@ -50,6 +52,7 @@ const TextField = <T extends object>(props: Props<T>) => {
                     value={ value }
                     error={ !!error }
                     helperText={ error?.message ?? '' }
+                    disabled={ disabled }
                 />
             ) }
         />
