@@ -5,7 +5,8 @@ import {
     createClient,
     deleteClient,
     generateGuid,
-    getClient, getRoles,
+    getClient,
+    getRoles,
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
@@ -22,10 +23,9 @@ import { useImmer } from 'use-immer';
 import { greaterThanZero } from '../../../../../utils/validations';
 import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
-import { assignProperty } from '../../../../../utils/propertyTypes';
-import { createChangeHandler, HandledChangeEvent } from '../../../../../utils/changeHandlers';
 import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
+import TextField from '../../../../ui/Form/TextField';
 
 interface State {
     clientId: number;
@@ -354,19 +354,18 @@ const ClientDetails = () => {
                         direction="row"
                         justify="space-around"
                     >
-                        <MuiTextField
-                            className="timeouts"
-                            type="number"
-                            label="Access Token Timeout (Secs)"
+                        <TextField
                             name="accessTokenTimeoutSecs"
-                            inputRef={ register({
+                            control={ control }
+                            label="Access Token Timeout (Secs)"
+                            type="number"
+                            error={ errors.accessTokenTimeoutSecs }
+                            rules={ {
                                 required: 'Required',
                                 validate: {
                                     greaterThanZero
                                 }
-                            }) }
-                            error={ !!errors.accessTokenTimeoutSecs }
-                            helperText={ errors.accessTokenTimeoutSecs?.message ?? '' }
+                            } }
                         />
                         <MuiTextField
                             className="timeouts"

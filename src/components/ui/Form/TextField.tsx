@@ -21,6 +21,7 @@ interface Props<T> {
     className?: string;
     error?: FieldError;
     rules?: Rules;
+    type?: 'text' | 'number'
 }
 
 const TextField = <T extends object>(props: Props<T>) => {
@@ -30,7 +31,8 @@ const TextField = <T extends object>(props: Props<T>) => {
         className,
         label,
         error,
-        rules
+        rules,
+        type
     } = props;
 
     return (
@@ -40,6 +42,7 @@ const TextField = <T extends object>(props: Props<T>) => {
             rules={ rules }
             render={ ({ onChange, onBlur, value }) => (
                 <MuiTextField
+                    type={ type }
                     className={ className }
                     label={ label }
                     onChange={ onChange }
