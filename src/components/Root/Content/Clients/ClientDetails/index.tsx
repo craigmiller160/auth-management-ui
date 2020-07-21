@@ -193,13 +193,21 @@ const ClientDetails = () => {
                         direction="row"
                         justify="center"
                     >
-                        <TextField
-                            className="grow-sm"
-                            label="Client Name"
+                        <Controller
+                            control={ control }
                             name="name"
-                            inputRef={ register({ required: 'Required' }) }
-                            error={ !!errors.name }
-                            helperText={ errors.name?.message ?? '' }
+                            rules={ { required: 'Required' } }
+                            render={ ({ onChange, onBlur, value }) => (
+                                <TextField
+                                    className="grow-sm"
+                                    label="Client Name"
+                                    onChange={ onChange }
+                                    onBlur={ onBlur }
+                                    value={ value }
+                                    error={ !!errors.name }
+                                    helperText={ errors.name?.message ?? '' }
+                                />
+                            ) }
                         />
                     </Grid>
                     <SectionHeader title="Keys" />
@@ -213,14 +221,22 @@ const ClientDetails = () => {
                             justify="center"
                             className="half-row"
                         >
-                            <TextField
-                                className="grow"
-                                label="Client Key"
+                            <Controller
+                                control={ control }
                                 name="clientKey"
-                                inputRef={ register({ required: 'Required' }) }
-                                error={ !!errors.clientKey }
-                                helperText={ errors.clientKey?.message ?? '' }
-                                disabled
+                                rules={ { required: 'Required' } }
+                                render={ ({ onChange, onBlur, value }) => (
+                                    <TextField
+                                        className="grow"
+                                        label="Client Key"
+                                        onChange={ onChange }
+                                        onBlur={ onBlur }
+                                        value={ value }
+                                        error={ !!errors.clientKey }
+                                        helperText={ errors.clientKey?.message ?? '' }
+                                        disabled
+                                    />
+                                ) }
                             />
                             <Button
                                 variant="text"
