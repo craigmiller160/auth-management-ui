@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import MuiCheckbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
@@ -258,7 +258,7 @@ const ClientDetails = () => {
                                 <FormControlLabel
                                     label="Enabled"
                                     control={
-                                        <Checkbox
+                                        <MuiCheckbox
                                             name="enabled"
                                             onChange={ (event) => onChange(event.target.checked) }
                                             onBlur={ onBlur }
@@ -276,7 +276,7 @@ const ClientDetails = () => {
                                 <FormControlLabel
                                     label="Client Credentials Grant"
                                     control={
-                                        <Checkbox
+                                        <MuiCheckbox
                                             onChange={ (event) => onChange(event.target.checked) }
                                             onBlur={ onBlur }
                                             checked={ value }
@@ -293,7 +293,7 @@ const ClientDetails = () => {
                                 <FormControlLabel
                                     label="Password Grant"
                                     control={
-                                        <Checkbox
+                                        <MuiCheckbox
                                             onChange={ (event) => onChange(event.target.checked) }
                                             onBlur={ onBlur }
                                             checked={ value }
@@ -310,7 +310,7 @@ const ClientDetails = () => {
                                 <FormControlLabel
                                     label="Authorization Code Grant"
                                     control={
-                                        <Checkbox
+                                        <MuiCheckbox
                                             onChange={ (event) => onChange(event.target.checked) }
                                             onBlur={ onBlur }
                                             checked={ value }
