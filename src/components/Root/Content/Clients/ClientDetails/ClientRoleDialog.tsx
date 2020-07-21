@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
-import TextField from '@material-ui/core/TextField';
 import { useForm } from 'react-hook-form';
 import './ClientRoleDialog.scss';
 import { Role } from '../../../../../types/api';
+import TextField from '../../../../ui/Form/TextField';
 
 interface Props {
     open: boolean;
@@ -27,7 +27,7 @@ const ClientRoleDialog = (props: Props) => {
         onSave,
         onDelete
     } = props;
-    const { register, handleSubmit, errors, reset } = useForm<RoleForm>({
+    const { control, handleSubmit, errors, reset } = useForm<RoleForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange'
     });
@@ -70,10 +70,10 @@ const ClientRoleDialog = (props: Props) => {
                 <span className={ prefixClasses.join(' ') }>{ ROLE_PREFIX }</span>
                 <TextField
                     name="name"
+                    control={ control }
                     label="Role Name"
-                    inputRef={ register({ required: 'Required' }) }
-                    error={ !!errors.name }
-                    helperText={ errors.name?.message ?? '' }
+                    error={ errors.name }
+                    rules={ { required: 'Required' } }
                 />
             </div>
         </BaseDialog>
