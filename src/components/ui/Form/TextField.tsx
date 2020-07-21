@@ -12,7 +12,7 @@ interface Props<T> {
     className?: string;
     error?: FieldError;
     rules?: FieldRules;
-    type?: 'text' | 'number'
+    type?: 'text' | 'number' | 'password';
     disabled?: boolean;
     transform?: (value: string) => any;
 }
