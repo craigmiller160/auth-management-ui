@@ -179,8 +179,6 @@ const ClientDetails = () => {
         }
     };
 
-    console.log('Values', getValues()); // TODO delete this
-
     return (
         <>
             <Prompt
