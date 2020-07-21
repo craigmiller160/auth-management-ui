@@ -252,14 +252,21 @@ const ClientDetails = () => {
                             justify="center"
                             className="half-row"
                         >
-                            <TextField
-                                className="grow"
-                                label="Client Secret"
+                            <Controller
+                                control={ control }
                                 name="clientSecret"
-                                inputRef={ register }
-                                error={ !!errors.clientSecret }
-                                helperText={ errors.clientSecret?.message ?? '' }
-                                disabled
+                                render={ ({ onChange, onBlur, value }) => (
+                                    <TextField
+                                        className="grow"
+                                        label="Client Secret"
+                                        onChange={ onChange }
+                                        onBlur={ onBlur }
+                                        value={ value }
+                                        error={ !!errors.clientSecret }
+                                        helperText={ errors.clientSecret?.message ?? '' }
+                                        disabled
+                                    />
+                                ) }
                             />
                             <Button
                                 variant="text"
