@@ -67,7 +67,7 @@ const ClientDetails = () => {
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { register, handleSubmit, errors, reset, control, getValues } = useForm<ClientForm>({
+    const { register, handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultClient
@@ -85,17 +85,16 @@ const ClientDetails = () => {
     };
 
     const onSubmit = (values: ClientForm) => {
-        console.log('Submit', values); // TODO delete this
-        // TODO get values from form
-        // const payload: Client = {
-        //     ...defaultClient,
-        //     ...state.client
-        // };
-        // if (id === NEW) {
-        //     doSubmit(() => createClient(payload));
-        // } else {
-        //     doSubmit(() => updateClient(parseInt(id), payload));
-        // }
+        const payload: Client = {
+            ...values,
+            id: state.clientId
+        };
+
+        if (id === NEW) {
+            doSubmit(() => createClient(payload));
+        } else {
+            doSubmit(() => updateClient(parseInt(id), payload));
+        }
     };
 
     const reloadRoles = async () => {
@@ -145,20 +144,14 @@ const ClientDetails = () => {
     const generateClientKey = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            // TODO fix this
-            // setState((draft) => {
-            //     draft.client.clientKey = guid.value;
-            // });
+            setValue('clientKey', guid.value);
         }
     };
 
     const generateClientSecret = async () => {
         const guid = await generateGuid();
         if (isSome(guid)) {
-            // TODO fix this
-            // setState((draft) => {
-            //     draft.client.clientSecret = guid.value;
-            // });
+            setValue('clientSecret', guid.value);
         }
     };
 
