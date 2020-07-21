@@ -11,11 +11,9 @@ import {
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import { Client, Role, User } from '../../../../../types/api';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import MuiCheckbox from '@material-ui/core/Checkbox';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
@@ -25,6 +23,7 @@ import { useDispatch } from 'react-redux';
 import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
+import Checkbox from '../../../../ui/Form/Checkbox';
 
 interface State {
     clientId: number;
@@ -251,74 +250,25 @@ const ClientDetails = () => {
                         direction="row"
                         justify="space-around"
                     >
-                        <Controller
-                            control={ control }
+                        <Checkbox
                             name="enabled"
-                            render={ ({ onChange, onBlur, value }) => (
-                                <FormControlLabel
-                                    label="Enabled"
-                                    control={
-                                        <MuiCheckbox
-                                            name="enabled"
-                                            onChange={ (event) => onChange(event.target.checked) }
-                                            onBlur={ onBlur }
-                                            checked={ value }
-                                            color="primary"
-                                        />
-                                    }
-                                />
-                            ) }
-                        />
-                        <Controller
                             control={ control }
+                            label="Enabled"
+                        />
+                        <Checkbox
                             name="allowClientCredentials"
-                            render={ ({ onChange, onBlur, value }) => (
-                                <FormControlLabel
-                                    label="Client Credentials Grant"
-                                    control={
-                                        <MuiCheckbox
-                                            onChange={ (event) => onChange(event.target.checked) }
-                                            onBlur={ onBlur }
-                                            checked={ value }
-                                            color="primary"
-                                        />
-                                    }
-                                />
-                            ) }
-                        />
-                        <Controller
                             control={ control }
+                            label="Client Credentials Grant"
+                        />
+                        <Checkbox
                             name="allowPassword"
-                            render={ ({ onChange, onBlur, value }) => (
-                                <FormControlLabel
-                                    label="Password Grant"
-                                    control={
-                                        <MuiCheckbox
-                                            onChange={ (event) => onChange(event.target.checked) }
-                                            onBlur={ onBlur }
-                                            checked={ value }
-                                            color="primary"
-                                        />
-                                    }
-                                />
-                            ) }
-                        />
-                        <Controller
                             control={ control }
+                            label="Password Grant"
+                        />
+                        <Checkbox
                             name="allowAuthCode"
-                            render={ ({ onChange, onBlur, value }) => (
-                                <FormControlLabel
-                                    label="Authorization Code Grant"
-                                    control={
-                                        <MuiCheckbox
-                                            onChange={ (event) => onChange(event.target.checked) }
-                                            onBlur={ onBlur }
-                                            checked={ value }
-                                            color="primary"
-                                        />
-                                    }
-                                />
-                            ) }
+                            control={ control }
+                            label="Authorization Code Grant"
                         />
                     </Grid>
                     <SectionHeader title="Timeouts" />

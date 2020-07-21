@@ -31,7 +31,7 @@ const Checkbox = <T extends object>(props: Props<T>) => {
                             onChange={ (event) => onChange(event.target.checked) }
                             onBlur={ onBlur }
                             checked={ value }
-                            color={ color }
+                            color={ color ?? 'primary' }
                         />
                     }
                 />
