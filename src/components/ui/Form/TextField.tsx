@@ -1,17 +1,9 @@
-import React, { ReactText } from 'react';
+import React from 'react';
 import { Control, Controller, FieldError } from 'react-hook-form';
 import MuiTextField from '@material-ui/core/TextField';
-import { FieldName, Validate, ValidationRule, ValidationValueMessage } from 'react-hook-form/dist/types/form';
+import { FieldName } from 'react-hook-form/dist/types/form';
+import { FieldRules } from '../../../types/form';
 
-interface Rules {
-    required?: string | boolean | ValidationValueMessage<boolean>;
-    min?: ValidationRule<ReactText>;
-    max?: ValidationRule<ReactText>;
-    maxLength?: ValidationRule<ReactText>;
-    minLength?: ValidationRule<ReactText>;
-    pattern?: ValidationRule<RegExp>;
-    validate?: Validate | Record<string,Validate>;
-}
 
 interface Props<T> {
     name: keyof T;
@@ -19,7 +11,7 @@ interface Props<T> {
     label: string;
     className?: string;
     error?: FieldError;
-    rules?: Rules;
+    rules?: FieldRules;
     type?: 'text' | 'number'
     disabled?: boolean;
     transform?: (value: string) => any;
