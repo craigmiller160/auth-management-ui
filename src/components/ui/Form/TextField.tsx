@@ -23,6 +23,7 @@ interface Props<T> {
     rules?: Rules;
     type?: 'text' | 'number'
     disabled?: boolean;
+    transform?: (value: string) => any;
 }
 
 const TextField = <T extends object>(props: Props<T>) => {
@@ -34,7 +35,8 @@ const TextField = <T extends object>(props: Props<T>) => {
         error,
         rules,
         type,
-        disabled
+        disabled,
+        transform
     } = props;
 
     return (
@@ -47,7 +49,13 @@ const TextField = <T extends object>(props: Props<T>) => {
                     type={ type }
                     className={ className }
                     label={ label }
-                    onChange={ onChange }
+                    onChange={ (event) => {
+                        if (transform) {
+                            onChange(transform(event.target.value));
+                        } else {
+                            onChange(event.target.value);
+                        }
+                    } }
                     onBlur={ onBlur }
                     value={ value }
                     error={ !!error }

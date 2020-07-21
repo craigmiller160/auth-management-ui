@@ -73,6 +73,8 @@ const ClientDetails = () => {
         defaultValues: defaultClient
     });
 
+    console.log('Values', getValues()); // TODO delete this
+
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
         if (isSome(result)) {

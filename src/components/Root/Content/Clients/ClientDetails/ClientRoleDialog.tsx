@@ -74,6 +74,7 @@ const ClientRoleDialog = (props: Props) => {
                     label="Role Name"
                     error={ errors.name }
                     rules={ { required: 'Required' } }
+                    transform={ (value: string) => value?.toUpperCase() ?? '' }
                 />
             </div>
         </BaseDialog>
