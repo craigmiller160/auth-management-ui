@@ -111,10 +111,14 @@ const UserDetails = () => {
     };
 
     // TODO add rule to require confirmPassword for password
+    // TODO only allow edits to confirmPassword if password is present
 
     const confirmPasswordValidator = (value: string) => {
         const password = getValues().password;
-        if (!value && password) {
+        if (!password) {
+            return true;
+        }
+        if (!value) {
             return 'Required';
         }
         return password === value || 'Passwords must match';
