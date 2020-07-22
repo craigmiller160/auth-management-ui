@@ -37,6 +37,11 @@ const defaultUser: User = {
     password: ''
 };
 
+const defaultForm: UserForm = {
+    ...defaultUser,
+    confirmPassword: ''
+};
+
 const UserDetails = () => {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -47,11 +52,12 @@ const UserDetails = () => {
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
-    const { control, handleSubmit, errors, reset, getValues } = useForm<UserForm>({
+    const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
-        defaultValues: defaultUser
+        defaultValues: defaultForm
     });
+    const watchPassword = watch('password', '');
 
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
@@ -93,6 +99,13 @@ const UserDetails = () => {
         action();
     }, [id, reset]);
 
+    useEffect(() => {
+        if (watchPassword === '') {
+            setValue('confirmPassword', '');
+            trigger('confirmPassword');
+        }
+    }, [watchPassword, setValue, trigger]);
+
     const doCancel = () => history.push('/users');
 
     const toggleDeleteDialog = (show: boolean) => setState((draft) => {
@@ -109,9 +122,6 @@ const UserDetails = () => {
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted user ${id}`));
         }
     };
-
-    // TODO add rule to require confirmPassword for password
-    // TODO only allow edits to confirmPassword if password is present
 
     const confirmPasswordValidator = (value: string) => {
         const password = getValues().password;
@@ -175,6 +185,7 @@ const UserDetails = () => {
                                     confirmPasswordValidator
                                 }
                             } }
+                            disabled={ !watchPassword }
                         />
                     </Grid>
                     <SectionHeader title="Personal" />
