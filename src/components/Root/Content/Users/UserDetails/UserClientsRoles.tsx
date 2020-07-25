@@ -28,8 +28,14 @@ const UserClientsRoles = (props: Props) => {
         });
     }, [clients, setState]);
 
+    const clientClick = (fullClient: FullUserClient) => {
+        setState((draft) => {
+            draft.selectedClient = fullClient;
+        });
+    };
+
     const clientItems: Array<Item> = clients.map((fullClient) => ({
-        click: () => {},
+        click: () => clientClick(fullClient),
         avatar: () => <Business />,
         text: {
             primary: fullClient.client.name
@@ -37,7 +43,8 @@ const UserClientsRoles = (props: Props) => {
         secondaryAction: {
             text: 'Remove',
             click: () => {}
-        }
+        },
+        active: state.selectedClient?.client?.id === fullClient.client.id
     }));
 
     return (

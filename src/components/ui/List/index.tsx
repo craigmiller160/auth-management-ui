@@ -18,7 +18,8 @@ export interface Item {
     secondaryAction?: {
         text: string;
         click: () => void;
-    }
+    },
+    active?: boolean;
 }
 
 interface Props {
@@ -29,6 +30,9 @@ const useStyles = makeStyles({
     ListItem: {
         cursor: 'pointer',
         '&:hover': {
+            backgroundColor: theme.palette.secondary.light
+        },
+        '&.active': {
             backgroundColor: theme.palette.secondary.light
         }
     }
@@ -45,11 +49,15 @@ const List = (props: Props) => {
             {
                 items.map((item, index) => {
                     const Avatar = item.avatar ?? null;
+                    const className = [classes.ListItem];
+                    if (item.active) {
+                        className.push('active');
+                    }
 
                     return (
                         <ListItem
                             key={ index }
-                            className={ classes.ListItem }
+                            className={ className.join(' ') }
                             onClick={ item.click }
                         >
                             {
