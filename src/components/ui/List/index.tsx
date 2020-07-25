@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Button from '@material-ui/core/Button';
 
-interface Item {
+export interface Item {
     click: () => void;
     avatar?: ElementType;
     text: {
