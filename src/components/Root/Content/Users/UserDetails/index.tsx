@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import TextField from '../../../../ui/Form/TextField';
+import UserClientsRoles from './UserClientsRoles';
 
 interface State {
     userId: number;
@@ -211,6 +212,7 @@ const UserDetails = () => {
                             rules={ { required: 'Required' } }
                         />
                     </Grid>
+                    <UserClientsRoles />
                     <SectionHeader title="Actions" />
                     <Grid
                         container
