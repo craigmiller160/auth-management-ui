@@ -90,7 +90,7 @@ const UserDetails = () => {
             } else {
                 const result = await getUser(parseInt(id));
                 if (isSome(result)) {
-                    reset(result.value);
+                    reset(result.value.user);
                 } else {
                     reset({});
                 }

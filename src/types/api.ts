@@ -54,3 +54,14 @@ export interface FullClient {
     users: Array<User>;
     roles: Array<Role>;
 }
+
+export interface FullUserClient {
+    client: Client;
+    userRoles: Array<Role>;
+    allRoles: Array<Role>;
+}
+
+export interface FullUser {
+    user: User;
+    clients: Array<FullUserClient>;
+}
