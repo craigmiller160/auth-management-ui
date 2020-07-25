@@ -103,7 +103,7 @@ const UserDetails = () => {
         };
 
         action();
-    }, [id, reset]);
+    }, [id, reset, setState]);
 
     useEffect(() => {
         if (watchPassword === '') {

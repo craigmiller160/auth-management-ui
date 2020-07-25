@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
-import { List } from '@material-ui/core';
 import { FullUserClient } from '../../../../../types/api';
-import ListItem from '@material-ui/core/ListItem';
+import List, { Item } from '../../../../ui/List';
+import Button from '@material-ui/core/Button';
+import { useImmer } from 'use-immer';
+import { Business } from '@material-ui/icons';
 
 interface Props {
     clients: Array<FullUserClient>;
+}
+
+interface State {
+    selectedClient?: FullUserClient;
 }
 
 const UserClientsRoles = (props: Props) => {
     const {
         clients
     } = props;
+
+    const [state, setState] = useImmer<State>({});
+
+    useEffect(() => {
+        setState((draft) => {
+            draft.selectedClient = undefined;
+        });
+    }, [clients, setState]);
+
+    const clientItems: Array<Item> = clients.map((fullClient) => ({
+        click: () => {},
+        avatar: () => <Business />,
+        text: {
+            primary: fullClient.client.name
+        },
+        secondaryAction: {
+            text: 'Remove',
+            click: () => {}
+        }
+    }));
 
     return (
         <div>
@@ -22,22 +48,21 @@ const UserClientsRoles = (props: Props) => {
             >
                 <Grid item md={ 5 }>
                     <SectionHeader title="Clients" />
-                    <List>
-                        {
-                            clients.map((fullClient, index) => (
-                                <ListItem
-                                    key={ index }
-                                >
-                                    ABC
-                                </ListItem>
-                            ))
-                        }
-                    </List>
+                    <List items={ clientItems } />
+                    <Button
+                        color="primary"
+                        variant="contained"
+                    >
+                        Add Client
+                    </Button>
                 </Grid>
                 <Grid item md={ 2 } />
-                <Grid item md={ 5 }>
-                    <SectionHeader title="Roles" />
-                </Grid>
+                {
+                    state.selectedClient &&
+                    <Grid item md={ 5 }>
+                        <SectionHeader title="Roles" />
+                    </Grid>
+                }
             </Grid>
         </div>
     );
