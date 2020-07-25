@@ -2,7 +2,7 @@ import React from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 
 interface Props {
-    clients?: object; // TODO make not optional
+    clients: object;
 }
 
 const UserClientsRoles = (props: Props) => {

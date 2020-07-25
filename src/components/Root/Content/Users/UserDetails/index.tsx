@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
-import { User } from '../../../../../types/api';
+import { FullUserClient, User } from '../../../../../types/api';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import './UserDetails.scss';
@@ -19,6 +19,7 @@ interface State {
     userId: number;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
+    clients: Array<FullUserClient>;
 }
 
 interface MatchParams {
@@ -51,7 +52,8 @@ const UserDetails = () => {
     const [state, setState] = useImmer<State>({
         userId: id !== NEW ? parseInt(id) : 0,
         shouldBlockNavigation: true,
-        showDeleteDialog: false
+        showDeleteDialog: false,
+        clients: []
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -91,6 +93,9 @@ const UserDetails = () => {
                 const result = await getUser(parseInt(id));
                 if (isSome(result)) {
                     reset(result.value.user);
+                    setState((draft) => {
+                        draft.clients = result.value.clients;
+                    });
                 } else {
                     reset({});
                 }
@@ -212,7 +217,7 @@ const UserDetails = () => {
                             rules={ { required: 'Required' } }
                         />
                     </Grid>
-                    <UserClientsRoles />
+                    <UserClientsRoles clients={ state.clients } />
                     <SectionHeader title="Actions" />
                     <Grid
                         container
