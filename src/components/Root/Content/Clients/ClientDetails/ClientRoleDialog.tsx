@@ -10,7 +10,6 @@ interface Props {
     role: Role;
     onClose: () => void;
     onSave: (role: Role) => void;
-    onDelete: (role: Role) => void;
 }
 
 interface RoleForm {
@@ -24,8 +23,7 @@ const ClientRoleDialog = (props: Props) => {
         open,
         onClose,
         role,
-        onSave,
-        onDelete
+        onSave
     } = props;
     const { control, handleSubmit, errors, reset } = useForm<RoleForm>({
         mode: 'onBlur',
@@ -51,9 +49,6 @@ const ClientRoleDialog = (props: Props) => {
         { label: 'Save', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onClose }
     ];
-    if (role.id) {
-        actions.push({ label: 'Delete', onClick: () => onDelete(role) });
-    }
 
     const prefixClasses = ['RolePrefix'];
     if (errors.name) {

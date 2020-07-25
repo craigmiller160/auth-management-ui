@@ -15,6 +15,7 @@ import { useImmer } from 'use-immer';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
 import { ConfirmDialog } from '../../../../ui/Dialog';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 interface Props {
     clientId: number;
@@ -37,6 +38,9 @@ const useStyles = makeStyles({
         }
     }
 });
+
+// TODO remove delete action from dialog
+// TODO add delete option to list
 
 const ClientRoles = (props: Props) => {
     const {
@@ -142,6 +146,14 @@ const ClientRoles = (props: Props) => {
                                 <ListItemText
                                     primary={ role.name }
                                 />
+                                <ListItemSecondaryAction>
+                                    <Button
+                                        color="primary"
+                                        onClick={ () => checkDelete(role) }
+                                    >
+                                        Delete
+                                    </Button>
+                                </ListItemSecondaryAction>
                             </ListItem>
                         ))
                     }
@@ -159,7 +171,6 @@ const ClientRoles = (props: Props) => {
                 open={ state.showRoleDialog }
                 onClose={ closeRoleDialog }
                 onSave={ saveRole }
-                onDelete={ checkDelete }
             />
             <ConfirmDialog
                 open={ state.showDeleteDialog }
