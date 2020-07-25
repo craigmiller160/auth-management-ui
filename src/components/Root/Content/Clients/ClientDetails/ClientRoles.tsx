@@ -1,21 +1,15 @@
 import React from 'react';
 import { Role } from '../../../../../types/api';
 import { SectionHeader } from '../../../../ui/Header';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
-import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import theme from '../../../../theme';
 import Button from '@material-ui/core/Button';
 import ClientRoleDialog from './ClientRoleDialog';
 import { useImmer } from 'use-immer';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
 import { ConfirmDialog } from '../../../../ui/Dialog';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import List, { Item } from '../../../../ui/List';
 
 interface Props {
     clientId: number;
@@ -30,22 +24,12 @@ interface State {
     roleIdToDelete: number;
 }
 
-const useStyles = makeStyles({ // TODO delete this
-    ListItem: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: theme.palette.secondary.light
-        }
-    }
-});
-
 const ClientRoles = (props: Props) => {
     const {
         clientId,
         roles,
         reloadRoles
     } = props;
-    const classes = useStyles();
     const [state, setState] = useImmer<State>({
         showRoleDialog: false,
         selectedRole: {
@@ -122,6 +106,18 @@ const ClientRoles = (props: Props) => {
             draft.showDeleteDialog = false;
         });
 
+    const items: Array<Item> = roles.map((role) => ({
+        click: () => selectRole(role),
+        avatar: () => <AssignIcon />,
+        text: {
+            primary: role.name
+        },
+        secondaryAction: {
+            text: 'Delete',
+            click: () => checkDelete(role)
+        }
+    }));
+
     return (
         <>
             <Grid
@@ -129,32 +125,7 @@ const ClientRoles = (props: Props) => {
                 md={ 5 }
             >
                 <SectionHeader title="Roles" />
-                <List>
-                    {
-                        roles.map((role, index) => (
-                            <ListItem
-                                key={ index }
-                                className={ classes.ListItem }
-                                onClick={ () => selectRole(role) }
-                            >
-                                <ListItemAvatar>
-                                    <AssignIcon />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={ role.name }
-                                />
-                                <ListItemSecondaryAction>
-                                    <Button
-                                        color="primary"
-                                        onClick={ () => checkDelete(role) }
-                                    >
-                                        Delete
-                                    </Button>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ))
-                    }
-                </List>
+                <List items={ items } />
                 <Button
                     variant="contained"
                     color="primary"
