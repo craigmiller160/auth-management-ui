@@ -39,9 +39,6 @@ const useStyles = makeStyles({
     }
 });
 
-// TODO remove delete action from dialog
-// TODO add delete option to list
-
 const ClientRoles = (props: Props) => {
     const {
         clientId,
