@@ -17,6 +17,8 @@ interface State {
     selectedClient?: FullUserClient;
 }
 
+// TODO how do I add a new client if I don't have that client's roles
+
 const UserClientsRoles = (props: Props) => {
     const {
         clients,
