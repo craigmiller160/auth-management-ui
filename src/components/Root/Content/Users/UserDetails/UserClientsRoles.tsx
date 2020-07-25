@@ -10,6 +10,7 @@ import { Typography } from '@material-ui/core';
 
 interface Props {
     clients: Array<FullUserClient>;
+    updateClients: (clients: Array<FullUserClient>) => void;
 }
 
 interface State {
@@ -18,7 +19,8 @@ interface State {
 
 const UserClientsRoles = (props: Props) => {
     const {
-        clients
+        clients,
+        updateClients
     } = props;
 
     const [state, setState] = useImmer<State>({});

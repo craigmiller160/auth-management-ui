@@ -62,6 +62,12 @@ const UserDetails = () => {
     });
     const watchPassword = watch('password', '');
 
+    const updateClients = (clients: Array<FullUserClient>) => {
+        setState((draft) => {
+            draft.clients = clients;
+        });
+    };
+
     const doSubmit = async (action: () => Promise<Option<any>>) => {
         const result = await action();
         if (isSome(result)) {
@@ -217,7 +223,10 @@ const UserDetails = () => {
                             rules={ { required: 'Required' } }
                         />
                     </Grid>
-                    <UserClientsRoles clients={ state.clients } />
+                    <UserClientsRoles
+                        clients={ state.clients }
+                        updateClients={ updateClients }
+                    />
                     <SectionHeader title="Actions" />
                     <Grid
                         container
