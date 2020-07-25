@@ -48,6 +48,18 @@ const UserClientsRoles = (props: Props) => {
         active: state.selectedClient?.client?.id === fullClient.client.id
     }));
 
+    const roleItems: Array<Item> = state.selectedClient ?
+        state.selectedClient.userRoles.map((role) => ({
+            click: () => {},
+            text: {
+                primary: role.name
+            },
+            secondaryAction: {
+                text: 'Remove',
+                click: () => {}
+            }
+        })) : [];
+
     return (
         <div>
             <Grid
@@ -72,6 +84,18 @@ const UserClientsRoles = (props: Props) => {
                         {
                             state.selectedClient.allRoles.length === 0 &&
                             <Typography variant="h6">No Roles</Typography>
+                        }
+                        {
+                            state.selectedClient.allRoles.length > 0 &&
+                            <>
+                                <List items={ roleItems } />
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                >
+                                    Add Role
+                                </Button>
+                            </>
                         }
                     </Grid>
                 }
