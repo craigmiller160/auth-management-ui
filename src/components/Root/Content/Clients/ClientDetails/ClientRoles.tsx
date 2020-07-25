@@ -30,7 +30,7 @@ interface State {
     roleIdToDelete: number;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles({ // TODO delete this
     ListItem: {
         cursor: 'pointer',
         '&:hover': {
