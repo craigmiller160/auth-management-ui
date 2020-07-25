@@ -6,6 +6,7 @@ import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { useImmer } from 'use-immer';
 import { Business } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 
 interface Props {
     clients: Array<FullUserClient>;
@@ -68,6 +69,10 @@ const UserClientsRoles = (props: Props) => {
                     state.selectedClient &&
                     <Grid item md={ 5 }>
                         <SectionHeader title="Roles" />
+                        {
+                            state.selectedClient.allRoles.length === 0 &&
+                            <Typography variant="h6">No Roles</Typography>
+                        }
                     </Grid>
                 }
             </Grid>
