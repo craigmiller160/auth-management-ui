@@ -1,9 +1,12 @@
 import React from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
+import { List } from '@material-ui/core';
+import { FullUserClient } from '../../../../../types/api';
+import ListItem from '@material-ui/core/ListItem';
 
 interface Props {
-    clients: object;
+    clients: Array<FullUserClient>;
 }
 
 const UserClientsRoles = (props: Props) => {
@@ -19,6 +22,17 @@ const UserClientsRoles = (props: Props) => {
             >
                 <Grid item md={ 5 }>
                     <SectionHeader title="Clients" />
+                    <List>
+                        {
+                            clients.map((fullClient, index) => (
+                                <ListItem
+                                    key={ index }
+                                >
+                                    ABC
+                                </ListItem>
+                            ))
+                        }
+                    </List>
                 </Grid>
                 <Grid item md={ 2 } />
                 <Grid item md={ 5 }>
