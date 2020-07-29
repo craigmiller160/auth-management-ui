@@ -8,10 +8,10 @@ import './Clients.scss';
 import Table from '../../../ui/Table';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientListResponse, ClientResponse } from '../../../../types/graphApi';
+import { ClientListResponse, ClientListItem } from '../../../../types/graphApi';
 
 interface State {
-    clients: Array<ClientResponse>;
+    clients: Array<ClientListItem>;
 }
 
 const header = ['Name', 'Key'];
@@ -27,7 +27,7 @@ const Clients = () => {
             const clients = pipe(
                 await getAllClients(),
                 map((list: ClientListResponse) => list.clients),
-                getOrElse((): Array<ClientResponse> => ([]))
+                getOrElse((): Array<ClientListItem> => ([]))
             );
             setState({
                 clients: clients
@@ -44,8 +44,8 @@ const Clients = () => {
             .map((client) => ({
                 click: () => history.push(`/clients/${client.id}`),
                 items: [
-                    client.name ?? '',
-                    client.clientKey ?? ''
+                    client.name,
+                    client.clientKey
                 ]
             })),
     [state.clients, history]);

@@ -2,18 +2,25 @@ export interface GraphQLQueryResponse<T> {
     data: T
 }
 
-export interface ClientResponse {
-    accessTokenTimeoutSecs?: number;
-    allowAuthCode?: boolean;
-    allowClientCredentials?: boolean;
-    allowPassword?: boolean;
-    clientKey?: string;
-    enabled?: boolean;
-    id?: number;
-    name?: string;
-    refreshTokenTimeoutSecs?: number;
+export interface ClientListItem {
+    id: number;
+    name: string;
+    clientKey: string;
 }
 
 export interface ClientListResponse {
-    clients: Array<ClientResponse>;
+    clients: Array<ClientListItem>;
+}
+
+export interface ClientDetails {
+    id: number;
+    name: string;
+    clientKey: string;
+    clientSecret: string;
+    enabled: boolean;
+    allowAuthCode: boolean;
+    allowClientCredentials: boolean;
+    allowPassword: boolean;
+    accessTokenTimeoutSecs: number;
+    refreshTokenTimeoutSecs: number;
 }

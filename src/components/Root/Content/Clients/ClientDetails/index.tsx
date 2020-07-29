@@ -26,7 +26,7 @@ import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse } from 'fp-ts/es6/Either';
-import { ClientResponse } from '../../../../../types/graphApi';
+import { ClientDetails } from '../../../../../types/graphApi';
 
 interface State {
     clientId: number;
@@ -40,12 +40,12 @@ interface MatchParams {
     id: string;
 }
 
-interface ClientForm extends Omit<ClientResponse, 'id'> {
+interface ClientForm extends Omit<ClientDetails, 'id'> {
     clientSecret: string;
 }
 const NEW = 'new';
 
-const defaultClient: Client = {
+const defaultClient: ClientDetails = {
     id: 0,
     name: '',
     clientKey: '',
@@ -58,7 +58,7 @@ const defaultClient: Client = {
     accessTokenTimeoutSecs: 0
 };
 
-const ClientDetails = () => {
+const ClientDetailsComponent = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
@@ -125,9 +125,9 @@ const ClientDetails = () => {
                     });
                 }
             } else {
-                const result: ClientResponse = pipe(
+                const result: ClientDetails = pipe(
                     await getClient(parseInt(id)),
-                    getOrElse((): ClientResponse => ({}))
+                    getOrElse((): ClientDetails => defaultClient)
                 );
                 reset(result);
                 setState((draft) => {
@@ -369,4 +369,4 @@ const ClientDetails = () => {
     );
 };
 
-export default ClientDetails;
+export default ClientDetailsComponent;
