@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../../../../../types/api';
+import { ClientUser } from '../../../../../types/api';
 import Grid from '@material-ui/core/Grid';
 import { SectionHeader } from '../../../../ui/Header';
 import PersonIcon from '@material-ui/icons/Person';
@@ -7,7 +7,7 @@ import { useHistory } from 'react-router';
 import List, { Item } from '../../../../ui/List';
 
 interface Props {
-    users: Array<User>;
+    users: Array<ClientUser>;
 }
 
 const ClientUsers = (props: Props) => {
