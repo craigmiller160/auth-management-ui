@@ -3,7 +3,7 @@ import graphApi from './GraphApi';
 import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { BaseClient, ClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
+import { ClientDetails, FullClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
 import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
 import { Client, RoleList } from '../types/oldApi';
 
@@ -21,7 +21,7 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
+export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
         await graphApi.graphql<ClientDetailsWrapper>({
             payload: `
@@ -70,9 +70,9 @@ export const getRolesForClient = async (clientId: number): Promise<Either<Error,
         map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
     );
 
-export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, BaseClient>> =>
+export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
     pipe(
-        await graphApi.graphql<BaseClient>({
+        await graphApi.graphql<ClientDetails>({
             payload: `
                 mutation {
                     updateClient(clientId: ${clientId}, client: {
@@ -107,13 +107,6 @@ export const generateGuid = (): Promise<Option<string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
-    });
-
-export const updateClient = (id: number, client: Client): Promise<Option<Client>> =>
-    api.put<Client,Client>({
-        uri: `/clients/${id}`,
-        body: client,
-        errorMsg: `Error updating client ${id}`
     });
 
 export const createClient = (client: Client): Promise<Option<Client>> =>

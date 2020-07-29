@@ -20,42 +20,27 @@ export interface ClientUser {
     lastName: string;
 }
 
-export interface ClientDetails {
-    id: number;
+interface BaseClient {
     name: string;
     clientKey: string;
-    clientSecret: string;
     enabled: boolean;
     allowAuthCode: boolean;
     allowClientCredentials: boolean;
     allowPassword: boolean;
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
+}
+
+export interface ClientDetails extends BaseClient {
+    id: number;
+}
+
+export interface FullClientDetails extends ClientDetails {
+    id: number;
     roles: Array<ClientRole>;
     users: Array<ClientUser>;
 }
 
-export interface ClientInput {
-    name: string;
-    clientKey: string;
+export interface ClientInput extends BaseClient {
     clientSecret: string;
-    enabled: boolean;
-    allowAuthCode: boolean;
-    allowClientCredentials: boolean;
-    allowPassword: boolean;
-    accessTokenTimeoutSecs: number;
-    refreshTokenTimeoutSecs: number;
-}
-
-export interface BaseClient {
-    id: number;
-    name: string;
-    clientKey: string;
-    clientSecret: string;
-    enabled: boolean;
-    allowAuthCode: boolean;
-    allowClientCredentials: boolean;
-    allowPassword: boolean;
-    accessTokenTimeoutSecs: number;
-    refreshTokenTimeoutSecs: number;
 }

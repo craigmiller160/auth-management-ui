@@ -6,7 +6,7 @@ import {
     generateGuid,
     getClient,
     getRoles,
-    getRolesForClient
+    getRolesForClient, updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import { useForm } from 'react-hook-form';
@@ -23,8 +23,8 @@ import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientDetails, ClientRole, ClientUser } from '../../../../../types/client';
+import { Either, getOrElse, isRight, map } from 'fp-ts/es6/Either';
+import { FullClientDetails, ClientRole, ClientUser, ClientInput, ClientDetails } from '../../../../../types/client';
 
 interface State {
     clientId: number;
@@ -38,16 +38,15 @@ interface MatchParams {
     id: string;
 }
 
-interface ClientForm extends Omit<ClientDetails, 'id'|'users'|'roles'> {
+interface ClientForm extends Omit<ClientDetails, 'id'> {
     clientSecret: string;
 }
 const NEW = 'new';
 
-const defaultClient: Omit<ClientDetails,'users'|'roles'> = {
+const defaultClient: ClientDetails = {
     id: 0,
     name: '',
     clientKey: '',
-    clientSecret: '',
     enabled: false,
     allowClientCredentials: false,
     allowAuthCode: false,
@@ -55,7 +54,7 @@ const defaultClient: Omit<ClientDetails,'users'|'roles'> = {
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
-const defaultFullClient: ClientDetails = {
+const defaultFullClient: FullClientDetails = {
     ...defaultClient,
     users: [],
     roles: []
@@ -79,29 +78,28 @@ const ClientDetailsComponent = () => {
         defaultValues: defaultClient
     });
 
-    const doSubmit = async (action: () => Promise<Option<any>>) => {
+    const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
         const result = await action();
-        if (isSome(result)) {
+        console.log(result); // TODO delete this
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/clients');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${result.value.id}`));
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
         }
     };
 
     const onSubmit = (values: ClientForm) => {
-        // const payload: Client = {
-        //     ...values,
-        //     id: state.clientId
-        // };
-        //
-        // if (id === NEW) {
-        //     doSubmit(() => createClient(payload));
-        // } else {
-        //     doSubmit(() => updateClient(parseInt(id), payload));
-        // }
-        // TODO fix this
+        const payload: ClientInput = {
+            ...values
+        };
+
+        if (id === NEW) {
+            // doSubmit(() => createClient(payload));
+        } else {
+            doSubmit(() => updateClient(parseInt(id), payload));
+        }
     };
 
     const reloadRoles = async () => {
@@ -129,9 +127,9 @@ const ClientDetailsComponent = () => {
                     });
                 }
             } else {
-                const client: ClientDetails = pipe(
+                const client: FullClientDetails = pipe(
                     await getClient(parseInt(id)),
-                    getOrElse((): ClientDetails => defaultFullClient)
+                    getOrElse((): FullClientDetails => defaultFullClient)
                 );
                 reset(client);
                 setState((draft) => {
