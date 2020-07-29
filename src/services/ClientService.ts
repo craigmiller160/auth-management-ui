@@ -169,29 +169,3 @@ export const generateGuid = (): Promise<Option<string>> =>
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
     });
-
-export const createRole = (clientId: number, role: ClientRole): Promise<Option<ClientRole>> =>
-    api.post<ClientRole,ClientRole>({
-        uri: `/clients/${clientId}/roles`,
-        body: role,
-        errorMsg: `Error creating role for client ${clientId}`
-    });
-
-export const updateRole = (clientId: number, roleId: number, role: ClientRole): Promise<Option<ClientRole>> =>
-    api.put<ClientRole,ClientRole>({
-        uri: `/clients/${clientId}/roles/${roleId}`,
-        body: role,
-        errorMsg: `Error updating role ${roleId} for client ${clientId}`
-    });
-
-export const deleteRole = (clientId: number, roleId: number): Promise<Option<ClientRole>> =>
-    api.delete<ClientRole>({
-        uri: `/clients/${clientId}/roles/${roleId}`,
-        errorMsg: `Error deleting role ${roleId} for client ${clientId}`
-    });
-
-export const getRoles = (clientId: number): Promise<Option<RoleList>> =>
-    api.get<RoleList>({
-        uri: `/clients/${clientId}/roles`,
-        errorMsg: `Error getting roles for client ${clientId}`
-    });

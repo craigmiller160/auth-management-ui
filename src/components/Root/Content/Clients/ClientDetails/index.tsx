@@ -6,7 +6,6 @@ import {
     deleteClient,
     generateGuid,
     getClient,
-    getRoles,
     getRolesForClient, updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';

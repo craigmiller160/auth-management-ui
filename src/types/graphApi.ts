@@ -1,4 +1,5 @@
 import { ClientDetails, ClientRole, FullClientDetails } from './client';
+import { Role } from './role';
 
 export interface GraphQLError {
     message: string;
@@ -27,4 +28,16 @@ export interface CreateClientWrapper {
 
 export interface DeleteClientWrapper {
     deleteClient: ClientDetails;
+}
+
+export interface CreateRoleWrapper {
+    createRole: Role;
+}
+
+export interface UpdateRoleWrapper {
+    updateRole: Role;
+}
+
+export interface DeleteRoleWrapper {
+    deleteRole: Role;
 }
