@@ -1,5 +1,4 @@
 import api from './Api';
-import graphApi from './GraphApi';
 import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
@@ -8,7 +7,7 @@ import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
 import { Client, RoleList } from '../types/oldApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
-    graphApi.graphql<ClientListResponse>({
+    api.graphql<ClientListResponse>({
         payload: `
             query {
                 clients {
@@ -23,7 +22,7 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
 
 export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
-        await graphApi.graphql<ClientDetailsWrapper>({
+        await api.graphql<ClientDetailsWrapper>({
             payload: `
                 query {
                     client(clientId: ${clientId}) {
@@ -56,7 +55,7 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
 
 export const getRolesForClient = async (clientId: number): Promise<Either<Error, Array<ClientRole>>> =>
     pipe(
-        await graphApi.graphql<RolesForClientWrapper>({
+        await api.graphql<RolesForClientWrapper>({
             payload: `
                 query {
                     rolesForClient(clientId: ${clientId}) {
@@ -72,7 +71,7 @@ export const getRolesForClient = async (clientId: number): Promise<Either<Error,
 
 export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
     pipe(
-        await graphApi.graphql<ClientDetails>({
+        await api.graphql<ClientDetails>({
             payload: `
                 mutation {
                     updateClient(clientId: ${clientId}, client: {
