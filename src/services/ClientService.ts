@@ -3,6 +3,7 @@ import graphApi from './GraphApi';
 import { Client, ClientList, FullClient, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 import { ClientListResponse } from '../types/graphApi';
+import { Either } from 'fp-ts/es6/Either';
 
 export const getClients = (): Promise<Option<ClientList>> =>
     api.get<ClientList>({
@@ -10,7 +11,7 @@ export const getClients = (): Promise<Option<ClientList>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClients2 = (): Promise<Option<ClientListResponse>> =>
+export const getClients2 = (): Promise<Either<Error,ClientListResponse>> =>
     graphApi.graphql<ClientListResponse>(`
         query {
             clients {

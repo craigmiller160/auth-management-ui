@@ -1,20 +1,22 @@
 import api from './Api';
-import { Option, map } from 'fp-ts/es6/Option';
 import { GraphQLQueryResponse } from '../types/graphApi';
+import { Either, map } from 'fp-ts/es6/Either';
+import { pipe } from 'fp-ts/es6/pipeable';
 
-const graphql = async <R> (payload: string): Promise<Option<R>> => {
-    const resultOption = await api.post<string,GraphQLQueryResponse<R>>({
-        uri: '/graphql',
-        errorMsg: 'Error with GraphQL call',
-        body: payload,
-        config: {
-            headers: {
-                'Content-Type': 'application/graphql'
+const graphql = async <R> (payload: string): Promise<Either<Error, R>> =>
+    pipe(
+        await api.post2<string,GraphQLQueryResponse<R>>({
+            uri: '/graphql',
+            errorMsg: 'Error with GraphQL call',
+            body: payload,
+            config: {
+                headers: {
+                    'Content-Type': 'application/graphql'
+                }
             }
-        }
-    });
-    return map((res: GraphQLQueryResponse<R>) => res.data)(resultOption);
-};
+        }),
+        map((res: GraphQLQueryResponse<R>) => res.data)
+    );
 
 export default {
     graphql
