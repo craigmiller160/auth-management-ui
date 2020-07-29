@@ -43,7 +43,10 @@ const Clients = () => {
         state.clients
             .map((client) => ({
                 click: () => history.push(`/clients/${client.id}`),
-                items: [client.name ?? '', client.clientKey ?? '']
+                items: [
+                    client.name ?? '',
+                    client.clientKey ?? ''
+                ]
             })),
     [state.clients, history]);
 
