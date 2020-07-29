@@ -164,7 +164,7 @@ const ClientDetailsComponent = () => {
 
     const doDelete = async () => {
         const result = await deleteClient(parseInt(id));
-        if (isSome(result)) {
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });

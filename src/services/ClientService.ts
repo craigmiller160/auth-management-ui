@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { ClientDetails, FullClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
 import {
     ClientDetailsWrapper,
-    CreateClientWrapper,
+    CreateClientWrapper, DeleteClientWrapper,
     RolesForClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
@@ -140,17 +140,34 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
         map((wrapper: CreateClientWrapper) => wrapper.createClient)
     );
 
+export const deleteClient = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await api.graphql<DeleteClientWrapper>({
+            payload: `
+                mutation {
+                    deleteClient(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: `Error deleting client ${clientId}`
+        }),
+        map((wrapper: DeleteClientWrapper) => wrapper.deleteClient)
+    );
+
 // TODO refactor this at the end to use Either
 export const generateGuid = (): Promise<Option<string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
-    });
-
-export const deleteClient = (id: number): Promise<Option<Client>> =>
-    api.delete<Client>({
-        uri: `/clients/${id}`,
-        errorMsg: `Error deleting client ${id}`
     });
 
 export const createRole = (clientId: number, role: ClientRole): Promise<Option<ClientRole>> =>

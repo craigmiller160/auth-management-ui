@@ -24,3 +24,7 @@ export interface UpdateClientWrapper {
 export interface CreateClientWrapper {
     createClient: ClientDetails;
 }
+
+export interface DeleteClientWrapper {
+    deleteClient: ClientDetails;
+}
