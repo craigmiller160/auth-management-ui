@@ -24,7 +24,7 @@ import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientDetails, ClientRole, ClientUser } from '../../../../../types/api';
+import { ClientDetails, ClientRole, ClientUser } from '../../../../../types/client';
 
 interface State {
     clientId: number;

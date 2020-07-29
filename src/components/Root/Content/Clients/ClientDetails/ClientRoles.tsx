@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClientRole } from '../../../../../types/api';
+import { ClientRole } from '../../../../../types/client';
 import { SectionHeader } from '../../../../ui/Header';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import { isSome, Option } from 'fp-ts/es6/Option';
 import { createRole, deleteRole, updateRole } from '../../../../../services/ClientService';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import List, { Item } from '../../../../ui/List';
+import { Role } from '../../../../../types/role';
 
 interface Props {
     clientId: number;
@@ -19,7 +20,7 @@ interface Props {
 
 interface State {
     showRoleDialog: boolean;
-    selectedRole: ClientRole;
+    selectedRole: Role;
     showDeleteDialog: boolean;
     roleIdToDelete: number;
 }
@@ -43,7 +44,10 @@ const ClientRoles = (props: Props) => {
 
     const selectRole = (role: ClientRole) => {
         setState((draft) => {
-            draft.selectedRole = role;
+            draft.selectedRole = {
+                ...role,
+                clientId
+            };
             draft.showRoleDialog = true;
         });
     };
@@ -70,9 +74,9 @@ const ClientRoles = (props: Props) => {
         });
         let result: Option<ClientRole>;
         if (role.id) {
-            result = await updateRole(role.clientId, role.id, role);
+            result = await updateRole(clientId, role.id, role);
         } else {
-            result = await createRole(role.clientId, role);
+            result = await createRole(clientId, role);
         }
 
         if (isSome(result)) {

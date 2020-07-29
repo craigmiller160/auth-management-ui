@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClientUser } from '../../../../../types/api';
+import { ClientUser } from '../../../../../types/client';
 import Grid from '@material-ui/core/Grid';
 import { SectionHeader } from '../../../../ui/Header';
 import PersonIcon from '@material-ui/icons/Person';

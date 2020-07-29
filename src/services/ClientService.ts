@@ -3,7 +3,7 @@ import graphApi from './GraphApi';
 import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { ClientDetails, ClientListResponse, ClientRole } from '../types/api';
+import { ClientDetails, ClientListResponse, ClientRole } from '../types/client';
 import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
 import { Client, RoleList } from '../types/oldApi';
 

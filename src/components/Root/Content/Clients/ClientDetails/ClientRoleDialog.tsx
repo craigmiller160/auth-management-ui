@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import { useForm } from 'react-hook-form';
 import './ClientRoleDialog.scss';
-import { ClientRole } from '../../../../../types/api';
+import { ClientRole } from '../../../../../types/client';
 import TextField from '../../../../ui/Form/TextField';
 
 interface Props {
