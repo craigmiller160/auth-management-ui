@@ -8,7 +8,7 @@ import './Clients.scss';
 import Table from '../../../ui/Table';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientListResponse, ClientListItem } from '../../../../types/graphApi';
+import { ClientListItem, ClientListResponse } from '../../../../types/api';
 
 interface State {
     clients: Array<ClientListItem>;
