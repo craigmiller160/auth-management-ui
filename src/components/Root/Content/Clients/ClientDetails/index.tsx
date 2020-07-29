@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import {
+    createClient,
     deleteClient,
     generateGuid,
     getClient,
@@ -95,7 +96,7 @@ const ClientDetailsComponent = () => {
         };
 
         if (id === NEW) {
-            // doSubmit(() => createClient(payload));
+            doSubmit(() => createClient(payload));
         } else {
             doSubmit(() => updateClient(parseInt(id), payload));
         }
