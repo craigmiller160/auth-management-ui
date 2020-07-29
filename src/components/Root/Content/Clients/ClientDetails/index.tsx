@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
-import { deleteClient, generateGuid, getClient, getRoles } from '../../../../../services/ClientService';
+import {
+    deleteClient,
+    generateGuid,
+    getClient,
+    getRoles,
+    getRolesForClient
+} from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
@@ -99,13 +105,13 @@ const ClientDetailsComponent = () => {
     };
 
     const reloadRoles = async () => {
-        const result = await getRoles(parseInt(id)); // TODO change this one
-        if (isSome(result)) {
-            setState((draft) => {
-                // TODO restore this
-                // draft.roles = result.value?.roles ?? [];
-            });
-        }
+        const roles = pipe(
+            await getRolesForClient(parseInt(id)),
+            getOrElse((): Array<ClientRole> => ([]))
+        );
+        setState((draft) => {
+            draft.roles = roles;
+        });
     };
 
     useEffect(() => {

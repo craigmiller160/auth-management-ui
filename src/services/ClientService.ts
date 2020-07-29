@@ -1,10 +1,11 @@
 import api from './Api';
 import graphApi from './GraphApi';
-import { Client, ClientDetails, ClientRole, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
-import { ClientDetailsWrapper, ClientListResponse } from '../types/graphApi';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import { ClientDetails, ClientListResponse, ClientRole } from '../types/api';
+import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
+import { Client, RoleList } from '../types/oldApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
     graphApi.graphql<ClientListResponse>({
@@ -20,37 +21,53 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = async (id: number): Promise<Either<Error, ClientDetails>> =>
+export const getClient = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
     pipe(
         await graphApi.graphql<ClientDetailsWrapper>({
             payload: `
-            query {
-                client(id: ${id}) {
-                    id
-                    name
-                    clientKey
-                    accessTokenTimeoutSecs
-                    allowAuthCode
-                    allowClientCredentials
-                    allowPassword
-                    enabled
-                    refreshTokenTimeoutSecs
-                    roles {
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                        roles {
+                            id
+                            name
+                        }
+                        users {
+                            id
+                            email
+                            firstName
+                            lastName
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error getting client ${clientId}`
+        }),
+        map((wrapper: ClientDetailsWrapper) => wrapper.client)
+    );
+
+export const getRolesForClient = async (clientId: number): Promise<Either<Error, Array<ClientRole>>> =>
+    pipe(
+        await graphApi.graphql<RolesForClientWrapper>({
+            payload: `
+                query {
+                    rolesForClient(clientId: ${clientId}) {
                         id
                         name
                     }
-                    users {
-                        id
-                        email
-                        firstName
-                        lastName
-                    }
                 }
-            }
-        `,
-            errorMsg: `Error getting client ${id}`
+            `,
+            errorMsg: `Error getting roles for client ${clientId}`
         }),
-        map((wrapper: ClientDetailsWrapper) => wrapper.client)
+        map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
     );
 
 // TODO refactor this at the end to use Either
