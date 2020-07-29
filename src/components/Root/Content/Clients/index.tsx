@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Client, ClientList } from '../../../../types/api';
 import { getClients } from '../../../../services/ClientService';
-import { getOrElse, isSome } from 'fp-ts/es6/Option';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './Clients.scss';
 import Table from '../../../ui/Table';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { ClientListResponse, ClientResponse } from '../../../../types/graphApi';
 
 interface State {
-    clients: Array<Client>;
+    clients: Array<ClientResponse>;
 }
 
 const header = ['Name', 'Key'];
@@ -23,10 +25,13 @@ const Clients = () => {
 
     useEffect(() => {
         const action = async () => {
-            const result = await getClients();
-            const clients = getOrElse((): ClientList => ({ clients: [] }))(result);
+            const clients = pipe(
+                await getClients(),
+                map((list: ClientListResponse) => list.clients),
+                getOrElse((): Array<ClientResponse> => ([]))
+            );
             setState({
-                clients: clients.clients
+                clients: clients
             });
         };
 
@@ -39,7 +44,7 @@ const Clients = () => {
         state.clients
             .map((client) => ({
                 click: () => history.push(`/clients/${client.id}`),
-                items: [client.name, client.clientKey]
+                items: [client.name ?? '', client.clientKey ?? '']
             })),
     [state.clients, history]);
 

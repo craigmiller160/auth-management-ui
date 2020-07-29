@@ -5,18 +5,13 @@ import { Option } from 'fp-ts/es6/Option';
 import { ClientListResponse } from '../types/graphApi';
 import { Either } from 'fp-ts/es6/Either';
 
-export const getClients = (): Promise<Option<ClientList>> =>
-    api.get<ClientList>({
-        uri: '/clients',
-        errorMsg: 'Error getting all clients'
-    });
-
-export const getClients2 = (): Promise<Either<Error,ClientListResponse>> =>
+export const getClients= (): Promise<Either<Error,ClientListResponse>> =>
     graphApi.graphql<ClientListResponse>(`
         query {
             clients {
                 id
                 name
+                clientKey
             }
         }
     `);
