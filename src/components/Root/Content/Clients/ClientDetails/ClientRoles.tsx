@@ -10,6 +10,8 @@ import { isSome, Option } from 'fp-ts/es6/Option';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import List, { Item } from '../../../../ui/List';
 import { Role } from '../../../../../types/role';
+import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
+import { Either, isRight } from 'fp-ts/es6/Either';
 
 interface Props {
     clientId: number;
@@ -71,14 +73,14 @@ const ClientRoles = (props: Props) => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });
-        let result: Option<ClientRole>;
+        let result: Either<Error, ClientRole>;
         if (role.id) {
             result = await updateRole(clientId, role.id, role);
         } else {
             result = await createRole(clientId, role);
         }
 
-        if (isSome(result)) {
+        if (isRight(result)) {
             reloadRoles();
         }
     };
@@ -87,8 +89,8 @@ const ClientRoles = (props: Props) => {
         setState((draft) => {
             draft.showDeleteDialog = false;
         });
-        const result = await deleteRole(clientId, state.roleIdToDelete);
-        if (isSome(result)) {
+        const result = await deleteRole(state.roleIdToDelete);
+        if (isRight(result)) {
             reloadRoles();
         }
     };
