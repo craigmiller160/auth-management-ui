@@ -34,3 +34,28 @@ export interface ClientDetails {
     roles: Array<ClientRole>;
     users: Array<ClientUser>;
 }
+
+export interface ClientInput {
+    name: string;
+    clientKey: string;
+    clientSecret: string;
+    enabled: boolean;
+    allowAuthCode: boolean;
+    allowClientCredentials: boolean;
+    allowPassword: boolean;
+    accessTokenTimeoutSecs: number;
+    refreshTokenTimeoutSecs: number;
+}
+
+export interface BaseClient {
+    id: number;
+    name: string;
+    clientKey: string;
+    clientSecret: string;
+    enabled: boolean;
+    allowAuthCode: boolean;
+    allowClientCredentials: boolean;
+    allowPassword: boolean;
+    accessTokenTimeoutSecs: number;
+    refreshTokenTimeoutSecs: number;
+}

@@ -3,7 +3,7 @@ import graphApi from './GraphApi';
 import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { ClientDetails, ClientListResponse, ClientRole } from '../types/client';
+import { BaseClient, ClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
 import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
 import { Client, RoleList } from '../types/oldApi';
 
@@ -68,6 +68,38 @@ export const getRolesForClient = async (clientId: number): Promise<Either<Error,
             errorMsg: `Error getting roles for client ${clientId}`
         }),
         map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
+    );
+
+export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, BaseClient>> =>
+    pipe(
+        await graphApi.graphql<BaseClient>({
+            payload: `
+                mutation {
+                    updateClient(clientId: ${clientId}, client: {
+                        name: ${clientInput.name},
+                        clientKey: ${clientInput.clientKey},
+                        clientSecret: ${clientInput.clientSecret},
+                        enabled: ${clientInput.enabled},
+                        allowAuthCode: ${clientInput.allowAuthCode},
+                        allowClientCredentials: ${clientInput.allowClientCredentials},
+                        allowPassword: ${clientInput.allowPassword},
+                        accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                    }) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: `Error updating client ${clientId}`
+        })
     );
 
 // TODO refactor this at the end to use Either
