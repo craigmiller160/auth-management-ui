@@ -1,12 +1,24 @@
 import api from './Api';
+import graphApi from './GraphApi';
 import { Client, ClientList, FullClient, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
+import { ClientListResponse } from '../types/graphApi';
 
 export const getClients = (): Promise<Option<ClientList>> =>
     api.get<ClientList>({
         uri: '/clients',
         errorMsg: 'Error getting all clients'
     });
+
+export const getClients2 = (): Promise<Option<ClientListResponse>> =>
+    graphApi.graphql<ClientListResponse>(`
+        query {
+            clients {
+                id
+                name
+            }
+        }
+    `);
 
 export const getClient = (id: number): Promise<Option<FullClient>> =>
     api.get<FullClient>({
