@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
-import { FullUserClient } from '../../../../../types/oldApi';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { useImmer } from 'use-immer';
 import { Business } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
+import { UserClient } from '../../../../../types/user';
 
 interface Props {
-    clients: Array<FullUserClient>;
-    updateClients: (clients: Array<FullUserClient>) => void;
+    clients: Array<UserClient>;
+    updateClients: (clients: Array<UserClient>) => void;
 }
 
 interface State {
-    selectedClient?: FullUserClient;
+    selectedClient?: UserClient;
 }
 
 // TODO how do I add a new client if I don't have that client's roles
@@ -33,23 +33,23 @@ const UserClientsRoles = (props: Props) => {
         });
     }, [clients, setState]);
 
-    const clientClick = (fullClient: FullUserClient) => {
+    const clientClick = (client: UserClient) => {
         setState((draft) => {
-            draft.selectedClient = fullClient;
+            draft.selectedClient = client;
         });
     };
 
-    const clientItems: Array<Item> = clients.map((fullClient) => ({
-        click: () => clientClick(fullClient),
+    const clientItems: Array<Item> = clients.map((client) => ({
+        click: () => clientClick(client),
         avatar: () => <Business />,
         text: {
-            primary: fullClient.client.name
+            primary: client.name
         },
         secondaryAction: {
             text: 'Remove',
             click: () => {}
         },
-        active: state.selectedClient?.client?.id === fullClient.client.id
+        active: state.selectedClient?.id === client.id
     }));
 
     const roleItems: Array<Item> = state.selectedClient ?

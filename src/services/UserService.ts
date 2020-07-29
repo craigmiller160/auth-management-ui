@@ -32,6 +32,19 @@ export const getUser = async (userId: number): Promise<Either<Error, FullUserDet
                         email
                         firstName
                         lastName
+                        clients {
+                            id
+                            name
+                            clientKey
+                            allRoles {
+                                id
+                                name
+                            }
+                            userRoles {
+                                id
+                                name
+                            }
+                        }
                     }
                 }
             `,

@@ -11,17 +11,17 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import TextField from '../../../../ui/Form/TextField';
-import { UserDetails, UserInput } from '../../../../../types/user';
+import { FullUserDetails, UserClient, UserDetails, UserInput } from '../../../../../types/user';
 import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
+import UserClientsRoles from './UserClientsRoles';
 
 interface State {
     userId: number;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
-    // TODO restore this
-    // clients: Array<FullUserClient>;
+    clients: Array<UserClient>;
 }
 
 interface MatchParams {
@@ -40,6 +40,11 @@ const defaultUser: UserDetails = {
     lastName: ''
 };
 
+const defaultFullUser: FullUserDetails = {
+    ...defaultUser,
+    clients: []
+};
+
 const defaultForm: UserForm = {
     ...defaultUser,
     password: '',
@@ -55,8 +60,7 @@ const UserDetailsComponent = () => {
         userId: id !== NEW ? parseInt(id) : 0,
         shouldBlockNavigation: true,
         showDeleteDialog: false,
-        // TODO restore this
-        // clients: []
+        clients: []
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -65,12 +69,11 @@ const UserDetailsComponent = () => {
     });
     const watchPassword = watch('password', '');
 
-    // TODO restore this
-    // const updateClients = (clients: Array<FullUserClient>) => {
-    //     setState((draft) => {
-    //         draft.clients = clients;
-    //     });
-    // };
+    const updateClients = (clients: Array<UserClient>) => {
+        setState((draft) => {
+            draft.clients = clients;
+        });
+    };
 
     const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
         const result = await action();
@@ -101,13 +104,12 @@ const UserDetailsComponent = () => {
             } else {
                 const user = pipe(
                     await getUser(parseInt(id)),
-                    getOrElse(() => defaultUser)
+                    getOrElse(() => defaultFullUser)
                 );
                 reset(user);
-                // TODO restore this
-                // setState((draft) => {
-                //     draft.clients = result.value.clients;
-                // });
+                setState((draft) => {
+                    draft.clients = user.clients
+                });
             }
         };
 
@@ -229,10 +231,10 @@ const UserDetailsComponent = () => {
                             rules={ { required: 'Required' } }
                         />
                     </Grid>
-                    {/*<UserClientsRoles*/}
-                    {/*    clients={ state.clients }*/}
-                    {/*    updateClients={ updateClients }*/}
-                    {/*/>*/}
+                    <UserClientsRoles
+                        clients={ state.clients }
+                        updateClients={ updateClients }
+                    />
                     <SectionHeader title="Actions" />
                     <Grid
                         container
