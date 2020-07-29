@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { getClients } from '../../../../services/ClientService';
+import { getAllClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
@@ -25,7 +25,7 @@ const Clients = () => {
     useEffect(() => {
         const action = async () => {
             const clients = pipe(
-                await getClients(),
+                await getAllClients(),
                 map((list: ClientListResponse) => list.clients),
                 getOrElse((): Array<ClientResponse> => ([]))
             );

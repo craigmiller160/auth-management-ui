@@ -5,16 +5,19 @@ import { Option } from 'fp-ts/es6/Option';
 import { ClientListResponse } from '../types/graphApi';
 import { Either } from 'fp-ts/es6/Either';
 
-export const getClients= (): Promise<Either<Error,ClientListResponse>> =>
-    graphApi.graphql<ClientListResponse>(`
-        query {
-            clients {
-                id
-                name
-                clientKey
+export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
+    graphApi.graphql<ClientListResponse>({
+        payload: `
+            query {
+                clients {
+                    id
+                    name
+                    clientKey
+                }
             }
-        }
-    `);
+        `,
+        errorMsg: 'Error getting all clients'
+    });
 
 export const getClient = (id: number): Promise<Option<FullClient>> =>
     api.get<FullClient>({
@@ -22,6 +25,7 @@ export const getClient = (id: number): Promise<Option<FullClient>> =>
         errorMsg: `Error getting client ${id}`
     });
 
+// TODO refactor this at the end to use Either
 export const generateGuid = (): Promise<Option<string>> =>
     api.get<string>({
         uri: '/clients/guid',

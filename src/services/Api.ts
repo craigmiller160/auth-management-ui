@@ -11,7 +11,7 @@ const instance = axios.create({
     baseURL: '/api'
 });
 
-type SuppressErrorFn = (ex: Error) => Boolean
+export type SuppressErrorFn = (ex: Error) => Boolean
 
 export interface RequestConfig {
     uri: string;
