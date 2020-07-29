@@ -24,6 +24,9 @@ import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { getOrElse } from 'fp-ts/es6/Either';
+import { ClientResponse } from '../../../../../types/graphApi';
 
 interface State {
     clientId: number;
@@ -37,7 +40,9 @@ interface MatchParams {
     id: string;
 }
 
-interface ClientForm extends Omit<Client, 'id'> { }
+interface ClientForm extends Omit<ClientResponse, 'id'> {
+    clientSecret: string;
+}
 const NEW = 'new';
 
 const defaultClient: Client = {
@@ -83,16 +88,17 @@ const ClientDetails = () => {
     };
 
     const onSubmit = (values: ClientForm) => {
-        const payload: Client = {
-            ...values,
-            id: state.clientId
-        };
-
-        if (id === NEW) {
-            doSubmit(() => createClient(payload));
-        } else {
-            doSubmit(() => updateClient(parseInt(id), payload));
-        }
+        // const payload: Client = {
+        //     ...values,
+        //     id: state.clientId
+        // };
+        //
+        // if (id === NEW) {
+        //     doSubmit(() => createClient(payload));
+        // } else {
+        //     doSubmit(() => updateClient(parseInt(id), payload));
+        // }
+        // TODO fix this
     };
 
     const reloadRoles = async () => {
@@ -119,20 +125,15 @@ const ClientDetails = () => {
                     });
                 }
             } else {
-                const result = await getClient(parseInt(id));
-                if (isSome(result)) {
-                    reset(result.value.client);
-                    setState((draft) => {
-                        draft.users = result.value.users;
-                        draft.roles = result.value.roles;
-                    });
-                } else {
-                    reset({});
-                    setState((draft) => {
-                        draft.users = [];
-                        draft.roles = [];
-                    });
-                }
+                const result: ClientResponse = pipe(
+                    await getClient(parseInt(id)),
+                    getOrElse((): ClientResponse => ({}))
+                );
+                reset(result);
+                setState((draft) => {
+                    draft.users = []; // TODO get these actually working
+                    draft.roles = [];
+                });
             }
         };
 

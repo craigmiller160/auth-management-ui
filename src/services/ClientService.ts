@@ -2,7 +2,7 @@ import api from './Api';
 import graphApi from './GraphApi';
 import { Client, FullClient, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
-import { ClientListResponse } from '../types/graphApi';
+import { ClientListResponse, ClientResponse } from '../types/graphApi';
 import { Either } from 'fp-ts/es6/Either';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
@@ -19,9 +19,23 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = (id: number): Promise<Option<FullClient>> =>
-    api.get<FullClient>({
-        uri: `/clients/${id}`,
+export const getClient = (id: number): Promise<Either<Error, ClientResponse>> =>
+    graphApi.graphql<ClientResponse>({
+        payload: `
+            query {
+                client(id: ${id}) {
+                    id
+                    name
+                    clientKey
+                    accessTokenTimeoutSecs
+                    allowAuthCode
+                    allowClientCredentials
+                    allowPassword
+                    enabled
+                    refreshTokenTimeoutSecs
+                }
+            }
+        `,
         errorMsg: `Error getting client ${id}`
     });
 
