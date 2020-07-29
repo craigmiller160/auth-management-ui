@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Client } from '../../../../types/api';
+import { Client, ClientList } from '../../../../types/api';
 import { getClients } from '../../../../services/ClientService';
-import { isSome } from 'fp-ts/es6/Option';
+import { getOrElse, isSome } from 'fp-ts/es6/Option';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
@@ -24,15 +24,10 @@ const Clients = () => {
     useEffect(() => {
         const action = async () => {
             const result = await getClients();
-            if (isSome(result)) {
-                setState({
-                    clients: result.value.clients
-                });
-            } else {
-                setState({
-                    clients: []
-                });
-            }
+            const clients = getOrElse((): ClientList => ({ clients: [] }))(result);
+            setState({
+                clients: clients.clients
+            });
         };
 
         action();

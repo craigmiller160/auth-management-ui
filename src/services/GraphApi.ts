@@ -1,5 +1,5 @@
 import api from './Api';
-import { Option, mapNullable } from 'fp-ts/es6/Option';
+import { Option, map } from 'fp-ts/es6/Option';
 import { GraphQLQueryResponse } from '../types/graphApi';
 
 const graphql = async <R> (payload: string): Promise<Option<R>> => {
@@ -13,7 +13,7 @@ const graphql = async <R> (payload: string): Promise<Option<R>> => {
             }
         }
     });
-    return mapNullable((res: GraphQLQueryResponse<R>) => res.data)(resultOption);
+    return map((res: GraphQLQueryResponse<R>) => res.data)(resultOption);
 };
 
 export default {
