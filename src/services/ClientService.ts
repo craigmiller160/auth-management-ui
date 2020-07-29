@@ -1,6 +1,6 @@
 import api from './Api';
 import graphApi from './GraphApi';
-import { Client, ClientDetails, Role, RoleList } from '../types/api';
+import { Client, ClientDetails, ClientRole, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 import { ClientDetailsWrapper, ClientListResponse } from '../types/graphApi';
 import { Either, map } from 'fp-ts/es6/Either';
@@ -35,6 +35,16 @@ export const getClient = async (id: number): Promise<Either<Error, ClientDetails
                     allowPassword
                     enabled
                     refreshTokenTimeoutSecs
+                    roles {
+                        id
+                        name
+                    }
+                    users {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
                 }
             }
         `,
@@ -70,22 +80,22 @@ export const deleteClient = (id: number): Promise<Option<Client>> =>
         errorMsg: `Error deleting client ${id}`
     });
 
-export const createRole = (clientId: number, role: Role): Promise<Option<Role>> =>
-    api.post<Role,Role>({
+export const createRole = (clientId: number, role: ClientRole): Promise<Option<ClientRole>> =>
+    api.post<ClientRole,ClientRole>({
         uri: `/clients/${clientId}/roles`,
         body: role,
         errorMsg: `Error creating role for client ${clientId}`
     });
 
-export const updateRole = (clientId: number, roleId: number, role: Role): Promise<Option<Role>> =>
-    api.put<Role,Role>({
+export const updateRole = (clientId: number, roleId: number, role: ClientRole): Promise<Option<ClientRole>> =>
+    api.put<ClientRole,ClientRole>({
         uri: `/clients/${clientId}/roles/${roleId}`,
         body: role,
         errorMsg: `Error updating role ${roleId} for client ${clientId}`
     });
 
-export const deleteRole = (clientId: number, roleId: number): Promise<Option<Role>> =>
-    api.delete<Role>({
+export const deleteRole = (clientId: number, roleId: number): Promise<Option<ClientRole>> =>
+    api.delete<ClientRole>({
         uri: `/clients/${clientId}/roles/${roleId}`,
         errorMsg: `Error deleting role ${roleId} for client ${clientId}`
     });

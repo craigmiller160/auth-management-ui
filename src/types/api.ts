@@ -8,6 +8,18 @@ export interface ClientListResponse {
     clients: Array<ClientListItem>;
 }
 
+export interface ClientRole {
+    id: number;
+    name: string;
+}
+
+export interface ClientUser {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
 export interface ClientDetails {
     id: number;
     name: string;
@@ -19,4 +31,6 @@ export interface ClientDetails {
     allowPassword: boolean;
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
+    roles: Array<ClientRole>;
+    users: Array<ClientUser>;
 }

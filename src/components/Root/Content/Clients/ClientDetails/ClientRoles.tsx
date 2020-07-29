@@ -1,5 +1,5 @@
 import React from 'react';
-import { Role } from '../../../../../types/api';
+import { ClientRole } from '../../../../../types/api';
 import { SectionHeader } from '../../../../ui/Header';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import Grid from '@material-ui/core/Grid';
@@ -13,13 +13,13 @@ import List, { Item } from '../../../../ui/List';
 
 interface Props {
     clientId: number;
-    roles: Array<Role>;
+    roles: Array<ClientRole>;
     reloadRoles: () => void;
 }
 
 interface State {
     showRoleDialog: boolean;
-    selectedRole: Role;
+    selectedRole: ClientRole;
     showDeleteDialog: boolean;
     roleIdToDelete: number;
 }
@@ -41,7 +41,7 @@ const ClientRoles = (props: Props) => {
         roleIdToDelete: 0
     });
 
-    const selectRole = (role: Role) => {
+    const selectRole = (role: ClientRole) => {
         setState((draft) => {
             draft.selectedRole = role;
             draft.showRoleDialog = true;
@@ -64,11 +64,11 @@ const ClientRoles = (props: Props) => {
         });
     };
 
-    const saveRole = async (role: Role) => {
+    const saveRole = async (role: ClientRole) => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });
-        let result: Option<Role>;
+        let result: Option<ClientRole>;
         if (role.id) {
             result = await updateRole(role.clientId, role.id, role);
         } else {
@@ -90,7 +90,7 @@ const ClientRoles = (props: Props) => {
         }
     };
 
-    const checkDelete = (role: Role) => {
+    const checkDelete = (role: ClientRole) => {
         setState((draft) => {
             draft.showRoleDialog = false;
         });

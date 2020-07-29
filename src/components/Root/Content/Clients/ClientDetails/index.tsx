@@ -18,13 +18,12 @@ import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientDetails } from '../../../../../types/api';
+import { ClientDetails, ClientRole, ClientUser } from '../../../../../types/api';
 
-// TODO restore those properties
 interface State {
     clientId: number;
-    // users: Array<User>;
-    // roles: Array<Role>;
+    users: Array<ClientUser>;
+    roles: Array<ClientRole>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
 }
@@ -33,12 +32,12 @@ interface MatchParams {
     id: string;
 }
 
-interface ClientForm extends Omit<ClientDetails, 'id'> {
+interface ClientForm extends Omit<ClientDetails, 'id'|'users'|'roles'> {
     clientSecret: string;
 }
 const NEW = 'new';
 
-const defaultClient: ClientDetails = {
+const defaultClient: Omit<ClientDetails,'users'|'roles'> = {
     id: 0,
     name: '',
     clientKey: '',
@@ -50,6 +49,11 @@ const defaultClient: ClientDetails = {
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
+const defaultFullClient: ClientDetails = {
+    ...defaultClient,
+    users: [],
+    roles: []
+};
 
 const ClientDetailsComponent = () => {
     const dispatch = useDispatch();
@@ -58,9 +62,8 @@ const ClientDetailsComponent = () => {
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         clientId: id !== NEW ? parseInt(id) : 0,
-        // TODO restore this
-        // users: [],
-        // roles: [],
+        users: [],
+        roles: [],
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
@@ -96,7 +99,7 @@ const ClientDetailsComponent = () => {
     };
 
     const reloadRoles = async () => {
-        const result = await getRoles(parseInt(id));
+        const result = await getRoles(parseInt(id)); // TODO change this one
         if (isSome(result)) {
             setState((draft) => {
                 // TODO restore this
@@ -120,15 +123,14 @@ const ClientDetailsComponent = () => {
                     });
                 }
             } else {
-                const result: ClientDetails = pipe(
+                const client: ClientDetails = pipe(
                     await getClient(parseInt(id)),
-                    getOrElse((): ClientDetails => defaultClient)
+                    getOrElse((): ClientDetails => defaultFullClient)
                 );
-                reset(result);
+                reset(client);
                 setState((draft) => {
-                    // TODO restore this
-                    // draft.users = []; // TODO get these actually working
-                    // draft.roles = [];
+                    draft.users = client.users;
+                    draft.roles = client.roles;
                 });
             }
         };
