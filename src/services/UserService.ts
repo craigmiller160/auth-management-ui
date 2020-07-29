@@ -1,35 +1,105 @@
+// import { FullUser, User, UserList } from '../types/oldApi';
+import { Either, map } from 'fp-ts/es6/Either';
+import { FullUserDetails, UserDetails, UserInput, UserList } from '../types/user';
+import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
-import { FullUser, User, UserList } from '../types/oldApi';
-import { Option } from 'fp-ts/es6/Option';
+import { CreateUserWrapper, DeleteUserWrapper, UpdateUserWrapper, UserDetailsWrapper } from '../types/graphApi';
 
-export const getUsers = (): Promise<Option<UserList>> =>
-    api.get<UserList>({
-        uri: '/users',
-        errorMsg: 'Error getting all users'
-    });
+export const getUsers = async (): Promise<Either<Error,UserList>> =>
+    pipe(
+        await api.graphql<UserList>({
+            payload: `
+                query {
+                    users {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
+                }
+            `,
+            errorMsg: 'Error getting all users'
+        })
+    );
 
-export const getUser = (id: number): Promise<Option<FullUser>> =>
-    api.get<FullUser>({
-        uri: `/users/${id}`,
-        errorMsg: `Error getting user ${id}`
-    });
+export const getUser = async (userId: number): Promise<Either<Error, FullUserDetails>> =>
+    pipe(
+        await api.graphql<UserDetailsWrapper>({
+            payload: `
+                query {
+                    user(userId: ${userId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
+                }
+            `,
+            errorMsg: `Error getting user ${userId}`
+        }),
+        map((wrapper: UserDetailsWrapper) => wrapper.user)
+    );
 
-export const updateUser = (id: number, user: User): Promise<Option<User>> =>
-    api.put<User,User>({
-        uri: `/users/${id}`,
-        body: user,
-        errorMsg: `Error updating user ${id}`
-    });
+export const updateUser = async (userId: number, user: UserInput): Promise<Either<Error, UserDetails>> =>
+    pipe(
+        await api.graphql<UpdateUserWrapper>({
+            payload: `
+                mutation {
+                    updateUser(userId: ${userId}, user: {
+                        email: "${user.email}",
+                        password: "${user.password || ''}",
+                        firstName: "${user.firstName}",
+                        lastName: "${user.lastName}"
+                    }) {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
+                }
+            `,
+            errorMsg: `Error updating user ${userId}`
+        }),
+        map((wrapper: UpdateUserWrapper) => wrapper.updateUser)
+    );
 
-export const createUser = (user: User): Promise<Option<FullUser>> =>
-    api.post<User,FullUser>({
-        uri: '/users',
-        body: user,
-        errorMsg: 'Error creating user'
-    });
+export const createUser = async (user: UserInput): Promise<Either<Error, UserDetails>> =>
+    pipe(
+        await api.graphql<CreateUserWrapper>({
+            payload: `
+                mutation {
+                    createUser(user: {
+                        email: "${user.email}",
+                        password: "${user.password}",
+                        firstName: "${user.firstName}",
+                        lastName: "${user.lastName}"
+                    }) {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }                  
+                }
+            `,
+            errorMsg: 'Error creating user'
+        }),
+        map((wrapper: CreateUserWrapper) => wrapper.createUser)
+    );
 
-export const deleteUser = (id: number): Promise<Option<FullUser>> =>
-    api.delete<FullUser>({
-        uri: `/users/${id}`,
-        errorMsg: `Error deleting user ${id}`
-    });
+export const deleteUser = async (userId: number): Promise<Either<Error, UserDetails>> =>
+    pipe(
+        await api.graphql<DeleteUserWrapper>({
+            payload: `
+                mutation {
+                    deleteUser(userId: ${userId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
+                }
+            `,
+            errorMsg: `Error deleting user ${userId}`
+        }),
+        map((wrapper: DeleteUserWrapper) => wrapper.deleteUser)
+    );
