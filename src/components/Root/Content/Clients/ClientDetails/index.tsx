@@ -1,16 +1,9 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
-import {
-    createClient,
-    deleteClient,
-    generateGuid,
-    getClient,
-    getRoles,
-    updateClient
-} from '../../../../../services/ClientService';
+import { deleteClient, generateGuid, getClient, getRoles } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
-import { Client, Role, User } from '../../../../../types/api';
+import { Role, User } from '../../../../../types/api';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
