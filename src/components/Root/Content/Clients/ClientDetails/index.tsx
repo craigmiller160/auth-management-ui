@@ -18,8 +18,8 @@ import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse } from 'fp-ts/es6/Either';
-import { ClientDetails } from '../../../../../types/graphApi';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { ClientDetails, ClientDetailsWrapper } from '../../../../../types/graphApi';
 
 interface State {
     clientId: number;
@@ -120,6 +120,7 @@ const ClientDetailsComponent = () => {
             } else {
                 const result: ClientDetails = pipe(
                     await getClient(parseInt(id)),
+                    map((wrapper: ClientDetailsWrapper) => wrapper.client),
                     getOrElse((): ClientDetails => defaultClient)
                 );
                 reset(result);

@@ -24,3 +24,7 @@ export interface ClientDetails {
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
 }
+
+export interface ClientDetailsWrapper {
+    client: ClientDetails
+}
