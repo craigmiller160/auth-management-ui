@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
-import { isSome, Option } from 'fp-ts/es6/Option';
+import { isSome } from 'fp-ts/es6/Option';
 import {
     createClient,
     deleteClient,
     generateGuid,
     getClient,
-    getRolesForClient, updateClient
+    getRolesForClient,
+    updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
 import { useForm } from 'react-hook-form';
@@ -23,8 +24,8 @@ import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { Either, getOrElse, isRight, map } from 'fp-ts/es6/Either';
-import { FullClientDetails, ClientRole, ClientUser, ClientInput, ClientDetails } from '../../../../../types/client';
+import { Either, getOrElse, isRight } from 'fp-ts/es6/Either';
+import { ClientDetails, ClientInput, ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
 
 interface State {
     clientId: number;

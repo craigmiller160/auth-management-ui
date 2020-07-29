@@ -2,14 +2,14 @@ import api from './Api';
 import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { ClientDetails, FullClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
+import { ClientDetails, ClientInput, ClientListResponse, ClientRole, FullClientDetails } from '../types/client';
 import {
     ClientDetailsWrapper,
-    CreateClientWrapper, DeleteClientWrapper,
+    CreateClientWrapper,
+    DeleteClientWrapper,
     RolesForClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
-import { Client, RoleList } from '../types/oldApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
     api.graphql<ClientListResponse>({

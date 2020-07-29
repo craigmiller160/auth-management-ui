@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ClientRoleDialog from './ClientRoleDialog';
 import { useImmer } from 'use-immer';
-import { isSome, Option } from 'fp-ts/es6/Option';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import List, { Item } from '../../../../ui/List';
 import { Role } from '../../../../../types/role';
