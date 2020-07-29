@@ -3,7 +3,6 @@ import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { deleteClient, generateGuid, getClient, getRoles } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
-import { Role, User } from '../../../../../types/api';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
@@ -19,12 +18,13 @@ import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientDetails, ClientDetailsWrapper } from '../../../../../types/graphApi';
+import { ClientDetails } from '../../../../../types/api';
 
+// TODO restore those properties
 interface State {
     clientId: number;
-    users: Array<User>;
-    roles: Array<Role>;
+    // users: Array<User>;
+    // roles: Array<Role>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
 }
@@ -58,8 +58,9 @@ const ClientDetailsComponent = () => {
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         clientId: id !== NEW ? parseInt(id) : 0,
-        users: [],
-        roles: [],
+        // TODO restore this
+        // users: [],
+        // roles: [],
         shouldBlockNavigation: true,
         showDeleteDialog: false
     });
@@ -98,7 +99,8 @@ const ClientDetailsComponent = () => {
         const result = await getRoles(parseInt(id));
         if (isSome(result)) {
             setState((draft) => {
-                draft.roles = result.value?.roles ?? [];
+                // TODO restore this
+                // draft.roles = result.value?.roles ?? [];
             });
         }
     };
@@ -120,13 +122,13 @@ const ClientDetailsComponent = () => {
             } else {
                 const result: ClientDetails = pipe(
                     await getClient(parseInt(id)),
-                    map((wrapper: ClientDetailsWrapper) => wrapper.client),
                     getOrElse((): ClientDetails => defaultClient)
                 );
                 reset(result);
                 setState((draft) => {
-                    draft.users = []; // TODO get these actually working
-                    draft.roles = [];
+                    // TODO restore this
+                    // draft.users = []; // TODO get these actually working
+                    // draft.roles = [];
                 });
             }
         };

@@ -1,9 +1,10 @@
 import api from './Api';
 import graphApi from './GraphApi';
-import { Client, Role, RoleList } from '../types/api';
+import { Client, ClientDetails, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 import { ClientDetailsWrapper, ClientListResponse } from '../types/graphApi';
-import { Either } from 'fp-ts/es6/Either';
+import { Either, map } from 'fp-ts/es6/Either';
+import { pipe } from 'fp-ts/es6/pipeable';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
     graphApi.graphql<ClientListResponse>({
@@ -19,9 +20,10 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = (id: number): Promise<Either<Error, ClientDetailsWrapper>> =>
-    graphApi.graphql<ClientDetailsWrapper>({
-        payload: `
+export const getClient = async (id: number): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await graphApi.graphql<ClientDetailsWrapper>({
+            payload: `
             query {
                 client(id: ${id}) {
                     id
@@ -36,8 +38,10 @@ export const getClient = (id: number): Promise<Either<Error, ClientDetailsWrappe
                 }
             }
         `,
-        errorMsg: `Error getting client ${id}`
-    });
+            errorMsg: `Error getting client ${id}`
+        }),
+        map((wrapper: ClientDetailsWrapper) => wrapper.client)
+    );
 
 // TODO refactor this at the end to use Either
 export const generateGuid = (): Promise<Option<string>> =>
