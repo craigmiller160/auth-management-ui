@@ -80,7 +80,6 @@ const ClientDetailsComponent = () => {
 
     const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
         const result = await action();
-        console.log(result); // TODO delete this
         if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
@@ -98,6 +97,7 @@ const ClientDetailsComponent = () => {
         if (id === NEW) {
             // doSubmit(() => createClient(payload));
         } else {
+            console.log('Payload', payload); // TODO delete this
             doSubmit(() => updateClient(parseInt(id), payload));
         }
     };

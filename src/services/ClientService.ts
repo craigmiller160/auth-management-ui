@@ -75,9 +75,9 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
             payload: `
                 mutation {
                     updateClient(clientId: ${clientId}, client: {
-                        name: ${clientInput.name},
-                        clientKey: ${clientInput.clientKey},
-                        clientSecret: ${clientInput.clientSecret},
+                        name: "${clientInput.name}",
+                        clientKey: "${clientInput.clientKey}",
+                        clientSecret: "${clientInput.clientSecret || ''}",
                         enabled: ${clientInput.enabled},
                         allowAuthCode: ${clientInput.allowAuthCode},
                         allowClientCredentials: ${clientInput.allowClientCredentials},
