@@ -3,7 +3,12 @@ import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { ClientDetails, FullClientDetails, ClientInput, ClientListResponse, ClientRole } from '../types/client';
-import { ClientDetailsWrapper, RolesForClientWrapper } from '../types/graphApi';
+import {
+    ClientDetailsWrapper,
+    CreateClientWrapper,
+    RolesForClientWrapper,
+    UpdateClientWrapper
+} from '../types/graphApi';
 import { Client, RoleList } from '../types/oldApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
@@ -71,7 +76,7 @@ export const getRolesForClient = async (clientId: number): Promise<Either<Error,
 
 export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
     pipe(
-        await api.graphql<ClientDetails>({
+        await api.graphql<UpdateClientWrapper>({
             payload: `
                 mutation {
                     updateClient(clientId: ${clientId}, client: {
@@ -98,7 +103,41 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                 }
             `,
             errorMsg: `Error updating client ${clientId}`
-        })
+        }),
+        map((wrapper: UpdateClientWrapper) => wrapper.updateClient)
+    );
+
+export const createClient = async (clientInput: ClientInput): Promise<Either<Error,ClientDetails>> =>
+    pipe(
+        await api.graphql<CreateClientWrapper>({
+            payload: `
+                mutation {
+                    createClient(client: {
+                        name: "${clientInput.name}",
+                        clientKey: "${clientInput.clientKey}",
+                        clientSecret: "${clientInput.clientSecret}",
+                        enabled: ${clientInput.enabled},
+                        allowAuthCode: ${clientInput.allowAuthCode},
+                        allowClientCredentials: ${clientInput.allowClientCredentials},
+                        allowPassword: ${clientInput.allowPassword},
+                        accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                    }) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: 'Error creating client'
+        }),
+        map((wrapper: CreateClientWrapper) => wrapper.createClient)
     );
 
 // TODO refactor this at the end to use Either
@@ -106,13 +145,6 @@ export const generateGuid = (): Promise<Option<string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
-    });
-
-export const createClient = (client: Client): Promise<Option<Client>> =>
-    api.post<Client,Client>({
-        uri: '/clients',
-        body: client,
-        errorMsg: 'Error creating client'
     });
 
 export const deleteClient = (id: number): Promise<Option<Client>> =>

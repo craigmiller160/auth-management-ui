@@ -97,7 +97,6 @@ const ClientDetailsComponent = () => {
         if (id === NEW) {
             // doSubmit(() => createClient(payload));
         } else {
-            console.log('Payload', payload); // TODO delete this
             doSubmit(() => updateClient(parseInt(id), payload));
         }
     };
