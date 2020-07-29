@@ -1,11 +1,11 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { Option, none, some } from 'fp-ts/es6/Option';
+import { none, Option, some } from 'fp-ts/es6/Option';
 import store from '../store';
 import alertSlice from '../store/alert/slice';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
-import { Either, left, right, tryCatch } from 'fp-ts/es6/Either';
+import { Either, left, right } from 'fp-ts/es6/Either';
 
 const instance = axios.create({
     baseURL: '/api'
@@ -78,10 +78,10 @@ const post = async <B,R>(req: RequestBodyConfig<B>): Promise<Option<R>> => {
 const post2 = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
         const res = await instance.post(req.uri, req.body, req.config);
-        return left(res.data);
+        return right(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return right(ex);
+        return left(ex);
     }
 };
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Client, ClientList } from '../../../../types/api';
 import { getClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';

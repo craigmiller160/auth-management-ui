@@ -1,6 +1,6 @@
 import api from './Api';
 import graphApi from './GraphApi';
-import { Client, ClientList, FullClient, Role, RoleList } from '../types/api';
+import { Client, FullClient, Role, RoleList } from '../types/api';
 import { Option } from 'fp-ts/es6/Option';
 import { ClientListResponse } from '../types/graphApi';
 import { Either } from 'fp-ts/es6/Either';
