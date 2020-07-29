@@ -151,6 +151,8 @@ const UserDetailsComponent = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
+    // TODO add rule to email to enforce email format
+
     return (
         <>
             <Prompt
@@ -192,6 +194,7 @@ const UserDetailsComponent = () => {
                         <TextField
                             className="grow-sm"
                             name="confirmPassword"
+                            type="password"
                             control={ control }
                             label="Password (Confirm)"
                             error={ errors.confirmPassword }
