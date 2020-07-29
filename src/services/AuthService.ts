@@ -1,6 +1,6 @@
 import { Option } from 'fp-ts/es6/Option';
 import api, { isAxiosError } from './Api';
-import { AuthUser } from '../types/api';
+import { AuthUser } from '../types/oldApi';
 
 export const logout = (): Promise<Option<void>> =>
     api.get<void>({

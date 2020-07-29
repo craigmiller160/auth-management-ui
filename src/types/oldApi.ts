@@ -1,7 +1,4 @@
-export interface ErrorResponse {
-    status: number;
-    message: string;
-}
+
 
 export interface Client {
     accessTokenTimeoutSecs: number;

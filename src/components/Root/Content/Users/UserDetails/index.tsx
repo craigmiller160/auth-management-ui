@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
-import { FullUserClient, User } from '../../../../../types/api';
+import { FullUserClient, User } from '../../../../../types/oldApi';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import './UserDetails.scss';

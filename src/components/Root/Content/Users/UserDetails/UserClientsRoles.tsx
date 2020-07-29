@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
-import { FullUserClient } from '../../../../../types/api';
+import { FullUserClient } from '../../../../../types/oldApi';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { useImmer } from 'use-immer';

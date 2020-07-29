@@ -1,5 +1,5 @@
 import api from './Api';
-import { FullUser, User, UserList } from '../types/api';
+import { FullUser, User, UserList } from '../types/oldApi';
 import { Option } from 'fp-ts/es6/Option';
 
 export const getUsers = (): Promise<Option<UserList>> =>

@@ -1,4 +1,4 @@
-import { ClientDetails, ClientRole } from './api';
+import { ClientDetails, ClientRole } from './client';
 
 export interface GraphQLQueryResponse<T> {
     data: T

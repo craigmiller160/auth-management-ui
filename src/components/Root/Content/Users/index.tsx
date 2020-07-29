@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PageHeader } from '../../../ui/Header';
 import { useHistory } from 'react-router';
-import { User } from '../../../../types/api';
+import { User } from '../../../../types/oldApi';
 import { getUsers } from '../../../../services/UserService';
 import { isSome } from 'fp-ts/es6/Option';
 import Grid from '@material-ui/core/Grid';
