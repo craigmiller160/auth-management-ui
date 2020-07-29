@@ -154,6 +154,7 @@ const UserDetailsComponent = () => {
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
     // TODO add rule to email to enforce email format
+    // TODO add a link to client details page from client options
 
     return (
         <>

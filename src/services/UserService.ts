@@ -1,4 +1,3 @@
-// import { FullUser, User, UserList } from '../types/oldApi';
 import { Either, map } from 'fp-ts/es6/Either';
 import { FullUserDetails, UserDetails, UserInput, UserList } from '../types/user';
 import { pipe } from 'fp-ts/es6/pipeable';
