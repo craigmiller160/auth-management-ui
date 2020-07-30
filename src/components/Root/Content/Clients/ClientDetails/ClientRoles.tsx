@@ -116,10 +116,12 @@ const ClientRoles = (props: Props) => {
         text: {
             primary: role.name
         },
-        secondaryAction: {
-            text: 'Delete',
-            click: () => checkDelete(role)
-        }
+        secondaryActions: [
+            {
+                text: 'Delete',
+                click: () => checkDelete(role)
+            }
+        ]
     }));
 
     return (

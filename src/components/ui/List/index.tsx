@@ -8,6 +8,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Button from '@material-ui/core/Button';
 
+export interface ItemSecondaryAction {
+    text: string;
+    click: () => void;
+}
+
 export interface Item {
     click: () => void;
     avatar?: ElementType;
@@ -15,10 +20,7 @@ export interface Item {
         primary: string;
         secondary?: string;
     }
-    secondaryAction?: {
-        text: string;
-        click: () => void;
-    },
+    secondaryActions?: Array<ItemSecondaryAction>;
     active?: boolean;
 }
 
@@ -71,14 +73,19 @@ const List = (props: Props) => {
                                 secondary={ item.text.secondary }
                             />
                             {
-                                item.secondaryAction &&
+                                item.secondaryActions &&
                                 <ListItemSecondaryAction>
-                                    <Button
-                                        color="primary"
-                                        onClick={ item.secondaryAction?.click }
-                                    >
-                                        { item.secondaryAction?.text }
-                                    </Button>
+                                    {
+                                        item.secondaryActions?.map((action, index) => (
+                                            <Button
+                                                key={ index }
+                                                color="primary"
+                                                onClick={ action.click }
+                                            >
+                                                { action.text }
+                                            </Button>
+                                        ))
+                                    }
                                 </ListItemSecondaryAction>
                             }
                         </ListItem>

@@ -45,10 +45,12 @@ const UserClientsRoles = (props: Props) => {
         text: {
             primary: client.name
         },
-        secondaryAction: {
-            text: 'Remove',
-            click: () => {}
-        },
+        secondaryActions: [
+            {
+                text: 'Remove',
+                click: () => {}
+            }
+        ],
         active: state.selectedClient?.id === client.id
     }));
 
@@ -58,10 +60,12 @@ const UserClientsRoles = (props: Props) => {
             text: {
                 primary: role.name
             },
-            secondaryAction: {
-                text: 'Remove',
-                click: () => {}
-            }
+            secondaryActions: [
+                {
+                    text: 'Remove',
+                    click: () => {}
+                }
+            ]
         })) : [];
 
     return (
