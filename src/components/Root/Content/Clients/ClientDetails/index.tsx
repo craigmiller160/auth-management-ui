@@ -116,11 +116,11 @@ const ClientDetailsComponent = () => {
         const action = async () => {
             if (id === NEW) {
                 const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
-                if (isSome(key) && isSome(secret)) {
+                if (isRight(key) && isRight(secret)) {
                     reset({
                         name: 'New Client',
-                        clientKey: key.value,
-                        clientSecret: secret.value,
+                        clientKey: key.right,
+                        clientSecret: secret.right,
                         enabled: true,
                         accessTokenTimeoutSecs: 300,
                         refreshTokenTimeoutSecs: 3600
@@ -143,17 +143,19 @@ const ClientDetailsComponent = () => {
     }, [id, setState, reset]);
 
     const generateClientKey = async () => {
-        const guid = await generateGuid();
-        if (isSome(guid)) {
-            setValue('clientKey', guid.value);
-        }
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientKey', guid);
     };
 
     const generateClientSecret = async () => {
-        const guid = await generateGuid();
-        if (isSome(guid)) {
-            setValue('clientSecret', guid.value);
-        }
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientSecret', guid);
     };
 
     const doCancel = () => history.push('/clients');
