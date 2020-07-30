@@ -55,6 +55,10 @@ const defaultClient: ClientDetails = {
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
+const defaultClientForm: ClientForm = {
+    ...defaultClient,
+    clientSecret: ''
+};
 const defaultFullClient: FullClientDetails = {
     ...defaultClient,
     users: [],
@@ -76,7 +80,7 @@ const ClientDetailsComponent = () => {
     const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
-        defaultValues: defaultClient
+        defaultValues: defaultClientForm
     });
 
     const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
