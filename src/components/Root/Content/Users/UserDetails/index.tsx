@@ -237,10 +237,6 @@ const UserDetailsComponent = () => {
                             rules={ { required: 'Required' } }
                         />
                     </Grid>
-                    <UserClientsRoles
-                        clients={ state.clients }
-                        updateClients={ updateClients }
-                    />
                     <SectionHeader title="Actions" />
                     <Grid
                         container
@@ -273,6 +269,10 @@ const UserDetailsComponent = () => {
                         }
                     </Grid>
                 </form>
+                <UserClientsRoles
+                    clients={ state.clients }
+                    updateClients={ updateClients }
+                />
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
