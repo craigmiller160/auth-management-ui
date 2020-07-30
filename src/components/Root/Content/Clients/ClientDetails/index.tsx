@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
-import { isSome } from 'fp-ts/es6/Option';
 import {
     createClient,
     deleteClient,

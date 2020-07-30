@@ -1,5 +1,4 @@
 import api from './Api';
-import { Option } from 'fp-ts/es6/Option';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { ClientDetails, ClientInput, ClientListResponse, ClientRole, FullClientDetails } from '../types/client';

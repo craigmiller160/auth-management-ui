@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { none, Option, some } from 'fp-ts/es6/Option';
+import { none } from 'fp-ts/es6/Option';
 import store from '../store';
 import alertSlice from '../store/alert/slice';
 import authSlice from '../store/auth/slice';
