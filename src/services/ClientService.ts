@@ -163,8 +163,7 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
         map((wrapper: DeleteClientWrapper) => wrapper.deleteClient)
     );
 
-// TODO refactor this at the end to use Either
-export const generateGuid = (): Promise<Option<string>> =>
+export const generateGuid = (): Promise<Either<Error, string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'

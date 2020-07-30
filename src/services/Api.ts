@@ -70,29 +70,19 @@ const getGraphQLErrorMessage = <R> (data: GraphQLQueryResponse<R>): string => {
         ?? '';
 }
 
-const get = async <R>(req: RequestConfig): Promise<Option<R>> => {
+const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {
-        const res = await instance.get(req.uri, req.config);
-        return some(res.data);
+        const res = await instance.get<R>(req.uri, req.config);
+        return right(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return none;
+        return left(ex);
     }
 };
 
-const post = async <B,R>(req: RequestBodyConfig<B>): Promise<Option<R>> => {
+const post = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
-        const res = await instance.post(req.uri, req.body, req.config);
-        return some(res.data);
-    } catch (ex) {
-        handleError(ex, req.errorMsg, req.suppressError);
-        return none;
-    }
-};
-
-const post2 = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => { // TODO delete this
-    try {
-        const res = await instance.post(req.uri, req.body, req.config);
+        const res = await instance.post<R>(req.uri, req.body, req.config);
         return right(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
@@ -125,23 +115,23 @@ const graphql = async <R>(req: GraphQLRequest): Promise<Either<Error, R>> => {
     }
 };
 
-const put = async <B,R>(req: RequestBodyConfig<B>): Promise<Option<R>> => {
+const put = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
-        const res = await instance.put(req.uri, req.body, req.config);
-        return some(res.data);
+        const res = await instance.put<R>(req.uri, req.body, req.config);
+        return right(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return none;
+        return left(ex);
     }
 };
 
-const doDelete = async <R>(req: RequestConfig): Promise<Option<R>> => {
+const doDelete = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {
-        const res = await instance.delete(req.uri, req.config);
-        return some(res.data);
+        const res = await instance.delete<R>(req.uri, req.config);
+        return right(res.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
-        return none;
+        return left(ex);
     }
 };
 
@@ -149,7 +139,6 @@ export default {
     get,
     put,
     post,
-    post2,
     graphql,
     delete: doDelete
 };
