@@ -16,6 +16,7 @@ import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
 import UserClientsRoles from './UserClientsRoles';
+import { email } from '../../../../../utils/validations';
 
 interface State {
     userId: number;
@@ -153,7 +154,6 @@ const UserDetailsComponent = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
-    // TODO add rule to email to enforce email format
     // TODO add a link to client details page from client options
 
     return (
@@ -175,7 +175,12 @@ const UserDetailsComponent = () => {
                             control={ control }
                             label="Email"
                             className="grow-sm"
-                            rules={ { required: 'Required' } }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    email
+                                }
+                            } }
                             error={ errors.email }
                         />
                     </Grid>
