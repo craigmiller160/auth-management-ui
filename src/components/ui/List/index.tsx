@@ -14,7 +14,7 @@ export interface ItemSecondaryAction {
 }
 
 export interface Item {
-    click: () => void;
+    click?: () => void;
     avatar?: ElementType;
     text: {
         primary: string;

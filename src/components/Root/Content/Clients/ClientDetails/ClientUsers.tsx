@@ -17,13 +17,22 @@ const ClientUsers = (props: Props) => {
     const history = useHistory();
     const userClick = (id: number) => history.push(`/users/${id}`);
 
-    const items: Array<Item> = users.map((user) => ({
-        click: () => userClick(user.id),
+    const items: Array<Item> = users.map((user): Item => ({
         avatar: () => <PersonIcon />,
         text: {
             primary: user.email,
             secondary: `${user.firstName} ${user.lastName}`
-        }
+        },
+        secondaryActions: [
+            {
+                text: 'Go',
+                click: () => userClick(user.id)
+            },
+            {
+                text: 'Remove',
+                click: () => {} // TODO fill this in
+            }
+        ]
     }));
 
     return (
