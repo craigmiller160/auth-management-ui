@@ -48,6 +48,10 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                             email
                             firstName
                             lastName
+                            roles {
+                                id
+                                name
+                            }
                         }
                     }
                 }

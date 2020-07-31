@@ -18,6 +18,7 @@ export interface ClientUser {
     email: string;
     firstName: string;
     lastName: string;
+    roles: Array<ClientRole>;
 }
 
 interface BaseClient {
