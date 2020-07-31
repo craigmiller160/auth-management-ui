@@ -5,6 +5,7 @@ import { SectionHeader } from '../../../../ui/Header';
 import PersonIcon from '@material-ui/icons/Person';
 import { useHistory } from 'react-router';
 import List, { Item } from '../../../../ui/List';
+import { Button } from '@material-ui/core';
 
 interface Props {
     users: Array<ClientUser>;
@@ -35,6 +36,10 @@ const ClientUsers = (props: Props) => {
         ]
     }));
 
+    const newUser = () => {
+        // TODO implement this
+    };
+
     return (
         <Grid
             item
@@ -42,6 +47,13 @@ const ClientUsers = (props: Props) => {
         >
             <SectionHeader title="Users" />
             <List items={ items } />
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={ newUser }
+            >
+                Add User
+            </Button>
         </Grid>
     );
 };
