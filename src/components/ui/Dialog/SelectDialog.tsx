@@ -1,10 +1,9 @@
 import React, { MouseEvent } from 'react';
 import BaseDialog, { DialogAction } from './BaseDialog';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField } from '@material-ui/core';
+import Autocomplete, { Option } from '../Form/Autocomplete';
+import { useForm } from 'react-hook-form';
 
-interface Option {
-    label: string;
+interface SelectForm {
     value: any;
 }
 
@@ -25,8 +24,18 @@ const SelectDialog = (props: Props) => {
         options
     } = props;
 
+    const { control, handleSubmit, errors } = useForm<SelectForm>({
+        mode: 'onBlur',
+        reValidateMode: 'onChange'
+    });
+
+    const onSubmit = (values: SelectForm) => {
+        console.log(values); // TODO delete this
+        // TODO finish this
+    };
+
     const actions: Array<DialogAction> = [
-        { label: 'Select', onClick: onSelect },
+        { label: 'Select', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onCancel }
     ];
 
@@ -37,15 +46,12 @@ const SelectDialog = (props: Props) => {
             actions={ actions }
         >
             <Autocomplete
+                name="value"
+                control={ control }
+                label="Select User"
                 options={ options }
-                getOptionLabel={ (option) => option?.label ?? '' }
-                renderInput={ (params) => (
-                    <TextField
-                        { ...params }
-                        label="Select User"
-                        variant="outlined"
-                    />
-                ) }
+                rules={ { required: 'Required' } }
+                error={ errors.value }
             />
         </BaseDialog>
     );
