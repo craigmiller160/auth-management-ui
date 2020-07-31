@@ -111,12 +111,15 @@ const ClientRoles = (props: Props) => {
         });
 
     const items: Array<Item> = roles.map((role) => ({
-        click: () => selectRole(role),
         avatar: () => <AssignIcon />,
         text: {
             primary: role.name
         },
         secondaryActions: [
+            {
+                text: 'Edit',
+                click: () => selectRole(role)
+            },
             {
                 text: 'Delete',
                 click: () => checkDelete(role)
