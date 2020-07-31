@@ -5,7 +5,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import theme from '../../theme';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Button from '@material-ui/core/Button';
 
 export interface ItemSecondaryAction {
@@ -74,7 +73,7 @@ const List = (props: Props) => {
                             />
                             {
                                 item.secondaryActions &&
-                                <ListItemSecondaryAction>
+                                <div>
                                     {
                                         item.secondaryActions?.map((action, index) => (
                                             <Button
@@ -86,7 +85,7 @@ const List = (props: Props) => {
                                             </Button>
                                         ))
                                     }
-                                </ListItemSecondaryAction>
+                                </div>
                             }
                         </ListItem>
                     );
