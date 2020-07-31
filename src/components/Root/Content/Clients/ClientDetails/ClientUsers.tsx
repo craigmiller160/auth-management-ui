@@ -20,8 +20,8 @@ const ClientUsers = (props: Props) => {
     const items: Array<Item> = users.map((user): Item => ({
         avatar: () => <PersonIcon />,
         text: {
-            primary: user.email,
-            secondary: `${user.firstName} ${user.lastName}`
+            primary: `${user.firstName} ${user.lastName}`,
+            secondary: user.roles.map((role) => role.name).join(', ')
         },
         secondaryActions: [
             {
