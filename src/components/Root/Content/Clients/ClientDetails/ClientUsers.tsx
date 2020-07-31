@@ -18,6 +18,10 @@ const ClientUsers = (props: Props) => {
     const history = useHistory();
     const userClick = (id: number) => history.push(`/users/${id}`);
 
+    const removeUser = () => {
+        // TODO finish this
+    };
+
     const items: Array<Item> = users.map((user): Item => ({
         avatar: () => <PersonIcon />,
         text: {
@@ -31,7 +35,7 @@ const ClientUsers = (props: Props) => {
             },
             {
                 text: 'Remove',
-                click: () => {} // TODO fill this in
+                click: () => {}
             }
         ]
     }));
