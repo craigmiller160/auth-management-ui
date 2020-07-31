@@ -12,6 +12,8 @@ import { UserDetails, UserList } from '../../../../../types/user';
 import { getAllUsers } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { Option } from 'fp-ts/es6/Option';
 
 interface Props {
     users: Array<ClientUser>;
@@ -81,6 +83,14 @@ const ClientUsers = (props: Props) => {
             draft.showAddUserDialog = false;
         });
 
+    const addUser = async (selectedUser: Option<SelectOption<number>>) => {
+        console.log(selectedUser);
+        // TODO execute the add user operation
+        setState((draft) => {
+            draft.showAddUserDialog = false
+        });
+    };
+
     const selectDialogUsers = useMemo(() =>
         state.allUsers
             .filter((user) => !props.users.find((otherUser) => user.id === otherUser.id))
@@ -115,7 +125,7 @@ const ClientUsers = (props: Props) => {
             <SelectDialog
                 open={ state.showAddUserDialog }
                 title="Add User"
-                onSelect={ () => {} }  // TODO implement
+                onSelect={ addUser }
                 onCancel={ dialogOnCancel }
                 options={ selectDialogUsers }
             />
