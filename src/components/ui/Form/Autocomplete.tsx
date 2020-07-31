@@ -5,21 +5,21 @@ import { FieldName } from 'react-hook-form/dist/types/form';
 import MuiAutocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from '@material-ui/core';
 
-export interface Option {
+export interface SelectOption<R> {
     label: string;
-    value: any;
+    value: R;
 }
 
-interface Props<T> {
+interface Props<T,R> {
     name: keyof T;
     control: Control<T>;
     error?: FieldError;
     rules?: FieldRules;
     label: string;
-    options: Array<Option>;
+    options: Array<SelectOption<R>>;
 }
 
-const Autocomplete = <T extends object>(props: Props<T>) => {
+const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
     const {
         name,
         control,
@@ -39,7 +39,7 @@ const Autocomplete = <T extends object>(props: Props<T>) => {
                     options={ options }
                     getOptionLabel={ (option) => option?.label ?? '' }
                     value={ value }
-                    onChange={ onChange }
+                    onChange={ (event, newValue) => onChange(newValue)}
                     onBlur={ onBlur }
                     renderInput={ (params) => (
                         <TextField

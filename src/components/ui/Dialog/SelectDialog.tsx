@@ -1,21 +1,22 @@
 import React, { MouseEvent } from 'react';
 import BaseDialog, { DialogAction } from './BaseDialog';
-import Autocomplete, { Option } from '../Form/Autocomplete';
+import Autocomplete, { SelectOption } from '../Form/Autocomplete';
 import { useForm } from 'react-hook-form';
+import { fromNullable, Option } from 'fp-ts/es6/Option';
 
-interface SelectForm {
-    value: any;
+interface SelectForm<T> {
+    value: SelectOption<T> | null;
 }
 
-interface Props {
+interface Props<T> {
     open: boolean;
     title: string;
-    onSelect: (event: MouseEvent<HTMLButtonElement>) => void;
+    onSelect: (value: Option<SelectOption<T>>) => void;
     onCancel: (event: MouseEvent<HTMLButtonElement>) => void;
-    options: Array<Option>;
+    options: Array<SelectOption<T>>;
 }
 
-const SelectDialog = (props: Props) => {
+const SelectDialog = <T extends any>(props: Props<T>) => {
     const {
         open,
         title,
@@ -24,15 +25,15 @@ const SelectDialog = (props: Props) => {
         options
     } = props;
 
-    const { control, handleSubmit, errors } = useForm<SelectForm>({
+    const { control, handleSubmit, errors } = useForm<SelectForm<T>>({
         mode: 'onBlur',
-        reValidateMode: 'onChange'
+        reValidateMode: 'onChange',
+        defaultValues: {
+            value: null
+        }
     });
 
-    const onSubmit = (values: SelectForm) => {
-        console.log(values); // TODO delete this
-        // TODO finish this
-    };
+    const onSubmit = (values: SelectForm<T>) => onSelect(fromNullable(values.value));
 
     const actions: Array<DialogAction> = [
         { label: 'Select', onClick: handleSubmit(onSubmit) },
