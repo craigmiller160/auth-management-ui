@@ -36,6 +36,12 @@ const useStyles = makeStyles({
         '&.active': {
             backgroundColor: theme.palette.secondary.light
         }
+    },
+    Button: {
+        '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.secondary.main
+        }
     }
 });
 
@@ -77,6 +83,7 @@ const List = (props: Props) => {
                                     {
                                         item.secondaryActions?.map((action, index) => (
                                             <Button
+                                                className={ classes.Button }
                                                 key={ index }
                                                 color="primary"
                                                 onClick={ action.click }
