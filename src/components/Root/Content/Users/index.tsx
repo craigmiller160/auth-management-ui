@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PageHeader } from '../../../ui/Header';
 import { useHistory } from 'react-router';
-import { getUsers } from '../../../../services/UserService';
+import { getAllUsers } from '../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
 import Table from '../../../ui/Table';
 import Button from '@material-ui/core/Button';
@@ -25,7 +25,7 @@ const Users = () => {
     useEffect(() => {
         const action = async () => {
             const users = pipe(
-                await getUsers(),
+                await getAllUsers(),
                 map((list: UserList) => list.users),
                 getOrElse((): Array<UserDetails> => ([]))
             );

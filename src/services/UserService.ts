@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import { CreateUserWrapper, DeleteUserWrapper, UpdateUserWrapper, UserDetailsWrapper } from '../types/graphApi';
 
-export const getUsers = async (): Promise<Either<Error,UserList>> =>
+export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
     pipe(
         await api.graphql<UserList>({
             payload: `
