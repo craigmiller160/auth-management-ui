@@ -15,6 +15,7 @@ import { getOrElse, map } from 'fp-ts/es6/Either';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { addUserToClient, removeUserFromClient } from '../../../../../services/ClientService';
+import { ConfirmDialog } from '../../../../ui/Dialog';
 
 interface Props {
     users: Array<ClientUser>;
@@ -25,6 +26,8 @@ interface Props {
 interface State {
     allUsers: Array<UserDetails>;
     showAddUserDialog: boolean;
+    showRemoveUserDialog: boolean;
+    userIdToRemove: number;
 }
 
 const ClientUsers = (props: Props) => {
@@ -36,7 +39,9 @@ const ClientUsers = (props: Props) => {
     const history = useHistory();
     const [state, setState] = useImmer<State>({
         allUsers: [],
-        showAddUserDialog: false
+        showAddUserDialog: false,
+        showRemoveUserDialog: false,
+        userIdToRemove: 0
     });
     const userClick = (id: number) => history.push(`/users/${id}`);
 
@@ -56,12 +61,22 @@ const ClientUsers = (props: Props) => {
         action();
     }, [setState]);
 
-    const removeUser = async (userId: number) => {
+    const removeUser = async () => {
+        setState((draft) => {
+            draft.showRemoveUserDialog = false;
+        });
         const newUsers = pipe(
-            await removeUserFromClient(userId, clientId),
+            await removeUserFromClient(state.userIdToRemove, clientId),
             getOrElse((): Array<ClientUser> => [])
         );
         updateUsers(newUsers);
+    };
+
+    const checkRemoveUser = (userId: number) => {
+        setState((draft) => {
+            draft.userIdToRemove = userId;
+            draft.showRemoveUserDialog = true;
+        });
     };
 
     const items: Array<Item> = users.map((user): Item => ({
@@ -77,7 +92,7 @@ const ClientUsers = (props: Props) => {
             },
             {
                 text: 'Remove',
-                click: () => removeUser(user.id)
+                click: () => checkRemoveUser(user.id)
             }
         ]
     }));
@@ -87,9 +102,14 @@ const ClientUsers = (props: Props) => {
             draft.showAddUserDialog = true;
         });
 
-    const dialogOnCancel = () =>
+    const addDialogOnCancel = () =>
         setState((draft) => {
             draft.showAddUserDialog = false;
+        });
+
+    const removeDialogOnCancel = () =>
+        setState((draft) => {
+            draft.showRemoveUserDialog = false;
         });
 
     const addUser = async (selectedUser: Option<SelectOption<number>>) => {
@@ -141,8 +161,15 @@ const ClientUsers = (props: Props) => {
                 open={ state.showAddUserDialog }
                 title="Add User"
                 onSelect={ addUser }
-                onCancel={ dialogOnCancel }
+                onCancel={ addDialogOnCancel }
                 options={ selectDialogUsers }
+            />
+            <ConfirmDialog
+                open={ state.showRemoveUserDialog }
+                title="Remove User"
+                message="Are you sure you want to remove this user from the client?"
+                onConfirm={ removeUser }
+                onCancel={ removeDialogOnCancel }
             />
         </>
     );
