@@ -18,6 +18,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { email } from '../../../../../utils/validations';
 import { none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
+import UserRoles from './UserRoles';
 
 interface State {
     userId: number;
@@ -292,6 +293,11 @@ const UserDetailsComponent = () => {
                             />
                         </Grid>
                         <Grid item md={ 2 } />
+                        <Grid item md={ 5 }>
+                            <UserRoles
+                                selectedClient={ state.selectedClient }
+                            />
+                        </Grid>
                     </Grid>
                 }
                 <ConfirmDialog
