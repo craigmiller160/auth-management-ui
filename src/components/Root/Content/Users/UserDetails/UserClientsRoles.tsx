@@ -24,7 +24,7 @@ interface Props {
 }
 
 interface State {
-    selectedClient?: UserClient;
+    selectedClient?: UserClient; // TODO move this above
     allClients: Array<ClientListItem>;
     showAddClientDialog: boolean;
     showRemoveClientDialog: boolean;
@@ -43,7 +43,7 @@ const UserClientsRoles = (props: Props) => {
         showRemoveClientDialog: false
     });
 
-    useEffect(() => {
+    useEffect(() => { // TODO move this above
         setState((draft) => {
             draft.selectedClient = undefined;
         });
