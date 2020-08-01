@@ -154,8 +154,6 @@ const UserDetailsComponent = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
-    // TODO add a link to client details page from client options
-
     return (
         <>
             <Prompt

@@ -7,6 +7,7 @@ import { useImmer } from 'use-immer';
 import { Business } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { UserClient } from '../../../../../types/user';
+import { useHistory } from 'react-router';
 
 interface Props {
     clients: Array<UserClient>;
@@ -24,7 +25,7 @@ const UserClientsRoles = (props: Props) => {
         clients,
         updateClients
     } = props;
-
+    const history = useHistory();
     const [state, setState] = useImmer<State>({});
 
     useEffect(() => {
@@ -39,6 +40,9 @@ const UserClientsRoles = (props: Props) => {
         });
     };
 
+    const goToClient = (clientId: number) =>
+        history.push(`/clients/${clientId}`);
+
     const clientItems: Array<Item> = clients.map((client) => ({
         click: () => clientClick(client),
         avatar: () => <Business />,
@@ -46,6 +50,10 @@ const UserClientsRoles = (props: Props) => {
             primary: client.name
         },
         secondaryActions: [
+            {
+                text: 'Go',
+                click: () => goToClient(client.id)
+            },
             {
                 text: 'Remove',
                 click: () => {}
