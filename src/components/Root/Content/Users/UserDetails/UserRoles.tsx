@@ -6,15 +6,30 @@ import { Typography } from '@material-ui/core';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
+import { SelectDialog } from '../../../../ui/Dialog';
+import { useImmer } from 'use-immer';
 
 interface Props {
     selectedClient: Option<UserClient>;
+    userId: number;
+}
+
+interface State {
+    showAddRoleDialog: boolean;
+    showRemoveRoleDialog: boolean;
+    roleIdToRemove: number;
 }
 
 const UserRoles = (props: Props) => {
     const {
-        selectedClient
+        selectedClient,
+        userId
     } = props;
+    const [state, setState] = useImmer<State>({
+        showAddRoleDialog: false,
+        showRemoveRoleDialog: false,
+        roleIdToRemove: 0
+    });
 
     if (isNone(selectedClient)) {
         return <div />;
@@ -59,6 +74,13 @@ const UserRoles = (props: Props) => {
                     </Button>
                 </>
             }
+            <SelectDialog
+                open={ state.showAddRoleDialog }
+                title="Add Role"
+                onSelect={ () => {} }
+                onCancel={ () => {} }
+                options={ [] }
+            />
         </>
     );
 };

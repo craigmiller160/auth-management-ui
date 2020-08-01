@@ -297,6 +297,7 @@ const UserDetailsComponent = () => {
                         <Grid item md={ 5 }>
                             <UserRoles
                                 selectedClient={ state.selectedClient }
+                                userId={ parseInt(id) }
                             />
                         </Grid>
                     </Grid>
