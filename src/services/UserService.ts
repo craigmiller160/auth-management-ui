@@ -1,8 +1,15 @@
 import { Either, map } from 'fp-ts/es6/Either';
-import { FullUserDetails, UserDetails, UserInput, UserList } from '../types/user';
+import { FullUserDetails, UserClient, UserDetails, UserInput, UserList } from '../types/user';
 import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
-import { CreateUserWrapper, DeleteUserWrapper, UpdateUserWrapper, UserDetailsWrapper } from '../types/graphApi';
+import {
+    AddClientToUserWrapper,
+    CreateUserWrapper,
+    DeleteUserWrapper,
+    RemoveClientFromUserWrapper,
+    UpdateUserWrapper,
+    UserDetailsWrapper
+} from '../types/graphApi';
 
 export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
     pipe(
@@ -114,4 +121,54 @@ export const deleteUser = async (userId: number): Promise<Either<Error, UserDeta
             errorMsg: `Error deleting user ${userId}`
         }),
         map((wrapper: DeleteUserWrapper) => wrapper.deleteUser)
+    );
+
+export const removeClientFromUser = async (userId: number, clientId: number): Promise<Either<Error,Array<UserClient>>> =>
+    pipe(
+        await api.graphql<RemoveClientFromUserWrapper>({
+            payload: `
+                mutation {
+                    removeClientFromUser(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        allRoles {
+                            id
+                            name
+                        }
+                        userRoles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error removing client ${clientId} from user ${userId}`
+        }),
+        map((wrapper: RemoveClientFromUserWrapper) => wrapper.removeClientFromUser)
+    );
+
+export const addClientToUser = async (userId: number, clientId: number): Promise<Either<Error, Array<UserClient>>> =>
+    pipe(
+        await api.graphql<AddClientToUserWrapper>({
+            payload: `
+                mutation {
+                    addClientToUser(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        allRoles {
+                            id
+                            name
+                        }
+                        userRoles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error adding client ${clientId} to user ${userId}`
+        }),
+        map((wrapper: AddClientToUserWrapper) => wrapper.addClientToUser)
     );
