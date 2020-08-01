@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { ClientListItem } from '../../../../../types/client';
+import { ClientListItem, ClientListResponse } from '../../../../../types/client';
 import { UserClient } from '../../../../../types/user';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
@@ -13,7 +13,8 @@ import { SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { addClientToUser } from '../../../../../services/UserService';
-import { getOrElse } from 'fp-ts/es6/Either';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { getAllClients } from '../../../../../services/ClientService';
 
 interface Props {
     userClients: Array<UserClient>;
@@ -42,6 +43,22 @@ const UserClients = (props: Props) => {
         showAddClientDialog: false,
         showRemoveClientDialog: false
     });
+
+    useEffect(() => {
+        const action = async () => {
+            const clients = pipe(
+                await getAllClients(),
+                map((res: ClientListResponse) => res.clients),
+                getOrElse((): Array<ClientListItem> => [])
+            );
+
+            setState((draft) => {
+                draft.allClients = clients;
+            });
+        };
+
+        action();
+    }, [setState]);
 
     const clientClick = (client: UserClient) => {
         // TODO handle this
