@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
 import List, { Item } from '../../../../ui/List';
@@ -8,31 +8,59 @@ import { Business } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { UserClient } from '../../../../../types/user';
 import { useHistory } from 'react-router';
+import { ClientListItem, ClientListResponse } from '../../../../../types/client';
+import { getAllClients } from '../../../../../services/ClientService';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { SelectDialog } from '../../../../ui/Dialog';
+import { isSome, Option } from 'fp-ts/es6/Option';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
 
 interface Props {
-    clients: Array<UserClient>;
+    userClients: Array<UserClient>;
     updateClients: (clients: Array<UserClient>) => void;
 }
 
 interface State {
     selectedClient?: UserClient;
+    allClients: Array<ClientListItem>;
+    showAddClientDialog: boolean;
+    showRemoveClientDialog: boolean;
 }
-
-// TODO how do I add a new client if I don't have that client's roles
 
 const UserClientsRoles = (props: Props) => {
     const {
-        clients,
+        userClients,
         updateClients
     } = props;
     const history = useHistory();
-    const [state, setState] = useImmer<State>({});
+    const [state, setState] = useImmer<State>({
+        allClients: [],
+        showAddClientDialog: false,
+        showRemoveClientDialog: false
+    });
 
     useEffect(() => {
         setState((draft) => {
             draft.selectedClient = undefined;
         });
-    }, [clients, setState]);
+    }, [userClients, setState]);
+
+    useEffect(() => {
+        const action = async () => {
+            const clients = pipe(
+                await getAllClients(),
+                map((res: ClientListResponse) => res.clients),
+                getOrElse((): Array<ClientListItem> => [])
+            );
+
+            setState((draft) => {
+                draft.allClients = clients;
+            });
+        };
+
+        action();
+    }, [setState]);
 
     const clientClick = (client: UserClient) => {
         setState((draft) => {
@@ -43,7 +71,7 @@ const UserClientsRoles = (props: Props) => {
     const goToClient = (clientId: number) =>
         history.push(`/clients/${clientId}`);
 
-    const clientItems: Array<Item> = clients.map((client) => ({
+    const clientItems: Array<Item> = userClients.map((client) => ({
         click: () => clientClick(client),
         avatar: () => <Business />,
         text: {
@@ -62,8 +90,8 @@ const UserClientsRoles = (props: Props) => {
         active: state.selectedClient?.id === client.id
     }));
 
-    const roleItems: Array<Item> = state.selectedClient ?
-        state.selectedClient.userRoles.map((role) => ({
+    const roleItems: Array<Item> = state.selectedClient?.userRoles
+        .map((role) => ({
             click: () => {},
             text: {
                 primary: role.name
@@ -74,7 +102,37 @@ const UserClientsRoles = (props: Props) => {
                     click: () => {}
                 }
             ]
-        })) : [];
+        })) ?? [];
+
+    const clientOptions = useMemo(() =>
+            state.allClients
+                .filter((client) => !userClients.find((otherClient) => client.id === otherClient.id))
+                .sort((client1, client2) => client1.name.localeCompare(client2.name))
+                .map((client) => ({
+                    label: client.name,
+                    value: client.id
+                })),
+        [state.allClients, userClients]);
+
+    const addClientClick = () =>
+        setState((draft) => {
+            draft.showAddClientDialog = true;
+        });
+
+    const addClientSelect = (selectedClient: Option<SelectOption<number>>) => {
+        setState((draft) => {
+            draft.showAddClientDialog = false
+        });
+        if (isSome(selectedClient)) {
+            const clientId = selectedClient.value.value;
+            // TODO finish this
+        }
+    };
+
+    const addClientCancel = () =>
+        setState((draft) => {
+            draft.showAddClientDialog = false;
+        });
 
     return (
         <div>
@@ -88,6 +146,7 @@ const UserClientsRoles = (props: Props) => {
                     <Button
                         color="primary"
                         variant="contained"
+                        onClick={ addClientClick }
                     >
                         Add Client
                     </Button>
@@ -116,6 +175,13 @@ const UserClientsRoles = (props: Props) => {
                     </Grid>
                 }
             </Grid>
+            <SelectDialog
+                open={ state.showAddClientDialog }
+                title="Add Client"
+                onSelect={ addClientSelect }
+                onCancel={ addClientCancel }
+                options={ clientOptions }
+            />
         </div>
     );
 };

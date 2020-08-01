@@ -29,7 +29,7 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
                 }
             }
         `,
-        errorMsg: 'Error getting all clients'
+        errorMsg: 'Error getting all userClients'
     });
 
 export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
@@ -176,7 +176,7 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
 
 export const generateGuid = (): Promise<Either<Error, string>> =>
     api.get<string>({
-        uri: '/clients/guid',
+        uri: '/userClients/guid',
         errorMsg: 'Error generating GUID'
     });
 

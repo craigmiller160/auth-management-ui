@@ -268,7 +268,7 @@ const UserDetailsComponent = () => {
                     </Grid>
                 </form>
                 <UserClientsRoles
-                    clients={ state.clients }
+                    userClients={ state.clients }
                     updateClients={ updateClients }
                 />
                 <ConfirmDialog
