@@ -16,6 +16,10 @@ interface Props<T> {
     options: Array<SelectOption<T>>;
 }
 
+const defaultForm: SelectForm<any> = {
+    value: null
+}
+
 const SelectDialog = <T extends any>(props: Props<T>) => {
     const {
         open,
@@ -25,15 +29,16 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
         options
     } = props;
 
-    const { control, handleSubmit, errors } = useForm<SelectForm<T>>({
+    const { control, handleSubmit, errors, reset } = useForm<SelectForm<T>>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
-        defaultValues: {
-            value: null
-        }
+        defaultValues: defaultForm
     });
 
-    const onSubmit = (values: SelectForm<T>) => onSelect(fromNullable(values.value));
+    const onSubmit = (values: SelectForm<T>) => {
+        reset(defaultForm);
+        onSelect(fromNullable(values.value));
+    }
 
     const actions: Array<DialogAction> = [
         { label: 'Select', onClick: handleSubmit(onSubmit) },
