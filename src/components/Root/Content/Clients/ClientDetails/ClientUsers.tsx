@@ -13,10 +13,13 @@ import { getAllUsers } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { Option } from 'fp-ts/es6/Option';
+import { isSome, Option } from 'fp-ts/es6/Option';
+import { addUserToClient, removeUserFromClient } from '../../../../../services/ClientService';
 
 interface Props {
     users: Array<ClientUser>;
+    clientId: number;
+    updateUsers: (users: Array<ClientUser>) => void;
 }
 
 interface State {
@@ -26,7 +29,9 @@ interface State {
 
 const ClientUsers = (props: Props) => {
     const {
-        users
+        users,
+        clientId,
+        updateUsers
     } = props;
     const history = useHistory();
     const [state, setState] = useImmer<State>({
@@ -51,8 +56,12 @@ const ClientUsers = (props: Props) => {
         action();
     }, [setState]);
 
-    const removeUser = () => {
-        // TODO finish this
+    const removeUser = async (userId: number) => {
+        const newUsers = pipe(
+            await removeUserFromClient(userId, clientId),
+            getOrElse((): Array<ClientUser> => [])
+        );
+        updateUsers(newUsers);
     };
 
     const items: Array<Item> = users.map((user): Item => ({
@@ -68,7 +77,7 @@ const ClientUsers = (props: Props) => {
             },
             {
                 text: 'Remove',
-                click: () => {}
+                click: () => removeUser(user.id)
             }
         ]
     }));
@@ -84,11 +93,17 @@ const ClientUsers = (props: Props) => {
         });
 
     const addUser = async (selectedUser: Option<SelectOption<number>>) => {
-        console.log(selectedUser);
-        // TODO execute the add user operation
         setState((draft) => {
             draft.showAddUserDialog = false
         });
+        if (isSome(selectedUser)) {
+            const userId = selectedUser.value.value;
+            const newUsers = pipe(
+                await addUserToClient(userId, clientId),
+                getOrElse((): Array<ClientUser> => [])
+            );
+            updateUsers(newUsers);
+        }
     };
 
     const selectDialogUsers = useMemo(() =>
