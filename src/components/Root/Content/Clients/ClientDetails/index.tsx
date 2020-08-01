@@ -115,6 +115,12 @@ const ClientDetailsComponent = () => {
         });
     };
 
+    const updateUsers = (users: Array<ClientUser>) => {
+        setState((draft) => {
+            draft.users = users;
+        });
+    };
+
     useEffect(() => {
         const action = async () => {
             if (id === NEW) {
@@ -355,7 +361,11 @@ const ClientDetailsComponent = () => {
                         direction="row"
                         className="UsersAndRoles"
                     >
-                        <ClientUsers users={ state.users } />
+                        <ClientUsers
+                            users={ state.users }
+                            clientId={ state.clientId }
+                            updateUsers={ updateUsers }
+                        />
                         <Grid item md={ 2 } />
                         <ClientRoles
                             clientId={ state.clientId ?? 0 }
