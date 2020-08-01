@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthUser } from '../../types/api';
+import { AuthUser } from '../../types/auth';
 import { none, Option } from 'fp-ts/es6/Option';
 
 const initialState: StateType = {

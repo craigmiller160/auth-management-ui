@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
-import { isSome, Option } from 'fp-ts/es6/Option';
 import {
     createClient,
     deleteClient,
     generateGuid,
     getClient,
-    getRoles,
+    getRolesForClient,
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
-import { Client, Role, User } from '../../../../../types/api';
 import { useForm } from 'react-hook-form';
 import './ClientDetails.scss';
 import Button from '@material-ui/core/Button';
@@ -24,11 +22,14 @@ import ClientUsers from './ClientUsers';
 import ClientRoles from './ClientRoles';
 import TextField from '../../../../ui/Form/TextField';
 import Checkbox from '../../../../ui/Form/Checkbox';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { Either, getOrElse, isRight } from 'fp-ts/es6/Either';
+import { ClientDetails, ClientInput, ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
 
 interface State {
     clientId: number;
-    users: Array<User>;
-    roles: Array<Role>;
+    users: Array<ClientUser>;
+    roles: Array<ClientRole>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
 }
@@ -37,14 +38,15 @@ interface MatchParams {
     id: string;
 }
 
-interface ClientForm extends Omit<Client, 'id'> { }
+interface ClientForm extends Omit<ClientDetails, 'id'> {
+    clientSecret: string;
+}
 const NEW = 'new';
 
-const defaultClient: Client = {
+const defaultClient: ClientDetails = {
     id: 0,
     name: '',
     clientKey: '',
-    clientSecret: '',
     enabled: false,
     allowClientCredentials: false,
     allowAuthCode: false,
@@ -52,8 +54,17 @@ const defaultClient: Client = {
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
+const defaultClientForm: ClientForm = {
+    ...defaultClient,
+    clientSecret: ''
+};
+const defaultFullClient: FullClientDetails = {
+    ...defaultClient,
+    users: [],
+    roles: []
+};
 
-const ClientDetails = () => {
+const ClientDetailsComponent = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
@@ -68,24 +79,23 @@ const ClientDetails = () => {
     const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
-        defaultValues: defaultClient
+        defaultValues: defaultClientForm
     });
 
-    const doSubmit = async (action: () => Promise<Option<any>>) => {
+    const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
         const result = await action();
-        if (isSome(result)) {
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/clients');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${result.value.id}`));
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
         }
     };
 
     const onSubmit = (values: ClientForm) => {
-        const payload: Client = {
-            ...values,
-            id: state.clientId
+        const payload: ClientInput = {
+            ...values
         };
 
         if (id === NEW) {
@@ -96,43 +106,45 @@ const ClientDetails = () => {
     };
 
     const reloadRoles = async () => {
-        const result = await getRoles(parseInt(id));
-        if (isSome(result)) {
-            setState((draft) => {
-                draft.roles = result.value?.roles ?? [];
-            });
-        }
+        const roles = pipe(
+            await getRolesForClient(parseInt(id)),
+            getOrElse((): Array<ClientRole> => ([]))
+        );
+        setState((draft) => {
+            draft.roles = roles;
+        });
+    };
+
+    const updateUsers = (users: Array<ClientUser>) => {
+        setState((draft) => {
+            draft.users = users;
+        });
     };
 
     useEffect(() => {
         const action = async () => {
             if (id === NEW) {
                 const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
-                if (isSome(key) && isSome(secret)) {
+                if (isRight(key) && isRight(secret)) {
                     reset({
                         name: 'New Client',
-                        clientKey: key.value,
-                        clientSecret: secret.value,
+                        clientKey: key.right,
+                        clientSecret: secret.right,
                         enabled: true,
                         accessTokenTimeoutSecs: 300,
                         refreshTokenTimeoutSecs: 3600
                     });
                 }
             } else {
-                const result = await getClient(parseInt(id));
-                if (isSome(result)) {
-                    reset(result.value.client);
-                    setState((draft) => {
-                        draft.users = result.value.users;
-                        draft.roles = result.value.roles;
-                    });
-                } else {
-                    reset({});
-                    setState((draft) => {
-                        draft.users = [];
-                        draft.roles = [];
-                    });
-                }
+                const client: FullClientDetails = pipe(
+                    await getClient(parseInt(id)),
+                    getOrElse((): FullClientDetails => defaultFullClient)
+                );
+                reset(client);
+                setState((draft) => {
+                    draft.users = client.users;
+                    draft.roles = client.roles;
+                });
             }
         };
 
@@ -140,17 +152,19 @@ const ClientDetails = () => {
     }, [id, setState, reset]);
 
     const generateClientKey = async () => {
-        const guid = await generateGuid();
-        if (isSome(guid)) {
-            setValue('clientKey', guid.value);
-        }
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientKey', guid);
     };
 
     const generateClientSecret = async () => {
-        const guid = await generateGuid();
-        if (isSome(guid)) {
-            setValue('clientSecret', guid.value);
-        }
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientSecret', guid);
     };
 
     const doCancel = () => history.push('/clients');
@@ -161,7 +175,7 @@ const ClientDetails = () => {
 
     const doDelete = async () => {
         const result = await deleteClient(parseInt(id));
-        if (isSome(result)) {
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
@@ -347,7 +361,11 @@ const ClientDetails = () => {
                         direction="row"
                         className="UsersAndRoles"
                     >
-                        <ClientUsers users={ state.users } />
+                        <ClientUsers
+                            users={ state.users }
+                            clientId={ state.clientId }
+                            updateUsers={ updateUsers }
+                        />
                         <Grid item md={ 2 } />
                         <ClientRoles
                             clientId={ state.clientId ?? 0 }
@@ -368,4 +386,4 @@ const ClientDetails = () => {
     );
 };
 
-export default ClientDetails;
+export default ClientDetailsComponent;

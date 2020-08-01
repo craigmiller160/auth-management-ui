@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PageHeader } from '../../../ui/Header';
 import { useHistory } from 'react-router';
-import { User } from '../../../../types/api';
-import { getUsers } from '../../../../services/UserService';
-import { isSome } from 'fp-ts/es6/Option';
+import { getAllUsers } from '../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
 import Table from '../../../ui/Table';
 import Button from '@material-ui/core/Button';
 import './Users.scss';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { UserDetails, UserList } from '../../../../types/user';
+import { getOrElse, map } from 'fp-ts/es6/Either';
 
 interface State {
-    users: Array<User>;
+    users: Array<UserDetails>;
 }
 
 const header = ['Email', 'First Name', 'Last Name'];
@@ -23,16 +24,14 @@ const Users = () => {
 
     useEffect(() => {
         const action = async () => {
-            const result = await getUsers();
-            if (isSome(result)) {
-                setState({
-                    users: result.value.users
-                });
-            } else {
-                setState({
-                    users: []
-                });
-            }
+            const users = pipe(
+                await getAllUsers(),
+                map((list: UserList) => list.users),
+                getOrElse((): Array<UserDetails> => ([]))
+            );
+            setState({
+                users
+            });
         };
 
         action();

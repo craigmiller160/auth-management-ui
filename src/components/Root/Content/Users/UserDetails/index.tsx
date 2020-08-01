@@ -1,48 +1,58 @@
 import React, { useEffect } from 'react';
 import { Prompt, useHistory, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
-import { User } from '../../../../../types/api';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import './UserDetails.scss';
 import { PageHeader, SectionHeader } from '../../../../ui/Header';
-import { isSome, Option } from 'fp-ts/es6/Option';
 import alertSlice from '../../../../../store/alert/slice';
 import { createUser, deleteUser, getUser, updateUser } from '../../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import TextField from '../../../../ui/Form/TextField';
+import { FullUserDetails, UserClient, UserDetails, UserInput } from '../../../../../types/user';
+import { Either, getOrElse } from 'fp-ts/es6/Either';
+import { isRight } from 'fp-ts/es6/These';
+import { pipe } from 'fp-ts/es6/pipeable';
+import UserClientsRoles from './UserClientsRoles';
+import { email } from '../../../../../utils/validations';
 
 interface State {
     userId: number;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
+    clients: Array<UserClient>;
 }
 
 interface MatchParams {
     id: string;
 }
 
-interface UserForm extends Omit<User, 'id'> {
+interface UserForm extends UserInput {
     confirmPassword: string;
 }
 const NEW = 'new';
 
-const defaultUser: User = {
+const defaultUser: UserDetails = {
     id: 0,
     email: '',
     firstName: '',
-    lastName: '',
-    password: ''
+    lastName: ''
+};
+
+const defaultFullUser: FullUserDetails = {
+    ...defaultUser,
+    clients: []
 };
 
 const defaultForm: UserForm = {
     ...defaultUser,
+    password: '',
     confirmPassword: ''
 };
 
-const UserDetails = () => {
+const UserDetailsComponent = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const match = useRouteMatch<MatchParams>();
@@ -50,7 +60,8 @@ const UserDetails = () => {
     const [state, setState] = useImmer<State>({
         userId: id !== NEW ? parseInt(id) : 0,
         shouldBlockNavigation: true,
-        showDeleteDialog: false
+        showDeleteDialog: false,
+        clients: []
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -59,21 +70,26 @@ const UserDetails = () => {
     });
     const watchPassword = watch('password', '');
 
-    const doSubmit = async (action: () => Promise<Option<any>>) => {
+    const updateClients = (clients: Array<UserClient>) => {
+        setState((draft) => {
+            draft.clients = clients;
+        });
+    };
+
+    const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
         const result = await action();
-        if (isSome(result)) {
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
             history.push('/users');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${result.value.id}`));
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
         }
     };
 
     const onSubmit = (values: UserForm) => {
-        const payload: User = {
-            ...values,
-            id: state.userId
+        const payload: UserInput = {
+            ...values
         };
         if (id === NEW) {
             doSubmit(() => createUser(payload));
@@ -87,17 +103,19 @@ const UserDetails = () => {
             if (id === NEW) {
                 reset(defaultUser);
             } else {
-                const result = await getUser(parseInt(id));
-                if (isSome(result)) {
-                    reset(result.value);
-                } else {
-                    reset({});
-                }
+                const user = pipe(
+                    await getUser(parseInt(id)),
+                    getOrElse(() => defaultFullUser)
+                );
+                reset(user);
+                setState((draft) => {
+                    draft.clients = user.clients
+                });
             }
         };
 
         action();
-    }, [id, reset]);
+    }, [id, reset, setState]);
 
     useEffect(() => {
         if (watchPassword === '') {
@@ -114,7 +132,7 @@ const UserDetails = () => {
 
     const doDelete = async () => {
         const result = await deleteUser(parseInt(id));
-        if (isSome(result)) {
+        if (isRight(result)) {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
@@ -136,6 +154,8 @@ const UserDetails = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
+    // TODO add a link to client details page from client options
+
     return (
         <>
             <Prompt
@@ -155,7 +175,12 @@ const UserDetails = () => {
                             control={ control }
                             label="Email"
                             className="grow-sm"
-                            rules={ { required: 'Required' } }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    email
+                                }
+                            } }
                             error={ errors.email }
                         />
                     </Grid>
@@ -177,6 +202,7 @@ const UserDetails = () => {
                         <TextField
                             className="grow-sm"
                             name="confirmPassword"
+                            type="password"
                             control={ control }
                             label="Password (Confirm)"
                             error={ errors.confirmPassword }
@@ -243,6 +269,10 @@ const UserDetails = () => {
                         }
                     </Grid>
                 </form>
+                <UserClientsRoles
+                    clients={ state.clients }
+                    updateClients={ updateClients }
+                />
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
@@ -255,4 +285,4 @@ const UserDetails = () => {
     );
 };
 
-export default UserDetails;
+export default UserDetailsComponent;

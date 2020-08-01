@@ -1,67 +1,225 @@
 import api from './Api';
-import { Client, ClientList, FullClient, Role, RoleList } from '../types/api';
-import { Option } from 'fp-ts/es6/Option';
+import { Either, map } from 'fp-ts/es6/Either';
+import { pipe } from 'fp-ts/es6/pipeable';
+import {
+    ClientDetails,
+    ClientInput,
+    ClientListResponse,
+    ClientRole,
+    ClientUser,
+    FullClientDetails
+} from '../types/client';
+import {
+    AddUserToClientWrapper,
+    ClientDetailsWrapper,
+    CreateClientWrapper,
+    DeleteClientWrapper, RemoveUserFromClientWrapper,
+    RolesForClientWrapper,
+    UpdateClientWrapper
+} from '../types/graphApi';
 
-export const getClients = (): Promise<Option<ClientList>> =>
-    api.get<ClientList>({
-        uri: '/clients',
+export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
+    api.graphql<ClientListResponse>({
+        payload: `
+            query {
+                clients {
+                    id
+                    name
+                    clientKey
+                }
+            }
+        `,
         errorMsg: 'Error getting all clients'
     });
 
-export const getClient = (id: number): Promise<Option<FullClient>> =>
-    api.get<FullClient>({
-        uri: `/clients/${id}`,
-        errorMsg: `Error getting client ${id}`
-    });
+export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
+    pipe(
+        await api.graphql<ClientDetailsWrapper>({
+            payload: `
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                        roles {
+                            id
+                            name
+                        }
+                        users {
+                            id
+                            email
+                            firstName
+                            lastName
+                            roles {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error getting client ${clientId}`
+        }),
+        map((wrapper: ClientDetailsWrapper) => wrapper.client)
+    );
 
-export const generateGuid = (): Promise<Option<string>> =>
+export const getRolesForClient = async (clientId: number): Promise<Either<Error, Array<ClientRole>>> =>
+    pipe(
+        await api.graphql<RolesForClientWrapper>({
+            payload: `
+                query {
+                    rolesForClient(clientId: ${clientId}) {
+                        id
+                        name
+                    }
+                }
+            `,
+            errorMsg: `Error getting roles for client ${clientId}`
+        }),
+        map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
+    );
+
+export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await api.graphql<UpdateClientWrapper>({
+            payload: `
+                mutation {
+                    updateClient(clientId: ${clientId}, client: {
+                        name: "${clientInput.name}",
+                        clientKey: "${clientInput.clientKey}",
+                        clientSecret: "${clientInput.clientSecret || ''}",
+                        enabled: ${clientInput.enabled},
+                        allowAuthCode: ${clientInput.allowAuthCode},
+                        allowClientCredentials: ${clientInput.allowClientCredentials},
+                        allowPassword: ${clientInput.allowPassword},
+                        accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                    }) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: `Error updating client ${clientId}`
+        }),
+        map((wrapper: UpdateClientWrapper) => wrapper.updateClient)
+    );
+
+export const createClient = async (clientInput: ClientInput): Promise<Either<Error,ClientDetails>> =>
+    pipe(
+        await api.graphql<CreateClientWrapper>({
+            payload: `
+                mutation {
+                    createClient(client: {
+                        name: "${clientInput.name}",
+                        clientKey: "${clientInput.clientKey}",
+                        clientSecret: "${clientInput.clientSecret}",
+                        enabled: ${clientInput.enabled},
+                        allowAuthCode: ${clientInput.allowAuthCode},
+                        allowClientCredentials: ${clientInput.allowClientCredentials},
+                        allowPassword: ${clientInput.allowPassword},
+                        accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                    }) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: 'Error creating client'
+        }),
+        map((wrapper: CreateClientWrapper) => wrapper.createClient)
+    );
+
+export const deleteClient = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await api.graphql<DeleteClientWrapper>({
+            payload: `
+                mutation {
+                    deleteClient(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        allowAuthCode
+                        allowClientCredentials
+                        allowPassword
+                        enabled
+                        refreshTokenTimeoutSecs
+                    }
+                }
+            `,
+            errorMsg: `Error deleting client ${clientId}`
+        }),
+        map((wrapper: DeleteClientWrapper) => wrapper.deleteClient)
+    );
+
+export const generateGuid = (): Promise<Either<Error, string>> =>
     api.get<string>({
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
     });
 
-export const updateClient = (id: number, client: Client): Promise<Option<Client>> =>
-    api.put<Client,Client>({
-        uri: `/clients/${id}`,
-        body: client,
-        errorMsg: `Error updating client ${id}`
-    });
+export const removeUserFromClient = async (userId: number, clientId: number): Promise<Either<Error, Array<ClientUser>>> =>
+    pipe(
+        await api.graphql<RemoveUserFromClientWrapper>({
+            payload: `
+                mutation {
+                    removeUserFromClient(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        roles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error removing user ${userId} from client ${clientId}`
+        }),
+        map((wrapper: RemoveUserFromClientWrapper) => wrapper.removeUserFromClient)
+    );
 
-export const createClient = (client: Client): Promise<Option<Client>> =>
-    api.post<Client,Client>({
-        uri: '/clients',
-        body: client,
-        errorMsg: 'Error creating client'
-    });
-
-export const deleteClient = (id: number): Promise<Option<Client>> =>
-    api.delete<Client>({
-        uri: `/clients/${id}`,
-        errorMsg: `Error deleting client ${id}`
-    });
-
-export const createRole = (clientId: number, role: Role): Promise<Option<Role>> =>
-    api.post<Role,Role>({
-        uri: `/clients/${clientId}/roles`,
-        body: role,
-        errorMsg: `Error creating role for client ${clientId}`
-    });
-
-export const updateRole = (clientId: number, roleId: number, role: Role): Promise<Option<Role>> =>
-    api.put<Role,Role>({
-        uri: `/clients/${clientId}/roles/${roleId}`,
-        body: role,
-        errorMsg: `Error updating role ${roleId} for client ${clientId}`
-    });
-
-export const deleteRole = (clientId: number, roleId: number): Promise<Option<Role>> =>
-    api.delete<Role>({
-        uri: `/clients/${clientId}/roles/${roleId}`,
-        errorMsg: `Error deleting role ${roleId} for client ${clientId}`
-    });
-
-export const getRoles = (clientId: number): Promise<Option<RoleList>> =>
-    api.get<RoleList>({
-        uri: `/clients/${clientId}/roles`,
-        errorMsg: `Error getting roles for client ${clientId}`
-    });
+export const addUserToClient = async (userId: number, clientId: number): Promise<Either<Error, Array<ClientUser>>> =>
+    pipe(
+        await api.graphql<AddUserToClientWrapper>({
+            payload: `
+                mutation {
+                    addUserToClient(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        roles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error adding user ${userId} to client ${clientId}`
+        }),
+        map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
+    );

@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import BaseDialog, { DialogAction } from '../../../../ui/Dialog/BaseDialog';
 import { useForm } from 'react-hook-form';
 import './ClientRoleDialog.scss';
-import { Role } from '../../../../../types/api';
+import { ClientRole } from '../../../../../types/client';
 import TextField from '../../../../ui/Form/TextField';
 
 interface Props {
     open: boolean;
-    role: Role;
+    role: ClientRole;
     onClose: () => void;
-    onSave: (role: Role) => void;
-    onDelete: (role: Role) => void;
+    onSave: (role: ClientRole) => void;
 }
 
 interface RoleForm {
@@ -24,8 +23,7 @@ const ClientRoleDialog = (props: Props) => {
         open,
         onClose,
         role,
-        onSave,
-        onDelete
+        onSave
     } = props;
     const { control, handleSubmit, errors, reset } = useForm<RoleForm>({
         mode: 'onBlur',
@@ -40,7 +38,7 @@ const ClientRoleDialog = (props: Props) => {
     },[role, reset]);
 
     const onSubmit = async (values: RoleForm) => {
-        const payload: Role = {
+        const payload: ClientRole = {
             ...role,
             name: `${ROLE_PREFIX}${values.name}`
         };
@@ -51,9 +49,6 @@ const ClientRoleDialog = (props: Props) => {
         { label: 'Save', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onClose }
     ];
-    if (role.id) {
-        actions.push({ label: 'Delete', onClick: () => onDelete(role) });
-    }
 
     const prefixClasses = ['RolePrefix'];
     if (errors.name) {

@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Client } from '../../../../types/api';
-import { getClients } from '../../../../services/ClientService';
-import { isSome } from 'fp-ts/es6/Option';
+import { getAllClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './Clients.scss';
 import Table from '../../../ui/Table';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { ClientListItem, ClientListResponse } from '../../../../types/client';
 
 interface State {
-    clients: Array<Client>;
+    clients: Array<ClientListItem>;
 }
 
 const header = ['Name', 'Key'];
@@ -23,16 +24,14 @@ const Clients = () => {
 
     useEffect(() => {
         const action = async () => {
-            const result = await getClients();
-            if (isSome(result)) {
-                setState({
-                    clients: result.value.clients
-                });
-            } else {
-                setState({
-                    clients: []
-                });
-            }
+            const clients = pipe(
+                await getAllClients(),
+                map((list: ClientListResponse) => list.clients),
+                getOrElse((): Array<ClientListItem> => ([]))
+            );
+            setState({
+                clients: clients
+            });
         };
 
         action();
@@ -44,7 +43,10 @@ const Clients = () => {
         state.clients
             .map((client) => ({
                 click: () => history.push(`/clients/${client.id}`),
-                items: [client.name, client.clientKey]
+                items: [
+                    client.name,
+                    client.clientKey
+                ]
             })),
     [state.clients, history]);
 
