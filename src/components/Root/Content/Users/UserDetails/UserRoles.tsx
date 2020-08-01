@@ -8,4 +8,4 @@ const UserRoles = (props: Props) => {
 
 };
 
-export default UserClients;
+export default UserRoles;

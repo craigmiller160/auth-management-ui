@@ -15,14 +15,16 @@ import { FullUserDetails, UserClient, UserDetails, UserInput } from '../../../..
 import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
-import UserClientsRoles from './UserClientsRoles';
 import { email } from '../../../../../utils/validations';
+import { none, Option } from 'fp-ts/es6/Option';
+import UserClients from './UserClients';
 
 interface State {
     userId: number;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
     clients: Array<UserClient>;
+    selectedClient: Option<UserClient>;
 }
 
 interface MatchParams {
@@ -61,7 +63,8 @@ const UserDetailsComponent = () => {
         userId: id !== NEW ? parseInt(id) : 0,
         shouldBlockNavigation: true,
         showDeleteDialog: false,
-        clients: []
+        clients: [],
+        selectedClient: none
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -269,11 +272,20 @@ const UserDetailsComponent = () => {
                 </form>
                 {
                     id !== NEW &&
-                    <UserClientsRoles
-                        userClients={ state.clients }
-                        updateClients={ updateClients }
-                        userId={ parseInt(id) }
-                    />
+                    <Grid
+                        container
+                        direction="row"
+                    >
+                        <Grid item md={ 5 }>
+                            <UserClients
+                                userClients={ state.clients }
+                                userId={ parseInt(id) }
+                                updateClients={ updateClients }
+                                selectedClient={ state.selectedClient }
+                            />
+                        </Grid>
+                        <Grid item md={ 2 } />
+                    </Grid>
                 }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
