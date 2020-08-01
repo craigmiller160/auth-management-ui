@@ -16,7 +16,7 @@ import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { email } from '../../../../../utils/validations';
-import { none, Option } from 'fp-ts/es6/Option';
+import { none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 
 interface State {
@@ -157,6 +157,12 @@ const UserDetailsComponent = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
+    const selectClient = (client: UserClient) =>
+        setState((draft) => {
+            draft.selectedClient = some(client)
+        });
+
+
     return (
         <>
             <Prompt
@@ -282,6 +288,7 @@ const UserDetailsComponent = () => {
                                 userId={ parseInt(id) }
                                 updateClients={ updateClients }
                                 selectedClient={ state.selectedClient }
+                                selectClient={ selectClient }
                             />
                         </Grid>
                         <Grid item md={ 2 } />

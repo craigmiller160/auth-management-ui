@@ -21,6 +21,7 @@ interface Props {
     userId: number;
     updateClients: (clients: Array<UserClient>) => void;
     selectedClient: Option<UserClient>;
+    selectClient: (client: UserClient) => void;
 }
 
 interface State {
@@ -34,7 +35,8 @@ const UserClients = (props: Props) => {
         userClients,
         userId,
         updateClients,
-        selectedClient
+        selectedClient,
+        selectClient
     } = props;
 
     const history = useHistory();
@@ -60,15 +62,11 @@ const UserClients = (props: Props) => {
         action();
     }, [setState]);
 
-    const clientClick = (client: UserClient) => {
-        // TODO handle this
-    };
-
     const goToClient = (clientId: number) =>
         history.push(`/clients/${clientId}`);
 
     const clientItems: Array<Item> = userClients.map((client) => ({
-        click: () => clientClick(client),
+        click: () => selectClient(client),
         avatar: () => <Business />,
         text: {
             primary: client.name
@@ -83,7 +81,7 @@ const UserClients = (props: Props) => {
                 click: () => {}
             }
         ],
-        active: exists((client: UserClient) => !!client)(selectedClient)
+        active: exists((selected: UserClient) => selected.id === client.id)(selectedClient)
     }));
 
     const addClientClick = () =>
