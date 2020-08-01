@@ -77,6 +77,7 @@ const UserDetailsComponent = () => {
     const updateClients = (clients: Array<UserClient>) => {
         setState((draft) => {
             draft.clients = clients;
+            draft.selectedClient = none;
         });
     };
 

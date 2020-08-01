@@ -9,10 +9,10 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Business } from '@material-ui/icons';
 import { exists, isSome, Option } from 'fp-ts/es6/Option';
-import { SelectDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { addClientToUser } from '../../../../../services/UserService';
+import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { getAllClients } from '../../../../../services/ClientService';
 
@@ -28,6 +28,7 @@ interface State {
     allClients: Array<ClientListItem>;
     showAddClientDialog: boolean;
     showRemoveClientDialog: boolean;
+    clientIdToRemove: number;
 }
 
 const UserClients = (props: Props) => {
@@ -43,7 +44,8 @@ const UserClients = (props: Props) => {
     const [state, setState] = useImmer<State>({
         allClients: [],
         showAddClientDialog: false,
-        showRemoveClientDialog: false
+        showRemoveClientDialog: false,
+        clientIdToRemove: 0
     });
 
     useEffect(() => {
@@ -65,6 +67,13 @@ const UserClients = (props: Props) => {
     const goToClient = (clientId: number) =>
         history.push(`/clients/${clientId}`);
 
+    const removeClientClick = (clientId: number) => {
+        setState((draft) => {
+            draft.clientIdToRemove = clientId;
+            draft.showRemoveClientDialog = true;
+        });
+    };
+
     const clientItems: Array<Item> = userClients.map((client) => ({
         click: () => selectClient(client),
         avatar: () => <Business />,
@@ -78,7 +87,7 @@ const UserClients = (props: Props) => {
             },
             {
                 text: 'Remove',
-                click: () => {}
+                click: () => removeClientClick(client.id)
             }
         ],
         active: exists((selected: UserClient) => selected.id === client.id)(selectedClient)
@@ -118,6 +127,22 @@ const UserClients = (props: Props) => {
                 })),
         [state.allClients, userClients]);
 
+    const removeClientOnCancel = () =>
+        setState((draft) => {
+            draft.showRemoveClientDialog = false;
+        });
+
+    const removeClientOnConfirm = async () => {
+        setState((draft) => {
+            draft.showRemoveClientDialog = false;
+        });
+        const clients = pipe(
+            await removeClientFromUser(userId, state.clientIdToRemove),
+            getOrElse((): Array<UserClient> => [])
+        );
+        updateClients(clients);
+    };
+
     return (
         <>
             <SectionHeader title="Clients" />
@@ -135,6 +160,13 @@ const UserClients = (props: Props) => {
                 onSelect={ addClientSelect }
                 onCancel={ addClientCancel }
                 options={ clientOptions }
+            />
+            <ConfirmDialog
+                open={ state.showRemoveClientDialog }
+                title="Remove Client"
+                message="Are you sure you want to remove this client from this user?"
+                onConfirm={ removeClientOnConfirm }
+                onCancel={ removeClientOnCancel }
             />
         </>
     );
