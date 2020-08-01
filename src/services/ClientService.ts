@@ -1,11 +1,19 @@
 import api from './Api';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { ClientDetails, ClientInput, ClientListResponse, ClientRole, FullClientDetails } from '../types/client';
 import {
+    ClientDetails,
+    ClientInput,
+    ClientListResponse,
+    ClientRole,
+    ClientUser,
+    FullClientDetails
+} from '../types/client';
+import {
+    AddUserToClientWrapper,
     ClientDetailsWrapper,
     CreateClientWrapper,
-    DeleteClientWrapper,
+    DeleteClientWrapper, RemoveUserFromClientWrapper,
     RolesForClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
@@ -171,3 +179,47 @@ export const generateGuid = (): Promise<Either<Error, string>> =>
         uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
     });
+
+export const removeUserFromClient = async (userId: number, clientId: number): Promise<Either<Error, Array<ClientUser>>> =>
+    pipe(
+        await api.graphql<RemoveUserFromClientWrapper>({
+            payload: `
+                mutation {
+                    removeUserFromClient(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        roles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error removing user ${userId} from client ${clientId}`
+        }),
+        map((wrapper: RemoveUserFromClientWrapper) => wrapper.removeUserFromClient)
+    );
+
+export const addUserToClient = async (userId: number, clientId: number): Promise<Either<Error, Array<ClientUser>>> =>
+    pipe(
+        await api.graphql<AddUserToClientWrapper>({
+            payload: `
+                mutation {
+                    addUserToClient(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        roles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error adding user ${userId} to client ${clientId}`
+        }),
+        map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
+    );

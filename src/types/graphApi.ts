@@ -1,4 +1,4 @@
-import { ClientDetails, ClientRole, FullClientDetails } from './client';
+import { ClientDetails, ClientRole, ClientUser, FullClientDetails } from './client';
 import { Role } from './role';
 import { FullUserDetails, UserDetails } from './user';
 
@@ -57,4 +57,12 @@ export interface CreateUserWrapper {
 
 export interface DeleteUserWrapper {
     deleteUser: UserDetails;
+}
+
+export interface RemoveUserFromClientWrapper {
+    removeUserFromClient: Array<ClientUser>;
+}
+
+export interface AddUserToClientWrapper {
+    addUserToClient: Array<ClientUser>;
 }
