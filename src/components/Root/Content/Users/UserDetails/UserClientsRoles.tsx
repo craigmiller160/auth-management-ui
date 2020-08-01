@@ -15,10 +15,12 @@ import { getOrElse, map } from 'fp-ts/es6/Either';
 import { SelectDialog } from '../../../../ui/Dialog';
 import { isSome, Option } from 'fp-ts/es6/Option';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { addClientToUser } from '../../../../../services/UserService';
 
 interface Props {
     userClients: Array<UserClient>;
     updateClients: (clients: Array<UserClient>) => void;
+    userId: number;
 }
 
 interface State {
@@ -31,7 +33,8 @@ interface State {
 const UserClientsRoles = (props: Props) => {
     const {
         userClients,
-        updateClients
+        updateClients,
+        userId
     } = props;
     const history = useHistory();
     const [state, setState] = useImmer<State>({
@@ -119,13 +122,17 @@ const UserClientsRoles = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = (selectedClient: Option<SelectOption<number>>) => {
+    const addClientSelect = async (selectedClient: Option<SelectOption<number>>) => {
         setState((draft) => {
             draft.showAddClientDialog = false
         });
         if (isSome(selectedClient)) {
             const clientId = selectedClient.value.value;
-            // TODO finish this
+            const clients = pipe (
+                await addClientToUser(userId, clientId),
+                getOrElse((): Array<UserClient> => [])
+            );
+            updateClients(clients);
         }
     };
 

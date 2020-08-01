@@ -267,10 +267,14 @@ const UserDetailsComponent = () => {
                         }
                     </Grid>
                 </form>
-                <UserClientsRoles
-                    userClients={ state.clients }
-                    updateClients={ updateClients }
-                />
+                {
+                    id !== NEW &&
+                    <UserClientsRoles
+                        userClients={ state.clients }
+                        updateClients={ updateClients }
+                        userId={ parseInt(id) }
+                    />
+                }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"
