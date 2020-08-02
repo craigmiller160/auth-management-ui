@@ -25,6 +25,7 @@ import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { Either, getOrElse, isRight } from 'fp-ts/es6/Either';
 import { ClientDetails, ClientInput, ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
+import ClientAuth from './ClientAuth';
 
 interface State {
     clientId: number;
@@ -356,23 +357,26 @@ const ClientDetailsComponent = () => {
                 </form>
                 {
                     id !== NEW &&
-                    <Grid
-                        container
-                        direction="row"
-                        className="UsersAndRoles"
-                    >
-                        <ClientUsers
-                            users={ state.users }
-                            clientId={ state.clientId }
-                            updateUsers={ updateUsers }
-                        />
-                        <Grid item md={ 2 } />
-                        <ClientRoles
-                            clientId={ state.clientId ?? 0 }
-                            roles={ state.roles }
-                            reloadRoles={ reloadRoles }
-                        />
-                    </Grid>
+                    <>
+                        <ClientAuth />
+                        <Grid
+                            container
+                            direction="row"
+                            className="UsersAndRoles"
+                        >
+                            <ClientUsers
+                                users={ state.users }
+                                clientId={ state.clientId }
+                                updateUsers={ updateUsers }
+                            />
+                            <Grid item md={ 2 } />
+                            <ClientRoles
+                                clientId={ state.clientId ?? 0 }
+                                roles={ state.roles }
+                                reloadRoles={ reloadRoles }
+                            />
+                        </Grid>
+                    </>
                 }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
