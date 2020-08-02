@@ -98,18 +98,16 @@ const UserClients = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = async (selectedClient: Option<SelectOption<number>>) => {
+    const addClientSelect = async (selectedClient: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddClientDialog = false
         });
-        if (isSome(selectedClient)) {
-            const clientId = selectedClient.value.value;
-            const clients = pipe (
-                await addClientToUser(userId, clientId),
-                getOrElse((): Array<UserClient> => [])
-            );
-            updateClients(clients);
-        }
+        const clientId = selectedClient.value;
+        const clients = pipe (
+            await addClientToUser(userId, clientId),
+            getOrElse((): Array<UserClient> => [])
+        );
+        updateClients(clients);
     };
 
     const addClientCancel = () =>

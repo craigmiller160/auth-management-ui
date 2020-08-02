@@ -112,18 +112,16 @@ const ClientUsers = (props: Props) => {
             draft.showRemoveUserDialog = false;
         });
 
-    const addUser = async (selectedUser: Option<SelectOption<number>>) => {
+    const addUser = async (selectedUser: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddUserDialog = false
         });
-        if (isSome(selectedUser)) {
-            const userId = selectedUser.value.value;
-            const newUsers = pipe(
-                await addUserToClient(userId, clientId),
-                getOrElse((): Array<ClientUser> => [])
-            );
-            updateUsers(newUsers);
-        }
+        const userId = selectedUser.value;
+        const newUsers = pipe(
+            await addUserToClient(userId, clientId),
+            getOrElse((): Array<ClientUser> => [])
+        );
+        updateUsers(newUsers);
     };
 
     const selectDialogUsers = useMemo(() =>
