@@ -11,7 +11,7 @@ interface SelectForm<T> {
 interface Props<T> {
     open: boolean;
     title: string;
-    onSelect: (value: Option<SelectOption<T>>) => void;
+    onSelect: (value: Option<SelectOption<T>>) => void; // TODO given the form restrictions, no reason for this to be Option
     onCancel: (event: MouseEvent<HTMLButtonElement>) => void;
     options: Array<SelectOption<T>>;
 }
