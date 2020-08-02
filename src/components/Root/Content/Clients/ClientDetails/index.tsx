@@ -33,6 +33,7 @@ interface State {
     roles: Array<ClientRole>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
+    allowClientCreds: boolean;
 }
 
 interface MatchParams {
@@ -75,7 +76,8 @@ const ClientDetailsComponent = () => {
         users: [],
         roles: [],
         shouldBlockNavigation: true,
-        showDeleteDialog: false
+        showDeleteDialog: false,
+        allowClientCreds: false
     });
     const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -89,7 +91,7 @@ const ClientDetailsComponent = () => {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
-            history.push('/userClients');
+            history.push('/clients');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
         }
     };
@@ -145,6 +147,7 @@ const ClientDetailsComponent = () => {
                 setState((draft) => {
                     draft.users = client.users;
                     draft.roles = client.roles;
+                    draft.allowClientCreds = client.allowClientCredentials;
                 });
             }
         };
@@ -358,7 +361,9 @@ const ClientDetailsComponent = () => {
                 {
                     id !== NEW &&
                     <>
-                        <ClientAuth />
+                        <ClientAuth
+                            allowClientCreds={ state.allowClientCreds }
+                        />
                         <Grid
                             container
                             direction="row"
