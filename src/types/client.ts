@@ -45,3 +45,9 @@ export interface FullClientDetails extends ClientDetails {
 export interface ClientInput extends BaseClient {
     clientSecret: string;
 }
+
+export interface ClientAuthDetails {
+    tokenId: string | null;
+    clientId: number;
+    lastAuthenticated: string | null;
+}

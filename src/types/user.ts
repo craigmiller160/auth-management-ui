@@ -33,3 +33,10 @@ export interface FullUserDetails extends UserDetails {
 export interface UserList {
     users: Array<UserDetails>;
 }
+
+export interface UserAuthDetails {
+    tokenId: string | null;
+    clientId: number;
+    userId: number;
+    lastAuthenticated: string | null;
+}
