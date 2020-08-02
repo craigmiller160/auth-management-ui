@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import { Typography } from '@material-ui/core';
 import './ClientAuth.scss';
@@ -15,6 +15,17 @@ const ClientAuth = (props: Props) => {
     const {
         allowClientCreds
     } = props;
+
+    useEffect(() => {
+        const action = async () => {
+            // TODO load the client auth stuff here
+        };
+
+        if (allowClientCreds) {
+            action();
+        }
+    }, [allowClientCreds]);
+
     return (
         <div className="ClientAuth">
             <SectionHeader title="Authentication Status" />
