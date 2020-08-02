@@ -30,7 +30,7 @@ const Navbar = () => {
     const authAction = isAuth ? doLogout : doLogin;
 
     const usersActive = isActive(location.pathname, '/users');
-    const clientsActive = isActive(location.pathname, '/userClients');
+    const clientsActive = isActive(location.pathname, '/clients');
 
     return (
         <AppBar position="static" className="Navbar">
