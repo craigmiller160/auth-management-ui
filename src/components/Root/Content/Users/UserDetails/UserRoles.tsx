@@ -7,10 +7,10 @@ import { Typography } from '@material-ui/core';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { SelectDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { addRoleToUser } from '../../../../../services/UserService';
+import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
 
 interface Props {
     selectedClient: Option<UserClient>;
@@ -36,9 +36,21 @@ const UserRoles = (props: Props) => {
         roleIdToRemove: 0
     });
 
+    const clientId = pipe(
+        selectedClient,
+        map((client: UserClient) => client.id),
+        getOrElse(() => 0)
+    );
+
     if (isNone(selectedClient)) {
         return <div />;
     }
+
+    const removeRoleClick = (roleId: number) =>
+        setState((draft) => {
+            draft.roleIdToRemove = roleId;
+            draft.showRemoveRoleDialog = true;
+        });
 
     const roleItems: Array<Item> = pipe(
         selectedClient,
@@ -53,7 +65,7 @@ const UserRoles = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Remove',
-                    click: () => {}
+                    click: () => removeRoleClick(role.id)
                 }
             ]
         }));
@@ -86,11 +98,6 @@ const UserRoles = (props: Props) => {
             draft.showAddRoleDialog = false;
         });
         const roleId = selectedRole.value;
-        const clientId = pipe(
-            selectedClient,
-            map((client: UserClient) => client.id),
-            getOrElse(() => 0)
-        );
 
         const userRoles: Array<UserRole> = pipe(
             await addRoleToUser(userId, clientId, roleId),
@@ -98,6 +105,22 @@ const UserRoles = (props: Props) => {
         );
         updateUserRoles(clientId, userRoles);
     };
+
+    const removeOnConfirm = async () => {
+        setState((draft) => {
+            draft.showRemoveRoleDialog = false;
+        });
+        const userRoles: Array<UserRole> = pipe(
+            await removeRoleFromUser(userId, clientId, state.roleIdToRemove),
+            eGetOrElse((): Array<UserRole> => [])
+        );
+        updateUserRoles(clientId, userRoles);
+    };
+
+    const removeOnCancel = () =>
+        setState((draft) => {
+            draft.showRemoveRoleDialog = false;
+        });
 
     return (
         <>
@@ -125,6 +148,13 @@ const UserRoles = (props: Props) => {
                 onSelect={ addRoleOnSelect }
                 onCancel={ addRoleOnCancel }
                 options={ roleOptions }
+            />
+            <ConfirmDialog
+                open={ state.showRemoveRoleDialog }
+                title="Remove Role"
+                message="Are you sure you want to remove this role?"
+                onConfirm={ removeOnConfirm }
+                onCancel={ removeOnCancel }
             />
         </>
     );
