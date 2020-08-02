@@ -9,6 +9,7 @@ import { ClientAuthDetails } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
 import Grid from '@material-ui/core/Grid';
 import List, { Item } from '../../../../ui/List';
+import { LockOpen } from '@material-ui/icons';
 
 interface Props {
     allowClientCreds: boolean;
@@ -55,10 +56,17 @@ const ClientAuth = (props: Props) => {
 
     const items: Array<Item> = [
         {
+            avatar: () => <LockOpen />,
             text: {
                 primary: `Token ID: ${state.authDetails.tokenId}`,
                 secondary: `Last Authenticated: ${state.authDetails.lastAuthenticated}`
-            }
+            },
+            secondaryActions: [
+                {
+                    text: 'Revoke',
+                    click: () => {}
+                }
+            ]
         }
     ];
 
@@ -78,7 +86,7 @@ const ClientAuth = (props: Props) => {
                         direction="row"
                         justify="center"
                     >
-                        <Grid item md={ 5 }>
+                        <Grid item md={ 6 }>
                             <List items={ items } />
                         </Grid>
                     </Grid>
