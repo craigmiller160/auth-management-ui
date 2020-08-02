@@ -1,5 +1,6 @@
 import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
+import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
 import { UserClient, UserRole } from '../../../../../types/user';
 import { SectionHeader } from '../../../../ui/Header';
 import { Typography } from '@material-ui/core';
@@ -9,10 +10,12 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { SelectDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { addRoleToUser } from '../../../../../services/UserService';
 
 interface Props {
     selectedClient: Option<UserClient>;
     userId: number;
+    updateUserRoles: (clientId: number, userRoles: Array<UserRole>) => void;
 }
 
 interface State {
@@ -24,7 +27,8 @@ interface State {
 const UserRoles = (props: Props) => {
     const {
         selectedClient,
-        userId
+        userId,
+        updateUserRoles
     } = props;
     const [state, setState] = useImmer<State>({
         showAddRoleDialog: false,
@@ -77,11 +81,22 @@ const UserRoles = (props: Props) => {
             draft.showAddRoleDialog = false;
         });
 
-    const addRoleOnSelect = (selectedRole: SelectOption<number>) => {
+    const addRoleOnSelect = async (selectedRole: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddRoleDialog = false;
         });
-        // TODO finish this
+        const roleId = selectedRole.value;
+        const clientId = pipe(
+            selectedClient,
+            map((client: UserClient) => client.id),
+            getOrElse(() => 0)
+        );
+
+        const userRoles: Array<UserRole> = pipe(
+            await addRoleToUser(userId, clientId, roleId),
+            eGetOrElse((): Array<UserRole> => [])
+        );
+        updateUserRoles(clientId, userRoles);
     };
 
     return (

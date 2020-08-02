@@ -11,14 +11,15 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import TextField from '../../../../ui/Form/TextField';
-import { FullUserDetails, UserClient, UserDetails, UserInput } from '../../../../../types/user';
+import { FullUserDetails, UserClient, UserDetails, UserInput, UserRole } from '../../../../../types/user';
 import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { email } from '../../../../../utils/validations';
-import { none, Option, some } from 'fp-ts/es6/Option';
+import { map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
+import produce from 'immer';
 
 interface State {
     userId: number;
@@ -164,6 +165,30 @@ const UserDetailsComponent = () => {
             draft.selectedClient = some(client)
         });
 
+    const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
+        const newSelectedClient = pipe(
+            state.selectedClient,
+            map((client: UserClient): UserClient => ({
+                ...client,
+                userRoles
+            }))
+        );
+
+        const newClients = produce(state.clients, (draft) => {
+            const client = draft.find((client) => client.id === clientId);
+            if (client !== undefined) {
+                client.userRoles = userRoles;
+            }
+        });
+
+        console.log('Original', state.clients); // TODO delete this
+        console.log('New', newClients); // TODO delete this
+
+        setState((draft) => {
+            draft.selectedClient = newSelectedClient;
+            draft.clients = newClients;
+        });
+    };
 
     return (
         <>
@@ -298,6 +323,7 @@ const UserDetailsComponent = () => {
                             <UserRoles
                                 selectedClient={ state.selectedClient }
                                 userId={ parseInt(id) }
+                                updateUserRoles={ updateUserRoles }
                             />
                         </Grid>
                     </Grid>
