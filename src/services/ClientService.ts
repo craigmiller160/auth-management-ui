@@ -2,6 +2,7 @@ import api from './Api';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import {
+    ClientAuthDetails,
     ClientDetails,
     ClientInput,
     ClientListResponse,
@@ -223,3 +224,9 @@ export const addUserToClient = async (userId: number, clientId: number): Promise
         }),
         map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
     );
+
+export const getClientAuthDetails = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
+    api.get<ClientAuthDetails>({
+        uri: `/clients/auth/${clientId}`,
+        errorMsg: `Error getting client auth details for ${clientId}`
+    });

@@ -363,6 +363,7 @@ const ClientDetailsComponent = () => {
                     <>
                         <ClientAuth
                             allowClientCreds={ state.allowClientCreds }
+                            clientId={ parseInt(id) }
                         />
                         <Grid
                             container
