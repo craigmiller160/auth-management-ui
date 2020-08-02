@@ -1,6 +1,6 @@
 import { ClientDetails, ClientRole, ClientUser, FullClientDetails } from './client';
 import { Role } from './role';
-import { FullUserDetails, UserDetails } from './user';
+import { FullUserDetails, UserClient, UserDetails, UserRole } from './user';
 
 export interface GraphQLError {
     message: string;
@@ -65,4 +65,20 @@ export interface RemoveUserFromClientWrapper {
 
 export interface AddUserToClientWrapper {
     addUserToClient: Array<ClientUser>;
+}
+
+export interface RemoveClientFromUserWrapper {
+    removeClientFromUser: Array<UserClient>;
+}
+
+export interface AddClientToUserWrapper {
+    addClientToUser: Array<UserClient>;
+}
+
+export interface RemoveRoleFromUserWrapper {
+    removeRoleFromUser: Array<UserRole>;
+}
+
+export interface AddRoleToUserWrapper {
+    addRoleToUser: Array<UserRole>;
 }

@@ -11,18 +11,22 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import TextField from '../../../../ui/Form/TextField';
-import { FullUserDetails, UserClient, UserDetails, UserInput } from '../../../../../types/user';
+import { FullUserDetails, UserClient, UserDetails, UserInput, UserRole } from '../../../../../types/user';
 import { Either, getOrElse } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
-import UserClientsRoles from './UserClientsRoles';
 import { email } from '../../../../../utils/validations';
+import { map, none, Option, some } from 'fp-ts/es6/Option';
+import UserClients from './UserClients';
+import UserRoles from './UserRoles';
+import produce from 'immer';
 
 interface State {
     userId: number;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
     clients: Array<UserClient>;
+    selectedClient: Option<UserClient>;
 }
 
 interface MatchParams {
@@ -61,7 +65,8 @@ const UserDetailsComponent = () => {
         userId: id !== NEW ? parseInt(id) : 0,
         shouldBlockNavigation: true,
         showDeleteDialog: false,
-        clients: []
+        clients: [],
+        selectedClient: none
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -73,6 +78,7 @@ const UserDetailsComponent = () => {
     const updateClients = (clients: Array<UserClient>) => {
         setState((draft) => {
             draft.clients = clients;
+            draft.selectedClient = none;
         });
     };
 
@@ -154,7 +160,32 @@ const UserDetailsComponent = () => {
 
     const passwordRules = id === NEW ? { required: 'Required' } : {};
 
-    // TODO add a link to client details page from client options
+    const selectClient = (client: UserClient) =>
+        setState((draft) => {
+            draft.selectedClient = some(client)
+        });
+
+    const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
+        const newSelectedClient = pipe(
+            state.selectedClient,
+            map((client: UserClient): UserClient => ({
+                ...client,
+                userRoles
+            }))
+        );
+
+        const newClients = produce(state.clients, (draft) => {
+            const client = draft.find((client) => client.id === clientId);
+            if (client !== undefined) {
+                client.userRoles = userRoles;
+            }
+        });
+
+        setState((draft) => {
+            draft.selectedClient = newSelectedClient;
+            draft.clients = newClients;
+        });
+    };
 
     return (
         <>
@@ -269,10 +300,31 @@ const UserDetailsComponent = () => {
                         }
                     </Grid>
                 </form>
-                <UserClientsRoles
-                    clients={ state.clients }
-                    updateClients={ updateClients }
-                />
+                {
+                    id !== NEW &&
+                    <Grid
+                        container
+                        direction="row"
+                    >
+                        <Grid item md={ 5 }>
+                            <UserClients
+                                userClients={ state.clients }
+                                userId={ parseInt(id) }
+                                updateClients={ updateClients }
+                                selectedClient={ state.selectedClient }
+                                selectClient={ selectClient }
+                            />
+                        </Grid>
+                        <Grid item md={ 2 } />
+                        <Grid item md={ 5 }>
+                            <UserRoles
+                                selectedClient={ state.selectedClient }
+                                userId={ parseInt(id) }
+                                updateUserRoles={ updateUserRoles }
+                            />
+                        </Grid>
+                    </Grid>
+                }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
                     title="Delete Client"

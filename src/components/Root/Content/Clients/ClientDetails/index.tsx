@@ -88,7 +88,7 @@ const ClientDetailsComponent = () => {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
-            history.push('/clients');
+            history.push('/userClients');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
         }
     };
@@ -167,7 +167,7 @@ const ClientDetailsComponent = () => {
         setValue('clientSecret', guid);
     };
 
-    const doCancel = () => history.push('/clients');
+    const doCancel = () => history.push('/userClients');
 
     const toggleDeleteDialog = (show: boolean) => setState((draft) => {
         draft.showDeleteDialog = show;
@@ -179,7 +179,7 @@ const ClientDetailsComponent = () => {
             setState((draft) => {
                 draft.shouldBlockNavigation = false;
             });
-            history.push('/clients');
+            history.push('/userClients');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
         }
     };
