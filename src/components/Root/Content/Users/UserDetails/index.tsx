@@ -181,9 +181,6 @@ const UserDetailsComponent = () => {
             }
         });
 
-        console.log('Original', state.clients); // TODO delete this
-        console.log('New', newClients); // TODO delete this
-
         setState((draft) => {
             draft.selectedClient = newSelectedClient;
             draft.clients = newClients;
