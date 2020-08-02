@@ -7,6 +7,8 @@ import { getClientAuthDetails } from '../../../../../services/ClientService';
 import { getOrElse } from 'fp-ts/es6/Either';
 import { ClientAuthDetails } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
+import Grid from '@material-ui/core/Grid';
+import List, { Item } from '../../../../ui/List';
 
 interface Props {
     allowClientCreds: boolean;
@@ -51,19 +53,36 @@ const ClientAuth = (props: Props) => {
         }
     }, [allowClientCreds, setState, clientId]);
 
+    const items: Array<Item> = [
+        {
+            text: {
+                primary: `Token ID: ${state.authDetails.tokenId}`,
+                secondary: `Last Authenticated: ${state.authDetails.lastAuthenticated}`
+            }
+        }
+    ];
+
+    // TODO need message for if there are no authentications
+
     return (
         <div className="ClientAuth">
             <SectionHeader title="Authentication Status" />
             {
                 !allowClientCreds &&
-                <Typography variant="h6" className="NotAllowed">Client Credentials Authentication Not Allowed</Typography>
+                <Typography variant="body1" className="NotAllowed">Client Credentials Authentication Not Allowed</Typography>
             }
             {
                 allowClientCreds &&
-                    <div>
-                        <p>Client ID: { state.authDetails.clientId }</p>
-                        <p>Client Name: { state.authDetails.clientName }</p>
-                    </div>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                    >
+                        <Grid item md={ 5 }>
+                            <List items={ items } />
+                        </Grid>
+                    </Grid>
+
             }
         </div>
     );
