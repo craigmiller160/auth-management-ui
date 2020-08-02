@@ -77,7 +77,10 @@ const UserRoles = (props: Props) => {
             draft.showAddRoleDialog = false;
         });
 
-    const addRoleOnSelect = (selectedRole: Option<SelectOption<number>>) => {
+    const addRoleOnSelect = (selectedRole: SelectOption<number>) => {
+        setState((draft) => {
+            draft.showAddRoleDialog = false;
+        });
         // TODO finish this
     };
 
@@ -104,7 +107,7 @@ const UserRoles = (props: Props) => {
             <SelectDialog
                 open={ state.showAddRoleDialog }
                 title="Add Role"
-                onSelect={ () => {} }
+                onSelect={ addRoleOnSelect }
                 onCancel={ addRoleOnCancel }
                 options={ roleOptions }
             />

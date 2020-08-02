@@ -1,12 +1,12 @@
 import { Either, map } from 'fp-ts/es6/Either';
-import { FullUserDetails, UserClient, UserDetails, UserInput, UserList } from '../types/user';
+import { FullUserDetails, UserClient, UserDetails, UserInput, UserList, UserRole } from '../types/user';
 import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import {
-    AddClientToUserWrapper,
+    AddClientToUserWrapper, AddRoleToUserWrapper,
     CreateUserWrapper,
     DeleteUserWrapper,
-    RemoveClientFromUserWrapper,
+    RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
     UserDetailsWrapper
 } from '../types/graphApi';
@@ -172,3 +172,35 @@ export const addClientToUser = async (userId: number, clientId: number): Promise
         }),
         map((wrapper: AddClientToUserWrapper) => wrapper.addClientToUser)
     );
+
+export const removeRoleFromUser = async (userId: number, clientId: number, roleId: number): Promise<Either<Error, Array<UserRole>>> =>
+    pipe(
+        await api.graphql<RemoveRoleFromUserWrapper>({
+            payload: `
+                mutation {
+                    removeRoleFromUser(userId: ${userId}, clientId: ${clientId}, roleId: ${roleId}) {
+                        id
+                        name
+                    }
+                }
+            `,
+            errorMsg: `Error removing role ${roleId} from user ${userId}`
+        }),
+        map((wrapper: RemoveRoleFromUserWrapper) => wrapper.removeRoleFromUser)
+    );
+
+export const addRoleToUser = async (userId: number, clientId: number, roleId: number): Promise<Either<Error, Array<UserRole>>> =>
+    pipe(
+        await api.graphql<AddRoleToUserWrapper>({
+            payload: `
+                mutation {
+                    addRoleToUser(userId: ${userId}, clientId: ${clientId}, roleId: ${roleId}) {
+                        id
+                        name
+                    }
+                }
+            `,
+            errorMsg: `Error adding role ${roleId} to user ${userId}`
+        }),
+        map((wrapper: AddRoleToUserWrapper) => wrapper.addRoleToUser)
+    )
