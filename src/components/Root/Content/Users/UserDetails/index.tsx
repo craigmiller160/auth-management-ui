@@ -20,6 +20,7 @@ import { map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
 import produce from 'immer';
+import UserAuth from './UserAuth';
 
 interface State {
     userId: number;
@@ -302,32 +303,35 @@ const UserDetailsComponent = () => {
                 </form>
                 {
                     id !== NEW &&
-                    <Grid
-                        container
-                        direction="row"
-                    >
-                        <Grid item md={ 5 }>
-                            <UserClients
-                                userClients={ state.clients }
-                                userId={ parseInt(id) }
-                                updateClients={ updateClients }
-                                selectedClient={ state.selectedClient }
-                                selectClient={ selectClient }
-                            />
+                    <>
+                        <UserAuth />
+                        <Grid
+                            container
+                            direction="row"
+                        >
+                            <Grid item md={ 5 }>
+                                <UserClients
+                                    userClients={ state.clients }
+                                    userId={ parseInt(id) }
+                                    updateClients={ updateClients }
+                                    selectedClient={ state.selectedClient }
+                                    selectClient={ selectClient }
+                                />
+                            </Grid>
+                            <Grid item md={ 2 } />
+                            <Grid item md={ 5 }>
+                                <UserRoles
+                                    selectedClient={ state.selectedClient }
+                                    userId={ parseInt(id) }
+                                    updateUserRoles={ updateUserRoles }
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item md={ 2 } />
-                        <Grid item md={ 5 }>
-                            <UserRoles
-                                selectedClient={ state.selectedClient }
-                                userId={ parseInt(id) }
-                                updateUserRoles={ updateUserRoles }
-                            />
-                        </Grid>
-                    </Grid>
+                    </>
                 }
                 <ConfirmDialog
                     open={ state.showDeleteDialog }
-                    title="Delete Client"
+                    title="Delete User"
                     message="Are you sure you want to delete this user?"
                     onConfirm={ doDelete }
                     onCancel={ () => toggleDeleteDialog(false) }
