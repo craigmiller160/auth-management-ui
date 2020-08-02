@@ -3,7 +3,7 @@ import { SectionHeader } from '../../../../ui/Header';
 import { Typography } from '@material-ui/core';
 import './ClientAuth.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getClientAuthDetails } from '../../../../../services/ClientService';
+import { getClientAuthDetails, revokeClientAuthAccess } from '../../../../../services/ClientService';
 import { getOrElse } from 'fp-ts/es6/Either';
 import { ClientAuthDetails } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
@@ -54,8 +54,19 @@ const ClientAuth = (props: Props) => {
         }
     }, [allowClientCreds, setState, clientId]);
 
-    const items: Array<Item> = [
-        {
+    const doRevoke = async () => {
+        const authDetails = pipe(
+            await revokeClientAuthAccess(clientId),
+            getOrElse((): ClientAuthDetails => defaultAuthDetails)
+        );
+        setState((draft) => {
+            draft.authDetails = authDetails;
+        });
+    };
+
+    const items: Array<Item> = [];
+    if (state.authDetails.tokenId) {
+        items.push({
             avatar: () => <LockOpen />,
             text: {
                 primary: `Token ID: ${state.authDetails.tokenId}`,
@@ -64,23 +75,21 @@ const ClientAuth = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Revoke',
-                    click: () => {}
+                    click: doRevoke
                 }
             ]
-        }
-    ];
-
-    // TODO need message for if there are no authentications
+        });
+    }
 
     return (
         <div className="ClientAuth">
             <SectionHeader title="Authentication Status" />
             {
                 !allowClientCreds &&
-                <Typography variant="body1" className="NotAllowed">Client Credentials Authentication Not Allowed</Typography>
+                <Typography variant="body1" className="NoAuthMsg">Client Credentials Authentication Not Allowed</Typography>
             }
             {
-                allowClientCreds &&
+                allowClientCreds && items.length > 0 &&
                     <Grid
                         container
                         direction="row"
@@ -91,6 +100,10 @@ const ClientAuth = (props: Props) => {
                         </Grid>
                     </Grid>
 
+            }
+            {
+                allowClientCreds && items.length === 0 &&
+                <Typography variant="body1" className="NoAuthMsg">Not Authenticated</Typography>
             }
         </div>
     );

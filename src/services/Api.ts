@@ -21,7 +21,7 @@ export interface RequestConfig {
     suppressError?: SuppressErrorFn
 }
 export interface RequestBodyConfig<B> extends RequestConfig {
-    body: B;
+    body?: B;
 }
 
 export interface GraphQLRequest {

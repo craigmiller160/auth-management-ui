@@ -230,3 +230,9 @@ export const getClientAuthDetails = (clientId: number): Promise<Either<Error, Cl
         uri: `/clients/auth/${clientId}`,
         errorMsg: `Error getting client auth details for ${clientId}`
     });
+
+export const revokeClientAuthAccess = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
+    api.post<void,ClientAuthDetails>({
+        uri: `/clients/auth/${clientId}/revoke`,
+        errorMsg: `Error revoking auth access for client ${clientId}`
+    });
