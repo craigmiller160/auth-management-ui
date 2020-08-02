@@ -11,7 +11,7 @@ interface SelectForm<T> {
 interface Props<T> {
     open: boolean;
     title: string;
-    onSelect: (value: Option<SelectOption<T>>) => void; // TODO given the form restrictions, no reason for this to be Option
+    onSelect: (value: SelectOption<T>) => void;
     onCancel: (event: MouseEvent<HTMLButtonElement>) => void;
     options: Array<SelectOption<T>>;
 }
@@ -37,7 +37,9 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
 
     const onSubmit = (values: SelectForm<T>) => {
         reset(defaultForm);
-        onSelect(fromNullable(values.value));
+        if (values.value != null) {
+            onSelect(values.value);
+        }
     }
 
     const actions: Array<DialogAction> = [
