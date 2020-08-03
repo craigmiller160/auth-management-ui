@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
-import { UserClient } from '../../../../../types/user';
+import { UserAuthDetails, UserAuthDetailsList, UserClient } from '../../../../../types/user';
+import { useImmer } from 'use-immer';
+import { getAllUserAuthDetails } from '../../../../../services/UserService';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { getOrElse, map } from 'fp-ts/es6/Either';
 
 interface Props {
     clients: Array<UserClient>;
@@ -8,7 +12,7 @@ interface Props {
 }
 
 interface State {
-
+    authDetails: Array<UserAuthDetails>;
 }
 
 const UserAuth = (props: Props) => {
@@ -16,6 +20,26 @@ const UserAuth = (props: Props) => {
         userId,
         clients
     } = props;
+    const [state, setState] = useImmer<State>({
+        authDetails: []
+    });
+
+    useEffect(() => {
+        const action = async () => {
+            const authDetails = pipe(
+                await getAllUserAuthDetails(userId),
+                map((list: UserAuthDetailsList) => list.authDetails),
+                getOrElse((): Array<UserAuthDetails> => [])
+            );
+            setState((draft) => {
+                draft.authDetails = authDetails;
+            });
+        };
+
+        if (clients.length > 0) {
+            action();
+        }
+    }, [setState, clients, userId]);
 
     return (
         <>
