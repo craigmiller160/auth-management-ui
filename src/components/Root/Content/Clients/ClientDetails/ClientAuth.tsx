@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid';
 import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
 import { fromNullable, map as oMap, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
-import { format, parse } from 'date-fns';
 import { displayFormatApiDateTime } from '../../../../../utils/date';
 
 interface Props {
@@ -71,7 +70,7 @@ const ClientAuth = (props: Props) => {
         fromNullable(state.authDetails.lastAuthenticated),
         oMap((lastAuth: string) => displayFormatApiDateTime(lastAuth)),
         oGetOrElse((): string | null => null)
-    )
+    );
 
     const items: Array<Item> = [];
     if (state.authDetails.tokenId) {
