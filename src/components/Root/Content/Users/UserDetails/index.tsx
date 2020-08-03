@@ -304,7 +304,10 @@ const UserDetailsComponent = () => {
                 {
                     id !== NEW &&
                     <>
-                        <UserAuth />
+                        <UserAuth
+                            clients={ state.clients }
+                            userId={ parseInt(id) }
+                        />
                         <Grid
                             container
                             direction="row"

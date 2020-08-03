@@ -1,5 +1,13 @@
 import { Either, map } from 'fp-ts/es6/Either';
-import { FullUserDetails, UserClient, UserDetails, UserInput, UserList, UserRole } from '../types/user';
+import {
+    FullUserDetails,
+    UserAuthDetails, UserAuthDetailsList,
+    UserClient,
+    UserDetails,
+    UserInput,
+    UserList,
+    UserRole
+} from '../types/user';
 import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import {
@@ -203,4 +211,16 @@ export const addRoleToUser = async (userId: number, clientId: number, roleId: nu
             errorMsg: `Error adding role ${roleId} to user ${userId}`
         }),
         map((wrapper: AddRoleToUserWrapper) => wrapper.addRoleToUser)
-    )
+    );
+
+export const getAllUserAuthDetails = async (userId: number): Promise<Either<Error,UserAuthDetailsList>> =>
+    api.get<UserAuthDetailsList>({
+        uri: `/users/auth/${userId}`,
+        errorMsg: `Error getting all auth details for user ${userId}`
+    });
+
+export const revokeUserAuthAccess = async (userId: number): Promise<Either<Error,UserAuthDetails>> =>
+    api.post<void,UserAuthDetails>({
+        uri: `/users/auth/${userId}/revoke`,
+        errorMsg: `Error revoking access for user ${userId}`
+    });
