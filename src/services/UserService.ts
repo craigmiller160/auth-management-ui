@@ -219,8 +219,8 @@ export const getAllUserAuthDetails = async (userId: number): Promise<Either<Erro
         errorMsg: `Error getting all auth details for user ${userId}`
     });
 
-export const revokeUserAuthAccess = async (userId: number): Promise<Either<Error,UserAuthDetails>> =>
+export const revokeUserAuthAccess = async (userId: number, clientId: number): Promise<Either<Error,UserAuthDetails>> =>
     api.post<void,UserAuthDetails>({
-        uri: `/users/auth/${userId}/revoke`,
-        errorMsg: `Error revoking access for user ${userId}`
+        uri: `/users/auth/${userId}/${clientId}/revoke`,
+        errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
     });

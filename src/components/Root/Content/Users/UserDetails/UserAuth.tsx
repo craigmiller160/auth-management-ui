@@ -54,12 +54,12 @@ const UserAuth = (props: Props) => {
         }
     }, [setState, clients, userId]);
 
-    const doRevoke = async () => {
+    const doRevoke = async (clientId: number) => {
         const authDetails = pipe(
-            await revokeUserAuthAccess(userId),
+            await revokeUserAuthAccess(userId, clientId),
             map((newAuth: UserAuthDetails) => {
                 const filtered = state.authDetails
-                    .filter((auth) => auth.clientId !== newAuth.clientId && auth.userId !== newAuth.userId)
+                    .filter((auth) => auth.clientId !== newAuth.clientId)
                 return [ ...filtered, newAuth ];
             }),
             getOrElse((): Array<UserAuthDetails> => state.authDetails)
@@ -80,7 +80,7 @@ const UserAuth = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Revoke',
-                    click: doRevoke
+                    click: () => doRevoke(auth.clientId)
                 }
             ]
         }));
