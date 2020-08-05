@@ -59,7 +59,7 @@ const UserAuth = (props: Props) => {
         .map((auth) => ({
             avatar: () => <LockOpen />,
             text: {
-                primary: `Token ID: ${auth.tokenId}`, // TODO change this
+                primary: `Client: ${auth.clientName}`,
                 secondary: `Last Authenticated: ${formatDate(auth.lastAuthenticated)}`
             },
             secondaryActions: [
@@ -87,7 +87,13 @@ const UserAuth = (props: Props) => {
             }
             {
                 items.length === 0 &&
-                <Typography variant="body1" className="NoAuthMsg">Not Authenticated</Typography>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                    >
+                        <Typography variant="body1">Not Authenticated</Typography>
+                    </Grid>
             }
         </div>
     );

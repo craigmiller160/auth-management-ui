@@ -77,7 +77,7 @@ const ClientAuth = (props: Props) => {
         items.push({
             avatar: () => <LockOpen />,
             text: {
-                primary: `Token ID: ${state.authDetails.tokenId}`,
+                primary: `Client: ${state.authDetails.clientName}`,
                 secondary: `Last Authenticated: ${lastAuthenticated}`
             },
             secondaryActions: [
