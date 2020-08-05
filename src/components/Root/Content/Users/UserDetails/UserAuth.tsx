@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import { UserAuthDetails, UserAuthDetailsList, UserClient } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
-import { getAllUserAuthDetails } from '../../../../../services/UserService';
+import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
 import { displayFormatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
-import { fromNullable, map as oMap, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
+import { fromNullable, getOrElse as oGetOrElse, map as oMap } from 'fp-ts/es6/Option';
 import Grid from '@material-ui/core/Grid';
 
 interface Props {
@@ -54,6 +54,21 @@ const UserAuth = (props: Props) => {
         }
     }, [setState, clients, userId]);
 
+    const doRevoke = async () => {
+        const authDetails = pipe(
+            await revokeUserAuthAccess(userId),
+            map((newAuth: UserAuthDetails) => {
+                const filtered = state.authDetails
+                    .filter((auth) => auth.clientId !== newAuth.clientId && auth.userId !== newAuth.userId)
+                return [ ...filtered, newAuth ];
+            }),
+            getOrElse((): Array<UserAuthDetails> => state.authDetails)
+        );
+        setState((draft) => {
+            draft.authDetails = authDetails;
+        });
+    };
+
     const items: Array<Item> = state.authDetails
         .filter((auth) => auth.tokenId)
         .map((auth) => ({
@@ -65,7 +80,7 @@ const UserAuth = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Revoke',
-                    click: () => {}
+                    click: doRevoke
                 }
             ]
         }));
