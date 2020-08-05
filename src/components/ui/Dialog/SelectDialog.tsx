@@ -2,7 +2,6 @@ import React, { MouseEvent } from 'react';
 import BaseDialog, { DialogAction } from './BaseDialog';
 import Autocomplete, { SelectOption } from '../Form/Autocomplete';
 import { useForm } from 'react-hook-form';
-import { fromNullable, Option } from 'fp-ts/es6/Option';
 
 interface SelectForm<T> {
     value: SelectOption<T> | null;

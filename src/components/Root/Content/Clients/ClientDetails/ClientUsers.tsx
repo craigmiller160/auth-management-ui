@@ -13,7 +13,6 @@ import { getAllUsers } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { isSome, Option } from 'fp-ts/es6/Option';
 import { addUserToClient, removeUserFromClient } from '../../../../../services/ClientService';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 
