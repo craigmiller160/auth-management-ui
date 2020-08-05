@@ -8,6 +8,7 @@ interface SelectForm<T> {
 }
 
 interface Props<T> {
+    label: string;
     open: boolean;
     title: string;
     onSelect: (value: SelectOption<T>) => void;
@@ -25,7 +26,8 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
         title,
         onSelect,
         onCancel,
-        options
+        options,
+        label
     } = props;
 
     const { control, handleSubmit, errors, reset } = useForm<SelectForm<T>>({
@@ -55,7 +57,7 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
             <Autocomplete
                 name="value"
                 control={ control }
-                label="Select User"
+                label={ label }
                 options={ options }
                 rules={ { required: 'Required' } }
                 error={ errors.value }

@@ -148,6 +148,7 @@ const UserRoles = (props: Props) => {
                 onSelect={ addRoleOnSelect }
                 onCancel={ addRoleOnCancel }
                 options={ roleOptions }
+                label="Select Role"
             />
             <ConfirmDialog
                 open={ state.showRemoveRoleDialog }

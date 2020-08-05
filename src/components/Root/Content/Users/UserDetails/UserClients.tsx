@@ -157,6 +157,7 @@ const UserClients = (props: Props) => {
                 onSelect={ addClientSelect }
                 onCancel={ addClientCancel }
                 options={ clientOptions }
+                label="Select Client"
             />
             <ConfirmDialog
                 open={ state.showRemoveClientDialog }

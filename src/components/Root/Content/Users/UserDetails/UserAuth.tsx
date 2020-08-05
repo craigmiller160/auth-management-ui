@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { SectionHeader } from '../../../../ui/Header';
 import { UserAuthDetails, UserAuthDetailsList, UserClient } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
@@ -40,6 +40,11 @@ const UserAuth = (props: Props) => {
             action();
         }
     }, [setState, clients, userId]);
+
+    const auths = useMemo(() =>
+        state.authDetails
+            .filter((auth) => auth.tokenId),
+        [state.authDetails]);
 
     return (
         <>
