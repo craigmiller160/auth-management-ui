@@ -5,6 +5,12 @@ import { useImmer } from 'use-immer';
 import { getAllUserAuthDetails } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
+import List, { Item } from '../../../../ui/List';
+import { LockOpen } from '@material-ui/icons';
+import { displayFormatApiDateTime } from '../../../../../utils/date';
+import { Typography } from '@material-ui/core';
+import { fromNullable, map as oMap, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
+import Grid from '@material-ui/core/Grid';
 
 interface Props {
     clients: Array<UserClient>;
@@ -14,6 +20,13 @@ interface Props {
 interface State {
     authDetails: Array<UserAuthDetails>;
 }
+
+const formatDate = (date: string | null): string =>
+    pipe(
+        fromNullable(date),
+        oMap((value: string): string => displayFormatApiDateTime(value)),
+        oGetOrElse((): string => '')
+    );
 
 const UserAuth = (props: Props) => {
     const {
@@ -41,15 +54,42 @@ const UserAuth = (props: Props) => {
         }
     }, [setState, clients, userId]);
 
-    const auths = useMemo(() =>
-        state.authDetails
-            .filter((auth) => auth.tokenId),
-        [state.authDetails]);
+    const items: Array<Item> = state.authDetails
+        .filter((auth) => auth.tokenId)
+        .map((auth) => ({
+            avatar: () => <LockOpen />,
+            text: {
+                primary: `Token ID: ${auth.tokenId}`, // TODO change this
+                secondary: `Last Authenticated: ${formatDate(auth.lastAuthenticated)}`
+            },
+            secondaryActions: [
+                {
+                    text: 'Revoke',
+                    click: () => {}
+                }
+            ]
+        }));
 
     return (
-        <>
+        <div>
             <SectionHeader title="Authentication" />
-        </>
+            {
+                items.length > 0 &&
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                    >
+                        <Grid item md={ 6 }>
+                            <List items={ items } />
+                        </Grid>
+                    </Grid>
+            }
+            {
+                items.length === 0 &&
+                <Typography variant="body1" className="NoAuthMsg">Not Authenticated</Typography>
+            }
+        </div>
     );
 };
 
