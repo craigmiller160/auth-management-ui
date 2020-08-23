@@ -43,7 +43,8 @@ const defaultUser: UserDetails = {
     id: 0,
     email: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    enabled: true
 };
 
 const defaultFullUser: FullUserDetails = {
