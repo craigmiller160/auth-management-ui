@@ -3,6 +3,7 @@ interface BaseUser {
     email: string;
     firstName: string;
     lastName: string;
+    enabled: boolean;
 }
 
 export interface UserRole {
