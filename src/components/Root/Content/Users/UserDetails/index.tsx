@@ -21,6 +21,7 @@ import UserClients from './UserClients';
 import UserRoles from './UserRoles';
 import produce from 'immer';
 import UserAuth from './UserAuth';
+import Checkbox from '../../../../ui/Form/Checkbox';
 
 interface State {
     userId: number;
@@ -268,6 +269,18 @@ const UserDetailsComponent = () => {
                             label="Last Name"
                             error={ errors.lastName }
                             rules={ { required: 'Required' } }
+                        />
+                    </Grid>
+                    <SectionHeader title="Access" />
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                    >
+                        <Checkbox
+                            name="enabled"
+                            control={ control }
+                            label="Enabled"
                         />
                     </Grid>
                     <SectionHeader title="Actions" />
