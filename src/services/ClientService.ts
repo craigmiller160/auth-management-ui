@@ -57,6 +57,7 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                             email
                             firstName
                             lastName
+                            enabled
                             roles {
                                 id
                                 name
@@ -191,6 +192,7 @@ export const removeUserFromClient = async (userId: number, clientId: number): Pr
                         email
                         firstName
                         lastName
+                        enabled
                         roles {
                             id
                             name
@@ -213,6 +215,7 @@ export const addUserToClient = async (userId: number, clientId: number): Promise
                         email
                         firstName
                         lastName
+                        enabled
                         roles {
                             id
                             name

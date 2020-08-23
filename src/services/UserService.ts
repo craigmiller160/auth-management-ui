@@ -46,6 +46,7 @@ export const getUser = async (userId: number): Promise<Either<Error, FullUserDet
                         email
                         firstName
                         lastName
+                        enabled
                         clients {
                             id
                             name
@@ -76,12 +77,14 @@ export const updateUser = async (userId: number, user: UserInput): Promise<Eithe
                         email: "${user.email}",
                         password: "${user.password || ''}",
                         firstName: "${user.firstName}",
-                        lastName: "${user.lastName}"
+                        lastName: "${user.lastName}",
+                        enabled: ${user.enabled}
                     }) {
                         id
                         email
                         firstName
                         lastName
+                        enabled
                     }
                 }
             `,
@@ -99,12 +102,14 @@ export const createUser = async (user: UserInput): Promise<Either<Error, UserDet
                         email: "${user.email}",
                         password: "${user.password}",
                         firstName: "${user.firstName}",
-                        lastName: "${user.lastName}"
+                        lastName: "${user.lastName}",
+                        enabled: ${user.enabled}
                     }) {
                         id
                         email
                         firstName
                         lastName
+                        enabled
                     }                  
                 }
             `,
@@ -123,6 +128,7 @@ export const deleteUser = async (userId: number): Promise<Either<Error, UserDeta
                         email
                         firstName
                         lastName
+                        enabled
                     }
                 }
             `,
