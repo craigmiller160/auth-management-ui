@@ -25,7 +25,6 @@ import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { Either, getOrElse, isRight } from 'fp-ts/es6/Either';
 import { ClientDetails, ClientInput, ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
-import ClientAuth from './ClientAuth';
 
 interface State {
     clientId: number;
@@ -33,7 +32,6 @@ interface State {
     roles: Array<ClientRole>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
-    allowClientCreds: boolean;
 }
 
 interface MatchParams {
@@ -73,8 +71,7 @@ const ClientDetailsComponent = () => {
         users: [],
         roles: [],
         shouldBlockNavigation: true,
-        showDeleteDialog: false,
-        allowClientCreds: false
+        showDeleteDialog: false
     });
     const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -342,10 +339,6 @@ const ClientDetailsComponent = () => {
                 {
                     id !== NEW &&
                     <>
-                        <ClientAuth
-                            allowClientCreds={ state.allowClientCreds }
-                            clientId={ parseInt(id) }
-                        />
                         <Grid
                             container
                             direction="row"
