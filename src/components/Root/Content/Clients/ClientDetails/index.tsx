@@ -25,7 +25,6 @@ import Checkbox from '../../../../ui/Form/Checkbox';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { Either, getOrElse, isRight } from 'fp-ts/es6/Either';
 import { ClientDetails, ClientInput, ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
-import ClientAuth from './ClientAuth';
 
 interface State {
     clientId: number;
@@ -33,7 +32,6 @@ interface State {
     roles: Array<ClientRole>;
     shouldBlockNavigation: boolean;
     showDeleteDialog: boolean;
-    allowClientCreds: boolean;
 }
 
 interface MatchParams {
@@ -50,9 +48,6 @@ const defaultClient: ClientDetails = {
     name: '',
     clientKey: '',
     enabled: false,
-    allowClientCredentials: false,
-    allowAuthCode: false,
-    allowPassword: false,
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
@@ -76,8 +71,7 @@ const ClientDetailsComponent = () => {
         users: [],
         roles: [],
         shouldBlockNavigation: true,
-        showDeleteDialog: false,
-        allowClientCreds: false
+        showDeleteDialog: false
     });
     const { handleSubmit, errors, reset, control, setValue } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -147,7 +141,6 @@ const ClientDetailsComponent = () => {
                 setState((draft) => {
                     draft.users = client.users;
                     draft.roles = client.roles;
-                    draft.allowClientCreds = client.allowClientCredentials;
                 });
             }
         };
@@ -262,7 +255,7 @@ const ClientDetailsComponent = () => {
                             </Button>
                         </Grid>
                     </Grid>
-                    <SectionHeader title="Grants" />
+                    <SectionHeader title="Access" />
                     <Grid
                         container
                         direction="row"
@@ -272,21 +265,6 @@ const ClientDetailsComponent = () => {
                             name="enabled"
                             control={ control }
                             label="Enabled"
-                        />
-                        <Checkbox
-                            name="allowClientCredentials"
-                            control={ control }
-                            label="Client Credentials Grant"
-                        />
-                        <Checkbox
-                            name="allowPassword"
-                            control={ control }
-                            label="Password Grant"
-                        />
-                        <Checkbox
-                            name="allowAuthCode"
-                            control={ control }
-                            label="Authorization Code Grant"
                         />
                     </Grid>
                     <SectionHeader title="Timeouts" />
@@ -361,10 +339,6 @@ const ClientDetailsComponent = () => {
                 {
                     id !== NEW &&
                     <>
-                        <ClientAuth
-                            allowClientCreds={ state.allowClientCreds }
-                            clientId={ parseInt(id) }
-                        />
                         <Grid
                             container
                             direction="row"
