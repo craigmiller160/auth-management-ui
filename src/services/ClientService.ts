@@ -43,9 +43,6 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                         name
                         clientKey
                         accessTokenTimeoutSecs
-                        allowAuthCode
-                        allowClientCredentials
-                        allowPassword
                         enabled
                         refreshTokenTimeoutSecs
                         roles {
@@ -97,9 +94,6 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         clientKey: "${clientInput.clientKey}",
                         clientSecret: "${clientInput.clientSecret || ''}",
                         enabled: ${clientInput.enabled},
-                        allowAuthCode: ${clientInput.allowAuthCode},
-                        allowClientCredentials: ${clientInput.allowClientCredentials},
-                        allowPassword: ${clientInput.allowPassword},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
                         refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
                     }) {
@@ -107,9 +101,6 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         name
                         clientKey
                         accessTokenTimeoutSecs
-                        allowAuthCode
-                        allowClientCredentials
-                        allowPassword
                         enabled
                         refreshTokenTimeoutSecs
                     }
@@ -130,9 +121,6 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         clientKey: "${clientInput.clientKey}",
                         clientSecret: "${clientInput.clientSecret}",
                         enabled: ${clientInput.enabled},
-                        allowAuthCode: ${clientInput.allowAuthCode},
-                        allowClientCredentials: ${clientInput.allowClientCredentials},
-                        allowPassword: ${clientInput.allowPassword},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
                         refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
                     }) {
@@ -140,9 +128,6 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         name
                         clientKey
                         accessTokenTimeoutSecs
-                        allowAuthCode
-                        allowClientCredentials
-                        allowPassword
                         enabled
                         refreshTokenTimeoutSecs
                     }
@@ -163,9 +148,6 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
                         name
                         clientKey
                         accessTokenTimeoutSecs
-                        allowAuthCode
-                        allowClientCredentials
-                        allowPassword
                         enabled
                         refreshTokenTimeoutSecs
                     }
