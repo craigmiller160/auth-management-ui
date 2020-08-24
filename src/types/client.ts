@@ -26,9 +26,6 @@ interface BaseClient {
     name: string;
     clientKey: string;
     enabled: boolean;
-    allowAuthCode: boolean;
-    allowClientCredentials: boolean;
-    allowPassword: boolean;
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
 }
