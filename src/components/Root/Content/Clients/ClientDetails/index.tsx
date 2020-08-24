@@ -50,9 +50,6 @@ const defaultClient: ClientDetails = {
     name: '',
     clientKey: '',
     enabled: false,
-    allowClientCredentials: false,
-    allowAuthCode: false,
-    allowPassword: false,
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0
 };
@@ -147,7 +144,6 @@ const ClientDetailsComponent = () => {
                 setState((draft) => {
                     draft.users = client.users;
                     draft.roles = client.roles;
-                    draft.allowClientCreds = client.allowClientCredentials;
                 });
             }
         };
@@ -262,7 +258,7 @@ const ClientDetailsComponent = () => {
                             </Button>
                         </Grid>
                     </Grid>
-                    <SectionHeader title="Grants" />
+                    <SectionHeader title="Access" />
                     <Grid
                         container
                         direction="row"
@@ -272,21 +268,6 @@ const ClientDetailsComponent = () => {
                             name="enabled"
                             control={ control }
                             label="Enabled"
-                        />
-                        <Checkbox
-                            name="allowClientCredentials"
-                            control={ control }
-                            label="Client Credentials Grant"
-                        />
-                        <Checkbox
-                            name="allowPassword"
-                            control={ control }
-                            label="Password Grant"
-                        />
-                        <Checkbox
-                            name="allowAuthCode"
-                            control={ control }
-                            label="Authorization Code Grant"
                         />
                     </Grid>
                     <SectionHeader title="Timeouts" />
