@@ -1158,10 +1158,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@craigmiller160/react-protected-route@^1.0.0":
-  version "1.0.0"
-  resolved "http://localhost:30000/@craigmiller160%2freact-protected-route/-/react-protected-route-1.0.0.tgz#4aaf2e78fdaefa76317f059b4529a89d1ee7b724"
-  integrity sha512-xgmdGEFmwPdvvG/UrlAKypp69BdYesBuNSGo4D3Colc02pBzwWET1e9ct8+esft2tVp8/2w4ItSt/G5ns7Zr8A==
+"@craigmiller160/react-protected-route@^1.0.1":
+  version "1.0.1"
+  resolved "http://localhost:30000/@craigmiller160%2freact-protected-route/-/react-protected-route-1.0.1.tgz#f9d609af3df97bb8e4adeec596273f6eb2dd9b0a"
+  integrity sha512-OroK4SQIMG4JIru+Ae7liueTEbqx0p0UlrYZzhpmKu6nU1gRD6AwjkgAfuhKxyoFh7+7GOOnOyG7UPwOXgU64Q==
   dependencies:
     prop-types "^15.7.2"
     react "^16.13.1"
