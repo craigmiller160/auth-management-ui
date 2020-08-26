@@ -25,3 +25,5 @@ yarn-error.log*
 *.iml
 .yalc
 yalc.lock
+
+deploy/build
