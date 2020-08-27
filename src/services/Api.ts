@@ -9,7 +9,8 @@ import { Either, left, right } from 'fp-ts/es6/Either';
 import { GraphQLQueryResponse } from '../types/graphApi';
 
 const instance = axios.create({
-    baseURL: '/api'
+    baseURL: '/api',
+    withCredentials: true
 });
 
 export type SuppressErrorFn = (ex: Error) => Boolean
