@@ -12,7 +12,7 @@ const createProxy = (app) => {
     }));
 
     app.use(createProxyMiddleware('/oauth2', {
-        target: '',
+        target: 'https://localhost:7003',
         changeOrigin: true,
         secure: true,
         pathRewrite: {
