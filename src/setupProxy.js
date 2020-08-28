@@ -4,7 +4,7 @@ const createProxy = (app) => {
     app.use(createProxyMiddleware('/api', {
         target: 'https://localhost:7004',
         changeOrigin: true,
-        secure: true,
+        secure: false,
         pathRewrite: {
             '^/api': ''
         },
@@ -14,7 +14,7 @@ const createProxy = (app) => {
     app.use(createProxyMiddleware('/oauth2', {
         target: 'https://localhost:7003',
         changeOrigin: true,
-        secure: true,
+        secure: false,
         pathRewrite: {
             '^/oauth2': ''
         },
