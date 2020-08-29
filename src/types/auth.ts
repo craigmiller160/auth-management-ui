@@ -5,3 +5,7 @@ export interface AuthUser {
     lastName: string;
     roles: Array<String>;
 }
+
+export interface AuthCodeLogin {
+    url: string;
+}

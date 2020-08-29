@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Navbar from './Navbar/Navbar';
+import Navbar from './Navbar';
 import Content from './Content';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAuthUser } from '../../store/auth/actions';

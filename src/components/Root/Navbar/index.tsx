@@ -8,7 +8,7 @@ import './Navbar.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
 import { RootState } from '../../../store';
-import { logout } from '../../../services/AuthService';
+import { login, logout } from '../../../services/AuthService';
 import authSlice from '../../../store/auth/slice';
 import { none } from 'fp-ts/es6/Option';
 
@@ -22,12 +22,11 @@ const Navbar = () => {
     const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     const authBtnText = isAuth ? 'Logout' : 'Login';
 
-    const doLogin = () => window.location.href = '/api/oauth/authcode/login';
     const doLogout = async () => {
         await logout();
         dispatch(authSlice.actions.setUserData(none));
     };
-    const authAction = isAuth ? doLogout : doLogin;
+    const authAction = isAuth ? doLogout : login;
 
     const usersActive = isActive(location.pathname, '/users');
     const clientsActive = isActive(location.pathname, '/clients');

@@ -10,6 +10,16 @@ const createProxy = (app) => {
         },
         logLevel: 'debug'
     }));
+
+    app.use(createProxyMiddleware('/oauth2', {
+        target: 'https://localhost:7003',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+            '^/oauth2': ''
+        },
+        logLevel: 'debug'
+    }));
 };
 
 module.exports = createProxy;
