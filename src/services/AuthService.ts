@@ -9,7 +9,6 @@ export const logout = (): Promise<Either<Error, void>> =>
         errorMsg: 'Error logging out'
     });
 
-// TODO delete this
 export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
     pipe(
         await api.post<void,AuthCodeLogin>({
