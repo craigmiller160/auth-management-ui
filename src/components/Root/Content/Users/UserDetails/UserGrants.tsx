@@ -1,21 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { match } from 'react-router';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getUserClients } from '../../../../../services/UserService';
-import { getOrElse, map } from 'fp-ts/es6/Either';
-import { UserClient, UserClients as UserClientsType } from '../../../../../types/user';
+import { getOrElse } from 'fp-ts/es6/Either';
+import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
 import { Grid, Typography } from '@material-ui/core';
 import './UserGrants.scss';
-import { SectionHeader } from '../../../../ui/Header';
-import { ClientListItem, ClientListResponse } from '../../../../../types/client';
-import { getAllClients } from '../../../../../services/ClientService';
-import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { Item } from '../../../../ui/List';
-import { Business } from '@material-ui/icons';
-import { exists, none, Option, some } from 'fp-ts/es6/Option';
+import { map, none, Option, some, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
+import produce from 'immer';
 
 interface State {
     userId: number;
@@ -44,7 +39,7 @@ const UserGrants = (props: Props) => {
         selectedClient: none
     });
 
-    const loadUser = async () => {
+    const loadUser = useCallback(async () => {
         const user = pipe(
             await getUserClients(state.userId),
             getOrElse((): UserClientsType => defaultUser)
@@ -52,7 +47,28 @@ const UserGrants = (props: Props) => {
         setState((draft) => {
             draft.user = user;
         });
-    };
+    }, [state.userId, setState]);
+
+    const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
+        const newSelectedClient = pipe(
+            state.selectedClient,
+            map((client: UserClient): UserClient => ({
+                ...client,
+                userRoles
+            }))
+        );
+
+        setState((draft) => {
+            draft.selectedClient = newSelectedClient;
+            const clientIndex = draft.user.clients.findIndex((client) => client.id === clientId);
+            if (clientIndex > 0) {
+                draft.user.clients[clientIndex] = pipe(
+                    newSelectedClient,
+                    oGetOrElse((): UserClient => draft.user.clients[clientIndex])
+                );
+            }
+        });
+    }
 
     useEffect(() => {
         loadUser();
@@ -99,7 +115,7 @@ const UserGrants = (props: Props) => {
                     <UserRoles
                         selectedClient={ state.selectedClient }
                         userId={ state.userId }
-                        updateUserRoles={ loadUser }
+                        updateUserRoles={ updateUserRoles }
                     />
                 </Grid>
             </Grid>
