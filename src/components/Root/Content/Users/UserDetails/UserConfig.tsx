@@ -13,6 +13,7 @@ import { Grid } from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
 import { email } from '../../../../../utils/validations';
 import './UserConfig.scss';
+import Switch from '../../../../ui/Form/Switch';
 
 interface State {
     shouldBlockNavigation: boolean;
@@ -193,6 +194,12 @@ const UserConfig = (props: Props) => {
                                 }
                             } }
                             disabled={ !watchPassword }
+                        />
+                        <Switch
+                            className="Field"
+                            name="enabled"
+                            control={ control }
+                            label="Enabled"
                         />
                     </Grid>
                 </Grid>

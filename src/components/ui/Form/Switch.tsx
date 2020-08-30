@@ -9,10 +9,12 @@ interface Props<T> {
     control: Control<T>;
     label: string;
     color?: 'primary' | 'secondary' | 'default';
+    className?: string;
 }
 
 const Switch = <T extends object>(props: Props<T>) => {
     const {
+        className,
         name,
         control,
         color,
@@ -25,6 +27,7 @@ const Switch = <T extends object>(props: Props<T>) => {
             name={ name as FieldName<T> }
             render={ ({ onChange, onBlur, value }) => (
                 <FormControlLabel
+                    className={ className }
                     label={ label }
                     control={
                         <MuiSwitch
