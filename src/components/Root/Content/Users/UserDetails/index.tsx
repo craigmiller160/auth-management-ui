@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import UserConfig from './UserConfig';
 import UserGrants from './UserGrants';
 import UserAuths from './UserAuths';
+import './UserDetails.scss';
 
 const TAB_CONFIG = 0;
 const TAB_GRANTS = 1;
@@ -75,6 +76,7 @@ const UserDetails = () => {
         <div className="UserDetails">
             <PageHeader title="User Details" />
             <Tabs
+                className="Tabs"
                 value={ state.selectedTab }
                 indicatorColor="primary"
                 textColor="primary"
