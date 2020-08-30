@@ -115,6 +115,9 @@ const Navbar = () => {
                 </Toolbar>
             </AppBar>
             <MobileMenu
+                isAuth={ isAuth }
+                authBtnText={ authBtnText }
+                authAction={ authAction }
                 menuOpen={ state.menuOpen }
                 handleMenuClose={ handleMenuClose }
             />

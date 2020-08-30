@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer } from '@material-ui/core';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import './MobileMenu.scss';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,10 +9,19 @@ import ListItemText from '@material-ui/core/ListItemText';
 interface Props {
     menuOpen: boolean;
     handleMenuClose: () => void;
+    authAction: () => void;
+    authBtnText: string;
+    isAuth: boolean;
 }
 
 const MobileMenu = (props: Props) => {
-    const history = useHistory();
+    const location = useLocation();
+    console.log(location); // TODO delete this
+
+    const authButtonClick = () => {
+        props.handleMenuClose();
+        props.authAction();
+    };
 
     return (
         <Drawer
@@ -34,27 +43,38 @@ const MobileMenu = (props: Props) => {
                     OAuth Management
                 </Typography>
             </NavLink>
+            {
+                props.isAuth &&
+                    <>
+                        <ListItem
+                            className="item"
+                            onClick={ props.handleMenuClose }
+                        >
+                            <NavLink
+                                to="/users"
+                                className="NavLink"
+                            >
+                                <ListItemText>Users</ListItemText>
+                            </NavLink>
+                        </ListItem>
+                        <ListItem
+                            className="item"
+                            onClick={ props.handleMenuClose }
+                        >
+                            <NavLink
+                                to="/clients"
+                                className="NavLink"
+                            >
+                                <ListItemText>Clients</ListItemText>
+                            </NavLink>
+                        </ListItem>
+                    </>
+            }
             <ListItem
                 className="item"
-                onClick={ props.handleMenuClose }
+                onClick={ authButtonClick }
             >
-                <NavLink
-                    to="/users"
-                    className="NavLink"
-                >
-                    <ListItemText>Users</ListItemText>
-                </NavLink>
-            </ListItem>
-            <ListItem
-                className="item"
-                onClick={ props.handleMenuClose }
-            >
-                <NavLink
-                    to="/clients"
-                    className="NavLink"
-                >
-                    <ListItemText>Clients</ListItemText>
-                </NavLink>
+                <ListItemText className="NavLink">{ props.authBtnText }</ListItemText>
             </ListItem>
         </Drawer>
     );
