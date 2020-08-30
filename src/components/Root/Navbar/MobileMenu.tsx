@@ -1,10 +1,12 @@
 import React from 'react';
 import { Drawer } from '@material-ui/core';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import './MobileMenu.scss';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
+import theme from '../../theme';
 
 interface Props {
     menuOpen: boolean;
@@ -14,9 +16,26 @@ interface Props {
     isAuth: boolean;
 }
 
+const useStyles = makeStyles({
+    MenuPrimary: {
+        backgroundColor: theme.palette.primary.main
+    }
+});
+
 const MobileMenu = (props: Props) => {
+    const classes = useStyles();
     const location = useLocation();
-    console.log(location); // TODO delete this
+
+    const getItemClasses = (route: string) => {
+        const isMatch: boolean = !!matchPath(location.pathname, {
+            path: route,
+            exact: false
+        });
+
+        const activeClass = isMatch ? ' active' : '';
+        return `item ${activeClass}`;
+    }
+
 
     const authButtonClick = () => {
         props.handleMenuClose();
@@ -25,6 +44,9 @@ const MobileMenu = (props: Props) => {
 
     return (
         <Drawer
+            classes={ {
+                paper: classes.MenuPrimary
+            } }
             className="MobileMenu"
             open={ props.menuOpen }
             onClose={ props.handleMenuClose }
@@ -47,7 +69,7 @@ const MobileMenu = (props: Props) => {
                 props.isAuth &&
                     <>
                         <ListItem
-                            className="item"
+                            className={ getItemClasses('/users') }
                             onClick={ props.handleMenuClose }
                         >
                             <NavLink
@@ -58,7 +80,7 @@ const MobileMenu = (props: Props) => {
                             </NavLink>
                         </ListItem>
                         <ListItem
-                            className="item"
+                            className={ getItemClasses('/clients') }
                             onClick={ props.handleMenuClose }
                         >
                             <NavLink

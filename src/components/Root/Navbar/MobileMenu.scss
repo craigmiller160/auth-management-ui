@@ -19,7 +19,7 @@
   .item {
     @include item;
     &.active {
-      // TODO need color here
+      background-color: #e0e0e0;
     }
   }
 

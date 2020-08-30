@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { getAllClients } from '../../../../services/ClientService';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
