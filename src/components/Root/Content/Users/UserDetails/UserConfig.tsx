@@ -58,7 +58,7 @@ const UserConfig = (props: Props) => {
         showDeleteDialog: false,
         userId: id !== NEW ? parseInt(id) : 0
     });
-    const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger, formState: { isDirty } } = useForm<UserForm>({
+    const { control, handleSubmit, errors, reset, getValues, watch, formState: { isDirty } } = useForm<UserForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultForm

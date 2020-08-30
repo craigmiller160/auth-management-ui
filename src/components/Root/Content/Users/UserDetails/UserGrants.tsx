@@ -7,10 +7,9 @@ import { getOrElse } from 'fp-ts/es6/Either';
 import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
 import { Grid, Typography } from '@material-ui/core';
 import './UserGrants.scss';
-import { map, none, Option, some, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
+import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
-import produce from 'immer';
 
 interface State {
     userId: number;
