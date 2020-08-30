@@ -52,5 +52,6 @@ export interface UserAuthDetails {
 }
 
 export interface UserAuthDetailsList {
+    email: string;
     authDetails: Array<UserAuthDetails>;
 }
