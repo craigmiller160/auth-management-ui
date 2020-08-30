@@ -18,7 +18,6 @@ import Switch from '../../../../ui/Form/Switch';
 interface State {
     shouldBlockNavigation: boolean;
     userId: number;
-    user: UserDetails;
 }
 const NEW = 'new';
 interface MatchParams {
@@ -53,8 +52,7 @@ const UserConfig = (props: Props) => {
     const history = useHistory();
     const [state, setState] = useImmer<State>({
         shouldBlockNavigation: true,
-        userId: id !== NEW ? parseInt(id) : 0,
-        user: defaultUser
+        userId: id !== NEW ? parseInt(id) : 0
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
         mode: 'onBlur',
@@ -91,15 +89,15 @@ const UserConfig = (props: Props) => {
                 await getUserDetails(state.userId),
                 getOrElse((): UserDetails => defaultUser)
             );
-            setState((draft) => {
-                draft.user = user;
-            });
+            reset(user);
         };
 
         if (state.userId > 0) {
             action();
+        } else {
+            reset(defaultUser);
         }
-    }, [state.userId, setState]);
+    }, [state.userId, reset]);
 
     const confirmPasswordValidator = (value: string) => {
         const password = getValues().password;
