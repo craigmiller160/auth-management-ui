@@ -10,6 +10,8 @@ import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
+import TextField from '../../../../ui/Form/TextField';
+import { email } from '../../../../../utils/validations';
 
 interface State {
     shouldBlockNavigation: boolean;
@@ -109,11 +111,50 @@ const UserConfig = (props: Props) => {
                     direction="row"
                     justify="space-around"
                 >
-                    <Grid item>
-                        <p>Hello</p>
-                        <p>World</p>
+                    <Grid
+                        direction="column"
+                        container
+                        item
+                        md={ 5 }
+                    >
+                        <TextField
+                            name="email"
+                            control={ control }
+                            label="Email"
+                            error={ errors.email }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    email
+                                }
+                            } }
+                        />
+                        <TextField
+                            name="firstName"
+                            control={ control }
+                            label="First Name"
+                            error={ errors.firstName }
+                            rules={ {
+                                required: 'Required'
+                            } }
+                        />
+                        <TextField
+                            name="lastName"
+                            control={ control }
+                            label="Last Name"
+                            error={ errors.lastName }
+                            rules={ {
+                                required: 'Required'
+                            } }
+                        />
                     </Grid>
-                    <Grid item>
+                    <Grid item md={ 2 } />
+                    <Grid
+                        direction="column"
+                        container
+                        item
+                        md={ 5 }
+                    >
                         <p>Hello</p>
                         <p>Universe</p>
                     </Grid>

@@ -56,7 +56,6 @@ const UserDetails = () => {
     const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch<MatchParams>();
-    console.log(match); // TODO delete this
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         userId: id !== NEW ? parseInt(id) : 0,
