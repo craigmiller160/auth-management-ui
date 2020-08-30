@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer } from '@material-ui/core';
-import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom';
+import { matchPath, NavLink, useLocation } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import './MobileMenu.scss';
 import ListItem from '@material-ui/core/ListItem';
@@ -35,7 +35,6 @@ const MobileMenu = (props: Props) => {
         const activeClass = isMatch ? ' active' : '';
         return `item ${activeClass}`;
     }
-
 
     const authButtonClick = () => {
         props.handleMenuClose();
