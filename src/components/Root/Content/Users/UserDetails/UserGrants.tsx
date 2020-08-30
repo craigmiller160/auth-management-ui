@@ -5,6 +5,8 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { getUserClients } from '../../../../../services/UserService';
 import { getOrElse } from 'fp-ts/es6/Either';
 import { UserClients } from '../../../../../types/user';
+import { Grid, Typography } from '@material-ui/core';
+import './UserGrants.scss';
 
 interface State {
     userId: number;
@@ -48,8 +50,20 @@ const UserGrants = (props: Props) => {
     }, [state.userId, setState]);
 
     return (
-        <div>
-            <h1>User Grants</h1>
+        <div className="UserGrants">
+            <Typography
+                className="email"
+                variant="h5"
+            >
+                { state.user.email }
+            </Typography>
+            <Grid
+                container
+                direction="row"
+                justify="space-around"
+            >
+
+            </Grid>
         </div>
     );
 };
