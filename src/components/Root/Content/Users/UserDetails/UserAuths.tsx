@@ -1,4 +1,5 @@
 import React from 'react';
+import './UserAuths.scss';
 
 interface Props {
 
@@ -6,7 +7,7 @@ interface Props {
 
 const UserAuths = (props: Props) => {
     return (
-        <div>
+        <div className="UserAuths">
             <h1>User Auths</h1>
         </div>
     );
