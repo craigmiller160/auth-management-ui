@@ -14,6 +14,7 @@ import TextField from '../../../../ui/Form/TextField';
 import { email } from '../../../../../utils/validations';
 import './UserConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
+import Button from '@material-ui/core/Button';
 
 interface State {
     shouldBlockNavigation: boolean;
@@ -51,7 +52,7 @@ const UserConfig = (props: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [state, setState] = useImmer<State>({
-        shouldBlockNavigation: true,
+        shouldBlockNavigation: true, // TODO set this to true when any change happens
         userId: id !== NEW ? parseInt(id) : 0
     });
     const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
@@ -200,6 +201,37 @@ const UserConfig = (props: Props) => {
                             label="Enabled"
                         />
                     </Grid>
+                </Grid>
+                <Grid
+                    className="Actions"
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={ doCancel }
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                    {
+                        id !== NEW &&
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            // onClick={ () => toggleDeleteDialog(true) }
+                        >
+                            Delete
+                        </Button>
+                    }
                 </Grid>
             </form>
         </div>
