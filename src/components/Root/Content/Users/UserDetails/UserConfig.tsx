@@ -100,6 +100,19 @@ const UserConfig = (props: Props) => {
         }
     }, [state.userId, setState]);
 
+    const confirmPasswordValidator = (value: string) => {
+        const password = getValues().password;
+        if (!password) {
+            return true;
+        }
+        if (!value) {
+            return 'Required';
+        }
+        return password === value || 'Passwords must match';
+    };
+
+    const passwordRules = id === NEW ? { required: 'Required' } : {};
+
     return (
         <div className="UserConfig">
             <Prompt
@@ -159,8 +172,28 @@ const UserConfig = (props: Props) => {
                         item
                         md={ 5 }
                     >
-                        <p>Hello</p>
-                        <p>Universe</p>
+                        <TextField
+                            className="Field"
+                            name="password"
+                            control={ control }
+                            label="Password"
+                            error={ errors.password }
+                            rules={ passwordRules }
+                        />
+                        <TextField
+                            className="Field"
+                            name="confirmPassword"
+                            type="password"
+                            control={ control }
+                            label="Password (Confirm)"
+                            error={ errors.confirmPassword }
+                            rules={ {
+                                validate: {
+                                    confirmPasswordValidator
+                                }
+                            } }
+                            disabled={ !watchPassword }
+                        />
                     </Grid>
                 </Grid>
             </form>
