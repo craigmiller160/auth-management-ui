@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, ComponentType, ElementType } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
 import { PageHeader } from '../../../../ui/Header';
@@ -52,6 +52,11 @@ const getPathForTab = (tabIndex: number): string => {
     }
 };
 
+interface RouteConfig {
+    path: string;
+    component: ComponentType<any>;
+}
+
 const UserDetails = () => {
     const history = useHistory();
     const location = useLocation();
@@ -71,6 +76,27 @@ const UserDetails = () => {
         history.push(uri);
     };
 
+    const tabs: Array<string> = ['Config'];
+    const routes: Array<RouteConfig> = [
+        {
+            path: `${match.path}${PATH_CONFIG}`,
+            component: UserConfig
+        }
+    ];
+    if (id !== NEW) {
+        tabs.push('Grants');
+        tabs.push('Authentications');
+
+        routes.push({
+            path: `${match.path}${PATH_GRANTS}`,
+            component: UserGrants
+        });
+        routes.push({
+            path: `${match.path}${PATH_AUTHS}`,
+            component: UserAuths
+        });
+    }
+
     return (
         <div className="UserDetails">
             <PageHeader title="User Details" />
@@ -82,26 +108,23 @@ const UserDetails = () => {
                 centered
                 onChange={ handleTabChange }
             >
-                <Tab label="Config" />
-                <Tab label="Grants" />
-                <Tab label="Authentications" />
+                {
+                    tabs.map((tab, index) => (
+                        <Tab key={ index } label={ tab } />
+                    ))
+                }
             </Tabs>
             <Switch>
-                <Route
-                    path={ `${match.path}${PATH_CONFIG}` }
-                    exact
-                    component={ UserConfig }
-                />
-                <Route
-                    path={ `${match.path}${PATH_GRANTS}` }
-                    exact
-                    component={ UserGrants }
-                />
-                <Route
-                    path={ `${match.path}${PATH_AUTHS}` }
-                    exact
-                    component={ UserAuths }
-                />
+                {
+                    routes.map((route, index) => (
+                        <Route
+                            key={ index }
+                            path={ route.path }
+                            exact
+                            component={ route.component }
+                        />
+                    ))
+                }
                 <Redirect to={ `${match.path}${PATH_CONFIG}` } />
             </Switch>
         </div>
