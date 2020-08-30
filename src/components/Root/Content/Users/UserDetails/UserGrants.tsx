@@ -15,6 +15,7 @@ import { Item } from '../../../../ui/List';
 import { Business } from '@material-ui/icons';
 import { exists, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
+import UserRoles from './UserRoles';
 
 interface State {
     userId: number;
@@ -95,7 +96,11 @@ const UserGrants = (props: Props) => {
                     item
                     md={ 5 }
                 >
-                    <SectionHeader title="Roles" />
+                    <UserRoles
+                        selectedClient={ state.selectedClient }
+                        userId={ state.userId }
+                        updateUserRoles={ loadUser }
+                    />
                 </Grid>
             </Grid>
         </div>
