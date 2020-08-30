@@ -17,7 +17,6 @@ import Switch from '../../../../ui/Form/Switch';
 import Button from '@material-ui/core/Button';
 
 interface State {
-    shouldBlockNavigation: boolean;
     userId: number;
 }
 const NEW = 'new';
@@ -52,10 +51,9 @@ const UserConfig = (props: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [state, setState] = useImmer<State>({
-        shouldBlockNavigation: true, // TODO set this to true when any change happens
         userId: id !== NEW ? parseInt(id) : 0
     });
-    const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger } = useForm<UserForm>({
+    const { control, handleSubmit, errors, reset, getValues, watch, setValue, trigger, formState: { isDirty } } = useForm<UserForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultForm
@@ -65,9 +63,6 @@ const UserConfig = (props: Props) => {
     const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
         const result = await action();
         if (isRight(result)) {
-            setState((draft) => {
-                draft.shouldBlockNavigation = false;
-            });
             history.push('/users');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
         }
@@ -116,7 +111,7 @@ const UserConfig = (props: Props) => {
     return (
         <div className="UserConfig">
             <Prompt
-                when={ state.shouldBlockNavigation }
+                when={ isDirty }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
