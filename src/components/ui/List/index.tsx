@@ -54,7 +54,6 @@ const List = (props: Props) => {
 
     const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
     const listItemDirection = isNotPhone ? 'row' : 'column';
-    console.log(listItemDirection); // TODO delete this
 
     return (
         <MuiList>
@@ -90,7 +89,7 @@ const List = (props: Props) => {
                                 {
                                     item.secondaryActions &&
                                     <Grid
-                                        container
+                                        item
                                         direction="row"
                                         justify="flex-start"
                                     >
