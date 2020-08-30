@@ -6,6 +6,7 @@ import theme from '../../theme';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 export interface ItemSecondaryAction {
     text: string;
@@ -51,6 +52,9 @@ const List = (props: Props) => {
         items
     } = props;
 
+    const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
+    const listItemDirection = isNotPhone ? 'row' : 'column';
+
     return (
         <MuiList>
             {
@@ -73,27 +77,37 @@ const List = (props: Props) => {
                                     <Avatar />
                                 </ListItemAvatar>
                             }
-                            <ListItemText
-                                primary={ item.text.primary }
-                                secondary={ item.text.secondary }
-                            />
-                            {
-                                item.secondaryActions &&
-                                <div>
-                                    {
-                                        item.secondaryActions?.map((action, index) => (
-                                            <Button
-                                                className={ classes.Button }
-                                                key={ index }
-                                                color="primary"
-                                                onClick={ action.click }
-                                            >
-                                                { action.text }
-                                            </Button>
-                                        ))
-                                    }
-                                </div>
-                            }
+                            <Grid
+                                container
+                                direction={ listItemDirection }
+                                justify="flex-start"
+                            >
+                                <ListItemText
+                                    primary={ item.text.primary }
+                                    secondary={ item.text.secondary }
+                                />
+                                {
+                                    item.secondaryActions &&
+                                    <Grid
+                                        item
+                                        direction="row"
+                                        justify="flex-start"
+                                    >
+                                        {
+                                            item.secondaryActions?.map((action, index) => (
+                                                <Button
+                                                    className={ classes.Button }
+                                                    key={ index }
+                                                    color="primary"
+                                                    onClick={ action.click }
+                                                >
+                                                    { action.text }
+                                                </Button>
+                                            ))
+                                        }
+                                    </Grid>
+                                }
+                            </Grid>
                         </ListItem>
                     );
                 })

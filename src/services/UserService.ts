@@ -2,7 +2,7 @@ import { Either, map } from 'fp-ts/es6/Either';
 import {
     FullUserDetails,
     UserAuthDetails, UserAuthDetailsList,
-    UserClient,
+    UserClient, UserClients,
     UserDetails,
     UserInput,
     UserList,
@@ -16,7 +16,7 @@ import {
     DeleteUserWrapper,
     RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
-    UserDetailsWrapper
+    OldUserDetailsWrapper, UserDetailsWrapper, UserClientsWrapper
 } from '../types/graphApi';
 
 export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
@@ -36,9 +36,10 @@ export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
         })
     );
 
+// TODO delete this one
 export const getUser = async (userId: number): Promise<Either<Error, FullUserDetails>> =>
     pipe(
-        await api.graphql<UserDetailsWrapper>({
+        await api.graphql<OldUserDetailsWrapper>({
             payload: `
                 query {
                     user(userId: ${userId}) {
@@ -65,7 +66,55 @@ export const getUser = async (userId: number): Promise<Either<Error, FullUserDet
             `,
             errorMsg: `Error getting user ${userId}`
         }),
+        map((wrapper: OldUserDetailsWrapper) => wrapper.user)
+    );
+
+export const getUserDetails = async (userId: number): Promise<Either<Error,UserDetails>> =>
+    pipe(
+        await api.graphql<UserDetailsWrapper>({
+            payload: `
+                query {
+                    user(userId: ${userId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        enabled
+                    }
+                }
+            `,
+            errorMsg: `Error getting user details for ${userId}`
+        }),
         map((wrapper: UserDetailsWrapper) => wrapper.user)
+    );
+
+export const getUserClients = async (userId: number): Promise<Either<Error,UserClients>> =>
+    pipe(
+        await api.graphql<UserClientsWrapper>({
+            payload: `
+                query {
+                    user(userId: ${userId}) {
+                        id
+                        email
+                        clients {
+                            id
+                            name
+                            clientKey
+                            allRoles {
+                                id
+                                name
+                            }
+                            userRoles {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            `,
+            errorMsg: `Error getting user clients for ${userId}`
+        }),
+        map((wrapper: UserClientsWrapper) => wrapper.user)
     );
 
 export const updateUser = async (userId: number, user: UserInput): Promise<Either<Error, UserDetails>> =>

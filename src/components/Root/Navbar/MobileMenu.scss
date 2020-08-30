@@ -1,0 +1,30 @@
+@mixin item {
+  cursor: pointer;
+  padding-left: 2rem;
+  text-transform: uppercase;
+}
+
+.MobileMenu {
+  .MuiDrawer-paper {
+    // TODO need color here
+    width: 20rem;
+  }
+
+  .title {
+    @include item;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .item {
+    @include item;
+    &.active {
+      background-color: #e0e0e0;
+    }
+  }
+
+  .NavLink {
+    text-decoration: none;
+    color: inherit;
+  }
+}

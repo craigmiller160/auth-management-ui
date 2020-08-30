@@ -27,6 +27,13 @@ export interface UserDetails extends BaseUser {
     id: number;
 }
 
+export interface UserClients {
+    id: number;
+    email: string;
+    clients: Array<UserClient>;
+}
+
+// TODO delete this
 export interface FullUserDetails extends UserDetails {
     clients: Array<UserClient>;
 }
@@ -45,5 +52,6 @@ export interface UserAuthDetails {
 }
 
 export interface UserAuthDetailsList {
+    email: string;
     authDetails: Array<UserAuthDetails>;
 }

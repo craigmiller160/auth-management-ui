@@ -1,6 +1,6 @@
 import { ClientDetails, ClientRole, ClientUser, FullClientDetails } from './client';
 import { Role } from './role';
-import { FullUserDetails, UserClient, UserDetails, UserRole } from './user';
+import { FullUserDetails, UserClient, UserClients, UserDetails, UserRole } from './user';
 
 export interface GraphQLError {
     message: string;
@@ -43,8 +43,17 @@ export interface DeleteRoleWrapper {
     deleteRole: Role;
 }
 
-export interface UserDetailsWrapper {
+// TODO delete this
+export interface OldUserDetailsWrapper {
     user: FullUserDetails;
+}
+
+export interface UserDetailsWrapper {
+    user: UserDetails;
+}
+
+export interface UserClientsWrapper {
+    user: UserClients
 }
 
 export interface UpdateUserWrapper {
