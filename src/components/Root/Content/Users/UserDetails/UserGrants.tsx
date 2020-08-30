@@ -4,12 +4,12 @@ interface Props {
 
 }
 
-const UserConfig = (props: Props) => {
+const UserGrants = (props: Props) => {
     return (
         <div>
-            <h1>User Config</h1>
+            <h1>User Grants</h1>
         </div>
     );
 };
 
-export default UserConfig;
+export default UserGrants;

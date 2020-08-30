@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { Route, Switch } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 import ProtectedRoute, { Rule } from '@craigmiller160/react-protected-route';
 import Clients from './Clients';
 import { useSelector } from 'react-redux';
@@ -75,6 +75,7 @@ const Content = () => {
                     exact
                     component={ Home }
                 />
+                <Redirect to="/" />
             </Switch>
         </Container>
     );
