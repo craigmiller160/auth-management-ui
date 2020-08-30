@@ -136,7 +136,7 @@ const UserConfig = (props: Props) => {
     return (
         <div className="UserConfig">
             <Prompt
-                when={ isDirty && !state.allowNavigationOverride }
+                when={ (isDirty && !state.allowNavigationOverride) || id === NEW }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
