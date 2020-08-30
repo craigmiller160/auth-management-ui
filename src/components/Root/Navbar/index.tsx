@@ -70,41 +70,47 @@ const Navbar = () => {
                         <Typography variant="h6" noWrap>OAuth Management</Typography>
                     </NavLink>
                 </Button>
-                <div className="left">
-                    {
-                        isAuth &&
-                            <>
-                                <NavLink to="/users" className="NavLink">
+                {
+                    isNotPhone &&
+                        <>
+                            <div className="left">
+                                {
+                                    isAuth &&
+                                    <>
+                                        <NavLink to="/users" className="NavLink">
+                                            <Button
+                                                variant={ usersActive ? 'contained' : 'text' }
+                                                color={ usersActive ? 'default' : 'inherit' }
+                                            >
+                                                Users
+                                            </Button>
+                                        </NavLink>
+                                        <NavLink to="/clients" className="NavLink">
+                                            <Button
+                                                variant={ clientsActive ? 'contained' : 'text' }
+                                                color={ clientsActive ? 'default' : 'inherit' }
+                                            >
+                                                Clients
+                                            </Button>
+                                        </NavLink>
+                                    </>
+                                }
+                            </div>
+                            <div>
+                                {
+                                    hasChecked &&
                                     <Button
-                                        variant={ usersActive ? 'contained' : 'text' }
-                                        color={ usersActive ? 'default' : 'inherit' }
+                                        variant="text"
+                                        color="inherit"
+                                        onClick={ authAction }
                                     >
-                                        Users
+                                        { authBtnText }
                                     </Button>
-                                </NavLink>
-                                <NavLink to="/clients" className="NavLink">
-                                    <Button
-                                        variant={ clientsActive ? 'contained' : 'text' }
-                                        color={ clientsActive ? 'default' : 'inherit' }
-                                    >
-                                        Clients
-                                    </Button>
-                                </NavLink>
-                            </>
-                    }
-                </div>
-                <div>
-                    {
-                        hasChecked &&
-                        <Button
-                            variant="text"
-                            color="inherit"
-                            onClick={ authAction }
-                        >
-                            { authBtnText }
-                        </Button>
-                    }
-                </div>
+                                }
+                            </div>
+                        </>
+
+                }
             </Toolbar>
         </AppBar>
     );
