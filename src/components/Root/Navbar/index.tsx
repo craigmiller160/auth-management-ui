@@ -16,6 +16,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { useImmer } from 'use-immer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import MobileMenu from './MobileMenu';
 
 interface State {
     menuOpen: boolean;
@@ -57,21 +58,22 @@ const Navbar = () => {
     const clientsActive = isActive(location.pathname, '/clients');
 
     return (
-        <AppBar position="static" className="Navbar">
-            <Toolbar>
-                {
-                    !isNotPhone &&
-                    <IconButton edge="start" color="inherit" onClick={ handleMenuOpen }>
-                        <MenuIcon />
-                    </IconButton>
-                }
-                <Button variant="text" color="inherit">
-                    <NavLink to="/" exact className="NavLink">
-                        <Typography variant="h6" noWrap>OAuth Management</Typography>
-                    </NavLink>
-                </Button>
-                {
-                    isNotPhone &&
+        <>
+            <AppBar position="static" className="Navbar">
+                <Toolbar>
+                    {
+                        !isNotPhone &&
+                        <IconButton edge="start" color="inherit" onClick={ handleMenuOpen }>
+                            <MenuIcon />
+                        </IconButton>
+                    }
+                    <Button variant="text" color="inherit">
+                        <NavLink to="/" exact className="NavLink">
+                            <Typography variant="h6" noWrap>OAuth Management</Typography>
+                        </NavLink>
+                    </Button>
+                    {
+                        isNotPhone &&
                         <>
                             <div className="left">
                                 {
@@ -109,10 +111,14 @@ const Navbar = () => {
                                 }
                             </div>
                         </>
-
-                }
-            </Toolbar>
-        </AppBar>
+                    }
+                </Toolbar>
+            </AppBar>
+            <MobileMenu
+                menuOpen={ state.menuOpen }
+                handleMenuClose={ handleMenuClose }
+            />
+        </>
     );
 };
 
