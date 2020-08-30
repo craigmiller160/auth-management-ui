@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
 import { PageHeader } from '../../../../ui/Header';
@@ -27,6 +27,12 @@ const UserDetails = () => {
         selectedTab: TAB_CONFIG
     });
 
+    const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+        setState((draft) => {
+            draft.selectedTab = newValue;
+        });
+    };
+
     return (
         <div className="UserDetails">
             <PageHeader title="User Details" />
@@ -35,6 +41,7 @@ const UserDetails = () => {
                 indicatorColor="primary"
                 textColor="primary"
                 centered
+                onChange={ handleTabChange }
             >
                 <Tab label="Config" />
                 <Tab label="Grants" />
