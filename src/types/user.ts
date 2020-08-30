@@ -27,6 +27,12 @@ export interface UserDetails extends BaseUser {
     id: number;
 }
 
+export interface UserClients {
+    id: number;
+    clients: Array<UserClient>;
+}
+
+// TODO delete this
 export interface FullUserDetails extends UserDetails {
     clients: Array<UserClient>;
 }
