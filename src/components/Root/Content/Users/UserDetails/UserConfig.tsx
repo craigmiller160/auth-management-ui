@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
 import { email } from '../../../../../utils/validations';
+import './UserConfig.scss';
 
 interface State {
     shouldBlockNavigation: boolean;
@@ -100,7 +101,7 @@ const UserConfig = (props: Props) => {
     }, [state.userId, setState]);
 
     return (
-        <div>
+        <div className="UserConfig">
             <Prompt
                 when={ state.shouldBlockNavigation }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
@@ -118,6 +119,7 @@ const UserConfig = (props: Props) => {
                         md={ 5 }
                     >
                         <TextField
+                            className="Field"
                             name="email"
                             control={ control }
                             label="Email"
@@ -130,6 +132,7 @@ const UserConfig = (props: Props) => {
                             } }
                         />
                         <TextField
+                            className="Field"
                             name="firstName"
                             control={ control }
                             label="First Name"
@@ -139,6 +142,7 @@ const UserConfig = (props: Props) => {
                             } }
                         />
                         <TextField
+                            className="Field"
                             name="lastName"
                             control={ control }
                             label="Last Name"
