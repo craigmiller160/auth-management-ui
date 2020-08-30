@@ -16,7 +16,7 @@ const PATH_GRANTS = '/grants';
 const PATH_AUTHS = '/auths';
 
 interface State {
-    userId: number;
+    userId: number; // TODO is this needed here?
     selectedTab: number;
 }
 
@@ -55,6 +55,7 @@ const UserDetails = () => {
     const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch<MatchParams>();
+    console.log(match); // TODO delete this
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
         userId: id !== NEW ? parseInt(id) : 0,
@@ -66,7 +67,7 @@ const UserDetails = () => {
             draft.selectedTab = newValue;
         });
         const path = getPathForTab(newValue);
-        const uri = `${match.url}${path}`;
+        const uri = `${match.path}${path}`;
         history.push(uri);
     };
 
@@ -86,21 +87,21 @@ const UserDetails = () => {
             </Tabs>
             <Switch>
                 <Route
-                    path={ `${match.url}${PATH_CONFIG}` }
+                    path={ `${match.path}${PATH_CONFIG}` }
                     exact
                     component={ UserConfig }
                 />
                 <Route
-                    path={ `${match.url}${PATH_GRANTS}` }
+                    path={ `${match.path}${PATH_GRANTS}` }
                     exact
                     component={ UserGrants }
                 />
                 <Route
-                    path={ `${match.url}${PATH_AUTHS}` }
+                    path={ `${match.path}${PATH_AUTHS}` }
                     exact
                     component={ UserAuths }
                 />
-                <Redirect to={ `${match.url}${PATH_CONFIG}` } />
+                <Redirect to={ `${match.path}${PATH_CONFIG}` } />
             </Switch>
         </div>
     );
