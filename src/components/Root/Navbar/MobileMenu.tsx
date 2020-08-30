@@ -1,8 +1,10 @@
 import React from 'react';
 import { Drawer } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import './MobileMenu.scss';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 interface Props {
     menuOpen: boolean;
@@ -10,6 +12,8 @@ interface Props {
 }
 
 const MobileMenu = (props: Props) => {
+    const history = useHistory();
+
     return (
         <Drawer
             className="MobileMenu"
@@ -30,6 +34,28 @@ const MobileMenu = (props: Props) => {
                     OAuth Management
                 </Typography>
             </NavLink>
+            <ListItem
+                className="item"
+                onClick={ props.handleMenuClose }
+            >
+                <NavLink
+                    to="/users"
+                    className="NavLink"
+                >
+                    <ListItemText>Users</ListItemText>
+                </NavLink>
+            </ListItem>
+            <ListItem
+                className="item"
+                onClick={ props.handleMenuClose }
+            >
+                <NavLink
+                    to="/clients"
+                    className="NavLink"
+                >
+                    <ListItemText>Clients</ListItemText>
+                </NavLink>
+            </ListItem>
         </Drawer>
     );
 };
