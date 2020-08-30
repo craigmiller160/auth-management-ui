@@ -95,6 +95,7 @@ export const getUserClients = async (userId: number): Promise<Either<Error,UserC
                 query {
                     user(userId: ${userId}) {
                         id
+                        email
                         clients {
                             id
                             name

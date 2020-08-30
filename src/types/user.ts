@@ -29,6 +29,7 @@ export interface UserDetails extends BaseUser {
 
 export interface UserClients {
     id: number;
+    email: string;
     clients: Array<UserClient>;
 }
 

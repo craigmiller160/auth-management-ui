@@ -20,6 +20,7 @@ interface Props {
 
 const defaultUser: UserClients = {
     id: 0,
+    email: '',
     clients: []
 };
 
