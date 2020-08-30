@@ -67,7 +67,7 @@ const UserDetails = () => {
             draft.selectedTab = newValue;
         });
         const path = getPathForTab(newValue);
-        const uri = `${match.path}${path}`;
+        const uri = `${match.url}${path}`;
         history.push(uri);
     };
 
