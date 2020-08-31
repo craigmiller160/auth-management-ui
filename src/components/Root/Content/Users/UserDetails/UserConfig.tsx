@@ -4,7 +4,7 @@ import { UserDetails, UserInput } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
 import { createUser, deleteUser, getUserDetails, updateUser } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { Either, getOrElse } from 'fp-ts/es6/Either';
+import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { useForm } from 'react-hook-form';
 import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
@@ -66,10 +66,17 @@ const UserConfig = (props: Props) => {
     const watchPassword = watch('password', '');
 
     const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
-        const result = await action();
-        if (isRight(result)) {
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
-        }
+        pipe(
+            await action(),
+            map((user) => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                const path = props.match.path.replace(':id', `${user.id}`);
+                dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
+                history.push(path);
+            })
+        );
     };
 
     const onSubmit = (values: UserForm) => {
@@ -131,7 +138,7 @@ const UserConfig = (props: Props) => {
     return (
         <div className="UserConfig">
             <Prompt
-                when={ (isDirty && !state.allowNavigationOverride) || id === NEW }
+                when={ (isDirty || id === NEW) && !state.allowNavigationOverride }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
