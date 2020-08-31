@@ -90,8 +90,6 @@ const List = (props: Props) => {
                                     item.secondaryActions &&
                                     <Grid
                                         item
-                                        direction="row"
-                                        justify="flex-start"
                                     >
                                         {
                                             item.secondaryActions?.map((action, index) => (
