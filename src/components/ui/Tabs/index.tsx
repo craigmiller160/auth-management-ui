@@ -6,7 +6,7 @@ import { Tab } from '@material-ui/core';
 
 // Only designed at the moment to work with tabs at the end of the react router path
 
-interface TabConfig {
+export interface TabConfig {
     label: string;
     path: string;
     component: ComponentType<any>;
