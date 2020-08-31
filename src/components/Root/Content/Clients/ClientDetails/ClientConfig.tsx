@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Prompt, match, useHistory } from 'react-router';
 import { ClientDetails, ClientInput } from '../../../../../types/client';
 import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
-import { Either } from 'fp-ts/es6/Either';
+import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { UserDetails, UserInput } from '../../../../../types/user';
 import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
 import { createUser, updateUser } from '../../../../../services/UserService';
-import { createClient, updateClient } from '../../../../../services/ClientService';
+import { createClient, getClientDetails, updateClient } from '../../../../../services/ClientService';
+import { pipe } from 'fp-ts/es6/pipeable';
 
 interface State {
     allowNavigationOverride: boolean;
@@ -59,10 +60,17 @@ const ClientConfig = (props: Props) => {
     });
 
     const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
-        const result = await action();
-        if (isRight(result)) {
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
-        }
+        pipe(
+            await action(),
+            map((client) => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                const path = props.match.path.replace(':id', `${client.id}`);
+                dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
+                history.push(path);
+            })
+        );
     };
 
     const onSubmit = (values: ClientForm) => {
@@ -76,10 +84,31 @@ const ClientConfig = (props: Props) => {
         }
     };
 
+    useEffect(() => {
+        const loadClient = async () => {
+            const client = pipe(
+                await getClientDetails(state.clientId),
+                getOrElse((): ClientDetails => defaultClient)
+            );
+            reset(client);
+        };
+
+        if (state.clientId > 0) {
+            loadClient();
+        } else {
+            // TODO need to load the GUIDs
+            reset({
+                ...defaultClientForm
+            });
+        }
+    });
+
+
+
     return (
         <div className="ClientConfig">
             <Prompt
-                when={ false }
+                when={ (isDirty || id === NEW) && !state.allowNavigationOverride }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form>
