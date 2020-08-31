@@ -2,12 +2,12 @@ import React, { ChangeEvent, ComponentType } from 'react';
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router';
 import { useImmer } from 'use-immer';
 import ClientConfig from './ClientConfig';
-import UserRoles from '../../Users/UserDetails/UserRoles';
-import UserGrants from '../../Users/UserDetails/UserGrants';
-import UserAuths from '../../Users/UserDetails/UserAuths';
 import { PageHeader } from '../../../../ui/Header';
 import { Tabs } from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
+import ClientRoles from './ClientRoles';
+import ClientGrants from './ClientGrants';
+import ClientAuths from './ClientAuths';
 
 const TAB_CONFIG = 0;
 const TAB_ROLES = 1;
@@ -95,15 +95,15 @@ const ClientDetails = () => {
 
         routes.push({
             path: `${match.path}${PATH_ROLES}`,
-            component: UserRoles
+            component: ClientRoles
         });
         routes.push({
             path: `${match.path}${PATH_GRANTS}`,
-            component: UserGrants
+            component: ClientGrants
         });
         routes.push({
             path: `${match.path}${PATH_AUTHS}`,
-            component: UserAuths
+            component: ClientAuths
         });
     }
 
