@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ComponentType } from 'react';
 import MuiTabs from '@material-ui/core/Tabs';
 import { useImmer } from 'use-immer';
-import { Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router';
+import { Redirect, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Tab } from '@material-ui/core';
 
 // Only designed at the moment to work with tabs at the end of the react router path
@@ -30,9 +30,10 @@ const Tabs = (props: Props) => {
     const location = useLocation();
     const history = useHistory();
     const match = useRouteMatch();
+    const tabIndex = props.tabs.findIndex((tab) =>
+        tabPathMatch(location.pathname, tab.path));
     const [state, setState] = useImmer<State>({
-        selectedTab: props.tabs.findIndex((tab) =>
-            tabPathMatch(location.pathname, tab.path)) ?? 0
+        selectedTab: tabIndex >= 0 ? tabIndex : 0
     });
 
     const handleTabChange = (event: ChangeEvent<{}>, newValue: number): void => {
@@ -44,8 +45,9 @@ const Tabs = (props: Props) => {
         history.push(uri);
     };
 
-    // TODO need to reset the route if something invalid is provided
-    // TODO or just redirect to the default one
+    const redirectUri = props.tabs.length > 0 ?
+        `${match.path}${props.tabs[0].path}` :
+        match.path;
 
     return (
         <div className="TabsContainer">
@@ -74,6 +76,7 @@ const Tabs = (props: Props) => {
                         />
                     ))
                 }
+                <Redirect to={ redirectUri } />
             </Switch>
         </div>
     );
