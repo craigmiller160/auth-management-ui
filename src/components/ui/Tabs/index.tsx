@@ -45,10 +45,6 @@ const Tabs = (props: Props) => {
         history.push(uri);
     };
 
-    const redirectUri = props.tabs.length > 0 ?
-        `${match.path}${props.tabs[0].path}` :
-        match.path;
-
     return (
         <div className="TabsContainer">
             <MuiTabs
@@ -76,7 +72,10 @@ const Tabs = (props: Props) => {
                         />
                     ))
                 }
-                <Redirect to={ redirectUri } />
+                {
+                    props.tabs.length > 0 &&
+                    <Redirect to={ `${match.path}${props.tabs[0].path}` } />
+                }
             </Switch>
         </div>
     );

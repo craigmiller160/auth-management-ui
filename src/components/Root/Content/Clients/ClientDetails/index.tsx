@@ -17,10 +17,6 @@ const LABEL_ROLES = 'Roles';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-interface State {
-    selectedTab: number;
-}
-
 interface MatchParams {
     id: string;
 }
