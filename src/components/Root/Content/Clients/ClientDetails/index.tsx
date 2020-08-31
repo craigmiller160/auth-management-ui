@@ -8,6 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import ClientRoles from './ClientRoles';
 import ClientGrants from './ClientGrants';
 import ClientAuths from './ClientAuths';
+import OtherTabs from '../../../../ui/Tabs'; // TODO rename
 
 const TAB_CONFIG = 0;
 const TAB_ROLES = 1;
@@ -110,6 +111,7 @@ const ClientDetails = () => {
     return (
         <div className="ClientDetails">
             <PageHeader title="Client Details" />
+            <OtherTabs tabs={ [] } />
             <Tabs
                 className="Tabs"
                 value={ state.selectedTab }
