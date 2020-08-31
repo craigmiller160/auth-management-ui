@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { isAuthorized } from '../../../store/auth/selectors';
 import Home from './Home';
 import Users from './Users';
-import ClientDetails from './Clients/OldClientDetails';
+import ClientDetails from './Clients/ClientDetails';
 import Alert from '../../ui/Alert';
 import './Content.scss';
 import UserDetails from './Users/UserDetails';
