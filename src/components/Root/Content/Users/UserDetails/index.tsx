@@ -17,7 +17,6 @@ const PATH_GRANTS = '/grants';
 const PATH_AUTHS = '/auths';
 
 interface State {
-    userId: number; // TODO is this needed here?
     selectedTab: number;
 }
 
@@ -63,7 +62,6 @@ const UserDetails = () => {
     const match = useRouteMatch<MatchParams>();
     const id = match.params.id;
     const [state, setState] = useImmer<State>({
-        userId: id !== NEW ? parseInt(id) : 0,
         selectedTab: getTabForPath(location.pathname)
     });
 
