@@ -65,7 +65,7 @@ const UserDetails = () => {
         selectedTab: getTabForPath(location.pathname)
     });
 
-    const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+    const handleTabChange = (event: ChangeEvent<{}>, newValue: number): void => {
         setState((draft) => {
             draft.selectedTab = newValue;
         });
