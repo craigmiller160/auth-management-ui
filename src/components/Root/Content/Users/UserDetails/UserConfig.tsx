@@ -68,11 +68,6 @@ const UserConfig = (props: Props) => {
     const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
         const result = await action();
         if (isRight(result)) {
-            // TODO stay on page instead
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/users');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
         }
     };

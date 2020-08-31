@@ -12,11 +12,11 @@ import {
 } from '../types/client';
 import {
     AddUserToClientWrapper,
-    ClientDetailsWrapper,
+    OldClientDetailsWrapper,
     CreateClientWrapper,
     DeleteClientWrapper, RemoveUserFromClientWrapper,
     RolesForClientWrapper,
-    UpdateClientWrapper
+    UpdateClientWrapper, ClientDetailsWrapper
 } from '../types/graphApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
@@ -35,7 +35,7 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
 
 export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
-        await api.graphql<ClientDetailsWrapper>({
+        await api.graphql<OldClientDetailsWrapper>({
             payload: `
                 query {
                     client(clientId: ${clientId}) {
@@ -64,6 +64,26 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                 }
             `,
             errorMsg: `Error getting client ${clientId}`
+        }),
+        map((wrapper: OldClientDetailsWrapper) => wrapper.client)
+    );
+
+export const getClientDetails = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await api.graphql<ClientDetailsWrapper>({
+            payload: `
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        refreshTokenTimeoutSecs
+                        enabled
+                    }
+                }
+            `,
+            errorMsg: ``
         }),
         map((wrapper: ClientDetailsWrapper) => wrapper.client)
     );

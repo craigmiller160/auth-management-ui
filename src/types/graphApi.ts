@@ -11,8 +11,12 @@ export interface GraphQLQueryResponse<T> {
     errors: Array<GraphQLError>;
 }
 
+export interface OldClientDetailsWrapper {
+    client: FullClientDetails;
+}
+
 export interface ClientDetailsWrapper {
-    client: FullClientDetails
+    client: ClientDetails;
 }
 
 export interface RolesForClientWrapper {
