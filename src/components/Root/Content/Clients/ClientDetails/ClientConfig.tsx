@@ -133,6 +133,7 @@ const ClientConfig = (props: Props) => {
 
     // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
     // TODO how to vertically align the items?
+    // TODO move enabled switch to bottom of column
 
     return (
         <div className="ClientConfig">
