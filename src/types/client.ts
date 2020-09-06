@@ -28,6 +28,7 @@ interface BaseClient {
     enabled: boolean;
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
+    authCodeTimeoutSecs: number;
 }
 
 export interface ClientDetails extends BaseClient {

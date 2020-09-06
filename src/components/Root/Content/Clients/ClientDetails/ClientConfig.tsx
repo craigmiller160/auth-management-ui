@@ -36,7 +36,8 @@ const defaultClient: ClientDetails = {
     clientKey: '',
     enabled: false,
     refreshTokenTimeoutSecs: 0,
-    accessTokenTimeoutSecs: 0
+    accessTokenTimeoutSecs: 0,
+    authCodeTimeoutSecs: 0
 };
 
 interface ClientForm extends ClientDetails {
@@ -102,8 +103,13 @@ const ClientConfig = (props: Props) => {
             if (isRight(key) && isRight(secret)) {
                 reset({
                     ...defaultClientForm,
+                    name: 'New Client',
                     clientKey: key.right,
-                    clientSecret: secret.right
+                    clientSecret: secret.right,
+                    enabled: true,
+                    accessTokenTimeoutSecs: 300,
+                    refreshTokenTimeoutSecs: 3600,
+                    authCodeTimeoutSecs: 60
                 });
             }
         };
@@ -244,11 +250,11 @@ const ClientConfig = (props: Props) => {
                         />
                         <TextField
                             className="Field"
-                            name="refreshTokenTimeoutSecs"
+                            name="authCodeTimeoutSecs"
                             control={ control }
-                            label="Refresh Token Timeout (Secs)"
+                            label="Auth Code Timeout (Secs)"
                             type="number"
-                            error={ errors.refreshTokenTimeoutSecs }
+                            error={ errors.authCodeTimeoutSecs }
                             rules={ {
                                 required: 'Required',
                                 validate: {

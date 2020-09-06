@@ -79,6 +79,7 @@ export const getClientDetails = async (clientId: number): Promise<Either<Error, 
                         clientKey
                         accessTokenTimeoutSecs
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
                         enabled
                     }
                 }

@@ -49,7 +49,8 @@ const defaultClient: ClientDetails = {
     clientKey: '',
     enabled: false,
     refreshTokenTimeoutSecs: 0,
-    accessTokenTimeoutSecs: 0
+    accessTokenTimeoutSecs: 0,
+    authCodeTimeoutSecs: 0
 };
 const defaultClientForm: ClientForm = {
     ...defaultClient,
