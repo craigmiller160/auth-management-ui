@@ -112,6 +112,8 @@ const ClientConfig = (props: Props) => {
         }
     }, [reset, state.clientId]);
 
+    // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
+
     return (
         <div className="ClientConfig">
             <Prompt
@@ -137,6 +139,23 @@ const ClientConfig = (props: Props) => {
                             label="Client Name"
                             rules={ { required: 'Required' } }
                             error={ errors.name }
+                        />
+                        <TextField
+                            className="Field"
+                            name="clientKey"
+                            control={ control }
+                            label="Client Key"
+                            rules={ { required: 'Required' } }
+                            error={ errors.clientKey }
+                            disabled
+                        />
+                        <TextField
+                            className="Field"
+                            name="clientSecret"
+                            control={ control }
+                            label="Client Secret"
+                            error={ errors.clientSecret}
+                            disabled
                         />
                     </Grid>
                     <Grid item md={ 2 } />
