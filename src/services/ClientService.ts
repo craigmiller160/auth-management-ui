@@ -180,7 +180,7 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
 
 export const generateGuid = (): Promise<Either<Error, string>> =>
     api.get<string>({
-        uri: '/userClients/guid',
+        uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
     });
 
