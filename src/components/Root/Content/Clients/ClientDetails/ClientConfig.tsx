@@ -1,20 +1,22 @@
-import React, {useEffect} from 'react';
-import {match, Prompt, useHistory} from 'react-router';
-import {ClientDetails, ClientInput} from '../../../../../types/client';
-import {useDispatch} from 'react-redux';
-import {useImmer} from 'use-immer';
-import {useForm} from 'react-hook-form';
-import {Either, getOrElse, map} from 'fp-ts/es6/Either';
-import {isRight} from 'fp-ts/es6/These';
+import React, { useEffect } from 'react';
+import { match, Prompt, useHistory } from 'react-router';
+import { ClientDetails, ClientInput } from '../../../../../types/client';
+import { useDispatch } from 'react-redux';
+import { useImmer } from 'use-immer';
+import { useForm } from 'react-hook-form';
+import { Either, getOrElse, map } from 'fp-ts/es6/Either';
+import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
-import {createClient, generateGuid, getClientDetails, updateClient} from '../../../../../services/ClientService';
-import {pipe} from 'fp-ts/es6/pipeable';
-import {Grid} from "@material-ui/core";
-import TextField from "../../../../ui/Form/TextField";
+import { createClient, generateGuid, getClientDetails, updateClient } from '../../../../../services/ClientService';
+import { pipe } from 'fp-ts/es6/pipeable';
+import { Grid } from '@material-ui/core';
+import TextField from '../../../../ui/Form/TextField';
 import './ClientConfig.scss';
-import Button from "@material-ui/core/Button";
-import Switch from "../../../../ui/Form/Switch";
-import {greaterThanZero} from "../../../../../utils/validations";
+import Button from '@material-ui/core/Button';
+import Switch from '../../../../ui/Form/Switch';
+import { greaterThanZero } from '../../../../../utils/validations';
+import { Item } from '../../../../ui/List';
+import { Language } from '@material-ui/icons';
 
 interface State {
     allowNavigationOverride: boolean;
@@ -138,53 +140,61 @@ const ClientConfig = (props: Props) => {
         setValue('clientSecret', guid);
     };
 
+    const redirectUris: Array<Item> = getValues().redirectUris
+        .map((uri) => ({
+            avatar: () => <Language />,
+            text: {
+                primary: uri
+            }
+        }));
+
     // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
     // TODO how to vertically align the items?
     // TODO move enabled switch to bottom of column
 
     return (
-        <div className="ClientConfig">
+        <div className='ClientConfig'>
             <Prompt
                 when={ (isDirty || id === NEW) && !state.allowNavigationOverride }
-                message="Are you sure you want to leave? Any unsaved changes will be lost."
+                message='Are you sure you want to leave? Any unsaved changes will be lost.'
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
                 <Grid
                     container
-                    direction="row"
-                    justify="space-around"
+                    direction='row'
+                    justify='space-around'
                 >
                     <Grid
                         container
-                        direction="column"
+                        direction='column'
                         item
                         md={ 5 }
-                        alignItems="flex-start"
+                        alignItems='flex-start'
                     >
                         <TextField
-                            className="Field"
-                            name="name"
+                            className='Field'
+                            name='name'
                             control={ control }
-                            label="Client Name"
+                            label='Client Name'
                             rules={ { required: 'Required' } }
                             error={ errors.name }
                         />
                         <Grid
                             container
-                            direction="row"
+                            direction='row'
                         >
                             <TextField
-                                className="Field"
-                                name="clientKey"
+                                className='Field'
+                                name='clientKey'
                                 control={ control }
-                                label="Client Key"
+                                label='Client Key'
                                 rules={ { required: 'Required' } }
                                 error={ errors.clientKey }
                                 disabled
                             />
                             <Button
-                                variant="text"
-                                color="default"
+                                variant='text'
+                                color='default'
                                 onClick={ generateClientKey }
                             >
                                 Generate
@@ -192,19 +202,19 @@ const ClientConfig = (props: Props) => {
                         </Grid>
                         <Grid
                             container
-                            direction="row"
+                            direction='row'
                         >
                             <TextField
-                                className="Field"
-                                name="clientSecret"
+                                className='Field'
+                                name='clientSecret'
                                 control={ control }
-                                label="Client Secret"
+                                label='Client Secret'
                                 error={ errors.clientSecret}
                                 disabled
                             />
                             <Button
-                                variant="text"
-                                color="default"
+                                variant='text'
+                                color='default'
                                 onClick={ generateClientSecret }
                             >
                                 Generate
@@ -213,18 +223,18 @@ const ClientConfig = (props: Props) => {
                     </Grid>
                     <Grid item md={ 2 } />
                     <Grid
-                        direction="column"
+                        direction='column'
                         container
                         item
                         md={ 5 }
-                        alignItems="flex-start"
+                        alignItems='flex-start'
                     >
                         <TextField
-                            className="Field"
-                            name="accessTokenTimeoutSecs"
+                            className='Field'
+                            name='accessTokenTimeoutSecs'
                             control={ control }
-                            label="Access Token Timeout (Secs)"
-                            type="number"
+                            label='Access Token Timeout (Secs)'
+                            type='number'
                             error={ errors.accessTokenTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -235,11 +245,11 @@ const ClientConfig = (props: Props) => {
                             transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                         <TextField
-                            className="Field"
-                            name="refreshTokenTimeoutSecs"
+                            className='Field'
+                            name='refreshTokenTimeoutSecs'
                             control={ control }
-                            label="Refresh Token Timeout (Secs)"
-                            type="number"
+                            label='Refresh Token Timeout (Secs)'
+                            type='number'
                             error={ errors.refreshTokenTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -250,11 +260,11 @@ const ClientConfig = (props: Props) => {
                             transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                         <TextField
-                            className="Field"
-                            name="authCodeTimeoutSecs"
+                            className='Field'
+                            name='authCodeTimeoutSecs'
                             control={ control }
-                            label="Auth Code Timeout (Secs)"
-                            type="number"
+                            label='Auth Code Timeout (Secs)'
+                            type='number'
                             error={ errors.authCodeTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -268,30 +278,30 @@ const ClientConfig = (props: Props) => {
                 </Grid>
                 <Grid
                     container
-                    direction="row"
-                    justify="space-around"
+                    direction='row'
+                    justify='space-around'
                 >
                     <Grid
                         container
-                        direction="column"
+                        direction='column'
                         item
                         md={ 5 }
-                        alignItems="flex-start"
+                        alignItems='flex-start'
                     >
                         <Switch
-                            className="Field shrink"
-                            name="enabled"
+                            className='Field shrink'
+                            name='enabled'
                             control={ control }
-                            label="Enabled"
+                            label='Enabled'
                         />
                     </Grid>
                     <Grid item md={ 2 } />
                     <Grid
-                        direction="column"
+                        direction='column'
                         container
                         item
                         md={ 5 }
-                        alignItems="flex-start"
+                        alignItems='flex-start'
                     >
                         <p>Hello</p>
                         <p>World</p>
