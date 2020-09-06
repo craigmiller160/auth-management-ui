@@ -152,6 +152,7 @@ const ClientConfig = (props: Props) => {
                         direction="column"
                         item
                         md={ 5 }
+                        alignItems="flex-start"
                     >
                         <TextField
                             className="Field"
@@ -209,13 +210,8 @@ const ClientConfig = (props: Props) => {
                         container
                         item
                         md={ 5 }
+                        alignItems="flex-start"
                     >
-                        <Switch
-                            className="Field"
-                            name="enabled"
-                            control={ control }
-                            label="Enabled"
-                        />
                         <TextField
                             className="Field"
                             name="accessTokenTimeoutSecs"
@@ -245,6 +241,27 @@ const ClientConfig = (props: Props) => {
                                 }
                             } }
                             transform={ (value: string) => value ? parseInt(value) : '' }
+                        />
+                        <TextField
+                            className="Field"
+                            name="refreshTokenTimeoutSecs"
+                            control={ control }
+                            label="Refresh Token Timeout (Secs)"
+                            type="number"
+                            error={ errors.refreshTokenTimeoutSecs }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    greaterThanZero
+                                }
+                            } }
+                            transform={ (value: string) => value ? parseInt(value) : '' }
+                        />
+                        <Switch
+                            className="Field"
+                            name="enabled"
+                            control={ control }
+                            label="Enabled"
                         />
                     </Grid>
                 </Grid>
