@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
-import { Prompt, match, useHistory } from 'react-router';
-import { ClientDetails, ClientInput } from '../../../../../types/client';
-import { useDispatch } from 'react-redux';
-import { useImmer } from 'use-immer';
-import { useForm } from 'react-hook-form';
-import { Either, getOrElse, map } from 'fp-ts/es6/Either';
-import { UserDetails, UserInput } from '../../../../../types/user';
-import { isRight } from 'fp-ts/es6/These';
+import React, {useEffect} from 'react';
+import {match, Prompt, useHistory} from 'react-router';
+import {ClientDetails, ClientInput} from '../../../../../types/client';
+import {useDispatch} from 'react-redux';
+import {useImmer} from 'use-immer';
+import {useForm} from 'react-hook-form';
+import {Either, getOrElse, map} from 'fp-ts/es6/Either';
+import {isRight} from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
-import { createUser, updateUser } from '../../../../../services/UserService';
-import { createClient, getClientDetails, updateClient } from '../../../../../services/ClientService';
-import { pipe } from 'fp-ts/es6/pipeable';
+import {createClient, generateGuid, getClientDetails, updateClient} from '../../../../../services/ClientService';
+import {pipe} from 'fp-ts/es6/pipeable';
+import {Grid} from "@material-ui/core";
+import TextField from "../../../../ui/Form/TextField";
+import './ClientConfig.scss';
 
 interface State {
     allowNavigationOverride: boolean;
@@ -93,17 +94,23 @@ const ClientConfig = (props: Props) => {
             reset(client);
         };
 
+        const loadNewClient = async () => {
+            const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
+            if (isRight(key) && isRight(secret)) {
+                reset({
+                    ...defaultClientForm,
+                    clientKey: key.right,
+                    clientSecret: secret.right
+                });
+            }
+        };
+
         if (state.clientId > 0) {
             loadClient();
         } else {
-            // TODO need to load the GUIDs
-            reset({
-                ...defaultClientForm
-            });
+            loadNewClient();
         }
-    });
-
-
+    }, [reset, state.clientId]);
 
     return (
         <div className="ClientConfig">
@@ -111,8 +118,37 @@ const ClientConfig = (props: Props) => {
                 when={ (isDirty || id === NEW) && !state.allowNavigationOverride }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
-            <form>
+            <form onSubmit={ handleSubmit(onSubmit) }>
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <Grid
+                        container
+                        direction="column"
+                        item
+                        md={ 5 }
+                    >
+                        <TextField
+                            className="Field"
+                            name="name"
+                            control={ control }
+                            label="Client Name"
+                            rules={ { required: 'Required' } }
+                            error={ errors.name }
+                        />
+                    </Grid>
+                    <Grid item md={ 2 } />
+                    <Grid
+                        direction="column"
+                        container
+                        item
+                        md={ 5 }
+                    >
 
+                    </Grid>
+                </Grid>
             </form>
         </div>
     );

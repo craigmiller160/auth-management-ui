@@ -6,6 +6,7 @@ import ClientRoles from './ClientRoles';
 import ClientGrants from './ClientGrants';
 import ClientAuths from './ClientAuths';
 import Tabs, { TabConfig } from '../../../../ui/Tabs';
+import './ClientDetails.scss';
 
 const PATH_CONFIG = '/config';
 const PATH_ROLES = '/roles';
