@@ -79,12 +79,6 @@ const UserGrants = (props: Props) => {
             draft.selectedClient = some(client);
         });
 
-    // const redirectUris: Array<Item> = [
-    //     {
-    //
-    //     }
-    // ];
-
     return (
         <div className="UserGrants">
             <Typography

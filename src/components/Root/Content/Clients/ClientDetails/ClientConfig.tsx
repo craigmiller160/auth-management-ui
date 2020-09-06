@@ -9,19 +9,20 @@ import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
 import { createClient, generateGuid, getClientDetails, updateClient } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { Grid } from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
 import './ClientConfig.scss';
 import Button from '@material-ui/core/Button';
 import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
-import { Item } from '../../../../ui/List';
+import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
 
 interface State {
     allowNavigationOverride: boolean;
     showDeleteDialog: boolean;
     clientId: number;
+    redirectUris: Array<string>;
 }
 const NEW = 'new';
 interface MatchParams {
@@ -59,7 +60,8 @@ const ClientConfig = (props: Props) => {
     const [state, setState] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        clientId: id !== NEW ? parseInt(id) : 0
+        clientId: id !== NEW ? parseInt(id) : 0,
+        redirectUris: []
     });
     const { control, setValue, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -99,6 +101,9 @@ const ClientConfig = (props: Props) => {
                 getOrElse((): ClientDetails => defaultClient)
             );
             reset(client);
+            setState((draft) => {
+                draft.redirectUris = client.redirectUris;
+            });
         };
 
         const loadNewClient = async () => {
@@ -113,6 +118,9 @@ const ClientConfig = (props: Props) => {
                     accessTokenTimeoutSecs: 300,
                     refreshTokenTimeoutSecs: 3600,
                     authCodeTimeoutSecs: 60
+                });
+                setState((draft) => {
+                    draft.redirectUris = [];
                 });
             }
         };
@@ -140,12 +148,25 @@ const ClientConfig = (props: Props) => {
         setValue('clientSecret', guid);
     };
 
-    const redirectUris: Array<Item> = getValues().redirectUris
+    const redirectUris = state.redirectUris.slice()
+        .sort((uri1, uri2) => uri1.localeCompare(uri2))
+
+    const redirectUriItems: Array<Item> = redirectUris
         .map((uri) => ({
             avatar: () => <Language />,
             text: {
                 primary: uri
-            }
+            },
+            secondaryActions: [
+                {
+                    text: 'Edit',
+                    click: () => {}
+                },
+                {
+                    text: 'Remove',
+                    click: () => {}
+                }
+            ]
         }));
 
     // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
@@ -276,6 +297,7 @@ const ClientConfig = (props: Props) => {
                         />
                     </Grid>
                 </Grid>
+                <div className="divider" />
                 <Grid
                     container
                     direction='row'
@@ -303,10 +325,15 @@ const ClientConfig = (props: Props) => {
                         md={ 5 }
                         alignItems='flex-start'
                     >
-                        <p>Hello</p>
-                        <p>World</p>
-                        <p>Galaxy</p>
-                        <p>Universe</p>
+                        <Typography variant="body1">Redirect URIs</Typography>
+                        <List items={ redirectUriItems } />
+                        <Button
+                            className="AddRedirect"
+                            color="primary"
+                            variant="contained"
+                        >
+                            Add Redirect URI
+                        </Button>
                     </Grid>
                 </Grid>
             </form>
