@@ -263,12 +263,39 @@ const ClientConfig = (props: Props) => {
                             } }
                             transform={ (value: string) => value ? parseInt(value) : '' }
                         />
+                    </Grid>
+                </Grid>
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <Grid
+                        container
+                        direction="column"
+                        item
+                        md={ 5 }
+                        alignItems="flex-start"
+                    >
                         <Switch
-                            className="Field"
+                            className="Field shrink"
                             name="enabled"
                             control={ control }
                             label="Enabled"
                         />
+                    </Grid>
+                    <Grid item md={ 2 } />
+                    <Grid
+                        direction="column"
+                        container
+                        item
+                        md={ 5 }
+                        alignItems="flex-start"
+                    >
+                        <p>Hello</p>
+                        <p>World</p>
+                        <p>Galaxy</p>
+                        <p>Universe</p>
                     </Grid>
                 </Grid>
             </form>
