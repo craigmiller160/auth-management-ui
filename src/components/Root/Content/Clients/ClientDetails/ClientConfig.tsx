@@ -12,6 +12,7 @@ import {pipe} from 'fp-ts/es6/pipeable';
 import {Grid} from "@material-ui/core";
 import TextField from "../../../../ui/Form/TextField";
 import './ClientConfig.scss';
+import Button from "@material-ui/core/Button";
 
 interface State {
     allowNavigationOverride: boolean;
@@ -54,7 +55,7 @@ const ClientConfig = (props: Props) => {
         showDeleteDialog: false,
         clientId: id !== NEW ? parseInt(id) : 0
     });
-    const { control, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
+    const { control, setValue, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultClientForm
@@ -112,6 +113,22 @@ const ClientConfig = (props: Props) => {
         }
     }, [reset, state.clientId]);
 
+    const generateClientKey = async () => {
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientKey', guid);
+    };
+
+    const generateClientSecret = async () => {
+        const guid = pipe(
+            await generateGuid(),
+            getOrElse((): string => '')
+        );
+        setValue('clientSecret', guid);
+    };
+
     // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
 
     return (
@@ -140,23 +157,47 @@ const ClientConfig = (props: Props) => {
                             rules={ { required: 'Required' } }
                             error={ errors.name }
                         />
-                        <TextField
-                            className="Field"
-                            name="clientKey"
-                            control={ control }
-                            label="Client Key"
-                            rules={ { required: 'Required' } }
-                            error={ errors.clientKey }
-                            disabled
-                        />
-                        <TextField
-                            className="Field"
-                            name="clientSecret"
-                            control={ control }
-                            label="Client Secret"
-                            error={ errors.clientSecret}
-                            disabled
-                        />
+                        <Grid
+                            container
+                            direction="row"
+                        >
+                            <TextField
+                                className="Field"
+                                name="clientKey"
+                                control={ control }
+                                label="Client Key"
+                                rules={ { required: 'Required' } }
+                                error={ errors.clientKey }
+                                disabled
+                            />
+                            <Button
+                                variant="text"
+                                color="default"
+                                onClick={ generateClientKey }
+                            >
+                                Generate
+                            </Button>
+                        </Grid>
+                        <Grid
+                            container
+                            direction="row"
+                        >
+                            <TextField
+                                className="Field"
+                                name="clientSecret"
+                                control={ control }
+                                label="Client Secret"
+                                error={ errors.clientSecret}
+                                disabled
+                            />
+                            <Button
+                                variant="text"
+                                color="default"
+                                onClick={ generateClientSecret }
+                            >
+                                Generate
+                            </Button>
+                        </Grid>
                     </Grid>
                     <Grid item md={ 2 } />
                     <Grid
