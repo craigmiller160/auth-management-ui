@@ -29,6 +29,7 @@ interface BaseClient {
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
     authCodeTimeoutSecs: number;
+    redirectUris: Array<string>;
 }
 
 export interface ClientDetails extends BaseClient {

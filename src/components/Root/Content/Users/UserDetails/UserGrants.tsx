@@ -10,6 +10,7 @@ import './UserGrants.scss';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
+import {Item} from "../../../../ui/List";
 
 interface State {
     userId: number;
@@ -77,6 +78,12 @@ const UserGrants = (props: Props) => {
         setState((draft) => {
             draft.selectedClient = some(client);
         });
+
+    // const redirectUris: Array<Item> = [
+    //     {
+    //
+    //     }
+    // ];
 
     return (
         <div className="UserGrants">

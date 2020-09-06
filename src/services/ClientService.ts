@@ -81,6 +81,7 @@ export const getClientDetails = async (clientId: number): Promise<Either<Error, 
                         refreshTokenTimeoutSecs
                         authCodeTimeoutSecs
                         enabled
+                        redirectUris
                     }
                 }
             `,
