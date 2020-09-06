@@ -50,7 +50,8 @@ const defaultClient: ClientDetails = {
     enabled: false,
     refreshTokenTimeoutSecs: 0,
     accessTokenTimeoutSecs: 0,
-    authCodeTimeoutSecs: 0
+    authCodeTimeoutSecs: 0,
+    redirectUris: []
 };
 const defaultClientForm: ClientForm = {
     ...defaultClient,
