@@ -13,6 +13,8 @@ import {Grid} from "@material-ui/core";
 import TextField from "../../../../ui/Form/TextField";
 import './ClientConfig.scss';
 import Button from "@material-ui/core/Button";
+import Switch from "../../../../ui/Form/Switch";
+import {greaterThanZero} from "../../../../../utils/validations";
 
 interface State {
     allowNavigationOverride: boolean;
@@ -130,6 +132,7 @@ const ClientConfig = (props: Props) => {
     };
 
     // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
+    // TODO how to vertically align the items?
 
     return (
         <div className="ClientConfig">
@@ -206,7 +209,42 @@ const ClientConfig = (props: Props) => {
                         item
                         md={ 5 }
                     >
-
+                        <Switch
+                            className="Field"
+                            name="enabled"
+                            control={ control }
+                            label="Enabled"
+                        />
+                        <TextField
+                            className="Field"
+                            name="accessTokenTimeoutSecs"
+                            control={ control }
+                            label="Access Token Timeout (Secs)"
+                            type="number"
+                            error={ errors.accessTokenTimeoutSecs }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    greaterThanZero
+                                }
+                            } }
+                            transform={ (value: string) => value ? parseInt(value) : '' }
+                        />
+                        <TextField
+                            className="Field"
+                            name="refreshTokenTimeoutSecs"
+                            control={ control }
+                            label="Refresh Token Timeout (Secs)"
+                            type="number"
+                            error={ errors.refreshTokenTimeoutSecs }
+                            rules={ {
+                                required: 'Required',
+                                validate: {
+                                    greaterThanZero
+                                }
+                            } }
+                            transform={ (value: string) => value ? parseInt(value) : '' }
+                        />
                     </Grid>
                 </Grid>
             </form>
