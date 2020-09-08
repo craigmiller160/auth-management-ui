@@ -17,14 +17,17 @@ import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
+import { InputDialog } from '../../../../ui/Dialog';
 
 const SECRET_PLACEHOLDER = '**********';
 
 interface State {
     allowNavigationOverride: boolean;
     showDeleteDialog: boolean;
+    showRedirectUriDialog: boolean;
     clientId: number;
     redirectUris: Array<string>;
+    selectedRedirectUri?: string;
 }
 const NEW = 'new';
 interface MatchParams {
@@ -63,7 +66,8 @@ const ClientConfig = (props: Props) => {
         allowNavigationOverride: false,
         showDeleteDialog: false,
         clientId: id !== NEW ? parseInt(id) : 0,
-        redirectUris: []
+        redirectUris: [],
+        showRedirectUriDialog: false
     });
     const { control, setValue, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -90,6 +94,7 @@ const ClientConfig = (props: Props) => {
             ...values,
             clientSecret: values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : ''
         };
+        // TODO integrate redirectUris
         if (id === NEW) {
             doSubmit(() => createClient(payload));
         } else {
@@ -154,8 +159,15 @@ const ClientConfig = (props: Props) => {
         setValue('clientSecret', guid);
     };
 
+    const showRedirectUriDialog = (selectedUri?: string) => {
+        setState((draft) => {
+            draft.selectedRedirectUri = selectedUri;
+            draft.showRedirectUriDialog = true;
+        });
+    };
+
     const redirectUris = state.redirectUris.slice()
-        .sort((uri1, uri2) => uri1.localeCompare(uri2))
+        .sort((uri1, uri2) => uri1.localeCompare(uri2));
 
     const redirectUriItems: Array<Item> = redirectUris
         .map((uri) => ({
@@ -166,7 +178,7 @@ const ClientConfig = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Edit',
-                    click: () => {}
+                    click: () => showRedirectUriDialog(uri)
                 },
                 {
                     text: 'Remove',
@@ -175,9 +187,14 @@ const ClientConfig = (props: Props) => {
             ]
         }));
 
-    // TODO need to add ****** as placeholder value in UI when clientSecret not otherwise visible
-    // TODO how to vertically align the items?
-    // TODO move enabled switch to bottom of column
+    const cancelRedirectUri = () =>
+        setState((draft) => {
+            draft.showRedirectUriDialog = false;
+        });
+
+    const saveRedirectUri = (value: string) => {
+        // TODO finish this
+    };
 
     return (
         <div className='ClientConfig'>
@@ -337,12 +354,21 @@ const ClientConfig = (props: Props) => {
                             className="AddRedirect"
                             color="primary"
                             variant="contained"
+                            onClick={ () => showRedirectUriDialog() }
                         >
                             Add Redirect URI
                         </Button>
                     </Grid>
                 </Grid>
             </form>
+            <InputDialog
+                open={ state.showRedirectUriDialog }
+                title="Redirect URI"
+                onCancel={ cancelRedirectUri }
+                onSave={ saveRedirectUri }
+                label="URI"
+                initialValue={ state.selectedRedirectUri }
+            />
         </div>
     );
 };

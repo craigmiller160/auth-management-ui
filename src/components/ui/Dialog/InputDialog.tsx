@@ -2,6 +2,7 @@ import React, { MouseEvent, useEffect } from 'react';
 import BaseDialog, { DialogAction } from './BaseDialog';
 import { useForm } from 'react-hook-form';
 import TextField from '../Form/TextField';
+import './InputDialog.scss';
 
 interface InputForm {
     value: string;
@@ -56,8 +57,10 @@ const InputDialog = (props: Props) => {
             open={ open }
             title={ title }
             actions={ actions }
+            className="InputDialog"
         >
             <TextField
+                className="Field"
                 name="value"
                 control={ control }
                 label={ label }
