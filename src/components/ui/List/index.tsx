@@ -26,6 +26,7 @@ export interface Item {
 
 interface Props {
     items: Array<Item>;
+    columnLayout?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -49,11 +50,12 @@ const useStyles = makeStyles({
 const List = (props: Props) => {
     const classes = useStyles();
     const {
-        items
+        items,
+        columnLayout = false
     } = props;
 
     const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
-    const listItemDirection = isNotPhone ? 'row' : 'column';
+    const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
 
     return (
         <MuiList>

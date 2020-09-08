@@ -363,7 +363,10 @@ const ClientConfig = (props: Props) => {
                         md={ 5 }
                     >
                         <Typography variant="body1">Redirect URIs</Typography>
-                        <List items={ redirectUriItems } />
+                        <List
+                            items={ redirectUriItems }
+                            columnLayout
+                        />
                         <Button
                             className="AddRedirect"
                             color="primary"
