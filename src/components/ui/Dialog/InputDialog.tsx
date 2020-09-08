@@ -41,7 +41,9 @@ const InputDialog = (props: Props) => {
     }, [open, initialValue]);
 
     const onSubmit = (values: InputForm) => {
-        // TODO handle this
+        if (values.value) {
+            onSave(values.value);
+        }
     };
 
     const actions: Array<DialogAction> = [
