@@ -119,7 +119,9 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         clientSecret: "${clientInput.clientSecret || ''}",
                         enabled: ${clientInput.enabled},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
-                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs},
+                        authCodeTimeoutSecs: ${clientInput.authCodeTimeoutSecs},
+                        redirectUris: [${clientInput.redirectUris.map((uri) => `"${uri}"`).join(',')}]
                     }) {
                         id
                         name
@@ -148,7 +150,9 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         clientSecret: "${clientInput.clientSecret}",
                         enabled: ${clientInput.enabled},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
-                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs},
+                        authCodeTimeoutSecs: ${clientInput.authCodeTimeoutSecs},
+                        redirectUris: [${clientInput.redirectUris.map((uri) => `"${uri}"`).join(',')}]
                     }) {
                         id
                         name
