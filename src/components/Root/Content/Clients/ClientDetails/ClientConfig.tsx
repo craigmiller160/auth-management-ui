@@ -7,7 +7,13 @@ import { useForm } from 'react-hook-form';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
-import { createClient, generateGuid, getClientDetails, updateClient } from '../../../../../services/ClientService';
+import {
+    createClient,
+    deleteClient,
+    generateGuid,
+    getClientDetails,
+    updateClient
+} from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import {Grid, Typography} from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
@@ -17,7 +23,7 @@ import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
-import { InputDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
 
 const SECRET_PLACEHOLDER = '**********';
 
@@ -211,6 +217,22 @@ const ClientConfig = (props: Props) => {
         });
     };
 
+    const toggleDeleteDialog = (show: boolean) =>
+        setState((draft) => {
+            draft.showDeleteDialog = true;
+        });
+
+    const doDelete = async () => {
+        const result = await deleteClient(state.clientId)
+        if (isRight(result)) {
+            setState((draft) => {
+                draft.allowNavigationOverride = true;
+            });
+            history.push('/clients');
+            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
+        }
+    };
+
     return (
         <div className='ClientConfig'>
             <Prompt
@@ -377,6 +399,30 @@ const ClientConfig = (props: Props) => {
                         </Button>
                     </Grid>
                 </Grid>
+                <Grid
+                    className="Actions"
+                    container
+                    direction="row"
+                    justify="space-around"
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                    {
+                        state.clientId > 0 &&
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={ () => toggleDeleteDialog(true) }
+                        >
+                            Delete
+                        </Button>
+                    }
+                </Grid>
             </form>
             <InputDialog
                 open={ state.showRedirectUriDialog }
@@ -385,6 +431,13 @@ const ClientConfig = (props: Props) => {
                 onSave={ saveRedirectUri }
                 label="URI"
                 initialValue={ state.selectedRedirectUri }
+            />
+            <ConfirmDialog
+                open={ state.showDeleteDialog }
+                title="Delete Client"
+                message="Are you sure you want to delete this client?"
+                onConfirm={ doDelete }
+                onCancel={ () => toggleDeleteDialog(false) }
             />
         </div>
     );

@@ -45,6 +45,8 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                         roles {
                             id
                             name
@@ -125,6 +127,8 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
@@ -152,6 +156,8 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
@@ -172,6 +178,8 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
