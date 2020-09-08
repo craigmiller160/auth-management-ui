@@ -92,9 +92,9 @@ const ClientConfig = (props: Props) => {
     const onSubmit = (values: ClientForm) => {
         const payload: ClientInput = {
             ...values,
-            clientSecret: values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : ''
+            clientSecret: values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : '',
+            redirectUris: state.redirectUris
         };
-        // TODO integrate redirectUris
         if (id === NEW) {
             doSubmit(() => createClient(payload));
         } else {
@@ -159,18 +159,22 @@ const ClientConfig = (props: Props) => {
         setValue('clientSecret', guid);
     };
 
-    const showRedirectUriDialog = (selectedUri?: string) => {
+    const showRedirectUriDialog = (selectedUri?: string) =>
         setState((draft) => {
             draft.selectedRedirectUri = selectedUri;
             draft.showRedirectUriDialog = true;
         });
-    };
+
+    const removeRedirectUri = (index: number) =>
+        setState((draft) => {
+            draft.redirectUris.splice(index, 1);
+        });
 
     const redirectUris = state.redirectUris.slice()
         .sort((uri1, uri2) => uri1.localeCompare(uri2));
 
     const redirectUriItems: Array<Item> = redirectUris
-        .map((uri) => ({
+        .map((uri, index) => ({
             avatar: () => <Language />,
             text: {
                 primary: uri
@@ -182,7 +186,7 @@ const ClientConfig = (props: Props) => {
                 },
                 {
                     text: 'Remove',
-                    click: () => {}
+                    click: () => removeRedirectUri(index)
                 }
             ]
         }));
@@ -193,7 +197,18 @@ const ClientConfig = (props: Props) => {
         });
 
     const saveRedirectUri = (value: string) => {
-        // TODO finish this
+        setState((draft) => {
+            if (draft.selectedRedirectUri) {
+                const index = draft.redirectUris
+                    .findIndex((uri) => uri === draft.selectedRedirectUri);
+                if (index >= 0) {
+                    draft.redirectUris.splice(0, 1);
+                }
+            }
+            draft.redirectUris.push(value);
+            draft.redirectUris.sort((uri1, uri2) => uri1.localeCompare(uri2));
+            draft.showRedirectUriDialog = false;
+        });
     };
 
     return (
@@ -346,7 +361,6 @@ const ClientConfig = (props: Props) => {
                         container
                         item
                         md={ 5 }
-                        alignItems='flex-start'
                     >
                         <Typography variant="body1">Redirect URIs</Typography>
                         <List items={ redirectUriItems } />
