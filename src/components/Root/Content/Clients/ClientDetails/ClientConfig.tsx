@@ -18,6 +18,8 @@ import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
 
+const SECRET_PLACEHOLDER = '**********';
+
 interface State {
     allowNavigationOverride: boolean;
     showDeleteDialog: boolean;
@@ -85,7 +87,8 @@ const ClientConfig = (props: Props) => {
 
     const onSubmit = (values: ClientForm) => {
         const payload: ClientInput = {
-            ...values
+            ...values,
+            clientSecret: values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : ''
         };
         if (id === NEW) {
             doSubmit(() => createClient(payload));
@@ -100,7 +103,10 @@ const ClientConfig = (props: Props) => {
                 await getClientDetails(state.clientId),
                 getOrElse((): ClientDetails => defaultClient)
             );
-            reset(client);
+            reset({
+                ...client,
+                clientSecret: SECRET_PLACEHOLDER
+            });
             setState((draft) => {
                 draft.redirectUris = client.redirectUris;
             });
