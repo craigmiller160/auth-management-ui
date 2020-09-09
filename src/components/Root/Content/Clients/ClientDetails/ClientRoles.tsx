@@ -8,6 +8,7 @@ import { getClientWithRoles } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
 import { match } from 'react-router';
+import './ClientRoles.scss';
 
 const NEW = 'new';
 interface MatchParams {
@@ -37,8 +38,6 @@ const ClientRoles = (props: Props) => {
         roles: [],
         clientId: id !== NEW ? parseInt(id) : 0
     });
-
-    // TODO modify service call to use full client graphql service and just pull the roles
 
     useEffect(() => {
         const load = async () => {
@@ -86,7 +85,7 @@ const ClientRoles = (props: Props) => {
     return (
         <div className="ClientRoles">
             <Typography
-                className="email"
+                className="name"
                 variant="h5"
             >
                 { state.clientName }
