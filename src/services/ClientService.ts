@@ -6,17 +6,19 @@ import {
     ClientDetails,
     ClientInput,
     ClientListResponse,
-    ClientRole,
     ClientUser,
+    ClientWithRoles,
     FullClientDetails
 } from '../types/client';
 import {
     AddUserToClientWrapper,
-    OldClientDetailsWrapper,
+    ClientDetailsWrapper,
+    ClientRolesWrapper,
     CreateClientWrapper,
-    DeleteClientWrapper, RemoveUserFromClientWrapper,
-    RolesForClientWrapper,
-    UpdateClientWrapper, ClientDetailsWrapper
+    DeleteClientWrapper,
+    OldClientDetailsWrapper,
+    RemoveUserFromClientWrapper,
+    UpdateClientWrapper
 } from '../types/graphApi';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
@@ -92,20 +94,24 @@ export const getClientDetails = async (clientId: number): Promise<Either<Error, 
         map((wrapper: ClientDetailsWrapper) => wrapper.client)
     );
 
-export const getRolesForClient = async (clientId: number): Promise<Either<Error, Array<ClientRole>>> =>
+export const getClientWithRoles = async (clientId: number): Promise<Either<Error, ClientWithRoles>> =>
     pipe(
-        await api.graphql<RolesForClientWrapper>({
+        await api.graphql<ClientRolesWrapper>({
             payload: `
                 query {
-                    rolesForClient(clientId: ${clientId}) {
+                    client(clientId: ${clientId}) {
                         id
                         name
+                        roles {
+                            id
+                            name
+                        }
                     }
                 }
             `,
             errorMsg: `Error getting roles for client ${clientId}`
         }),
-        map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
+        map((wrapper: ClientRolesWrapper) => wrapper.client)
     );
 
 export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>

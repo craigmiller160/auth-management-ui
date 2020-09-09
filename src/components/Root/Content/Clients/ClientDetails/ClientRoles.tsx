@@ -1,47 +1,57 @@
 import React, { useEffect } from 'react';
-import { Role } from '../../../../../types/role';
 import { useImmer } from 'use-immer';
 import { Grid, Typography } from '@material-ui/core';
-import List, { Item } from '../../../../ui/List';
+import { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { ClientRole } from '../../../../../types/client';
-import { getRolesForClient } from '../../../../../services/ClientService';
+import { getClientWithRoles } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse } from 'fp-ts/es6/Either';
+import { map } from 'fp-ts/es6/Either';
+import { match } from 'react-router';
+
+const NEW = 'new';
+interface MatchParams {
+    id: string;
+}
 
 interface Props {
-    clientId: number;
+    match: match<MatchParams>;
 }
 
 interface State {
     showRoleDialog: boolean;
     selectedRoleId: number;
     showDeleteDialog: boolean;
+    clientName: string;
     roles: Array<ClientRole>;
+    clientId: number;
 }
 
 const ClientRoles = (props: Props) => {
-    const {
-        clientId
-    } = props;
+    const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
         showRoleDialog: false,
         showDeleteDialog: false,
         selectedRoleId: -1,
-        roles: []
+        clientName: '',
+        roles: [],
+        clientId: id !== NEW ? parseInt(id) : 0
     });
 
     // TODO modify service call to use full client graphql service and just pull the roles
 
     useEffect(() => {
         const load = async () => {
-            const roles = pipe(
-                await getRolesForClient(clientId),
-                getOrElse((): Array<ClientRole> => [])
+            pipe(
+                await getClientWithRoles(state.clientId),
+                map((clientRoles) => {
+                    setState((draft) => {
+                        draft.roles = clientRoles.roles;
+                        draft.clientName = clientRoles.name;
+                        draft.clientId = clientRoles.id;
+                    });
+                })
             );
-            setState((draft) => {
-                draft.roles = roles;
-            });
         };
 
         load();
@@ -79,7 +89,7 @@ const ClientRoles = (props: Props) => {
                 className="email"
                 variant="h5"
             >
-                { 'Placeholder For Client Name' }
+                { state.clientName }
             </Typography>
             <Grid
                 container

@@ -52,3 +52,9 @@ export interface ClientAuthDetails {
     clientName: string;
     lastAuthenticated: string | null;
 }
+
+export interface ClientWithRoles {
+    id: number;
+    name: string;
+    roles: Array<ClientRole>;
+}

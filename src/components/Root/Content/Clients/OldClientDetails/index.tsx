@@ -5,7 +5,7 @@ import {
     deleteClient,
     generateGuid,
     getClient,
-    getRolesForClient,
+    getClientWithRoles,
     updateClient
 } from '../../../../../services/ClientService';
 import Grid from '@material-ui/core/Grid';
@@ -105,13 +105,13 @@ const ClientDetailsComponent = () => {
     };
 
     const reloadRoles = async () => {
-        const roles = pipe(
-            await getRolesForClient(parseInt(id)),
-            getOrElse((): Array<ClientRole> => ([]))
-        );
-        setState((draft) => {
-            draft.roles = roles;
-        });
+        // const roles = pipe(
+        //     await getClientWithRoles(parseInt(id)),
+        //     getOrElse((): Array<ClientRole> => ([]))
+        // );
+        // setState((draft) => {
+        //     draft.roles = roles;
+        // });
     };
 
     const updateUsers = (users: Array<ClientUser>) => {
