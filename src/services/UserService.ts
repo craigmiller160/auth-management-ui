@@ -16,7 +16,7 @@ import {
     DeleteUserWrapper,
     RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
-    OldUserDetailsWrapper, UserDetailsWrapper, UserClientsWrapper
+    UserDetailsWrapper, UserClientsWrapper
 } from '../types/graphApi';
 
 export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
@@ -34,39 +34,6 @@ export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
             `,
             errorMsg: 'Error getting all users'
         })
-    );
-
-// TODO delete this one
-export const getUser = async (userId: number): Promise<Either<Error, FullUserDetails>> =>
-    pipe(
-        await api.graphql<OldUserDetailsWrapper>({
-            payload: `
-                query {
-                    user(userId: ${userId}) {
-                        id
-                        email
-                        firstName
-                        lastName
-                        enabled
-                        clients {
-                            id
-                            name
-                            clientKey
-                            allRoles {
-                                id
-                                name
-                            }
-                            userRoles {
-                                id
-                                name
-                            }
-                        }
-                    }
-                }
-            `,
-            errorMsg: `Error getting user ${userId}`
-        }),
-        map((wrapper: OldUserDetailsWrapper) => wrapper.user)
     );
 
 export const getUserDetails = async (userId: number): Promise<Either<Error,UserDetails>> =>

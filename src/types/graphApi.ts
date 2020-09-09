@@ -47,11 +47,6 @@ export interface DeleteRoleWrapper {
     deleteRole: Role;
 }
 
-// TODO delete this
-export interface OldUserDetailsWrapper {
-    user: FullUserDetails;
-}
-
 export interface UserDetailsWrapper {
     user: UserDetails;
 }
