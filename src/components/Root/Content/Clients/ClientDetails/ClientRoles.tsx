@@ -10,6 +10,10 @@ import { map } from 'fp-ts/es6/Either';
 import { match } from 'react-router';
 import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
+import ClientRoleDialog from './ClientRoleDialog';
+import { InputDialog } from '../../../../ui/Dialog';
+
+const ROLE_PREFIX = 'ROLE_';
 
 const NEW = 'new';
 interface MatchParams {
@@ -132,6 +136,15 @@ const ClientRoles = (props: Props) => {
                     </Button>
                 </Grid>
             </Grid>
+            <InputDialog
+                open={ true }
+                title="Role"
+                onCancel={ () => {} }
+                onSave={ () => {} }
+                label="Role"
+                transform={ (value: string) => value?.toUpperCase() ?? '' }
+                prefix={ ROLE_PREFIX }
+            />
         </div>
     );
 };

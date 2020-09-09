@@ -15,6 +15,8 @@ interface Props {
     onSave: (value: string) => void;
     label: string;
     initialValue?: string;
+    transform?: (value: string) => any;
+    prefix?: string;
 }
 
 const InputDialog = (props: Props) => {
@@ -24,7 +26,9 @@ const InputDialog = (props: Props) => {
         onCancel,
         onSave,
         label,
-        initialValue = ''
+        initialValue = '',
+        transform,
+        prefix
     } = props;
 
     const { control, handleSubmit, errors, reset } = useForm<InputForm>({
@@ -52,6 +56,11 @@ const InputDialog = (props: Props) => {
         { label: 'Cancel', onClick: onCancel }
     ];
 
+    const prefixClasses = ['prefix'];
+    if (errors.value) {
+        prefixClasses.push('error');
+    }
+
     return (
         <BaseDialog
             open={ open }
@@ -59,14 +68,21 @@ const InputDialog = (props: Props) => {
             actions={ actions }
             className="InputDialog"
         >
-            <TextField
-                className="Field"
-                name="value"
-                control={ control }
-                label={ label }
-                error={ errors.value }
-                rules={ { required: 'Required' } }
-            />
+            <div className="InputDialogContent">
+                {
+                    prefix &&
+                    <span className={ prefixClasses.join(' ') }>{ prefix }</span>
+                }
+                <TextField
+                    className="Field"
+                    name="value"
+                    control={ control }
+                    label={ label }
+                    error={ errors.value }
+                    rules={ { required: 'Required' } }
+                    transform={ transform }
+                />
+            </div>
         </BaseDialog>
     );
 };

@@ -18,6 +18,8 @@ interface RoleForm {
 
 const ROLE_PREFIX = 'ROLE_';
 
+// TODO ultimately delete this file
+
 const ClientRoleDialog = (props: Props) => {
     const {
         open,
