@@ -1,5 +1,5 @@
+@import "src/assets/scss/DetailsPage";
+
 .UserDetails {
-  .Tabs {
-    margin-bottom: 2rem;
-  }
+  @include DetailsPage;
 }

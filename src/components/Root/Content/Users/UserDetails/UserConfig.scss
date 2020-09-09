@@ -1,9 +1,5 @@
-.UserConfig {
-  .Field {
-    margin-bottom: 1rem;
-  }
+@import "../../../../../assets/scss/DetailsConfigPage";
 
-  .Actions {
-    margin-top: 2rem;
-  }
+.UserConfig {
+  @include DetailsConfigPage;
 }
