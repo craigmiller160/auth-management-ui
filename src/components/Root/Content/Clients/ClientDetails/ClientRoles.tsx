@@ -31,6 +31,8 @@ const ClientRoles = (props: Props) => {
         roles: []
     });
 
+    // TODO modify service call to use full client graphql service and just pull the roles
+
     useEffect(() => {
         const load = async () => {
             const roles = pipe(
