@@ -1,10 +1,5 @@
+@import "./DialogCommon";
+
 .InputDialog {
-
-  .MuiPaper-root {
-    width: 40rem;
-  }
-
-  .Field {
-    width: 100%;
-  }
+  @include DialogWithFields;
 }

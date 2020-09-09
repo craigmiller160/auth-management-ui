@@ -31,7 +31,7 @@ const BaseDialog = (props: PropsWithChildren<Props>) => {
         className
     } = props;
 
-    const rootClasses = ['ConfimDialog', className]
+    const rootClasses = ['BaseDialog', className]
         .filter((name) => name)
         .join(' ');
 

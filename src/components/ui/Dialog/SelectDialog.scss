@@ -1,11 +1,5 @@
+@import "./DialogCommon";
+
 .SelectDialog {
-
-  .MuiPaper-root {
-    width: 40rem;
-  }
-
-  .Field {
-    width: 100%;
-  }
-
+  @include DialogWithFields;
 }
