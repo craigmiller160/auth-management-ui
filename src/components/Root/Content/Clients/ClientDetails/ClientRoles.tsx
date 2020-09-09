@@ -26,7 +26,7 @@ interface Props {
 
 interface State {
     showRoleDialog: boolean;
-    selectedRoleId: number;
+    selectedRoleIndex: number;
     showDeleteDialog: boolean;
     clientName: string;
     roles: Array<ClientRole>;
@@ -38,38 +38,56 @@ const ClientRoles = (props: Props) => {
     const [state, setState] = useImmer<State>({
         showRoleDialog: false,
         showDeleteDialog: false,
-        selectedRoleId: -1,
+        selectedRoleIndex: -1,
         clientName: '',
         roles: [],
         clientId: id !== NEW ? parseInt(id) : 0
     });
 
+    const loadClientRoles = async () => {
+        pipe(
+            await getClientWithRoles(state.clientId),
+            map((clientRoles) => {
+                setState((draft) => {
+                    draft.roles = clientRoles.roles;
+                    draft.clientName = clientRoles.name;
+                    draft.clientId = clientRoles.id;
+                });
+            })
+        );
+    };
+
     useEffect(() => {
-        const load = async () => {
-            pipe(
-                await getClientWithRoles(state.clientId),
-                map((clientRoles) => {
-                    setState((draft) => {
-                        draft.roles = clientRoles.roles;
-                        draft.clientName = clientRoles.name;
-                        draft.clientId = clientRoles.id;
-                    });
-                })
-            );
-        };
+        loadClientRoles();
+    }, []);
 
-        load();
-    });
+    const selectRole = (index: number) => {
+        setState((draft) => {
+            draft.selectedRoleIndex = index;
+            draft.showRoleDialog = true;
+        });
+    };
 
-    const selectRole = (role: ClientRole) => {
+    const checkDelete = (index: number) => {
         // TODO finish this
     };
 
-    const checkDelete = (role: ClientRole) => {
-        // TODO finish this
+    const saveRole = (value: string) => {
+        const roleName = `${ROLE_PREFIX}${value}`;
+        console.log('Role', roleName); // TODO delete this
+        setState((draft) => {
+            draft.selectedRoleIndex = -1;
+            draft.showRoleDialog = false;
+        });
     };
 
-    const items: Array<Item> = state.roles.map((role) => ({
+    const cancelRoleDialog = () =>
+        setState((draft) => {
+            draft.showRoleDialog = false;
+            draft.selectedRoleIndex = -1;
+        });
+
+    const items: Array<Item> = state.roles.map((role, index) => ({
         avatar: () => <AssignIcon />,
         text: {
             primary: role.name
@@ -77,15 +95,23 @@ const ClientRoles = (props: Props) => {
         secondaryActions: [
             {
                 text: 'Edit',
-                click: () => selectRole(role)
+                click: () => selectRole(index)
             },
             {
                 text: 'Delete',
-                click: () => checkDelete(role)
+                click: () => checkDelete(index)
             }
         ]
     }));
 
+    const getSelectedRole = () => {
+        if (state.selectedRoleIndex >= 0) {
+            return state.roles[state.selectedRoleIndex].name
+                .replace(ROLE_PREFIX, '');
+        }
+
+        return '';
+    };
 
     return (
         <div className="ClientRoles">
@@ -109,6 +135,7 @@ const ClientRoles = (props: Props) => {
                         <List items={ items } />
                     }
                     {
+                        items.length === 0 &&
                         <Typography
                             className="no-roles"
                             variant="body1"
@@ -137,13 +164,14 @@ const ClientRoles = (props: Props) => {
                 </Grid>
             </Grid>
             <InputDialog
-                open={ true }
+                open={ state.showRoleDialog }
                 title="Role"
-                onCancel={ () => {} }
-                onSave={ () => {} }
+                onCancel={ cancelRoleDialog }
+                onSave={ saveRole }
                 label="Role"
                 transform={ (value: string) => value?.toUpperCase() ?? '' }
                 prefix={ ROLE_PREFIX }
+                initialValue={ getSelectedRole() }
             />
         </div>
     );
