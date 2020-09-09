@@ -87,6 +87,7 @@ const ClientConfig = (props: Props) => {
             map((client) => {
                 setState((draft) => {
                     draft.allowNavigationOverride = true;
+                    draft.clientId = client.id;
                 });
                 const path = props.match.path.replace(':id', `${client.id}`);
                 dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
