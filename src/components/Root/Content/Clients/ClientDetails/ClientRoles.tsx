@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { Grid, Typography } from '@material-ui/core';
-import { Item } from '../../../../ui/List';
+import List, { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { ClientRole } from '../../../../../types/client';
 import { getClientWithRoles } from '../../../../../services/ClientService';
@@ -9,6 +9,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
 import { match } from 'react-router';
 import './ClientRoles.scss';
+import Button from '@material-ui/core/Button';
 
 const NEW = 'new';
 interface MatchParams {
@@ -92,10 +93,44 @@ const ClientRoles = (props: Props) => {
             </Typography>
             <Grid
                 container
-                direction="column"
+                direction="row"
                 justify="center"
             >
-
+                <Grid
+                    item
+                    md={ 5 }
+                >
+                    {
+                        items.length > 0 &&
+                        <List items={ items } />
+                    }
+                    {
+                        <Typography
+                            className="no-roles"
+                            variant="body1"
+                        >
+                            No Roles
+                        </Typography>
+                    }
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                direction="row"
+                justify="center"
+            >
+                <Grid
+                    item
+                    md={ 5 }
+                >
+                    <Button
+                        className="AddRole"
+                        color="primary"
+                        variant="contained"
+                    >
+                        Add Role
+                    </Button>
+                </Grid>
             </Grid>
         </div>
     );
