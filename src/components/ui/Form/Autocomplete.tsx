@@ -17,6 +17,7 @@ interface Props<T,R> {
     rules?: FieldRules;
     label: string;
     options: Array<SelectOption<R>>;
+    className?: string;
 }
 
 const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
@@ -26,7 +27,8 @@ const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
         error,
         rules,
         label,
-        options
+        options,
+        className
     } = props;
 
     return (
@@ -36,6 +38,7 @@ const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
             rules={ rules }
             render={ ({ onChange, onBlur, value }) => (
                 <MuiAutocomplete
+                    className={ className }
                     options={ options }
                     getOptionLabel={ (option) => option?.label ?? '' }
                     value={ value }

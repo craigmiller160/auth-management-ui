@@ -2,6 +2,7 @@ import React, { MouseEvent } from 'react';
 import BaseDialog, { DialogAction } from './BaseDialog';
 import Autocomplete, { SelectOption } from '../Form/Autocomplete';
 import { useForm } from 'react-hook-form';
+import './SelectDialog.scss';
 
 interface SelectForm<T> {
     value: SelectOption<T> | null;
@@ -53,8 +54,10 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
             open={ open }
             title={ title }
             actions={ actions }
+            className="SelectDialog"
         >
             <Autocomplete
+                className="Field"
                 name="value"
                 control={ control }
                 label={ label }
