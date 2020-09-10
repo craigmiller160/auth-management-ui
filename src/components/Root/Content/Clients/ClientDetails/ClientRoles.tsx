@@ -6,12 +6,13 @@ import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { ClientRole } from '../../../../../types/client';
 import { getClientWithRoles } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { map } from 'fp-ts/es6/Either';
+import { isRight, map } from 'fp-ts/es6/Either';
 import { match } from 'react-router';
 import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
 import ClientRoleDialog from './ClientRoleDialog';
-import { InputDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
+import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 
 const ROLE_PREFIX = 'ROLE_';
 
@@ -69,16 +70,39 @@ const ClientRoles = (props: Props) => {
     };
 
     const checkDelete = (index: number) => {
-        // TODO finish this
+        setState((draft) => {
+            draft.showDeleteDialog = true;
+            draft.selectedRoleIndex = index;
+        });
     };
 
-    const saveRole = (value: string) => {
+    const saveRole = async (value: string) => {
         const roleName = `${ROLE_PREFIX}${value}`;
-        console.log('Role', roleName); // TODO delete this
-        setState((draft) => {
-            draft.selectedRoleIndex = -1;
-            draft.showRoleDialog = false;
-        });
+        const roleId = state.selectedRoleIndex >= 0 ? state.roles[state.selectedRoleIndex].id : 0;
+        const role = {
+            id: roleId,
+            clientId: state.clientId,
+            name: roleName
+        };
+
+        let action;
+        if (state.selectedRoleIndex >= 0) {
+            const selectedRole = state.roles[state.selectedRoleIndex];
+            action = () => updateRole(state.clientId, role.id, role);
+        } else {
+            action = () => createRole(state.clientId, role);
+
+        }
+        pipe(
+            await action(),
+            map(() => {
+                setState((draft) => {
+                    draft.selectedRoleIndex = -1;
+                    draft.showRoleDialog = false;
+                });
+                loadClientRoles();
+            })
+        );
     };
 
     const cancelRoleDialog = () =>
@@ -112,6 +136,24 @@ const ClientRoles = (props: Props) => {
 
         return '';
     };
+
+    const doDeleteRole = async () => {
+        const selectedRole = state.roles[state.selectedRoleIndex];
+        setState((draft) => {
+            draft.showDeleteDialog = false;
+        });
+        pipe(
+            await deleteRole(selectedRole.id),
+            map(() => {
+                loadClientRoles();
+            })
+        );
+    };
+
+    const hideDeleteDialog = () =>
+        setState((draft) => {
+            draft.showDeleteDialog = false;
+        });
 
     return (
         <div className="ClientRoles">
@@ -158,6 +200,7 @@ const ClientRoles = (props: Props) => {
                         className="AddRole"
                         color="primary"
                         variant="contained"
+                        onClick={ () => selectRole(-1) }
                     >
                         Add Role
                     </Button>
@@ -172,6 +215,13 @@ const ClientRoles = (props: Props) => {
                 transform={ (value: string) => value?.toUpperCase() ?? '' }
                 prefix={ ROLE_PREFIX }
                 initialValue={ getSelectedRole() }
+            />
+            <ConfirmDialog
+                open={ state.showDeleteDialog }
+                title="Delete Role"
+                message="Are you sure you want to delete this role?"
+                onConfirm={ doDeleteRole }
+                onCancel={ hideDeleteDialog }
             />
         </div>
     );
