@@ -70,9 +70,10 @@ const UserConfig = (props: Props) => {
             await action(),
             map((user) => {
                 setState((draft) => {
-                    draft.allowNavigationOverride = true;
+                    // draft.allowNavigationOverride = true;
                     draft.userId = user.id;
                 });
+                reset(user);
                 const path = props.match.path.replace(':id', `${user.id}`);
                 dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
                 history.push(path);
