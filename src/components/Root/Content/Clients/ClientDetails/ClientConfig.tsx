@@ -34,6 +34,7 @@ interface State {
     clientId: number;
     redirectUris: Array<string>;
     selectedRedirectUri?: string;
+    redirectUriDirty: boolean;
 }
 const NEW = 'new';
 interface MatchParams {
@@ -73,7 +74,8 @@ const ClientConfig = (props: Props) => {
         showDeleteDialog: false,
         clientId: id !== NEW ? parseInt(id) : 0,
         redirectUris: [],
-        showRedirectUriDialog: false
+        showRedirectUriDialog: false,
+        redirectUriDirty: false
     });
     const { control, setValue, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
         mode: 'onBlur',
@@ -86,9 +88,11 @@ const ClientConfig = (props: Props) => {
             await action(),
             map((client) => {
                 setState((draft) => {
-                    draft.allowNavigationOverride = true;
                     draft.clientId = client.id;
+                    draft.redirectUriDirty = false;
+                    draft.redirectUris = client.redirectUris;
                 });
+                reset(client);
                 const path = props.match.path.replace(':id', `${client.id}`);
                 dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
                 history.push(path);
@@ -175,6 +179,7 @@ const ClientConfig = (props: Props) => {
     const removeRedirectUri = (index: number) =>
         setState((draft) => {
             draft.redirectUris.splice(index, 1);
+            draft.redirectUriDirty = true;
         });
 
     const redirectUris = state.redirectUris.slice()
@@ -215,6 +220,7 @@ const ClientConfig = (props: Props) => {
             draft.redirectUris.push(value);
             draft.redirectUris.sort((uri1, uri2) => uri1.localeCompare(uri2));
             draft.showRedirectUriDialog = false;
+            draft.redirectUriDirty = true;
         });
     };
 
@@ -237,7 +243,7 @@ const ClientConfig = (props: Props) => {
     return (
         <div className='ClientConfig'>
             <Prompt
-                when={ (isDirty || id === NEW) && !state.allowNavigationOverride }
+                when={ (isDirty || state.redirectUriDirty || id === NEW) && !state.allowNavigationOverride }
                 message='Are you sure you want to leave? Any unsaved changes will be lost.'
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
