@@ -70,7 +70,6 @@ const UserConfig = (props: Props) => {
             await action(),
             map((user) => {
                 setState((draft) => {
-                    // draft.allowNavigationOverride = true;
                     draft.userId = user.id;
                 });
                 reset(user);
