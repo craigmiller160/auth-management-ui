@@ -61,11 +61,10 @@ const UserAuths = (props: Props) => {
     const doRevoke = async (clientId: number) => {
         const authDetails = pipe(
             await revokeUserAuthAccess(state.userId, clientId),
-            map((newAuth: UserAuthDetails) => {
-                const filtered = state.userAuths.authDetails
-                    .filter((auth) => auth.clientId !== newAuth.clientId)
-                return [ ...filtered, newAuth ];
-            }),
+            map(() =>
+                state.userAuths.authDetails
+                    .filter((auth) => auth.clientId !== clientId)
+            ),
             getOrElse((): Array<UserAuthDetails> => state.userAuths.authDetails)
         );
         setState((draft) => {
