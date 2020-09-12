@@ -11,18 +11,13 @@ import { LockOpen } from '@material-ui/icons';
 import { formatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
     userId: number;
     userAuths: UserAuthDetailsList;
 }
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 const defaultUserAuths: UserAuthDetailsList = {
     email: '',
@@ -32,7 +27,7 @@ const defaultUserAuths: UserAuthDetailsList = {
 const UserAuths = (props: Props) => {
     const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
-        userId: id !== NEW ? parseInt(id) : 0,
+        userId: id !== NEW_ID ? parseInt(id) : 0,
         userAuths: defaultUserAuths
     });
 

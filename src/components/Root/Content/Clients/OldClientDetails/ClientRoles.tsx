@@ -4,7 +4,7 @@ import { SectionHeader } from '../../../../ui/Header';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import ClientRoleDialog from '../ClientDetails/ClientRoleDialog';
+import ClientRoleDialog from './ClientRoleDialog';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog } from '../../../../ui/Dialog';
 import List, { Item } from '../../../../ui/List';

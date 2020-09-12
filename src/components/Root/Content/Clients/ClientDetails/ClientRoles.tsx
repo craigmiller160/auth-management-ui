@@ -10,20 +10,13 @@ import { isRight, map } from 'fp-ts/es6/Either';
 import { match } from 'react-router';
 import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
-import ClientRoleDialog from './ClientRoleDialog';
 import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 const ROLE_PREFIX = 'ROLE_';
 
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
-
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 interface State {
     showRoleDialog: boolean;
@@ -42,7 +35,7 @@ const ClientRoles = (props: Props) => {
         selectedRoleIndex: -1,
         clientName: '',
         roles: [],
-        clientId: id !== NEW ? parseInt(id) : 0
+        clientId: id !== NEW_ID ? parseInt(id) : 0
     });
 
     const loadClientRoles = async () => {

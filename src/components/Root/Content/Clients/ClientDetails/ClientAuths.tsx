@@ -24,7 +24,7 @@ interface State {
 const ClientAuths = (props: Props) => {
     const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
-        clientId: id !== NEW_ID ? parseInt(id) : 0, // TODO make re-usable function
+        clientId: id !== NEW_ID ? parseInt(id) : 0,
         clientName: '',
         userAuthDetails: []
     });

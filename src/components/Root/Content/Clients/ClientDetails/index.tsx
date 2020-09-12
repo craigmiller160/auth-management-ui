@@ -7,6 +7,7 @@ import ClientGrants from './ClientGrants';
 import ClientAuths from './ClientAuths';
 import Tabs, { TabConfig } from '../../../../ui/Tabs';
 import './ClientDetails.scss';
+import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
 
 const PATH_CONFIG = '/config';
 const PATH_ROLES = '/roles';
@@ -18,18 +19,13 @@ const LABEL_ROLES = 'Roles';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-interface MatchParams {
-    id: string;
-}
-const NEW = 'new';
-
 interface RouteConfig {
     path: string;
     component: ComponentType<any>;
 }
 
 const ClientDetails = () => {
-    const match = useRouteMatch<MatchParams>();
+    const match = useRouteMatch<IdMatchParams>();
     const id = match.params.id;
 
     const tabs: Array<TabConfig> = [
@@ -39,7 +35,7 @@ const ClientDetails = () => {
             component: ClientConfig
         }
     ];
-    if (id !== NEW) {
+    if (id !== NEW_ID) {
         tabs.push({
             label: LABEL_ROLES,
             path: PATH_ROLES,

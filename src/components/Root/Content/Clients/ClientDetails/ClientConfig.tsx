@@ -24,6 +24,7 @@ import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
 import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 const SECRET_PLACEHOLDER = '**********';
 
@@ -36,14 +37,8 @@ interface State {
     selectedRedirectUri?: string;
     redirectUriDirty: boolean;
 }
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
 
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 const defaultClient: ClientDetails = {
     id: 0,
@@ -72,7 +67,7 @@ const ClientConfig = (props: Props) => {
     const [state, setState] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        clientId: id !== NEW ? parseInt(id) : 0,
+        clientId: id !== NEW_ID ? parseInt(id) : 0,
         redirectUris: [],
         showRedirectUriDialog: false,
         redirectUriDirty: false
@@ -106,7 +101,7 @@ const ClientConfig = (props: Props) => {
             clientSecret: values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : '',
             redirectUris: state.redirectUris
         };
-        if (id === NEW) {
+        if (state.clientId === 0) {
             doSubmit(() => createClient(payload));
         } else {
             doSubmit(() => updateClient(parseInt(id), payload));
@@ -243,7 +238,7 @@ const ClientConfig = (props: Props) => {
     return (
         <div className='ClientConfig'>
             <Prompt
-                when={ (isDirty || state.redirectUriDirty || id === NEW) && !state.allowNavigationOverride }
+                when={ (isDirty || state.redirectUriDirty || state.clientId === 0) && !state.allowNavigationOverride }
                 message='Are you sure you want to leave? Any unsaved changes will be lost.'
             />
             <form onSubmit={ handleSubmit(onSubmit) }>

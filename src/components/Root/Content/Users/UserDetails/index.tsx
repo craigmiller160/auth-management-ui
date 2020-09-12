@@ -6,6 +6,7 @@ import UserGrants from './UserGrants';
 import UserAuths from './UserAuths';
 import './UserDetails.scss';
 import Tabs, { TabConfig } from '../../../../ui/Tabs';
+import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
 
 const PATH_CONFIG = '/config';
 const PATH_GRANTS = '/grants';
@@ -15,18 +16,13 @@ const LABEL_CONFIG = 'Config';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-interface MatchParams {
-    id: string;
-}
-const NEW = 'new';
-
 interface RouteConfig {
     path: string;
     component: ComponentType<any>;
 }
 
 const UserDetails = () => {
-    const match = useRouteMatch<MatchParams>();
+    const match = useRouteMatch<IdMatchParams>();
     const id = match.params.id;
 
     const tabs: Array<TabConfig> = [
@@ -36,7 +32,7 @@ const UserDetails = () => {
             component: UserConfig
         }
     ];
-    if (id !== NEW) {
+    if (id !== NEW_ID) {
         tabs.push({
             label: LABEL_GRANTS,
             path: PATH_GRANTS,
