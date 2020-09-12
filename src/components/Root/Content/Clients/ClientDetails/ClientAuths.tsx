@@ -8,6 +8,8 @@ import { map } from 'fp-ts/es6/Either';
 import { Grid, Typography } from '@material-ui/core';
 import './ClientAuths.scss';
 import List, { Item } from '../../../../ui/List';
+import { LockOpen } from '@material-ui/icons';
+import { formatApiDateTime } from '../../../../../utils/date';
 
 const NEW = 'new'; // TODO create a common constant for this
 interface MatchParams { // TODO create a common type for this...
@@ -47,7 +49,20 @@ const ClientAuths = (props: Props) => {
         loadAuthDetails();
     }, []);
 
-    const items: Array<Item> = [];
+    const items: Array<Item> = state.userAuthDetails
+        .map((auth) => ({
+            avatar: () => <LockOpen />,
+            text: {
+                primary: `User: ${auth.userEmail}`,
+                secondary: `Last Authenticated: ${formatApiDateTime(auth.lastAuthenticated)}`
+            },
+            secondaryActions: [
+                {
+                    text: 'Revoke',
+                    click: () => {}
+                }
+            ]
+        }));
 
     return (
         <div className="ClientAuths">

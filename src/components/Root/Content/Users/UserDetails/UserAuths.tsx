@@ -8,8 +8,7 @@ import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user'
 import { useImmer } from 'use-immer';
 import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
-import { fromNullable, getOrElse as oGetOrElse, map as oMap } from 'fp-ts/es6/Option';
-import { displayFormatApiDateTime } from '../../../../../utils/date';
+import { formatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
@@ -29,13 +28,6 @@ const defaultUserAuths: UserAuthDetailsList = {
     email: '',
     authDetails: []
 };
-
-const formatDate = (date: string | null): string =>
-    pipe(
-        fromNullable(date),
-        oMap((value: string): string => displayFormatApiDateTime(value)),
-        oGetOrElse((): string => '')
-    );
 
 const UserAuths = (props: Props) => {
     const id = props.match.params.id;
@@ -78,7 +70,7 @@ const UserAuths = (props: Props) => {
             avatar: () => <LockOpen />,
             text: {
                 primary: `Client: ${auth.clientName}`,
-                secondary: `Last Authenticated: ${formatDate(auth.lastAuthenticated)}`
+                secondary: `Last Authenticated: ${formatApiDateTime(auth.lastAuthenticated)}`
             },
             secondaryActions: [
                 {
