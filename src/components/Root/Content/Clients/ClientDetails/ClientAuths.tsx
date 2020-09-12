@@ -10,6 +10,7 @@ import './ClientAuths.scss';
 import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
 import { formatApiDateTime } from '../../../../../utils/date';
+import { revokeUserAuthAccess } from '../../../../../services/UserService';
 
 const NEW = 'new'; // TODO create a common constant for this
 interface MatchParams { // TODO create a common type for this...
@@ -45,6 +46,12 @@ const ClientAuths = (props: Props) => {
             })
         );
 
+    const doRevoke = async (userId: number) =>
+        pipe(
+            await revokeUserAuthAccess(userId, state.clientId),
+            map(() => loadAuthDetails())
+        );
+
     useEffect(() => {
         loadAuthDetails();
     }, []);
@@ -59,7 +66,7 @@ const ClientAuths = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Revoke',
-                    click: () => {}
+                    click: () => doRevoke(auth.userId)
                 }
             ]
         }));
