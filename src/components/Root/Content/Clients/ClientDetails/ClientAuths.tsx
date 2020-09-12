@@ -11,15 +11,9 @@ import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
 import { formatApiDateTime } from '../../../../../utils/date';
 import { revokeUserAuthAccess } from '../../../../../services/UserService';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
-const NEW = 'new'; // TODO create a common constant for this
-interface MatchParams { // TODO create a common type for this...
-    id: string;
-}
-
-interface Props {
-    match: match<MatchParams>; // TODO create a common type for this
-}
+interface Props extends IdMatchProps {}
 
 interface State {
     clientId: number;
@@ -30,7 +24,7 @@ interface State {
 const ClientAuths = (props: Props) => {
     const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
-        clientId: id !== NEW ? parseInt(id) : 0, // TODO make re-usable function
+        clientId: id !== NEW_ID ? parseInt(id) : 0, // TODO make re-usable function
         clientName: '',
         userAuthDetails: []
     });
