@@ -1,3 +1,5 @@
+import { UserAuthDetails } from './user';
+
 export interface ClientListItem {
     id: number;
     name: string;
@@ -46,7 +48,8 @@ export interface ClientInput extends BaseClient {
     clientSecret: string;
 }
 
-export interface ClientAuthDetails {
+// TODO delete this
+export interface OldClientAuthDetails {
     tokenId: string | null;
     clientId: number;
     clientName: string;
@@ -57,4 +60,9 @@ export interface ClientWithRoles {
     id: number;
     name: string;
     roles: Array<ClientRole>;
+}
+
+export interface ClientAuthDetails {
+    clientName: string;
+    userAuthDetails: Array<UserAuthDetails>;
 }

@@ -5,7 +5,7 @@ import './ClientAuth.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getClientAuthDetails, revokeClientAuthAccess } from '../../../../../services/ClientService';
 import { getOrElse } from 'fp-ts/es6/Either';
-import { ClientAuthDetails } from '../../../../../types/client';
+import { OldClientAuthDetails } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
 import Grid from '@material-ui/core/Grid';
 import List, { Item } from '../../../../ui/List';
@@ -19,10 +19,10 @@ interface Props {
 }
 
 interface State {
-    authDetails: ClientAuthDetails;
+    authDetails: OldClientAuthDetails;
 }
 
-const defaultAuthDetails: ClientAuthDetails = {
+const defaultAuthDetails: OldClientAuthDetails = {
     tokenId: null,
     clientId: 0,
     clientName: '',
@@ -43,7 +43,7 @@ const ClientAuth = (props: Props) => {
         const action = async () => {
             const authDetails = pipe(
                 await getClientAuthDetails(clientId),
-                getOrElse((): ClientAuthDetails => defaultAuthDetails)
+                getOrElse((): OldClientAuthDetails => defaultAuthDetails)
             );
 
             setState((draft) => {
@@ -59,7 +59,7 @@ const ClientAuth = (props: Props) => {
     const doRevoke = async () => {
         const authDetails = pipe(
             await revokeClientAuthAccess(clientId),
-            getOrElse((): ClientAuthDetails => defaultAuthDetails)
+            getOrElse((): OldClientAuthDetails => defaultAuthDetails)
         );
         setState((draft) => {
             draft.authDetails = authDetails;

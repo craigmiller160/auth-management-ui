@@ -2,13 +2,13 @@ import api from './Api';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import {
-    ClientAuthDetails,
+    OldClientAuthDetails,
     ClientDetails,
     ClientInput,
     ClientListResponse,
     ClientUser,
     ClientWithRoles,
-    FullClientDetails
+    FullClientDetails, ClientAuthDetails
 } from '../types/client';
 import {
     AddUserToClientWrapper,
@@ -250,14 +250,20 @@ export const addUserToClient = async (userId: number, clientId: number): Promise
         map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
     );
 
-export const getClientAuthDetails = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
+export const getAuthDetailsForClient = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
     api.get<ClientAuthDetails>({
+        uri: `/clients/auth/${clientId}`,
+        errorMsg: `Error getting auth details for client ${clientId}`
+    });
+
+export const getClientAuthDetails = (clientId: number): Promise<Either<Error, OldClientAuthDetails>> =>
+    api.get<OldClientAuthDetails>({
         uri: `/clients/auth/${clientId}`,
         errorMsg: `Error getting client auth details for ${clientId}`
     });
 
-export const revokeClientAuthAccess = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
-    api.post<void,ClientAuthDetails>({
+export const revokeClientAuthAccess = (clientId: number): Promise<Either<Error, OldClientAuthDetails>> =>
+    api.post<void,OldClientAuthDetails>({
         uri: `/clients/auth/${clientId}/revoke`,
         errorMsg: `Error revoking auth access for client ${clientId}`
     });
