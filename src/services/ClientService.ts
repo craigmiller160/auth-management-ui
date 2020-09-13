@@ -20,6 +20,8 @@ import {
     RemoveUserFromClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
+import { Role } from '../types/role';
+import { UserRole } from '../types/user';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
     api.graphql<ClientListResponse>({

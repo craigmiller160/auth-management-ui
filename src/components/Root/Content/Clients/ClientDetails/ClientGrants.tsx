@@ -3,15 +3,15 @@ import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getFullClientDetails } from '../../../../../services/ClientService';
-import { Either, flatten, getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
+import { getOrElse, map } from 'fp-ts/es6/Either';
+import { ClientRole, ClientUser } from '../../../../../types/client';
 import { Button, Grid, Typography } from '@material-ui/core';
 import './ClientGrants.scss';
-import { getAllUsers } from '../../../../../services/UserService';
-import { UserDetails, UserList } from '../../../../../types/user';
+import { addRoleToUser, getAllUsers } from '../../../../../services/UserService';
+import { UserDetails } from '../../../../../types/user';
 import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
-import { exists, map as oMap, none, Option, some, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
+import { exists, fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
@@ -104,6 +104,24 @@ const ClientGrants = (props: Props) => {
     useEffect(() => {
         loadAll();
     }, []);
+
+    const saveAddRole = (selected: SelectOption<number>) =>
+        pipe(
+            state.selectedUser,
+            oMap(async (selectedUser) => {
+                await addRoleToUser(selectedUser.id, state.clientId, selected.value);
+                await loadAll();
+                setState((draft) => {
+                    draft.showRoleDialog = false;
+                    pipe(
+                        draft.selectedUser,
+                        oMap((oldSelectedUser) => {
+                            draft.selectedUser = fromNullable(draft.clientUsers.find((user) => user.id === oldSelectedUser.id));
+                        })
+                    );
+                });
+            })
+        );
 
     return (
         <div className="ClientGrants">
@@ -224,7 +242,7 @@ const ClientGrants = (props: Props) => {
                                             label="Role"
                                             open={ state.showRoleDialog }
                                             title="Add Role"
-                                            onSelect={ () => {} }
+                                            onSelect={ saveAddRole }
                                             onCancel={ () => setState((draft) => {
                                                 draft.showRoleDialog = false;
                                             }) }
