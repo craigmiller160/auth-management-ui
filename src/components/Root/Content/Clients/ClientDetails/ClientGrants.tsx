@@ -12,6 +12,7 @@ import { UserDetails, UserList } from '../../../../../types/user';
 import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
 import { exists, map as oMap, none, Option, some, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
+import AssignIcon from '@material-ui/icons/AssignmentInd';
 
 interface Props extends IdMatchProps {}
 
@@ -166,9 +167,16 @@ const ClientGrants = (props: Props) => {
                             oMap((selectedUser: ClientUser) => {
                                 const roleItems: Array<Item> = selectedUser.roles
                                     .map((role) => ({
+                                        avatar: () => <AssignIcon />,
                                         text: {
-                                            primary: 'ABC'
-                                        }
+                                            primary: role.name
+                                        },
+                                        secondaryActions: [
+                                            {
+                                                text: 'Remove',
+                                                click: () => {}
+                                            }
+                                        ]
                                     }));
 
                                 const availableRoles = state.allRoles
