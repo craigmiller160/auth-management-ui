@@ -35,7 +35,7 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all userClients'
     });
 
-export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
+export const getFullClientDetails = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
         await api.graphql<OldClientDetailsWrapper>({
             payload: `

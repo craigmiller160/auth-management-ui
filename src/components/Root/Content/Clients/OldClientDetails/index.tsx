@@ -4,7 +4,7 @@ import {
     createClient,
     deleteClient,
     generateGuid,
-    getClient,
+    getFullClientDetails,
     getClientWithRoles,
     updateClient
 } from '../../../../../services/ClientService';
@@ -136,7 +136,7 @@ const ClientDetailsComponent = () => {
                 }
             } else {
                 const client: FullClientDetails = pipe(
-                    await getClient(parseInt(id)),
+                    await getFullClientDetails(parseInt(id)),
                     getOrElse((): FullClientDetails => defaultFullClient)
                 );
                 reset(client);
