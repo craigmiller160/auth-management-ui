@@ -13,6 +13,8 @@ import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
 import { exists, map as oMap, none, Option, some, getOrElse as oGetOrElse } from 'fp-ts/es6/Option';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
+import { SelectDialog } from '../../../../ui/Dialog';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
 
 interface Props extends IdMatchProps {}
 
@@ -23,6 +25,7 @@ interface State {
     clientUsers: Array<ClientUser>;
     allUsers: Array<UserDetails>;
     selectedUser: Option<ClientUser>;
+    showRoleDialog: boolean;
 }
 
 
@@ -35,7 +38,8 @@ const ClientGrants = (props: Props) => {
         allRoles: [],
         clientUsers: [],
         allUsers: [],
-        selectedUser: none
+        selectedUser: none,
+        showRoleDialog: false
     });
 
     const loadFullClientDetails = async (): Promise<Array<ClientUser>> =>
@@ -185,6 +189,12 @@ const ClientGrants = (props: Props) => {
                                         return index === -1;
                                     });
 
+                                const roleOptions: Array<SelectOption<number>> = availableRoles
+                                    .map((role) => ({
+                                        value: role.id,
+                                        label: role.name
+                                    }));
+
                                 return (
                                     <>
                                         {
@@ -203,11 +213,23 @@ const ClientGrants = (props: Props) => {
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            onClick={ () => {} }
+                                            onClick={ () => setState((draft) => {
+                                                draft.showRoleDialog = true;
+                                            }) }
                                             disabled={ availableRoles.length === 0 }
                                         >
                                             Add Role
                                         </Button>
+                                        <SelectDialog
+                                            label="Role"
+                                            open={ state.showRoleDialog }
+                                            title="Add Role"
+                                            onSelect={ () => {} }
+                                            onCancel={ () => setState((draft) => {
+                                                draft.showRoleDialog = false;
+                                            }) }
+                                            options={ roleOptions }
+                                        />
                                     </>
                                 );
                             }),
