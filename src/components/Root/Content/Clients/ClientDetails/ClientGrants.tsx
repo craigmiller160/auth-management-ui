@@ -7,7 +7,7 @@ import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ClientRole, ClientUser } from '../../../../../types/client';
 import { Button, Grid, Typography } from '@material-ui/core';
 import './ClientGrants.scss';
-import { addRoleToUser, getAllUsers } from '../../../../../services/UserService';
+import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';
 import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
@@ -123,6 +123,23 @@ const ClientGrants = (props: Props) => {
             })
         );
 
+    const removeRole = (roleId: number) =>
+        pipe(
+            state.selectedUser,
+            oMap(async (selectedUser) => {
+                await removeRoleFromUser(selectedUser.id, state.clientId, roleId);
+                await loadAll();
+                setState((draft) => {
+                    pipe(
+                        draft.selectedUser,
+                        oMap((oldSelectedUser) => {
+                            draft.selectedUser = fromNullable(draft.clientUsers.find((user) => user.id === oldSelectedUser.id));
+                        })
+                    );
+                });
+            })
+        );
+
     return (
         <div className="ClientGrants">
             <Typography
@@ -196,7 +213,7 @@ const ClientGrants = (props: Props) => {
                                         secondaryActions: [
                                             {
                                                 text: 'Remove',
-                                                click: () => {}
+                                                click: () => removeRole(role.id)
                                             }
                                         ]
                                     }));
