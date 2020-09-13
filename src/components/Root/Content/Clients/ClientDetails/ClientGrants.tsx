@@ -3,10 +3,12 @@ import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getFullClientDetails } from '../../../../../services/ClientService';
-import { map } from 'fp-ts/es6/Either';
-import { ClientRole, ClientUser } from '../../../../../types/client';
-import { Typography } from '@material-ui/core';
+import { Either, flatten, getOrElse, map } from 'fp-ts/es6/Either';
+import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
+import { Grid, Typography } from '@material-ui/core';
 import './ClientGrants.scss';
+import { getAllUsers } from '../../../../../services/UserService';
+import { UserDetails, UserList } from '../../../../../types/user';
 
 interface Props extends IdMatchProps {}
 
@@ -14,8 +16,10 @@ interface State {
     clientId: number;
     clientName: string;
     allRoles: Array<ClientRole>;
-    users: Array<ClientUser>;
+    clientUsers: Array<ClientUser>;
+    allUsers: Array<UserDetails>;
 }
+
 
 const ClientGrants = (props: Props) => {
     const id = props.match.params.id;
@@ -24,27 +28,49 @@ const ClientGrants = (props: Props) => {
         clientId: id !== NEW_ID ? parseInt(id) : 0,
         clientName: '',
         allRoles: [],
-        users: []
+        clientUsers: [],
+        allUsers: []
     });
 
-    const loadFullClientDetails = async () => {
+    const loadFullClientDetails = async (): Promise<Array<ClientUser>> =>
         pipe(
             await getFullClientDetails(state.clientId),
-            map((fullClientDetails) =>
+            map( (fullClientDetails) => {
                 setState((draft) => {
                     draft.clientName = fullClientDetails.name;
                     draft.allRoles = fullClientDetails.roles;
-                    draft.users = fullClientDetails.users;
+                    draft.clientUsers = fullClientDetails.users;
+                });
+                return fullClientDetails.users;
+            }),
+            getOrElse((): Array<ClientUser> => [])
+        );
+
+    const loadUsers = async (clientUsers: Array<ClientUser>) =>
+        pipe(
+            await getAllUsers(),
+            map((list) => list.users),
+            map((users) =>
+                users.filter((user) => {
+                    const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
+                    return index === -1;
+                })
+            ),
+            map((users) =>
+                setState((draft) => {
+                    draft.allUsers = users;
                 })
             )
-        )
+        );
+
+    const loadAll = async () => {
+        const clientUsers = await loadFullClientDetails();
+        await loadUsers(clientUsers);
     };
 
     useEffect(() => {
-        loadFullClientDetails();
+        loadAll();
     }, []);
-
-    console.log(state.users); // TODO delete this
 
     return (
         <div className="ClientGrants">
@@ -54,6 +80,29 @@ const ClientGrants = (props: Props) => {
             >
                 { state.clientName }
             </Typography>
+            <Grid
+                container
+                direction="row"
+                justify="space-around"
+            >
+                <Grid
+                    direction="column"
+                    container
+                    item
+                    md={ 5 }
+                >
+
+                </Grid>
+                <Grid item md={ 2 } />
+                <Grid
+                    direction="column"
+                    container
+                    item
+                    md={ 5 }
+                >
+
+                </Grid>
+            </Grid>
         </div>
     );
 };

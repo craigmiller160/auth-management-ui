@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { match } from 'react-router';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getUserClients } from '../../../../../services/UserService';
@@ -10,7 +9,6 @@ import './UserGrants.scss';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
-import {Item} from "../../../../ui/List";
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
@@ -101,6 +99,7 @@ const UserGrants = (props: Props) => {
                         selectClient={ selectClient }
                     />
                 </Grid>
+                <Grid item md={ 2 } />
                 <Grid
                     direction="column"
                     container
