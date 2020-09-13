@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getFullClientDetails } from '../../../../../services/ClientService';
+import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ClientRole, ClientUser } from '../../../../../types/client';
 import { Button, Grid, Typography } from '@material-ui/core';
@@ -15,6 +15,7 @@ import { exists, fromNullable, getOrElse as oGetOrElse, map as oMap, none, Optio
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { useHistory } from 'react-router';
 
 interface Props extends IdMatchProps {}
 
@@ -26,11 +27,12 @@ interface State {
     allUsers: Array<UserDetails>;
     selectedUser: Option<ClientUser>;
     showRoleDialog: boolean;
+    showUserDialog: boolean;
 }
-
 
 const ClientGrants = (props: Props) => {
     const id = props.match.params.id;
+    const history = useHistory();
 
     const [state, setState] = useImmer<State>({
         clientId: id !== NEW_ID ? parseInt(id) : 0,
@@ -39,7 +41,8 @@ const ClientGrants = (props: Props) => {
         clientUsers: [],
         allUsers: [],
         selectedUser: none,
-        showRoleDialog: false
+        showRoleDialog: false,
+        showUserDialog: false
     });
 
     const loadFullClientDetails = async (): Promise<Array<ClientUser>> =>
@@ -78,6 +81,11 @@ const ClientGrants = (props: Props) => {
         await loadUsers(clientUsers);
     };
 
+    const removeUser = async (userId: number) => {
+        await removeUserFromClient(userId, state.clientId);
+        await loadAll();
+    };
+
     const userItems: Array<Item> = state.clientUsers
         .map((user) => ({
             avatar: () => <PersonIcon />,
@@ -92,14 +100,17 @@ const ClientGrants = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Go',
-                    click: () => {}
+                    click: () => history.push(`/users/${user.id}`)
                 },
                 {
                     text: 'Remove',
-                    click: () => {}
+                    click: (event: MouseEvent) => {
+                        event.stopPropagation();
+                        removeUser(user.id);
+                    }
                 }
             ]
-        }))
+        }));
 
     useEffect(() => {
         loadAll();
@@ -139,6 +150,26 @@ const ClientGrants = (props: Props) => {
                 });
             })
         );
+
+    const availableUsers = state.allUsers
+        .filter((user) => {
+            const index = state.clientUsers.findIndex((cUser) => cUser.id === user.id);
+            return index === -1;
+        });
+
+    const availableUserOptions: Array<SelectOption<number>> = availableUsers
+        .map((user) => ({
+            value: user.id,
+            label: user.email
+        }));
+
+    const saveAddUser = async (selected: SelectOption<number>) => {
+        await addUserToClient(selected.value, state.clientId);
+        await loadAll();
+        setState((draft) => {
+            draft.showUserDialog = false;
+        });
+    };
 
     return (
         <div className="ClientGrants">
@@ -181,8 +212,10 @@ const ClientGrants = (props: Props) => {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={ () => {} }
-                        disabled={ state.allUsers.length === 0 }
+                        onClick={ () => setState((draft) => {
+                            draft.showUserDialog = true;
+                        }) }
+                        disabled={ availableUsers.length === 0 }
                     >
                         Add User
                     </Button>
@@ -273,6 +306,16 @@ const ClientGrants = (props: Props) => {
                     }
                 </Grid>
             </Grid>
+            <SelectDialog
+                label="User"
+                open={ state.showUserDialog }
+                title="Add User"
+                onSelect={ saveAddUser }
+                onCancel={ () => setState((draft) => {
+                    draft.showUserDialog = false;
+                }) }
+                options={ availableUserOptions }
+            />
         </div>
     );
 };

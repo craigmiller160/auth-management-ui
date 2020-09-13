@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React, { ElementType, MouseEvent } from 'react';
 import MuiList from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -10,11 +10,11 @@ import { Grid, useMediaQuery } from '@material-ui/core';
 
 export interface ItemSecondaryAction {
     text: string;
-    click: () => void;
+    click: (event: MouseEvent) => void;
 }
 
 export interface Item {
-    click?: () => void;
+    click?: (event: MouseEvent) => void;
     avatar?: ElementType;
     text: {
         primary: string;
