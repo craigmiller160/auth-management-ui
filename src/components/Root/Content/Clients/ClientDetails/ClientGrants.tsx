@@ -9,6 +9,8 @@ import { Grid, Typography } from '@material-ui/core';
 import './ClientGrants.scss';
 import { getAllUsers } from '../../../../../services/UserService';
 import { UserDetails, UserList } from '../../../../../types/user';
+import List, { Item } from '../../../../ui/List';
+import PersonIcon from '@material-ui/icons/Person';
 
 interface Props extends IdMatchProps {}
 
@@ -68,6 +70,25 @@ const ClientGrants = (props: Props) => {
         await loadUsers(clientUsers);
     };
 
+    const userItems: Array<Item> = state.clientUsers
+        .map((user) => ({
+            avatar: () => <PersonIcon />,
+            text: {
+                primary: `${user.firstName} ${user.lastName}`,
+                secondary: user.roles.map((role) => role.name).join(', ')
+            },
+            secondaryActions: [
+                {
+                    text: 'Go',
+                    click: () => {}
+                },
+                {
+                    text: 'Remove',
+                    click: () => {}
+                }
+            ]
+        }))
+
     useEffect(() => {
         loadAll();
     }, []);
@@ -91,7 +112,13 @@ const ClientGrants = (props: Props) => {
                     item
                     md={ 5 }
                 >
-
+                    <Typography
+                        className="name"
+                        variant="body1"
+                    >
+                        Users
+                    </Typography>
+                    <List items={ userItems } />
                 </Grid>
                 <Grid item md={ 2 } />
                 <Grid
