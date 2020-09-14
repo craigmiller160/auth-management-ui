@@ -16,6 +16,7 @@ import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { useHistory } from 'react-router';
+import { SectionHeader } from '../../../../ui/Header';
 
 interface Props extends IdMatchProps {}
 
@@ -190,12 +191,7 @@ const ClientGrants = (props: Props) => {
                     item
                     md={ 5 }
                 >
-                    <Typography
-                        className="name"
-                        variant="body1"
-                    >
-                        Users
-                    </Typography>
+                    <SectionHeader title="Users" />
                     {
                         userItems.length > 0 &&
                         <List items={ userItems } />
@@ -227,12 +223,7 @@ const ClientGrants = (props: Props) => {
                     item
                     md={ 5 }
                 >
-                    <Typography
-                        className="name"
-                        variant="body1"
-                    >
-                        Roles
-                    </Typography>
+                    <SectionHeader title="Roles" />
                     {
                         pipe(
                             state.selectedUser,
