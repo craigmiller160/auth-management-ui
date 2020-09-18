@@ -43,7 +43,7 @@ const InputDialog = (props: Props) => {
         reset({
             value: initialValue
         });
-    }, [open, initialValue]);
+    }, [open, initialValue, reset]);
 
     const onSubmit = (values: InputForm) => {
         if (values.value) {

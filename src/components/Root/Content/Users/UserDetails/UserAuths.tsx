@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import './UserAuths.scss';
-import { match } from 'react-router';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';

@@ -2,13 +2,14 @@ import api from './Api';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import {
-    OldClientAuthDetails,
+    ClientAuthDetails,
     ClientDetails,
     ClientInput,
     ClientListResponse,
     ClientUser,
     ClientWithRoles,
-    FullClientDetails, ClientAuthDetails
+    FullClientDetails,
+    OldClientAuthDetails
 } from '../types/client';
 import {
     AddUserToClientWrapper,
@@ -20,8 +21,6 @@ import {
     RemoveUserFromClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
-import { Role } from '../types/role';
-import { UserRole } from '../types/user';
 
 export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
     api.graphql<ClientListResponse>({

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { match, Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { ClientDetails, ClientInput } from '../../../../../types/client';
 import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
@@ -15,7 +15,7 @@ import {
     updateClient
 } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import {Grid, Typography} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
 import './ClientConfig.scss';
 import Button from '@material-ui/core/Button';
@@ -72,7 +72,7 @@ const ClientConfig = (props: Props) => {
         showRedirectUriDialog: false,
         redirectUriDirty: false
     });
-    const { control, setValue, handleSubmit, errors, reset, getValues, formState: { isDirty } } = useForm<ClientForm>({
+    const { control, setValue, handleSubmit, errors, reset, formState: { isDirty } } = useForm<ClientForm>({
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: defaultClientForm
@@ -147,7 +147,7 @@ const ClientConfig = (props: Props) => {
         } else {
             loadNewClient();
         }
-    }, [reset, state.clientId]);
+    }, [reset, state.clientId, setState]);
 
     const generateClientKey = async () => {
         const guid = pipe(

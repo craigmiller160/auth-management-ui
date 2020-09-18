@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
@@ -10,7 +10,6 @@ import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
-import { useHistory } from 'react-router';
 import { SectionHeader } from '../../../../ui/Header';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
@@ -28,7 +27,6 @@ interface State {
 
 const ClientGrants = (props: Props) => {
     const id = props.match.params.id;
-    const history = useHistory();
 
     const [state, setState] = useImmer<State>({
         clientId: id !== NEW_ID ? parseInt(id) : 0,
@@ -39,7 +37,7 @@ const ClientGrants = (props: Props) => {
         selectedUser: none
     });
 
-    const loadFullClientDetails = async (): Promise<Array<ClientUser>> =>
+    const loadFullClientDetails = useCallback(async () =>
         pipe(
             await getFullClientDetails(state.clientId),
             map( (fullClientDetails) => {
@@ -51,9 +49,9 @@ const ClientGrants = (props: Props) => {
                 return fullClientDetails.users;
             }),
             getOrElse((): Array<ClientUser> => [])
-        );
+        ), [state.clientId, setState]);
 
-    const loadUsers = async (clientUsers: Array<ClientUser>) =>
+    const loadUsers = useCallback(async (clientUsers: Array<ClientUser>) =>
         pipe(
             await getAllUsers(),
             map((list) => list.users),
@@ -68,12 +66,12 @@ const ClientGrants = (props: Props) => {
                     draft.allUsers = users;
                 })
             )
-        );
+        ), [setState]);
 
-    const loadAll = async () => {
+    const loadAll = useCallback(async () => {
         const clientUsers = await loadFullClientDetails();
         await loadUsers(clientUsers);
-    };
+    }, [loadFullClientDetails, loadUsers]);
 
     const removeUser = async (userId: number) => {
         await removeUserFromClient(userId, state.clientId);
@@ -92,7 +90,7 @@ const ClientGrants = (props: Props) => {
 
     useEffect(() => {
         loadAll();
-    }, []);
+    }, [loadAll]);
 
     const saveAddRole = (roleId: number) =>
         pipe(

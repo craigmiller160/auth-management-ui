@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { match } from 'react-router';
+import React, { useCallback, useEffect } from 'react';
 import { UserAuthDetails } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
@@ -29,7 +28,7 @@ const ClientAuths = (props: Props) => {
         userAuthDetails: []
     });
 
-    const loadAuthDetails = async () =>
+    const loadAuthDetails = useCallback(async () =>
         pipe(
             await getAuthDetailsForClient(state.clientId),
             map((clientAuthDetails) => {
@@ -38,7 +37,7 @@ const ClientAuths = (props: Props) => {
                     draft.userAuthDetails = clientAuthDetails.userAuthDetails;
                 });
             })
-        );
+        ), [state.clientId, setState]);
 
     const doRevoke = async (userId: number) =>
         pipe(
@@ -48,7 +47,7 @@ const ClientAuths = (props: Props) => {
 
     useEffect(() => {
         loadAuthDetails();
-    }, []);
+    }, [loadAuthDetails]);
 
     const items: Array<Item> = state.userAuthDetails
         .map((auth) => ({

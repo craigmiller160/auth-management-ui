@@ -1,13 +1,13 @@
 import React, { MouseEvent } from 'react';
 import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
-import { exists, Option, some } from 'fp-ts/es6/Option';
+import { exists, Option } from 'fp-ts/es6/Option';
 import { ClientUser } from '../../../../../types/client';
 import { useHistory } from 'react-router';
 import { UserDetails } from '../../../../../types/user';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { SectionHeader } from '../../../../ui/Header';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 

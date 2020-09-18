@@ -1,8 +1,8 @@
 import { Either, map } from 'fp-ts/es6/Either';
 import {
-    FullUserDetails,
-    UserAuthDetails, UserAuthDetailsList,
-    UserClient, UserClients,
+    UserAuthDetailsList,
+    UserClient,
+    UserClients,
     UserDetails,
     UserInput,
     UserList,
@@ -11,12 +11,15 @@ import {
 import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import {
-    AddClientToUserWrapper, AddRoleToUserWrapper,
+    AddClientToUserWrapper,
+    AddRoleToUserWrapper,
     CreateUserWrapper,
     DeleteUserWrapper,
-    RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
+    RemoveClientFromUserWrapper,
+    RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
-    UserDetailsWrapper, UserClientsWrapper
+    UserClientsWrapper,
+    UserDetailsWrapper
 } from '../types/graphApi';
 
 export const getAllUsers = async (): Promise<Either<Error,UserList>> =>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { match, Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { UserDetails, UserInput } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
 import { createUser, deleteUser, getUserDetails, updateUser } from '../../../../../services/UserService';
