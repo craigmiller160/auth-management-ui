@@ -24,8 +24,6 @@ interface State {
     clientUsers: Array<ClientUser>;
     allUsers: Array<UserDetails>;
     selectedUser: Option<ClientUser>;
-    showRoleDialog: boolean; // TODO delete this
-    showUserDialog: boolean; // TODO delete this
 }
 
 const ClientGrants = (props: Props) => {
@@ -38,9 +36,7 @@ const ClientGrants = (props: Props) => {
         allRoles: [],
         clientUsers: [],
         allUsers: [],
-        selectedUser: none,
-        showRoleDialog: false,
-        showUserDialog: false
+        selectedUser: none
     });
 
     const loadFullClientDetails = async (): Promise<Array<ClientUser>> =>
@@ -95,7 +91,6 @@ const ClientGrants = (props: Props) => {
                 await addRoleToUser(selectedUser.id, state.clientId, roleId);
                 await loadAll();
                 setState((draft) => {
-                    draft.showRoleDialog = false;
                     pipe(
                         draft.selectedUser,
                         oMap((oldSelectedUser) => {
@@ -126,9 +121,6 @@ const ClientGrants = (props: Props) => {
     const saveAddUser = async (userId: number) => {
         await addUserToClient(userId, state.clientId);
         await loadAll();
-        setState((draft) => {
-            draft.showUserDialog = false;
-        });
     };
 
     const selectUser = (user: ClientUser) =>
