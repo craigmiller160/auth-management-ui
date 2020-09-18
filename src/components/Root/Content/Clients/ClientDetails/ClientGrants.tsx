@@ -77,6 +77,16 @@ const ClientGrants = (props: Props) => {
 
     const removeUser = async (userId: number) => {
         await removeUserFromClient(userId, state.clientId);
+        pipe(
+            state.selectedUser,
+            oMap((selectedUser: ClientUser) => {
+                if (selectedUser.id === userId) {
+                    setState((draft) => {
+                        draft.selectedUser = none;
+                    });
+                }
+            })
+        );
         await loadAll();
     };
 
