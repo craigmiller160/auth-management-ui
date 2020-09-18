@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { Grid, Typography } from '@material-ui/core';
 import List, { Item } from '../../../../ui/List';
@@ -6,8 +6,7 @@ import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { ClientRole } from '../../../../../types/client';
 import { getClientWithRoles } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { isRight, map } from 'fp-ts/es6/Either';
-import { match } from 'react-router';
+import { map } from 'fp-ts/es6/Either';
 import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
@@ -38,7 +37,7 @@ const ClientRoles = (props: Props) => {
         clientId: id !== NEW_ID ? parseInt(id) : 0
     });
 
-    const loadClientRoles = async () => {
+    const loadClientRoles = useCallback(async () => {
         pipe(
             await getClientWithRoles(state.clientId),
             map((clientRoles) => {
@@ -49,11 +48,11 @@ const ClientRoles = (props: Props) => {
                 });
             })
         );
-    };
+    }, [state.clientId, setState]);
 
     useEffect(() => {
         loadClientRoles();
-    }, []);
+    }, [loadClientRoles]);
 
     const selectRole = (index: number) => {
         setState((draft) => {
@@ -80,7 +79,6 @@ const ClientRoles = (props: Props) => {
 
         let action;
         if (state.selectedRoleIndex >= 0) {
-            const selectedRole = state.roles[state.selectedRoleIndex];
             action = () => updateRole(state.clientId, role.id, role);
         } else {
             action = () => createRole(state.clientId, role);
