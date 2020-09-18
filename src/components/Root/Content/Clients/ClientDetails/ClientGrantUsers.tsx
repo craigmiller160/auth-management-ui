@@ -9,7 +9,7 @@ import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { SectionHeader } from '../../../../ui/Header';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useImmer } from 'use-immer';
-import { SelectDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 
 interface Props {
     clientUsers: Array<ClientUser>;
@@ -22,6 +22,8 @@ interface Props {
 
 interface State {
     showUserDialog: boolean;
+    showRemoveDialog: boolean;
+    userToRemoveId: number;
 }
 
 const ClientGrantUsers = (props: Props) => {
@@ -36,8 +38,16 @@ const ClientGrantUsers = (props: Props) => {
     } = props;
 
     const [state, setState] = useImmer<State>({
-        showUserDialog: false
+        showUserDialog: false,
+        showRemoveDialog: false,
+        userToRemoveId: 0
     });
+
+    const showRemoveDialog = (userId: number) =>
+        setState((draft) => {
+            draft.showRemoveDialog = true;
+            draft.userToRemoveId = userId;
+        });
 
     const userItems: Array<Item> = clientUsers
         .map((user) => ({
@@ -57,7 +67,7 @@ const ClientGrantUsers = (props: Props) => {
                     text: 'Remove',
                     click: (event: MouseEvent) => {
                         event.stopPropagation();
-                        removeUser(user.id);
+                        showRemoveDialog(user.id);
                     }
                 }
             ]
@@ -78,6 +88,13 @@ const ClientGrantUsers = (props: Props) => {
             draft.showUserDialog = false;
         });
         saveAddUser(selected.value);
+    };
+
+    const doRemoveUser = () => {
+        setState((draft) => {
+            draft.showRemoveDialog = false;
+        });
+        removeUser(state.userToRemoveId);
     };
 
     return (
@@ -115,6 +132,15 @@ const ClientGrantUsers = (props: Props) => {
                     draft.showUserDialog = false;
                 }) }
                 options={ availableUserOptions }
+            />
+            <ConfirmDialog
+                open={ state.showRemoveDialog }
+                title="Remove User"
+                message="Are you sure you want to remove this user?"
+                onConfirm={ doRemoveUser }
+                onCancel={ () => setState((draft) => {
+                    draft.showRemoveDialog = false;
+                }) }
             />
         </>
     );
