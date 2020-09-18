@@ -5,7 +5,7 @@ import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import List, { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { Button, Typography } from '@material-ui/core';
-import { SelectDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 
 interface Props {
     selectedUser: ClientUser;
@@ -16,6 +16,8 @@ interface Props {
 
 interface State {
     showRoleDialog: boolean;
+    showRemoveDialog: boolean;
+    roleToRemoveId: number;
 }
 
 const ClientGrantRoles = (props: Props) => {
@@ -27,7 +29,9 @@ const ClientGrantRoles = (props: Props) => {
     } = props;
 
     const [state, setState] = useImmer<State>({
-        showRoleDialog: false
+        showRoleDialog: false,
+        showRemoveDialog: false,
+        roleToRemoveId: 0
     });
 
     const doSaveAddRole = (selected: SelectOption<number>) => {
@@ -36,6 +40,12 @@ const ClientGrantRoles = (props: Props) => {
         });
         saveAddRole(selected.value);
     };
+
+    const showRemoveDialog = (roleId: number) =>
+        setState((draft) => {
+            draft.roleToRemoveId = roleId;
+            draft.showRemoveDialog = true;
+        });
 
     const roleItems: Array<Item> = selectedUser.roles
         .map((role) => ({
@@ -46,7 +56,7 @@ const ClientGrantRoles = (props: Props) => {
             secondaryActions: [
                 {
                     text: 'Remove',
-                    click: () => removeRole(role.id)
+                    click: () => showRemoveDialog(role.id)
                 }
             ]
         }));
@@ -60,6 +70,13 @@ const ClientGrantRoles = (props: Props) => {
             value: role.id,
             label: role.name
         }));
+
+    const doRemoveRole = () => {
+        setState((draft) => {
+            draft.showRemoveDialog = false;
+        });
+        removeRole(state.roleToRemoveId);
+    };
 
     return (
         <>
@@ -95,6 +112,15 @@ const ClientGrantRoles = (props: Props) => {
                     draft.showRoleDialog = false;
                 }) }
                 options={ roleOptions }
+            />
+            <ConfirmDialog
+                open={ state.showRemoveDialog }
+                title="Remove Role"
+                message="Are you sure you want to remove this role?"
+                onConfirm={ doRemoveRole }
+                onCancel={ () => setState((draft) => {
+                    draft.showRemoveDialog = false;
+                }) }
             />
         </>
     );
