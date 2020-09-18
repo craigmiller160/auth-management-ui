@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, MouseEvent } from 'react';
 import { ClientListItem, ClientListResponse } from '../../../../../types/client';
 import { UserClient } from '../../../../../types/user';
 import { useHistory } from 'react-router';
@@ -86,7 +86,10 @@ const UserClients = (props: Props) => {
             },
             {
                 text: 'Remove',
-                click: () => removeClientClick(client.id)
+                click: (event: MouseEvent) => {
+                    event.stopPropagation();
+                    removeClientClick(client.id);
+                }
             }
         ],
         active: exists((selected: UserClient) => selected.id === client.id)(selectedClient)

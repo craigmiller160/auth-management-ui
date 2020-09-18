@@ -15,6 +15,7 @@ interface Props {
     open: boolean;
     title: string;
     actions: Array<DialogAction>;
+    className?: string;
 }
 
 // TODO whenever this appears there is a console error. figure it out
@@ -26,10 +27,19 @@ const BaseDialog = (props: PropsWithChildren<Props>) => {
         open,
         title,
         children,
-        actions
+        actions,
+        className
     } = props;
+
+    const rootClasses = ['BaseDialog', className]
+        .filter((name) => name)
+        .join(' ');
+
     return (
-        <Dialog open={ open } className="ConfirmDialog">
+        <Dialog
+            open={ open }
+            className={ rootClasses }
+        >
             <DialogTitle>{ title }</DialogTitle>
             <DialogContent>
                 { children }

@@ -1,0 +1,15 @@
+@mixin DetailsConfigPage {
+  .Field {
+    margin-bottom: 1rem;
+    flex: 1;
+    width: 100%;
+
+    &.shrink {
+      flex: 0;
+    }
+  }
+
+  .Actions {
+    margin-top: 2rem;
+  }
+}

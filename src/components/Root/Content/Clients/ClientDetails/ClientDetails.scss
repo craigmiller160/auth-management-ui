@@ -1,21 +1,5 @@
+@import "src/assets/scss/DetailsPage";
+
 .ClientDetails {
-  .half-row {
-    width: 50%;
-  }
-
-  .grow {
-    flex: 0.75;
-  }
-
-  .grow-sm {
-    flex: 0.3;
-  }
-
-  .timeouts {
-    width: 15rem;
-  }
-
-  .UsersAndRoles {
-    margin-top: 5rem;
-  }
+  @include DetailsPage;
 }

@@ -6,16 +6,18 @@ import {
     ClientDetails,
     ClientInput,
     ClientListResponse,
-    ClientRole,
     ClientUser,
+    ClientWithRoles,
     FullClientDetails
 } from '../types/client';
 import {
     AddUserToClientWrapper,
     ClientDetailsWrapper,
+    ClientRolesWrapper,
     CreateClientWrapper,
-    DeleteClientWrapper, RemoveUserFromClientWrapper,
-    RolesForClientWrapper,
+    DeleteClientWrapper,
+    OldClientDetailsWrapper,
+    RemoveUserFromClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
 
@@ -33,9 +35,9 @@ export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
         errorMsg: 'Error getting all userClients'
     });
 
-export const getClient = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
+export const getFullClientDetails = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
-        await api.graphql<ClientDetailsWrapper>({
+        await api.graphql<OldClientDetailsWrapper>({
             payload: `
                 query {
                     client(clientId: ${clientId}) {
@@ -45,6 +47,8 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                         roles {
                             id
                             name
@@ -65,23 +69,49 @@ export const getClient = async (clientId: number): Promise<Either<Error, FullCli
             `,
             errorMsg: `Error getting client ${clientId}`
         }),
+        map((wrapper: OldClientDetailsWrapper) => wrapper.client)
+    );
+
+export const getClientDetails = async (clientId: number): Promise<Either<Error, ClientDetails>> =>
+    pipe(
+        await api.graphql<ClientDetailsWrapper>({
+            payload: `
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        enabled
+                        redirectUris
+                    }
+                }
+            `,
+            errorMsg: ``
+        }),
         map((wrapper: ClientDetailsWrapper) => wrapper.client)
     );
 
-export const getRolesForClient = async (clientId: number): Promise<Either<Error, Array<ClientRole>>> =>
+export const getClientWithRoles = async (clientId: number): Promise<Either<Error, ClientWithRoles>> =>
     pipe(
-        await api.graphql<RolesForClientWrapper>({
+        await api.graphql<ClientRolesWrapper>({
             payload: `
                 query {
-                    rolesForClient(clientId: ${clientId}) {
+                    client(clientId: ${clientId}) {
                         id
                         name
+                        roles {
+                            id
+                            name
+                        }
                     }
                 }
             `,
             errorMsg: `Error getting roles for client ${clientId}`
         }),
-        map((wrapper: RolesForClientWrapper) => wrapper.rolesForClient)
+        map((wrapper: ClientRolesWrapper) => wrapper.client)
     );
 
 export const updateClient = async (clientId: number, clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
@@ -95,7 +125,9 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         clientSecret: "${clientInput.clientSecret || ''}",
                         enabled: ${clientInput.enabled},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
-                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs},
+                        authCodeTimeoutSecs: ${clientInput.authCodeTimeoutSecs},
+                        redirectUris: [${clientInput.redirectUris.map((uri) => `"${uri}"`).join(',')}]
                     }) {
                         id
                         name
@@ -103,6 +135,8 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
@@ -122,7 +156,9 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         clientSecret: "${clientInput.clientSecret}",
                         enabled: ${clientInput.enabled},
                         accessTokenTimeoutSecs: ${clientInput.accessTokenTimeoutSecs},
-                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs}
+                        refreshTokenTimeoutSecs: ${clientInput.refreshTokenTimeoutSecs},
+                        authCodeTimeoutSecs: ${clientInput.authCodeTimeoutSecs},
+                        redirectUris: [${clientInput.redirectUris.map((uri) => `"${uri}"`).join(',')}]
                     }) {
                         id
                         name
@@ -130,6 +166,8 @@ export const createClient = async (clientInput: ClientInput): Promise<Either<Err
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
@@ -150,6 +188,8 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
                         accessTokenTimeoutSecs
                         enabled
                         refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
                     }
                 }
             `,
@@ -160,7 +200,7 @@ export const deleteClient = async (clientId: number): Promise<Either<Error, Clie
 
 export const generateGuid = (): Promise<Either<Error, string>> =>
     api.get<string>({
-        uri: '/userClients/guid',
+        uri: '/clients/guid',
         errorMsg: 'Error generating GUID'
     });
 
@@ -210,14 +250,8 @@ export const addUserToClient = async (userId: number, clientId: number): Promise
         map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
     );
 
-export const getClientAuthDetails = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
+export const getAuthDetailsForClient = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
     api.get<ClientAuthDetails>({
         uri: `/clients/auth/${clientId}`,
-        errorMsg: `Error getting client auth details for ${clientId}`
-    });
-
-export const revokeClientAuthAccess = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
-    api.post<void,ClientAuthDetails>({
-        uri: `/clients/auth/${clientId}/revoke`,
-        errorMsg: `Error revoking auth access for client ${clientId}`
+        errorMsg: `Error getting auth details for client ${clientId}`
     });

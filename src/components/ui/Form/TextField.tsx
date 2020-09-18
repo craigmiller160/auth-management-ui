@@ -15,6 +15,7 @@ interface Props<T> {
     type?: 'text' | 'number' | 'password';
     disabled?: boolean;
     transform?: (value: string) => any;
+    placeholder?: string;
 }
 
 const TextField = <T extends object>(props: Props<T>) => {
@@ -27,7 +28,8 @@ const TextField = <T extends object>(props: Props<T>) => {
         rules,
         type,
         disabled,
-        transform
+        transform,
+        placeholder
     } = props;
 
     return (
@@ -40,6 +42,7 @@ const TextField = <T extends object>(props: Props<T>) => {
                     type={ type }
                     className={ className }
                     label={ label }
+                    placeholder={ placeholder }
                     onChange={ (event) => {
                         if (transform) {
                             onChange(transform(event.target.value));

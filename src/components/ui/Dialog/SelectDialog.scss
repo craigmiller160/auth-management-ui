@@ -1,0 +1,5 @@
+@import "./DialogCommon";
+
+.SelectDialog {
+  @include DialogWithFields;
+}

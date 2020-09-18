@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React, { ElementType, MouseEvent } from 'react';
 import MuiList from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -10,11 +10,11 @@ import { Grid, useMediaQuery } from '@material-ui/core';
 
 export interface ItemSecondaryAction {
     text: string;
-    click: () => void;
+    click: (event: MouseEvent) => void;
 }
 
 export interface Item {
-    click?: () => void;
+    click?: (event: MouseEvent) => void;
     avatar?: ElementType;
     text: {
         primary: string;
@@ -26,6 +26,7 @@ export interface Item {
 
 interface Props {
     items: Array<Item>;
+    columnLayout?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -49,11 +50,12 @@ const useStyles = makeStyles({
 const List = (props: Props) => {
     const classes = useStyles();
     const {
-        items
+        items,
+        columnLayout = false
     } = props;
 
     const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
-    const listItemDirection = isNotPhone ? 'row' : 'column';
+    const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
 
     return (
         <MuiList>
@@ -90,8 +92,6 @@ const List = (props: Props) => {
                                     item.secondaryActions &&
                                     <Grid
                                         item
-                                        direction="row"
-                                        justify="flex-start"
                                     >
                                         {
                                             item.secondaryActions?.map((action, index) => (

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { match } from 'react-router';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getUserClients } from '../../../../../services/UserService';
@@ -10,19 +9,14 @@ import './UserGrants.scss';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
     userId: number;
     user: UserClientsType;
     selectedClient: Option<UserClient>;
 }
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 const defaultUser: UserClientsType = {
     id: 0,
@@ -33,7 +27,7 @@ const defaultUser: UserClientsType = {
 const UserGrants = (props: Props) => {
     const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
-        userId: id !== NEW ? parseInt(id) : 0,
+        userId: id !== NEW_ID ? parseInt(id) : 0,
         user: defaultUser,
         selectedClient: none
     });
@@ -105,6 +99,7 @@ const UserGrants = (props: Props) => {
                         selectClient={ selectClient }
                     />
                 </Grid>
+                <Grid item md={ 2 } />
                 <Grid
                     direction="column"
                     container

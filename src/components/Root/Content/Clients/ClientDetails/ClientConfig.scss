@@ -1,0 +1,13 @@
+@import "../../../../../assets/scss/DetailsConfigPage";
+
+.ClientConfig {
+  @include DetailsConfigPage;
+
+  .divider {
+    margin-bottom: 2rem;
+  }
+
+  .AddRedirect {
+    width: 100%;
+  }
+}

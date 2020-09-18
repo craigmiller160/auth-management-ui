@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import './UserAuths.scss';
-import { match } from 'react-router';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
@@ -8,39 +7,26 @@ import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user'
 import { useImmer } from 'use-immer';
 import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
-import { fromNullable, getOrElse as oGetOrElse, map as oMap } from 'fp-ts/es6/Option';
-import { displayFormatApiDateTime } from '../../../../../utils/date';
+import { formatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
     userId: number;
     userAuths: UserAuthDetailsList;
 }
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 const defaultUserAuths: UserAuthDetailsList = {
     email: '',
     authDetails: []
 };
 
-const formatDate = (date: string | null): string =>
-    pipe(
-        fromNullable(date),
-        oMap((value: string): string => displayFormatApiDateTime(value)),
-        oGetOrElse((): string => '')
-    );
-
 const UserAuths = (props: Props) => {
     const id = props.match.params.id;
     const [state, setState] = useImmer<State>({
-        userId: id !== NEW ? parseInt(id) : 0,
+        userId: id !== NEW_ID ? parseInt(id) : 0,
         userAuths: defaultUserAuths
     });
 
@@ -61,11 +47,10 @@ const UserAuths = (props: Props) => {
     const doRevoke = async (clientId: number) => {
         const authDetails = pipe(
             await revokeUserAuthAccess(state.userId, clientId),
-            map((newAuth: UserAuthDetails) => {
-                const filtered = state.userAuths.authDetails
-                    .filter((auth) => auth.clientId !== newAuth.clientId)
-                return [ ...filtered, newAuth ];
-            }),
+            map(() =>
+                state.userAuths.authDetails
+                    .filter((auth) => auth.clientId !== clientId)
+            ),
             getOrElse((): Array<UserAuthDetails> => state.userAuths.authDetails)
         );
         setState((draft) => {
@@ -79,7 +64,7 @@ const UserAuths = (props: Props) => {
             avatar: () => <LockOpen />,
             text: {
                 primary: `Client: ${auth.clientName}`,
-                secondary: `Last Authenticated: ${formatDate(auth.lastAuthenticated)}`
+                secondary: `Last Authenticated: ${formatApiDateTime(auth.lastAuthenticated)}`
             },
             secondaryActions: [
                 {

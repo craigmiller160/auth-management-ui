@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { match, Prompt, useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { UserDetails, UserInput } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
 import { createUser, deleteUser, getUserDetails, updateUser } from '../../../../../services/UserService';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { Either, getOrElse } from 'fp-ts/es6/Either';
+import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { useForm } from 'react-hook-form';
 import { isRight } from 'fp-ts/es6/These';
 import alertSlice from '../../../../../store/alert/slice';
@@ -16,20 +16,15 @@ import './UserConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog } from '../../../../ui/Dialog';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
     allowNavigationOverride: boolean;
     showDeleteDialog: boolean;
     userId: number;
 }
-const NEW = 'new';
-interface MatchParams {
-    id: string;
-}
 
-interface Props {
-    match: match<MatchParams>;
-}
+interface Props extends IdMatchProps {}
 
 interface UserForm extends UserInput {
     confirmPassword: string;
@@ -56,7 +51,7 @@ const UserConfig = (props: Props) => {
     const [state, setState] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        userId: id !== NEW ? parseInt(id) : 0
+        userId: id !== NEW_ID ? parseInt(id) : 0
     });
     const { control, handleSubmit, errors, reset, getValues, watch, formState: { isDirty } } = useForm<UserForm>({
         mode: 'onBlur',
@@ -66,22 +61,25 @@ const UserConfig = (props: Props) => {
     const watchPassword = watch('password', '');
 
     const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
-        const result = await action();
-        if (isRight(result)) {
-            // TODO stay on page instead
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/users');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
-        }
+        pipe(
+            await action(),
+            map((user) => {
+                setState((draft) => {
+                    draft.userId = user.id;
+                });
+                reset(user);
+                const path = props.match.path.replace(':id', `${user.id}`);
+                dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
+                history.push(path);
+            })
+        );
     };
 
     const onSubmit = (values: UserForm) => {
         const payload: UserInput = {
             ...values
         };
-        if (id === NEW) {
+        if (state.userId === 0) {
             doSubmit(() => createUser(payload));
         } else {
             doSubmit(() => updateUser(parseInt(id), payload));
@@ -115,7 +113,7 @@ const UserConfig = (props: Props) => {
         return password === value || 'Passwords must match';
     };
 
-    const passwordRules = id === NEW ? { required: 'Required' } : {};
+    const passwordRules = state.userId === 0 ? { required: 'Required' } : {};
 
     const toggleDeleteDialog = (show: boolean) =>
         setState((draft) => {
@@ -136,7 +134,7 @@ const UserConfig = (props: Props) => {
     return (
         <div className="UserConfig">
             <Prompt
-                when={ (isDirty && !state.allowNavigationOverride) || id === NEW }
+                when={ (isDirty || state.userId === 0) && !state.allowNavigationOverride }
                 message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
@@ -236,7 +234,7 @@ const UserConfig = (props: Props) => {
                         Save
                     </Button>
                     {
-                        id !== NEW &&
+                        state.userId === 0 &&
                         <Button
                             variant="contained"
                             color="primary"

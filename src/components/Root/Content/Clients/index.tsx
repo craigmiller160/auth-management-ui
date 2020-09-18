@@ -37,7 +37,7 @@ const Clients = () => {
         action();
     }, []);
 
-    const newClick = () => history.push('/userClients/new');
+    const newClick = () => history.push('/clients/new');
 
     const body = useMemo(() =>
         state.clients

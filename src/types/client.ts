@@ -1,3 +1,5 @@
+import { UserAuthDetails } from './user';
+
 export interface ClientListItem {
     id: number;
     name: string;
@@ -28,6 +30,8 @@ interface BaseClient {
     enabled: boolean;
     accessTokenTimeoutSecs: number;
     refreshTokenTimeoutSecs: number;
+    authCodeTimeoutSecs: number;
+    redirectUris: Array<string>;
 }
 
 export interface ClientDetails extends BaseClient {
@@ -44,9 +48,13 @@ export interface ClientInput extends BaseClient {
     clientSecret: string;
 }
 
+export interface ClientWithRoles {
+    id: number;
+    name: string;
+    roles: Array<ClientRole>;
+}
+
 export interface ClientAuthDetails {
-    tokenId: string | null;
-    clientId: number;
     clientName: string;
-    lastAuthenticated: string | null;
+    userAuthDetails: Array<UserAuthDetails>;
 }

@@ -1,6 +1,6 @@
-import { ClientDetails, ClientRole, ClientUser, FullClientDetails } from './client';
+import { ClientDetails, ClientRole, ClientUser, ClientWithRoles, FullClientDetails } from './client';
 import { Role } from './role';
-import { FullUserDetails, UserClient, UserClients, UserDetails, UserRole } from './user';
+import { UserClient, UserClients, UserDetails, UserRole } from './user';
 
 export interface GraphQLError {
     message: string;
@@ -11,12 +11,12 @@ export interface GraphQLQueryResponse<T> {
     errors: Array<GraphQLError>;
 }
 
-export interface ClientDetailsWrapper {
-    client: FullClientDetails
+export interface OldClientDetailsWrapper {
+    client: FullClientDetails;
 }
 
-export interface RolesForClientWrapper {
-    rolesForClient: Array<ClientRole>;
+export interface ClientDetailsWrapper {
+    client: ClientDetails;
 }
 
 export interface UpdateClientWrapper {
@@ -41,11 +41,6 @@ export interface UpdateRoleWrapper {
 
 export interface DeleteRoleWrapper {
     deleteRole: Role;
-}
-
-// TODO delete this
-export interface OldUserDetailsWrapper {
-    user: FullUserDetails;
 }
 
 export interface UserDetailsWrapper {
@@ -90,4 +85,8 @@ export interface RemoveRoleFromUserWrapper {
 
 export interface AddRoleToUserWrapper {
     addRoleToUser: Array<UserRole>;
+}
+
+export interface ClientRolesWrapper {
+    client: ClientWithRoles;
 }
