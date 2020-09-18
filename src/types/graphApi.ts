@@ -19,11 +19,6 @@ export interface ClientDetailsWrapper {
     client: ClientDetails;
 }
 
-// TODO delete this
-export interface RolesForClientWrapper {
-    rolesForClient: Array<ClientRole>;
-}
-
 export interface UpdateClientWrapper {
     updateClient: ClientDetails;
 }

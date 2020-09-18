@@ -48,14 +48,6 @@ export interface ClientInput extends BaseClient {
     clientSecret: string;
 }
 
-// TODO delete this
-export interface OldClientAuthDetails {
-    tokenId: string | null;
-    clientId: number;
-    clientName: string;
-    lastAuthenticated: string | null;
-}
-
 export interface ClientWithRoles {
     id: number;
     name: string;

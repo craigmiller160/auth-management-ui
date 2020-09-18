@@ -33,11 +33,6 @@ export interface UserClients {
     clients: Array<UserClient>;
 }
 
-// TODO delete this
-export interface FullUserDetails extends UserDetails {
-    clients: Array<UserClient>;
-}
-
 export interface UserList {
     users: Array<UserDetails>;
 }

@@ -8,8 +8,7 @@ import {
     ClientListResponse,
     ClientUser,
     ClientWithRoles,
-    FullClientDetails,
-    OldClientAuthDetails
+    FullClientDetails
 } from '../types/client';
 import {
     AddUserToClientWrapper,
@@ -255,16 +254,4 @@ export const getAuthDetailsForClient = (clientId: number): Promise<Either<Error,
     api.get<ClientAuthDetails>({
         uri: `/clients/auth/${clientId}`,
         errorMsg: `Error getting auth details for client ${clientId}`
-    });
-
-export const getClientAuthDetails = (clientId: number): Promise<Either<Error, OldClientAuthDetails>> =>
-    api.get<OldClientAuthDetails>({
-        uri: `/clients/auth/${clientId}`,
-        errorMsg: `Error getting client auth details for ${clientId}`
-    });
-
-export const revokeClientAuthAccess = (clientId: number): Promise<Either<Error, OldClientAuthDetails>> =>
-    api.post<void,OldClientAuthDetails>({
-        uri: `/clients/auth/${clientId}/revoke`,
-        errorMsg: `Error revoking auth access for client ${clientId}`
     });
