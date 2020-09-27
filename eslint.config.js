@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// TODO split the TS and normal JS rules apart properly
-
 // noinspection NpmUsedModulesInstalled
 const config = require('eslint-config-react-app');
 
