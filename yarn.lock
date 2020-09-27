@@ -1158,6 +1158,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@craigmiller160/eslint-config-cra-extension@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:30000/@craigmiller160%2feslint-config-cra-extension/-/eslint-config-cra-extension-1.0.0.tgz#6084bd7f392d561831ac9c41eecb059e7ad96bd4"
+  integrity sha512-3sgvgt9W2c3I6EcKupTVkFOaApvc6kMEJpdN12zWEY+n+nSOBpK3rTf8n3+pbVBOAzUxEOII7lUeoXExUlKLDQ==
+
 "@craigmiller160/react-protected-route@^1.0.1":
   version "1.0.1"
   resolved "http://localhost:30000/@craigmiller160%2freact-protected-route/-/react-protected-route-1.0.1.tgz"
