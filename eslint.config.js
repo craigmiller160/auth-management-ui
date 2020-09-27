@@ -18,11 +18,18 @@
 
 // TODO split the TS and normal JS rules apart properly
 
+// noinspection NpmUsedModulesInstalled
+const config = require('eslint-config-react-app');
+
+const tsOverride = config.overrides
+    .find((override) => override.parser === '@typescript-eslint/parser');
+
 module.exports = {
     extends: [
         'react-app'
     ],
     rules: {
+        ...config.rules,
         'semi': ['error', 'always'],
         'arrow-body-style': ['error', 'as-needed'],
         'comma-dangle': ['error', 'never'],
@@ -35,14 +42,16 @@ module.exports = {
             }
         ],
         'no-console': 'error',
-        'react-hooks/exhaustive-deps': 'error'
+        'react-hooks/exhaustive-deps': 'error',
+        'no-fallthrough': 'error',
+        'default-case': ['error', { commentPattern: '^no default$' }],
     },
     overrides: [
         {
-            files: [
-                '**/*.ts?(x)'
-            ],
+            ...tsOverride,
             rules: {
+                ...tsOverride.rules,
+                'default-case': ['error', { commentPattern: '^no default$' }],
                 '@typescript-eslint/no-unused-vars': 'error'
             }
         }
