@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// TODO split the TS and normal JS rules apart properly
+
 module.exports = {
     parser: '@typescript-eslint/parser',
     plugins: [
@@ -37,6 +39,7 @@ module.exports = {
                 ignoreComments: true
             }
         ],
-        'no-console': 'error'
+        'no-console': 'error',
+        'react-hooks/exhaustive-deps': 'error'
     }
 };
