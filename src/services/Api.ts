@@ -50,9 +50,7 @@ export interface GraphQLRequest {
     config?: AxiosRequestConfig;
 }
 
-export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => {
-    return ex.response !== undefined;
-};
+export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => ex.response !== undefined;
 
 const getFullMessage = (errorMsg: string, ex: Error): string => {
     if (isAxiosError(ex) && ex.response) {
@@ -82,12 +80,11 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
     handle401Error(ex);
 };
 
-const getGraphQLErrorMessage = <R> (data: GraphQLQueryResponse<R>): string => {
-    return data.errors
+const getGraphQLErrorMessage = <R> (data: GraphQLQueryResponse<R>): string =>
+    data.errors
         ?.map((error) => error.message)
         ?.join('\n')
         ?? '';
-};
 
 const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {

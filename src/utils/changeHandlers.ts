@@ -50,10 +50,8 @@ const handleTextField = (handler: (handledEvent: HandledChangeEvent) => void) =>
     });
 };
 
-export const createChangeHandler = (handler: (event: HandledChangeEvent) => void) => {
-    return {
-        handleCheckbox: handleCheckbox(handler),
-        handleNumberField: handleNumberField(handler),
-        handleTextField: handleTextField(handler)
-    };
-};
+export const createChangeHandler = (handler: (event: HandledChangeEvent) => void) => ({
+    handleCheckbox: handleCheckbox(handler),
+    handleNumberField: handleNumberField(handler),
+    handleTextField: handleTextField(handler)
+});

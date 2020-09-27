@@ -42,9 +42,7 @@ export class PropertyTypeError extends Error {
     }
 }
 
-export const objectHasProperty = (obj: object, name: string): obj is AnyPropName => {
-    return obj.hasOwnProperty(name);
-};
+export const objectHasProperty = (obj: object, name: string): obj is AnyPropName => obj.hasOwnProperty(name);
 
 export const isStringProperty = (obj: object, name: string): obj is AnyPropString => {
     if (objectHasProperty(obj, name)) {

@@ -26,6 +26,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/no-unused-vars': 'error',
-        'semi': ['error', 'always']
+        'semi': ['error', 'always'],
+        'arrow-body-style': ['error', 'as-needed']
     }
 };
