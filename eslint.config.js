@@ -21,15 +21,38 @@
 // noinspection NpmUsedModulesInstalled
 const config = require('eslint-config-react-app');
 
+const ruleErrorReducer = (acc, [key, value]) => {
+    let newValue = value;
+    if (value === 'warn') {
+        newValue = 'error';
+    }
+
+    if (value instanceof Array) {
+        newValue = [
+            'error',
+            ...value.slice(1)
+        ];
+    }
+
+    return {
+        ...acc,
+        [key]: newValue
+    };
+};
+
+const rulesWithErrors = Object.entries(config.rules)
+    .reduce(ruleErrorReducer, {});
 const tsOverride = config.overrides
     .find((override) => override.parser === '@typescript-eslint/parser');
+const tsRulesWithErrors = Object.entries(tsOverride.rules)
+    .reduce(ruleErrorReducer, {});
 
 module.exports = {
     extends: [
         'react-app'
     ],
     rules: {
-        ...config.rules,
+        ...rulesWithErrors,
         'semi': ['error', 'always'],
         'arrow-body-style': ['error', 'as-needed'],
         'comma-dangle': ['error', 'never'],
@@ -42,17 +65,14 @@ module.exports = {
             }
         ],
         'no-console': 'error',
-        'react-hooks/exhaustive-deps': 'error',
-        'no-fallthrough': 'error',
-        'default-case': ['error', { commentPattern: '^no default$' }],
+        'no-use-before-define': 'error'
     },
     overrides: [
         {
             ...tsOverride,
             rules: {
-                ...tsOverride.rules,
-                'default-case': ['error', { commentPattern: '^no default$' }],
-                '@typescript-eslint/no-unused-vars': 'error'
+                ...tsRulesWithErrors,
+                '@typescript-eslint/no-use-before-define': 'error'
             }
         }
     ]
