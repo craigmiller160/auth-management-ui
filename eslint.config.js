@@ -19,15 +19,10 @@
 // TODO split the TS and normal JS rules apart properly
 
 module.exports = {
-    parser: '@typescript-eslint/parser',
-    plugins: [
-        '@typescript-eslint'
-    ],
     extends: [
         'react-app'
     ],
     rules: {
-        '@typescript-eslint/no-unused-vars': 'error',
         'semi': ['error', 'always'],
         'arrow-body-style': ['error', 'as-needed'],
         'comma-dangle': ['error', 'never'],
@@ -41,5 +36,15 @@ module.exports = {
         ],
         'no-console': 'error',
         'react-hooks/exhaustive-deps': 'error'
-    }
+    },
+    overrides: [
+        {
+            files: [
+                '**/*.ts?(x)'
+            ],
+            rules: {
+                '@typescript-eslint/no-unused-vars': 'error'
+            }
+        }
+    ]
 };
