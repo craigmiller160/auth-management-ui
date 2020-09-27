@@ -27,6 +27,16 @@ module.exports = {
     rules: {
         '@typescript-eslint/no-unused-vars': 'error',
         'semi': ['error', 'always'],
-        'arrow-body-style': ['error', 'as-needed']
+        'arrow-body-style': ['error', 'as-needed'],
+        'comma-dangle': ['error', 'never'],
+        'object-curly-newline': ['error', { consistent: true }],
+        'max-len': [
+            'error',
+            {
+                code: 120,
+                ignoreComments: true
+            }
+        ],
+        'no-console': 'error'
     }
 };

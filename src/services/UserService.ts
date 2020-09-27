@@ -174,7 +174,8 @@ export const deleteUser = async (userId: number): Promise<Either<Error, UserDeta
         map((wrapper: DeleteUserWrapper) => wrapper.deleteUser)
     );
 
-export const removeClientFromUser = async (userId: number, clientId: number): Promise<Either<Error,Array<UserClient>>> =>
+export const removeClientFromUser = async (userId: number, clientId: number):
+    Promise<Either<Error,Array<UserClient>>> =>
     pipe(
         await api.graphql<RemoveClientFromUserWrapper>({
             payload: `
@@ -224,7 +225,8 @@ export const addClientToUser = async (userId: number, clientId: number): Promise
         map((wrapper: AddClientToUserWrapper) => wrapper.addClientToUser)
     );
 
-export const removeRoleFromUser = async (userId: number, clientId: number, roleId: number): Promise<Either<Error, Array<UserRole>>> =>
+export const removeRoleFromUser = async (userId: number, clientId: number, roleId: number):
+    Promise<Either<Error, Array<UserRole>>> =>
     pipe(
         await api.graphql<RemoveRoleFromUserWrapper>({
             payload: `
@@ -240,7 +242,8 @@ export const removeRoleFromUser = async (userId: number, clientId: number, roleI
         map((wrapper: RemoveRoleFromUserWrapper) => wrapper.removeRoleFromUser)
     );
 
-export const addRoleToUser = async (userId: number, clientId: number, roleId: number): Promise<Either<Error, Array<UserRole>>> =>
+export const addRoleToUser = async (userId: number, clientId: number, roleId: number):
+    Promise<Either<Error, Array<UserRole>>> =>
     pipe(
         await api.graphql<AddRoleToUserWrapper>({
             payload: `

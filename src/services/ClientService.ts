@@ -222,7 +222,8 @@ export const generateGuid = (): Promise<Either<Error, string>> =>
         errorMsg: 'Error generating GUID'
     });
 
-export const removeUserFromClient = async (userId: number, clientId: number): Promise<Either<Error, Array<ClientUser>>> =>
+export const removeUserFromClient = async (userId: number, clientId: number):
+    Promise<Either<Error, Array<ClientUser>>> =>
     pipe(
         await api.graphql<RemoveUserFromClientWrapper>({
             payload: `

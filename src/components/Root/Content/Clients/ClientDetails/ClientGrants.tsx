@@ -120,7 +120,10 @@ const ClientGrants = (props: Props) => {
                     pipe(
                         draft.selectedUser,
                         oMap((oldSelectedUser) => {
-                            draft.selectedUser = fromNullable(draft.clientUsers.find((user) => user.id === oldSelectedUser.id));
+                            draft.selectedUser = fromNullable(
+                                draft.clientUsers
+                                    .find((user) => user.id === oldSelectedUser.id)
+                            );
                         })
                     );
                 });
@@ -137,7 +140,10 @@ const ClientGrants = (props: Props) => {
                     pipe(
                         draft.selectedUser,
                         oMap((oldSelectedUser) => {
-                            draft.selectedUser = fromNullable(draft.clientUsers.find((user) => user.id === oldSelectedUser.id));
+                            draft.selectedUser = fromNullable(
+                                draft.clientUsers
+                                    .find((user) => user.id === oldSelectedUser.id)
+                            );
                         })
                     );
                 });

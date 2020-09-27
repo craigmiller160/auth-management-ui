@@ -74,7 +74,7 @@ const handle401Error = (ex: Error) => {
 const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressErrorFn = (e) => false) => {
     if (!suppressError(ex)) {
         const fullMessage = getFullMessage(errorMsg, ex);
-        console.log(fullMessage, ex);
+        console.log(fullMessage, ex); // eslint-disable-line no-console
         store.dispatch(alertSlice.actions.showErrorAlert(fullMessage));
     }
     handle401Error(ex);
