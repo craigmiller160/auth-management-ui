@@ -69,6 +69,6 @@ const UserDetails = () => {
             <Tabs tabs={ tabs } />
         </div>
     );
-}
+};
 
 export default UserDetails;

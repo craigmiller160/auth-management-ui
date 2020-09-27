@@ -74,7 +74,7 @@ const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
                 />
             ) }
         />
-    )
+    );
 };
 
 export default Autocomplete;

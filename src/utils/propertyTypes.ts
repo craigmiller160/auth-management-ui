@@ -102,4 +102,4 @@ export const assignProperty = (obj: object, name: string, value: any): boolean =
         default:
             throw new PropertyTypeError(`Unsupported value type: ${typeof value}`);
     }
-}
+};

@@ -87,7 +87,7 @@ const getGraphQLErrorMessage = <R> (data: GraphQLQueryResponse<R>): string => {
         ?.map((error) => error.message)
         ?.join('\n')
         ?? '';
-}
+};
 
 const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {

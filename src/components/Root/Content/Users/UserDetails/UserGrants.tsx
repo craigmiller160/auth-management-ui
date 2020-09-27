@@ -79,7 +79,7 @@ const UserGrants = (props: Props) => {
                 );
             }
         });
-    }
+    };
 
     useEffect(() => {
         loadUser();

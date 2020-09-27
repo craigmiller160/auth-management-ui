@@ -52,7 +52,7 @@ const MobileMenu = (props: Props) => {
 
         const activeClass = isMatch ? ' active' : '';
         return `item ${activeClass}`;
-    }
+    };
 
     const authButtonClick = () => {
         props.handleMenuClose();

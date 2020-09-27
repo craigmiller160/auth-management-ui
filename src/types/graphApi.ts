@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ClientDetails, ClientRole, ClientUser, ClientWithRoles, FullClientDetails } from './client';
+import { ClientDetails, ClientUser, ClientWithRoles, FullClientDetails } from './client';
 import { Role } from './role';
 import { UserClient, UserClients, UserDetails, UserRole } from './user';
 

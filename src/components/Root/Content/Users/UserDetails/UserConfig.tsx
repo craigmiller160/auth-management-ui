@@ -143,7 +143,7 @@ const UserConfig = (props: Props) => {
         if (isRight(result)) {
             setState((draft) => {
                 draft.allowNavigationOverride = true;
-            })
+            });
             history.push('/users');
             dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted user ${id}`));
         }

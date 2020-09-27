@@ -37,7 +37,7 @@ interface Props<T> {
 
 const defaultForm: SelectForm<any> = {
     value: null
-}
+};
 
 const SelectDialog = <T extends any>(props: Props<T>) => {
     const {
@@ -60,7 +60,7 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
         if (values.value != null) {
             onSelect(values.value);
         }
-    }
+    };
 
     const actions: Array<DialogAction> = [
         { label: 'Select', onClick: handleSubmit(onSubmit) },

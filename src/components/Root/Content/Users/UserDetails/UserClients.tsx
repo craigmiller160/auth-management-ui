@@ -120,7 +120,7 @@ const UserClients = (props: Props) => {
 
     const addClientSelect = async (selectedClient: SelectOption<number>) => {
         setState((draft) => {
-            draft.showAddClientDialog = false
+            draft.showAddClientDialog = false;
         });
         const clientId = selectedClient.value;
         const clients = pipe (

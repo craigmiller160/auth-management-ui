@@ -162,6 +162,6 @@ const ClientGrantUsers = (props: Props) => {
             />
         </>
     );
-}
+};
 
 export default ClientGrantUsers;

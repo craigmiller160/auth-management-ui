@@ -243,7 +243,7 @@ const ClientConfig = (props: Props) => {
         });
 
     const doDelete = async () => {
-        const result = await deleteClient(state.clientId)
+        const result = await deleteClient(state.clientId);
         if (isRight(result)) {
             setState((draft) => {
                 draft.allowNavigationOverride = true;
