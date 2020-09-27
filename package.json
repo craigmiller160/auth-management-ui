@@ -35,7 +35,8 @@
     "build": "react-scripts build && node scripts/dist.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dist": "node scripts/dist.js"
+    "dist": "node scripts/dist.js",
+    "lint": "eslint -c .eslintrc src/**/*"
   },
   "eslintConfig": {
     "extends": "react-app"
