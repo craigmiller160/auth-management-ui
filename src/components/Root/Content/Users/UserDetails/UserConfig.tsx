@@ -252,7 +252,7 @@ const UserConfig = (props: Props) => {
                         Save
                     </Button>
                     {
-                        state.userId === 0 &&
+                        state.userId > 0 &&
                         <Button
                             variant="contained"
                             color="primary"
