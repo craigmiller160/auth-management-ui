@@ -16,62 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// noinspection NpmUsedModulesInstalled
-const config = require('eslint-config-react-app');
-
-const ruleErrorReducer = (acc, [key, value]) => {
-    let newValue = value;
-    if (value === 'warn') {
-        newValue = 'error';
-    }
-
-    if (value instanceof Array) {
-        newValue = [
-            'error',
-            ...value.slice(1)
-        ];
-    }
-
-    return {
-        ...acc,
-        [key]: newValue
-    };
-};
-
-const rulesWithErrors = Object.entries(config.rules)
-    .reduce(ruleErrorReducer, {});
-const tsOverride = config.overrides
-    .find((override) => override.parser === '@typescript-eslint/parser');
-const tsRulesWithErrors = Object.entries(tsOverride.rules)
-    .reduce(ruleErrorReducer, {});
-
 module.exports = {
     extends: [
-        'react-app'
-    ],
-    rules: {
-        ...rulesWithErrors,
-        'semi': ['error', 'always'],
-        'arrow-body-style': ['error', 'as-needed'],
-        'comma-dangle': ['error', 'never'],
-        'object-curly-newline': ['error', { consistent: true }],
-        'max-len': [
-            'error',
-            {
-                code: 120,
-                ignoreComments: true
-            }
-        ],
-        'no-console': 'error',
-        'no-use-before-define': 'error'
-    },
-    overrides: [
-        {
-            ...tsOverride,
-            rules: {
-                ...tsRulesWithErrors,
-                '@typescript-eslint/no-use-before-define': 'error'
-            }
-        }
+        '@craigmiller160/eslint-config-cra-extension'
     ]
 };
