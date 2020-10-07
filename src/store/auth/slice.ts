@@ -20,15 +20,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthUser } from '../../types/auth';
 import { none, Option } from 'fp-ts/es6/Option';
 
-const initialState: StateType = {
-    userData: none,
-    hasChecked: false
-};
-
 interface StateType {
     userData: Option<AuthUser>,
     hasChecked: boolean;
 }
+
+const initialState: StateType = {
+    userData: none,
+    hasChecked: false
+};
 
 const setUserData = (state: StateType, action: PayloadAction<Option<AuthUser>>) => {
     state.userData = action.payload;
