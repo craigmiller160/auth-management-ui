@@ -1158,8 +1158,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@craigmiller160/eslint-config-cra-extension@file:.yalc/@craigmiller160/eslint-config-cra-extension":
-  version "1.3.0-beta"
+"@craigmiller160/eslint-config-cra-extension@^1.2.1":
+  version "1.2.1"
+  resolved "http://localhost:30000/@craigmiller160%2feslint-config-cra-extension/-/eslint-config-cra-extension-1.2.1.tgz#5df90e5f890ee8b54c115b50f42514f8a5fb3bd7"
+  integrity sha512-BAF7UbY5wi7y+G722d3NqAQi2d+73mRUF9By8eSsgsqTRII2AOt2+boxtEX0nk9vPqGeqSjD2pxOGv8siVuVmA==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.10.0"
     "@typescript-eslint/parser" "^2.10.0"
