@@ -18,6 +18,8 @@
 
 /// <reference path="../../support/index.d.ts" />
 
+import isMock from '../../util/isMock';
+
 export {}
 
 describe('First Test', () => {
@@ -26,14 +28,14 @@ describe('First Test', () => {
     });
 
     it('before login', () => {
-        if (!Cypress.env('MOCK')) {
+        if (!isMock()) {
             cy.navbar('validateLoggedOut')
                 .homePage('validatePage');
         }
     });
 
     it('logging in', () => {
-        if (!Cypress.env('MOCK')) {
+        if (!isMock()) {
             cy.navbar('validateLoggedOut')
                 .homePage('validatePage')
                 .navbar('clickLogin')
