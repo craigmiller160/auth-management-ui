@@ -41,8 +41,9 @@ import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
-import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import InputDialog from '../../../../ui/Dialog/InputDialog';
+import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
 
 const SECRET_PLACEHOLDER = '**********';
 

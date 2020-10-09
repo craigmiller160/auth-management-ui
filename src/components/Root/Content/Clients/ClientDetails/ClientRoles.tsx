@@ -27,10 +27,10 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
 import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
-import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import InputDialog from '../../../../ui/Dialog/InputDialog';
 
 const ROLE_PREFIX = 'ROLE_';
 

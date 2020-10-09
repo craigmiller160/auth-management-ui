@@ -26,8 +26,8 @@ import { UserDetails } from '../../../../../types/user';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { Button, Typography } from '@material-ui/core';
 import { useImmer } from 'use-immer';
-import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
     clientUsers: Array<ClientUser>;

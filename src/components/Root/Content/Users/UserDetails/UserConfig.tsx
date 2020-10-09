@@ -33,8 +33,8 @@ import { email } from '../../../../../utils/validations';
 import './UserConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
 import Button from '@material-ui/core/Button';
-import { ConfirmDialog } from '../../../../ui/Dialog';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     allowNavigationOverride: boolean;

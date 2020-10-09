@@ -23,7 +23,8 @@ import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import List, { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { Button, Typography } from '@material-ui/core';
-import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
+import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
     selectedUser: ClientUser;

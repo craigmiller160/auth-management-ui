@@ -25,13 +25,13 @@ import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { Business } from '@material-ui/icons';
 import { exists, Option } from 'fp-ts/es6/Option';
-import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { getAllClients } from '../../../../../services/ClientService';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
     userClients: Array<UserClient>;

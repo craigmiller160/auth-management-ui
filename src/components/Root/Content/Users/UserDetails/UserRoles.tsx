@@ -24,11 +24,11 @@ import { Typography } from '@material-ui/core';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
     selectedClient: Option<UserClient>;
