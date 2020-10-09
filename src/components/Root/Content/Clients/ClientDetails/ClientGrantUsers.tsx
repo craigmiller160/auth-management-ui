@@ -24,10 +24,10 @@ import { ClientUser } from '../../../../../types/client';
 import { useHistory } from 'react-router';
 import { UserDetails } from '../../../../../types/user';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { SectionHeader } from '../../../../ui/Header';
 import { Button, Typography } from '@material-ui/core';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props {
     clientUsers: Array<ClientUser>;

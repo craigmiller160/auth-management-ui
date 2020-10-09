@@ -21,7 +21,6 @@ import { ClientListItem, ClientListResponse } from '../../../../../types/client'
 import { UserClient } from '../../../../../types/user';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
-import { SectionHeader } from '../../../../ui/Header';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { Business } from '@material-ui/icons';
@@ -32,6 +31,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { getAllClients } from '../../../../../services/ClientService';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props {
     userClients: Array<UserClient>;

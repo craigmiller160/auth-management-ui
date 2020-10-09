@@ -39,4 +39,3 @@ const Header = ({ title, variant }: HeaderProps) => (
 );
 
 export const PageHeader = ({ title }: PublicProps) => <Header title={ title } variant="h3" />;
-export const SectionHeader = ({ title }: PublicProps) => <Header title={ title } variant="h5" />;

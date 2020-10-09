@@ -20,7 +20,6 @@ import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
 import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
 import { UserClient, UserRole } from '../../../../../types/user';
-import { SectionHeader } from '../../../../ui/Header';
 import { Typography } from '@material-ui/core';
 import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
@@ -29,6 +28,7 @@ import { ConfirmDialog, SelectDialog } from '../../../../ui/Dialog';
 import { useImmer } from 'use-immer';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props {
     selectedClient: Option<UserClient>;
