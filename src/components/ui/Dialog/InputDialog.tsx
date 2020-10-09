@@ -17,10 +17,10 @@
  */
 
 import React, { MouseEvent, useEffect } from 'react';
-import BaseDialog, { DialogAction } from './BaseDialog';
 import { useForm } from 'react-hook-form';
 import TextField from '../Form/TextField';
 import './InputDialog.scss';
+import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
 
 interface InputForm {
     value: string;
