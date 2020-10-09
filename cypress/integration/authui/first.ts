@@ -27,13 +27,13 @@ describe('First Test', () => {
         cy.get('button#navbar-auth-btn')
             .should('have.text', 'Login')
             .click();
-        cy.get('#oauth2-login-page #username')
-            .should('be.visible')
-            .type('craig@gmail.com');
-        cy.get('#oauth2-login-page #password')
-            .type('password');
-        cy.get('#oauth2-login-page #submitBtn')
-            .click();
+        // cy.get('#oauth2-login-page #username')
+        //     .should('be.visible')
+        //     .type('craig@gmail.com');
+        // cy.get('#oauth2-login-page #password')
+        //     .type('password');
+        // cy.get('#oauth2-login-page #submitBtn')
+        //     .click();
         cy.get('button#navbar-auth-btn')
             .should('have.text', 'Logout');
     });
