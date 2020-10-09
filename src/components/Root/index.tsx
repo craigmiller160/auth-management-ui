@@ -17,11 +17,11 @@
  */
 
 import React, { useEffect } from 'react';
-import Navbar from './Navbar';
 import Content from './Content';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAuthUser } from '../../store/auth/actions';
 import { RootState } from '../../store';
+import AuthNavbar from './AuthNavbar';
 
 const Root = () => {
     const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const Root = () => {
 
     return (
         <div>
-            <Navbar />
+            <AuthNavbar />
             {
                 hasChecked &&
                 <Content />
