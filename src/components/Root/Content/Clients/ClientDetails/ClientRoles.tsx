@@ -30,6 +30,7 @@ import Button from '@material-ui/core/Button';
 import { ConfirmDialog, InputDialog } from '../../../../ui/Dialog';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 const ROLE_PREFIX = 'ROLE_';
 
@@ -166,12 +167,10 @@ const ClientRoles = (props: Props) => {
 
     return (
         <div className="ClientRoles">
-            <Typography
-                className="name"
-                variant="h5"
-            >
-                { state.clientName }
-            </Typography>
+            <SectionHeader
+                title={ state.clientName }
+                noDivider
+            />
             <Grid
                 container
                 direction="row"

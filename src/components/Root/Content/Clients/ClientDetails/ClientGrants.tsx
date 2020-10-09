@@ -23,7 +23,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ClientRole, ClientUser } from '../../../../../types/client';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';

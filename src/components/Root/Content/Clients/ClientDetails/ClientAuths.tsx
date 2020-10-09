@@ -29,6 +29,7 @@ import { LockOpen } from '@material-ui/icons';
 import { formatApiDateTime } from '../../../../../utils/date';
 import { revokeUserAuthAccess } from '../../../../../services/UserService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props extends IdMatchProps {}
 
@@ -84,12 +85,10 @@ const ClientAuths = (props: Props) => {
 
     return (
         <div className="ClientAuths">
-            <Typography
-                className="name"
-                variant="h5"
-            >
-                { state.clientName }
-            </Typography>
+            <SectionHeader
+                title={ state.clientName }
+                noDivider
+            />
             <Grid
                 container
                 direction="row"

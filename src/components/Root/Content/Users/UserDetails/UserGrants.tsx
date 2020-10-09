@@ -22,12 +22,13 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { getUserClients } from '../../../../../services/UserService';
 import { getOrElse } from 'fp-ts/es6/Either';
 import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import './UserGrants.scss';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     userId: number;
@@ -92,12 +93,10 @@ const UserGrants = (props: Props) => {
 
     return (
         <div className="UserGrants">
-            <Typography
-                className="email"
-                variant="h5"
-            >
-                { state.user.email }
-            </Typography>
+            <SectionHeader
+                title={ state.user.email }
+                noDivider
+            />
             <Grid
                 container
                 direction="row"

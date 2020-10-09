@@ -29,6 +29,7 @@ import { formatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     userId: number;
@@ -94,12 +95,10 @@ const UserAuths = (props: Props) => {
 
     return (
         <div className="UserAuths">
-            <Typography
-                className="email"
-                variant="h5"
-            >
-                { state.userAuths.email }
-            </Typography>
+            <SectionHeader
+                title={ state.userAuths.email }
+                noDivider
+            />
             {
                 items.length > 0 &&
                 <Grid
