@@ -18,3 +18,9 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+    if(Cypress.env('MOCK') === 'true') {
+        cy.server();
+    }
+});
