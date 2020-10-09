@@ -26,8 +26,10 @@ describe('First Test', () => {
     });
 
     it('logs in', () => {
+        cy.navbar('validateLoggedOut');
+
+
         cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Login')
             .click();
 
         cy.loginPage('validatePage')

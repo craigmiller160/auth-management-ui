@@ -21,5 +21,6 @@
 declare namespace Cypress {
     interface Chainable {
         loginPage(key: string, args?: object): Chainable<Element>;
+        navbar(key: string): Chainable<Element>;
     }
 }
