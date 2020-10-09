@@ -28,9 +28,9 @@ import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
-import { SectionHeader } from '../../../../ui/Header';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props extends IdMatchProps {}
 
@@ -162,12 +162,10 @@ const ClientGrants = (props: Props) => {
 
     return (
         <div className="ClientGrants">
-            <Typography
-                className="name"
-                variant="h5"
-            >
-                { state.clientName }
-            </Typography>
+            <SectionHeader
+                title={ state.clientName }
+                noDivider
+            />
             <Grid
                 container
                 direction="row"
