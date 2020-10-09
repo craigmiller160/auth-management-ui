@@ -16,13 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference types="cypress" />
-
-declare namespace Cypress {
-    interface Chainable {
-        loginPage(key: string, args?: object): Chainable<Element>;
-        navbar(key: string, args?: object): Chainable<Element>;
-        homePage(key: string, args?: object): Chainable<Element>;
-        mockApis(): Chainable<Element>;
-    }
-}
+export default () => {
+    cy.server();
+    cy.route('GET', '/user', 'fixture:userData.json');
+};
