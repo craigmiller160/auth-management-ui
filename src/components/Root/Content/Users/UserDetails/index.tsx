@@ -18,13 +18,13 @@
 
 import React, { ComponentType } from 'react';
 import { useRouteMatch } from 'react-router';
-import { PageHeader } from '../../../../ui/Header';
 import UserConfig from './UserConfig';
 import UserGrants from './UserGrants';
 import UserAuths from './UserAuths';
 import './UserDetails.scss';
 import Tabs, { TabConfig } from '../../../../ui/Tabs';
 import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 const PATH_CONFIG = '/config';
 const PATH_GRANTS = '/grants';

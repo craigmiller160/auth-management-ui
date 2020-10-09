@@ -17,7 +17,6 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { PageHeader } from '../../../ui/Header';
 import { useHistory } from 'react-router';
 import { getAllUsers } from '../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
@@ -27,6 +26,7 @@ import './Users.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { UserDetails, UserList } from '../../../../types/user';
 import { getOrElse, map } from 'fp-ts/es6/Either';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     users: Array<UserDetails>;

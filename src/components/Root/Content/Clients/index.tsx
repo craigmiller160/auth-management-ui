@@ -19,7 +19,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { getAllClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
-import { PageHeader } from '../../../ui/Header';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './Clients.scss';
@@ -27,6 +26,7 @@ import Table from '../../../ui/Table';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ClientListItem, ClientListResponse } from '../../../../types/client';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     clients: Array<ClientListItem>;

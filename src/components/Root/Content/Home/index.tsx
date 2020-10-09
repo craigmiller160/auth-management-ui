@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import { PageHeader } from '../../../ui/Header';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 const Home = () => (
     <div>

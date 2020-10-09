@@ -19,13 +19,13 @@
 import React, { ComponentType } from 'react';
 import { useRouteMatch } from 'react-router';
 import ClientConfig from './ClientConfig';
-import { PageHeader } from '../../../../ui/Header';
 import ClientRoles from './ClientRoles';
 import ClientGrants from './ClientGrants';
 import ClientAuths from './ClientAuths';
 import Tabs, { TabConfig } from '../../../../ui/Tabs';
 import './ClientDetails.scss';
 import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 const PATH_CONFIG = '/config';
 const PATH_ROLES = '/roles';

@@ -37,5 +37,3 @@ const Header = ({ title, variant }: HeaderProps) => (
         <Divider />
     </div>
 );
-
-export const PageHeader = ({ title }: PublicProps) => <Header title={ title } variant="h3" />;
