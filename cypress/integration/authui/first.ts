@@ -26,20 +26,25 @@ describe('First Test', () => {
     });
 
     it('before login', () => {
-        cy.navbar('validateLoggedOut')
-            .homePage('validatePage');
+        if (Cypress.env('MOCK') !== 'true') {
+            cy.navbar('validateLoggedOut')
+                .homePage('validatePage');
+        }
     });
 
     it('logging in', () => {
-        cy.navbar('validateLoggedOut')
-            .homePage('validatePage')
-            .navbar('clickLogin')
-            .loginPage('validatePage')
-            .loginPage('login', {
-                username: 'craig@gmail.com',
-                password: 'password'
-            })
-            .navbar('validateLoggedIn')
+        if (Cypress.env('MOCK') !== 'true') {
+            cy.navbar('validateLoggedOut')
+                .homePage('validatePage')
+                .navbar('clickLogin')
+                .loginPage('validatePage')
+                .loginPage('login', {
+                    username: 'craig@gmail.com',
+                    password: 'password'
+                });
+        }
+
+        cy.navbar('validateLoggedIn')
             .homePage('validatePage');
     });
 });
