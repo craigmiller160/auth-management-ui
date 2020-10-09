@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+export {}
+
 describe('First Test', () => {
     beforeEach(() => {
         cy.visit('https://localhost:3000');
