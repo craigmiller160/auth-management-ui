@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/// <reference path="../../support/index.d.ts" />
+
 export {}
 
 describe('First Test', () => {
@@ -27,6 +29,15 @@ describe('First Test', () => {
         cy.get('button#navbar-auth-btn')
             .should('have.text', 'Login')
             .click();
+
+        cy.loginPage('validatePage')
+            .loginPage('login', {
+                username: 'craig@gmail.com',
+                password: 'password'
+            });
+        // console.log(loginPage); // TODO delete this
+        // loginPage.validatePage();
+
         // cy.get('#oauth2-login-page #username')
         //     .should('be.visible')
         //     .type('craig@gmail.com');
@@ -34,7 +45,7 @@ describe('First Test', () => {
         //     .type('password');
         // cy.get('#oauth2-login-page #submitBtn')
         //     .click();
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Logout');
+        // cy.get('button#navbar-auth-btn')
+        //     .should('have.text', 'Logout');
     });
 });

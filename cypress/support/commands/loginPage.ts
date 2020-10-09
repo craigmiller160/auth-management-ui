@@ -16,14 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 const SELECT_NAVBAR_BRAND = '#oauth2-login-page a.navbar-brand strong';
-const SELECT_USERNAME_LABEL = '#oauth2-login-page label[for="username"]"';
+const SELECT_USERNAME_LABEL = '#oauth2-login-page label[for="username"]';
 const SELECT_USERNAME_FIELD = '#oauth2-login-page input#username';
 const SELECT_PASSWORD_LABEL = '#oauth2-login-page label[for="password"]';
 const SELECT_PASSWORD_FIELD = '#oauth2-login-page input#password';
 const SELECT_SUBMIT_BTN = '#oauth2-login-page #submitBtn';
 
-const login = (username: string, password: string) => {
+const login = ({ username, password }: { username: string, password: string }) => {
     cy.get(SELECT_USERNAME_FIELD)
         .type(username);
     cy.get(SELECT_PASSWORD_FIELD)
@@ -47,7 +48,16 @@ const validatePage = () => {
         .should('have.text', 'Login');
 };
 
-export default {
+const loginPage = {
     login,
     validatePage
 };
+
+export default (key: string, args?: object) => {
+    const action = loginPage[key];
+    if (action) {
+        action(args);
+    } else {
+        throw new Error(`No such action: ${key}`);
+    }
+}
