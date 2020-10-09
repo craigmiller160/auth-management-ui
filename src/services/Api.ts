@@ -19,12 +19,12 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { none } from 'fp-ts/es6/Option';
 import store from '../store';
-import alertSlice from '../store/alert/slice';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { GraphQLQueryResponse } from '../types/graphApi';
+import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 const instance = axios.create({
     baseURL: '/api',
@@ -75,7 +75,7 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
     if (!suppressError(ex)) {
         const fullMessage = getFullMessage(errorMsg, ex);
         console.log(fullMessage, ex); // eslint-disable-line no-console
-        store.dispatch(alertSlice.actions.showErrorAlert(fullMessage));
+        store.dispatch(showErrorReduxAlert(fullMessage));
     }
     handle401Error(ex);
 };

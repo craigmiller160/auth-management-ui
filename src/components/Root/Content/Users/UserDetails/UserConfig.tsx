@@ -25,7 +25,6 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { useForm } from 'react-hook-form';
 import { isRight } from 'fp-ts/es6/These';
-import alertSlice from '../../../../../store/alert/slice';
 import { useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import TextField from '../../../../ui/Form/TextField';
@@ -34,7 +33,7 @@ import './UserConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
 import Button from '@material-ui/core/Button';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     allowNavigationOverride: boolean;
@@ -87,7 +86,7 @@ const UserConfig = (props: Props) => {
                 });
                 reset(user);
                 const path = props.match.path.replace(':id', `${user.id}`);
-                dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved user ${id}`));
+                dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`));
                 history.push(path);
             })
         );
@@ -145,7 +144,7 @@ const UserConfig = (props: Props) => {
                 draft.allowNavigationOverride = true;
             });
             history.push('/users');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted user ${id}`));
+            dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
         }
     };
 

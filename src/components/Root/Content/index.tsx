@@ -26,9 +26,9 @@ import { isAuthorized } from '../../../store/auth/selectors';
 import Home from './Home';
 import Users from './Users';
 import ClientDetails from './Clients/ClientDetails';
-import Alert from '../../ui/Alert';
 import './Content.scss';
 import UserDetails from './Users/UserDetails';
+import { ReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 interface RuleProps {
     isAuth: boolean;
@@ -44,7 +44,7 @@ const Content = () => {
 
     return (
         <Container className="Content">
-            <Alert />
+            <ReduxAlert />
             <Switch>
                 <ProtectedRoute
                     path="/clients"

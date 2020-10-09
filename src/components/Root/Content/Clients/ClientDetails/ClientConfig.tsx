@@ -24,7 +24,6 @@ import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { isRight } from 'fp-ts/es6/These';
-import alertSlice from '../../../../../store/alert/slice';
 import {
     createClient,
     deleteClient,
@@ -43,7 +42,7 @@ import List, { Item } from '../../../../ui/List';
 import { Language } from '@material-ui/icons';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
-import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 const SECRET_PLACEHOLDER = '**********';
 
@@ -108,7 +107,7 @@ const ClientConfig = (props: Props) => {
                 });
                 reset(client);
                 const path = props.match.path.replace(':id', `${client.id}`);
-                dispatch(alertSlice.actions.showSuccessAlert(`Successfully saved client ${id}`));
+                dispatch(showSuccessReduxAlert(`Successfully saved client ${id}`));
                 history.push(path);
             })
         );
@@ -250,7 +249,7 @@ const ClientConfig = (props: Props) => {
                 draft.allowNavigationOverride = true;
             });
             history.push('/clients');
-            dispatch(alertSlice.actions.showSuccessAlert(`Successfully deleted client ${id}`));
+            dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
         }
     };
 
