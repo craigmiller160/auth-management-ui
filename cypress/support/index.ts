@@ -15,10 +15,3 @@
 
 // Import commands.ts using ES2015 syntax:
 import './commands'
-import isMock from '../util/isMock';
-
-beforeEach(() => {
-    if(isMock()) {
-        cy.mockApis();
-    }
-});
