@@ -1174,6 +1174,19 @@
     eslint-plugin-react "^7.21.3"
     eslint-plugin-react-hooks "^4.1.2"
 
+"@craigmiller160/react-material-ui-common@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:30000/@craigmiller160%2freact-material-ui-common/-/react-material-ui-common-1.0.0.tgz#e574ee66778b052bb6b93a3f618683c82cad7eff"
+  integrity sha512-LS2TMy9sLTqZkN7euJc7xfsbWseUEyEF0Tsqs0z63yiRmj6O6Q4EIuZ56voka9jw5c1T9rGDJ5ZcCewfnWIGbA==
+  dependencies:
+    "@material-ui/core" "^4.11.0"
+    "@material-ui/icons" "^4.9.1"
+    "@material-ui/lab" "^4.0.0-alpha.56"
+    "@reduxjs/toolkit" "^1.4.0"
+    react "^16.13.1"
+    react-router "^5.2.0"
+    react-router-dom "^5.2.0"
+
 "@craigmiller160/react-protected-route@^1.0.1":
   version "1.0.1"
   resolved "http://localhost:30000/@craigmiller160%2freact-protected-route/-/react-protected-route-1.0.1.tgz"
