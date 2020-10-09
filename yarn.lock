@@ -1174,10 +1174,10 @@
     eslint-plugin-react "^7.21.3"
     eslint-plugin-react-hooks "^4.1.2"
 
-"@craigmiller160/react-material-ui-common@^1.0.1":
-  version "1.0.1"
-  resolved "http://localhost:30000/@craigmiller160%2freact-material-ui-common/-/react-material-ui-common-1.0.1.tgz#b8ec7174bbb6a082a7179747c38ed6a4e4ae5284"
-  integrity sha512-LXJuXggaI1qWLaSKDsuxnq64naJ0iqNN5ZWnnYDEl0yTohWxXjf7G7SnZDAwyJhnMZm+wOFzIDIdmT70VVlyhQ==
+"@craigmiller160/react-material-ui-common@^1.0.2":
+  version "1.0.2"
+  resolved "http://localhost:30000/@craigmiller160%2freact-material-ui-common/-/react-material-ui-common-1.0.2.tgz#dd4d8f72d3ec1748ebcc48e76e72a2c5cd7b3a0b"
+  integrity sha512-VDB050LBElVzFhxM2QfpaG/H2b+v62MMMN6RyB1HVHsqwWkHu0H+Gl4nFbggvZ75rhqESXGpUrMpz5MnBq++Nw==
   dependencies:
     "@material-ui/core" "^4.11.0"
     "@material-ui/icons" "^4.9.1"
