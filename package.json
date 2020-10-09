@@ -31,7 +31,6 @@
     "eject": "react-scripts eject",
     "dist": "node scripts/dist.js",
     "lint": "node scripts/eslint.js",
-    "cypress:open:mock": "cypress open --env MOCK=true",
     "cypress:open": "cypress open"
   },
   "browserslist": {

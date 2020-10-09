@@ -27,9 +27,7 @@
 import loginPage from './commands/loginPage';
 import navbar from './commands/navbar';
 import homePage from './commands/homePage';
-import mockApis from './commands/mockApis';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbar', navbar);
 Cypress.Commands.add('homePage', homePage);
-Cypress.Commands.add('mockApis', mockApis);
