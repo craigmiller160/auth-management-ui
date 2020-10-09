@@ -28,7 +28,10 @@ const path = require('path');
             errorOnUnmatchedPattern: false,
             configFile: path.resolve(process.cwd(), 'eslint.config.js')
         });
-        const report = eslint.executeOnFiles(['src']);
+        const report = eslint.executeOnFiles([
+            'src/**/*.{js,jsx,ts,tsx}',
+            'cypress/**/*.{js,jsx,ts,tsx}'
+        ]);
 
         const formatter = eslint.getFormatter("stylish");
         const resultText = formatter(report.results);
