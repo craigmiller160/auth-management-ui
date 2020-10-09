@@ -19,6 +19,9 @@
 const { CLIEngine } = require('eslint');
 const path = require('path');
 
+// TODO if it works, move it to the eslint library.
+// TODO also downgrade that lib's eslint version to 6.8.x
+
 (async () => {
     try {
         const eslint = new CLIEngine({
