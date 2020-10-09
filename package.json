@@ -30,8 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dist": "node scripts/dist.js",
-    "lint": "eslint -c eslint.config.js src --no-error-on-unmatched-pattern",
-    "lint2": "node scripts/eslint.js",
+    "lint": "node scripts/eslint.js",
     "cypress:open:mock": "cypress open --env MOCK=true",
     "cypress:open": "cypress open"
   },
