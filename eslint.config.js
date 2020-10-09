@@ -16,8 +16,4 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = {
-    extends: [
-        '@craigmiller160/eslint-config-cra-extension'
-    ]
-};
+module.exports = require('@craigmiller160/eslint-config-cra-extension');
