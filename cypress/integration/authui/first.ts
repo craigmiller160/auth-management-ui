@@ -25,14 +25,21 @@ describe('First Test', () => {
         cy.visit('https://localhost:3000');
     });
 
-    it('logs in', () => {
+    it('before login', () => {
         cy.navbar('validateLoggedOut')
+            .homePage('validatePage');
+    });
+
+    it('logging in', () => {
+        cy.navbar('validateLoggedOut')
+            .homePage('validatePage')
             .navbar('clickLogin')
             .loginPage('validatePage')
             .loginPage('login', {
                 username: 'craig@gmail.com',
                 password: 'password'
             })
-            .navbar('validateLoggedIn');
+            .navbar('validateLoggedIn')
+            .homePage('validatePage');
     });
 });

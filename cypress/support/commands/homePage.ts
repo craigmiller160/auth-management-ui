@@ -16,12 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference types="cypress" />
+import createCommand from './createCommand';
 
-declare namespace Cypress {
-    interface Chainable {
-        loginPage(key: string, args?: object): Chainable<Element>;
-        navbar(key: string, args?: object): Chainable<Element>;
-        homePage(key: string, args?: object): Chainable<Element>;
-    }
-}
+const SELECT_PAGE_MESSAGE = '#home-page h3';
+
+const validatePage = () => {
+    cy.get(SELECT_PAGE_MESSAGE)
+        .should('have.text', 'Welcome to OAuth Management');
+};
+
+const loginPage = {
+    validatePage
+};
+
+export default createCommand(loginPage);
