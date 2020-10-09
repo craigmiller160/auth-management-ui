@@ -151,6 +151,7 @@ const ClientRoles = (props: Props) => {
         const selectedRole = state.roles[state.selectedRoleIndex];
         setState((draft) => {
             draft.showDeleteDialog = false;
+            draft.selectedRoleIndex = -1;
         });
         pipe(
             await deleteRole(selectedRole.id),

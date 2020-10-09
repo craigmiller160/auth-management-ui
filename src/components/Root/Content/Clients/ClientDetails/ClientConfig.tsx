@@ -240,7 +240,7 @@ const ClientConfig = (props: Props) => {
 
     const toggleDeleteDialog = (show: boolean) =>
         setState((draft) => {
-            draft.showDeleteDialog = true;
+            draft.showDeleteDialog = show;
         });
 
     const doDelete = async () => {
