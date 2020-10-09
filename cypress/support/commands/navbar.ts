@@ -20,17 +20,43 @@ import createCommand from './createCommand';
 
 const SELECT_NAVBAR_TITLE = '#navbar-title-btn';
 const SELECT_AUTH_BTN = '#navbar-auth-btn';
+const SELECT_USERS_BTN = '#navbar-item-users';
+const SELECT_CLIENTS_BTN = '#navbar-item-clients';
 
 const validateLoggedOut = () => {
     cy.get(SELECT_NAVBAR_TITLE)
         .should('have.text', 'OAuth Management');
 
+    cy.get(SELECT_USERS_BTN)
+        .should('not.be.visible');
+    cy.get(SELECT_CLIENTS_BTN)
+        .should('not.be.visible');
+
     cy.get(SELECT_AUTH_BTN)
         .should('have.text', 'Login');
 };
 
+const validateLoggedIn = () => {
+    cy.get(SELECT_NAVBAR_TITLE)
+        .should('have.text', 'OAuth Management');
+
+    cy.get(SELECT_USERS_BTN)
+        .should('be.visible');
+    cy.get(SELECT_CLIENTS_BTN)
+        .should('be.visible');
+
+    cy.get(SELECT_AUTH_BTN)
+        .should('have.text', 'Logout');
+};
+
+const clickLogin = () => {
+    cy.get(SELECT_AUTH_BTN).click();
+};
+
 const navbar = {
-    validateLoggedOut
+    validateLoggedOut,
+    validateLoggedIn,
+    clickLogin
 };
 
 export default createCommand(navbar);

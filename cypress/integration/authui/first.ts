@@ -26,19 +26,13 @@ describe('First Test', () => {
     });
 
     it('logs in', () => {
-        cy.navbar('validateLoggedOut');
-
-
-        cy.get('button#navbar-auth-btn')
-            .click();
-
-        cy.loginPage('validatePage')
+        cy.navbar('validateLoggedOut')
+            .navbar('clickLogin')
+            .loginPage('validatePage')
             .loginPage('login', {
                 username: 'craig@gmail.com',
                 password: 'password'
-            });
-
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Logout');
+            })
+            .navbar('validateLoggedIn');
     });
 });
