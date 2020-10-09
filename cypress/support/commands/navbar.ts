@@ -16,27 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference path="../../support/index.d.ts" />
+import createCommand from './createCommand';
 
-export {}
+const SELECT_NAVBAR_TITLE = '#navbar-title-btn';
+const SELECT_AUTH_BTN = '#navbar-auth-btn';
 
-describe('First Test', () => {
-    beforeEach(() => {
-        cy.visit('https://localhost:3000');
-    });
+const validateLoggedOut = () => {
+    cy.get(SELECT_NAVBAR_TITLE)
+        .should('have.text', 'OAuth Management');
 
-    it('logs in', () => {
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Login')
-            .click();
+    cy.get(SELECT_AUTH_BTN)
+        .should('have.text', 'Login');
+};
 
-        cy.loginPage('validatePage')
-            .loginPage('login', {
-                username: 'craig@gmail.com',
-                password: 'password'
-            });
+const navbar = {
+    validateLoggedOut
+};
 
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Logout');
-    });
-});
+export default createCommand(navbar);

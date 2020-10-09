@@ -25,5 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import loginPage from './commands/loginPage';
+import navbar from './commands/navbar';
 
 Cypress.Commands.add('loginPage', loginPage);
+Cypress.Commands.add('navbar', navbar);

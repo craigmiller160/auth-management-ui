@@ -16,27 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference path="../../support/index.d.ts" />
-
-export {}
-
-describe('First Test', () => {
-    beforeEach(() => {
-        cy.visit('https://localhost:3000');
-    });
-
-    it('logs in', () => {
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Login')
-            .click();
-
-        cy.loginPage('validatePage')
-            .loginPage('login', {
-                username: 'craig@gmail.com',
-                password: 'password'
-            });
-
-        cy.get('button#navbar-auth-btn')
-            .should('have.text', 'Logout');
-    });
-});
+export default (actions: object) => (key: string, args?: object) => {
+    const action = actions[key];
+    if (action) {
+        action(args);
+    } else {
+        throw new Error(`No such action: ${key}`);
+    }
+}
