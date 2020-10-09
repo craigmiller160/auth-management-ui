@@ -26,14 +26,14 @@ describe('First Test', () => {
     });
 
     it('before login', () => {
-        if (Cypress.env('MOCK') !== 'true') {
+        if (!Cypress.env('MOCK')) {
             cy.navbar('validateLoggedOut')
                 .homePage('validatePage');
         }
     });
 
     it('logging in', () => {
-        if (Cypress.env('MOCK') !== 'true') {
+        if (!Cypress.env('MOCK')) {
             cy.navbar('validateLoggedOut')
                 .homePage('validatePage')
                 .navbar('clickLogin')

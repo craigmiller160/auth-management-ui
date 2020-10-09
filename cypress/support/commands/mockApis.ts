@@ -18,5 +18,5 @@
 
 export default () => {
     cy.server();
-    cy.route('GET', '/user', 'fixture:userData.json');
+    cy.route('GET', '/api/oauth/user', 'fixture:userData.json');
 };

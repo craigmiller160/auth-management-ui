@@ -17,7 +17,7 @@
 import './commands'
 
 beforeEach(() => {
-    if(Cypress.env('MOCK') === 'true') {
+    if(Cypress.env('MOCK')) {
         cy.mockApis();
     }
 });
