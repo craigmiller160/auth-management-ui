@@ -26,8 +26,6 @@ describe('First Test', () => {
     });
 
     it('logs in', () => {
-        cy.log(`Test Env: ${Cypress.env('TEST')}`);
-
         cy.navbar('validateLoggedOut')
             .navbar('clickLogin')
             .loginPage('validatePage')
