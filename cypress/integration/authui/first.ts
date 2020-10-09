@@ -18,8 +18,6 @@
 
 /// <reference path="../../support/index.d.ts" />
 
-import isMock from '../../util/isMock';
-
 export {}
 
 describe('First Test', () => {
@@ -28,25 +26,20 @@ describe('First Test', () => {
     });
 
     it('before login', () => {
-        if (!isMock()) {
-            cy.navbar('validateLoggedOut')
-                .homePage('validatePage');
-        }
+        cy.navbar('validateLoggedOut')
+            .homePage('validatePage');
     });
 
     it('logging in', () => {
-        if (!isMock()) {
-            cy.navbar('validateLoggedOut')
-                .homePage('validatePage')
-                .navbar('clickLogin')
-                .loginPage('validatePage')
-                .loginPage('login', {
-                    username: 'craig@gmail.com',
-                    password: 'password'
-                });
-        }
-
-        cy.navbar('validateLoggedIn')
+        cy.navbar('validateLoggedOut')
+            .homePage('validatePage')
+            .navbar('clickLogin')
+            .loginPage('validatePage')
+            .loginPage('login', {
+                username: 'craig@gmail.com',
+                password: 'password'
+            })
+            .navbar('validateLoggedIn')
             .homePage('validatePage');
     });
 });
