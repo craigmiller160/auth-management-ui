@@ -18,31 +18,31 @@
 
 import createPage from './createPage';
 
-const SELECT_CLIENT_KEY_FIELD = '#client-details-page #client-key-field';
-const SELECT_CLIENT_SECRET_FIELD = '#client-details-page #client-secret-field';
-const SELECT_CLIENT_NAME_FIELD = '#client-details-page #client-name-field';
-const SELECT_ACCESS_TIME_FIELD = '#client-details-page #access-token-time-field';
-const SELECT_REFRESH_TIME_FIELD = '#client-details-page #refresh-token-time-field';
-const SELECT_CODE_TIME_FIELD = '#client-details-page #auth-code-time-field';
-const SELECT_ENABLED_FIELD = '#client-details-page #enabled-field';
+const SELECT_CLIENT_KEY_FIELD = '#client-config-page #client-key-field';
+const SELECT_CLIENT_SECRET_FIELD = '#client-config-page #client-secret-field';
+const SELECT_CLIENT_NAME_FIELD = '#client-config-page #client-name-field';
+const SELECT_ACCESS_TIME_FIELD = '#client-config-page #access-token-time-field';
+const SELECT_REFRESH_TIME_FIELD = '#client-config-page #refresh-token-time-field';
+const SELECT_CODE_TIME_FIELD = '#client-config-page #auth-code-time-field';
+const SELECT_ENABLED_FIELD = '#client-config-page #enabled-field';
 
-const SELECT_GEN_CLIENT_KEY_BTN = '#client-details-page #client-key-generate-btn';
-const SELECT_GEN_CLIENT_SECRET_BTN = '#client-details-page #client-secret-generate-btn';
+const SELECT_GEN_CLIENT_KEY_BTN = '#client-config-page #client-key-generate-btn';
+const SELECT_GEN_CLIENT_SECRET_BTN = '#client-config-page #client-secret-generate-btn';
 
-const SELECT_REDIRECT_URIS_LIST = '#client-details-page #redirect-uris-list';
-const SELECT_ADD_REDIRECT_BTN = '#client-details-page #add-redirect-uri-btn';
+const SELECT_REDIRECT_URIS_LIST = '#client-config-page #redirect-uris-list';
+const SELECT_ADD_REDIRECT_BTN = '#client-config-page #add-redirect-uri-btn';
 
-const SELECT_SAVE_BTN = '#client-details-page #save-btn';
-const SELECT_DELETE_BTN = '#client-details-page #delete-btn';
+const SELECT_SAVE_BTN = '#client-config-page #save-btn';
+const SELECT_DELETE_BTN = '#client-config-page #delete-btn';
 
-const SELECT_ENABLED_LABEL = '#client-details-page .switch-label .MuiFormControlLabel-label';
-const SELECT_CLIENT_NAME_LABEL = '#client-details-page label[for="client-name-field"]';
-const SELECT_CLIENT_KEY_LABEL = '#client-details-page label[for="client-key-field"]';
-const SELECT_CLIENT_SECRET_LABEL = '#client-details-page label[for="client-secret-field"]';
-const SELECT_ACCESS_TIME_LABEL = '#client-details-page label[for="access-token-time-field"]';
-const SELECT_REFRESH_TIME_LABEL = '#client-details-page label[for="refresh-token-time-field"]';
-const SELECT_CODE_TIME_LABEL = '#client-details-page label[for="auth-code-time-field"]';
-const SELECT_REDIRECT_URIS_LABEL = '#client-details-page #redirect-uris-label';
+const SELECT_ENABLED_LABEL = '#client-config-page .switch-label .MuiFormControlLabel-label';
+const SELECT_CLIENT_NAME_LABEL = '#client-config-page label[for="client-name-field"]';
+const SELECT_CLIENT_KEY_LABEL = '#client-config-page label[for="client-key-field"]';
+const SELECT_CLIENT_SECRET_LABEL = '#client-config-page label[for="client-secret-field"]';
+const SELECT_ACCESS_TIME_LABEL = '#client-config-page label[for="access-token-time-field"]';
+const SELECT_REFRESH_TIME_LABEL = '#client-config-page label[for="refresh-token-time-field"]';
+const SELECT_CODE_TIME_LABEL = '#client-config-page label[for="auth-code-time-field"]';
+const SELECT_REDIRECT_URIS_LABEL = '#client-config-page #redirect-uris-label';
 
 const validateClientConfigCommon = (newClient: boolean = false) => {
     cy.get(SELECT_GEN_CLIENT_KEY_BTN)
