@@ -19,7 +19,22 @@
 import { Pool, QueryResult } from 'pg';
 import { safelyExecuteQuery } from './safelyExecuteQuery';
 
-const sql = 'DELETE FROM dev.clients WHERE name = $1';
+const SELECT_CLIENT_ID_SQL = 'SELECT id FROM dev.clients WHERE name = $1';
+const DELETE_CLIENT_SQL = 'DELETE FROM dev.clients WHERE id = $1';
+const DELETE_ROLES_SQL = 'DELETE FROM dev.roles WHERE client_id = $1';
+const DELETE_CLIENT_USERS_SQL = 'DELETE FROM dev.client_users WHERE client_id = $1';
+const DELETE_CLIENT_USER_ROLES_SQL = 'DELETE FROM dev.client_user_roles WHERE client_id = $1';
 
-export const deleteClient = (pool: Pool) => (clientName: string): Promise<QueryResult<any>> =>
-    safelyExecuteQuery<any>(pool, sql, [clientName]);
+interface ClientIdRow {
+    id: number;
+}
+
+export const deleteClient = (pool: Pool) => async (clientName: string) => {
+    const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(pool, SELECT_CLIENT_ID_SQL, [clientName]);
+    const clientId = result.rows[0].id;
+
+    await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [clientId]);
+    await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [clientId]);
+    await safelyExecuteQuery<any>(pool, DELETE_ROLES_SQL, [clientId]);
+    await safelyExecuteQuery<any>(pool, DELETE_CLIENT_SQL, [clientId]);
+};
