@@ -41,6 +41,11 @@ describe('Clients', () => {
                 clientConfigPage.validateClientConfigCommon(true);
                 clientConfigPage.validateNewClientConfigValues();
                 clientConfigPage.clickSaveBtn();
+                clientConfigPage.validateClientConfigCommon(false);
+            })
+            .clientDetailsPage((clientDetailsPage) => {
+                clientDetailsPage.validatePageCommon(false);
+                clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
             });
 
         // TODO execute SQL to clean up when done
