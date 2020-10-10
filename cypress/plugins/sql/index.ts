@@ -20,25 +20,28 @@ import { Pool, QueryResult } from 'pg';
 
 // TODO more cleanup
 
-const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<void | QueryResult<R>> =>
+const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<QueryResult<R>> =>
     pool.connect()
         .then((client) => {
-            return client.query(sql, params)
+            return client.query<R>(sql, params)
                 .then((result) => {
                     client.release();
                     return result;
                 })
                 .catch((ex) => {
                     client.release();
+                    console.log(`Error executing query: ${sql}`);
                     console.log(ex);
+                    return null;
                 });
         })
         .catch((ex) => {
             console.log('Error connecting to Postgres');
             console.log(ex);
+            return null;
         });
 
-export const deleteClient = (pool: Pool) => (clientName: string): Promise<void | QueryResult<any>> => {
+export const deleteClient = (pool: Pool) => (clientName: string): Promise<QueryResult<any>> => {
     const sql = 'DELETE FROM dev.clients WHERE name = $1';
     return safelyExecuteQuery<any>(pool, sql, [clientName]);
 };
