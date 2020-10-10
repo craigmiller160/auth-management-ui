@@ -49,7 +49,7 @@ const validateLoggedIn = () => {
         .should('have.text', 'Logout');
 };
 
-const clickLogin = () => {
+const clickAuthBtn = () => {
     cy.get(SELECT_AUTH_BTN).click();
 };
 
@@ -64,7 +64,7 @@ const clickClients = () => {
 const navbarPage = {
     validateLoggedOut,
     validateLoggedIn,
-    clickLogin,
+    clickAuthBtn,
     clickUsers,
     clickClients
 };
