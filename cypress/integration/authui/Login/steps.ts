@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/// <reference path="../../../support/index.d.ts" />
+
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 const onHomePageNotAuthenticated = () => {
