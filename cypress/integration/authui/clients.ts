@@ -18,10 +18,12 @@
 
 describe('Clients', () => {
     beforeEach(() => {
+        // TODO execute setup sql
+
         cy.doLogin()
             .navbarPage((navbarPage) => {
                 navbarPage.clickClients();
-            })
+            });
     });
 
     it('New Client', () => {
@@ -31,6 +33,7 @@ describe('Clients', () => {
         })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon();
+                clientDetailsPage.validateNewClientConfig();
             });
 
         // TODO execute SQL to clean up when done

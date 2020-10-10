@@ -35,6 +35,12 @@ const validatePageCommon = () => {
 };
 
 const validateNewClientConfig = () => {
+    cy.get(SELECT_CLIENT_ROLES_TAB)
+        .should('not.exist');
+    cy.get(SELECT_CLIENT_GRANTS_TAB)
+        .should('not.exist');
+    cy.get(SELECT_CLIENT_AUTHS_TAB)
+        .should('not.exist');
 
 };
 
