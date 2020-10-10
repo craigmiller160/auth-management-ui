@@ -17,6 +17,10 @@
  */
 
 describe('Clients', () => {
+    beforeEach(() => {
+        cy.doLogin();
+    });
+
     it('New Client', () => {
         throw new Error();
     });

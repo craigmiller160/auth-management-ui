@@ -27,5 +27,6 @@ declare namespace Cypress {
         loginPage(pageFn: (page: LoginPageType) => void): Chainable<Element>;
         navbarPage(pageFn: (page: NavbarPageType) => void): Chainable<Element>;
         homePage(pageFn: (page: HomePageType) => void): Chainable<Element>;
+        doLogin(): Chainable<Element>;
     }
 }
