@@ -24,6 +24,9 @@ const SELECT_CLIENT_CONFIG_TAB = '#client-details-page #client-config-tab';
 const SELECT_CLIENT_ROLES_TAB = '#client-details-page #client-roles-tab';
 const SELECT_CLIENT_GRANTS_TAB = '#client-details-page #client-grants-tab';
 const SELECT_CLIENT_AUTHS_TAB = '#client-details-page #client-auths-tab';
+const SELECT_CLIENT_KEY_FIELD = '#client-details-page #client-key-field';
+const SELECT_CLIENT_SECRET_FIELD = '#client-details-page #client-secret-field';
+const SELECT_CLIENT_NAME_FIELD = '#client-details-page #client-name-field';
 
 const validatePageCommon = () => {
     cy.get(SELECT_PAGE_HEADER)
@@ -42,6 +45,8 @@ const validateNewClientConfig = () => {
     cy.get(SELECT_CLIENT_AUTHS_TAB)
         .should('not.exist');
 
+    cy.get(SELECT_CLIENT_NAME_FIELD)
+        .contains('New Client');
 };
 
 const clientDetailsPage = {
