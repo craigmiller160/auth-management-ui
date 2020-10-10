@@ -16,15 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// <reference types="cypress" />
+const SELECT_PAGE_MESSAGE = '#home-page h3';
 
-type HomePageType = import('./commands/homePage2').HomePageType;
+const validatePage = () => {
+    cy.get(SELECT_PAGE_MESSAGE)
+        .should('have.text', 'Welcome to OAuth Management');
+};
 
-declare namespace Cypress {
-    interface Chainable {
-        loginPage(key: string, args?: object): Chainable<Element>;
-        navbar(key: string, args?: object): Chainable<Element>;
-        homePage(key: string, args?: object): Chainable<Element>;
-        homePage2(pageFn: (page: HomePageType) => void): Chainable<Element>;
-    }
-}
+const homePage = {
+    validatePage
+};
+
+export type HomePageType = typeof homePage;
+
+export default (pageFn: (page: HomePageType) => void) => {
+    pageFn(homePage);
+};
+

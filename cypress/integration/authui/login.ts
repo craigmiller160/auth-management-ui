@@ -26,8 +26,11 @@ describe('First Test', () => {
     });
 
     it('before login', () => {
-        cy.navbar('validateLoggedOut')
-            .homePage('validatePage');
+        // cy.navbar('validateLoggedOut')
+        cy.homePage2((page) => {
+                page.validatePage();
+            })
+        //     .homePage('validatePage');
     });
 
     it('logging in', () => {

@@ -28,8 +28,10 @@ import loginPage from './commands/loginPage';
 import navbar from './commands/navbar';
 import homePage from './commands/homePage';
 import doLogin from './commands/doLogin';
+import homePage2 from './commands/homePage2';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbar', navbar);
 Cypress.Commands.add('homePage', homePage);
 Cypress.Commands.add('doLogin', doLogin);
+Cypress.Commands.add('homePage2', homePage2); // TODO refactor this
