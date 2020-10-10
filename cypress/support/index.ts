@@ -14,4 +14,8 @@
 // ***********************************************************
 
 // Import commands.ts using ES2015 syntax:
-import './commands'
+import './commands';
+
+beforeEach(() => {
+    cy.visit('https://localhost:3000');
+});

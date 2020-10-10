@@ -21,21 +21,18 @@
 export {}
 
 describe('First Test', () => {
-    beforeEach(() => {
-        cy.visit('https://localhost:3000');
-    });
-
     it('before login', () => {
-        // cy.navbar('validateLoggedOut')
-        cy.homePage2((page) => {
-                page.validatePage();
-            })
-        //     .homePage('validatePage');
+        cy.navbar('validateLoggedOut')
+            .pageHome((homePage) => {
+                homePage.validatePage();
+            });
     });
 
     it('logging in', () => {
         cy.navbar('validateLoggedOut')
-            .homePage('validatePage')
+            .pageHome((homePage) => {
+                homePage.validatePage();
+            })
             .navbar('clickLogin')
             .loginPage('validatePage')
             .loginPage('login', {
@@ -43,6 +40,8 @@ describe('First Test', () => {
                 password: 'password'
             })
             .navbar('validateLoggedIn')
-            .homePage('validatePage');
+            .pageHome((homePage) => {
+                homePage.validatePage();
+            });
     });
 });

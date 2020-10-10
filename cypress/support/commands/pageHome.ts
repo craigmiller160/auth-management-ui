@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createCommand from './createCommand';
-
 const SELECT_PAGE_MESSAGE = '#home-page h3';
 
 const validatePage = () => {
@@ -25,8 +23,13 @@ const validatePage = () => {
         .should('have.text', 'Welcome to OAuth Management');
 };
 
-const loginPage = {
+const pageHome = {
     validatePage
 };
 
-export default createCommand(loginPage);
+export type PageHomeType = typeof pageHome;
+
+export default (pageFn: (page: PageHomeType) => void) => {
+    pageFn(pageHome);
+};
+
