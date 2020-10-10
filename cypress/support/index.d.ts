@@ -18,19 +18,21 @@
 
 /// <reference types="cypress" />
 
-type HomePageType = import('./commands/pages/homePage').HomePageType;
-type NavbarPageType = import('./commands/pages/navbarPage').NavbarPageType;
-type LoginPageType = import('./commands/pages/loginPage').LoginPageType;
-type ClientsPageType = import('./commands/pages/clientsPage').ClientsPageType;
-type ClientDetailsPageType = import('./commands/pages/clientDetailsPage').ClientDetailsPageType;
+type HomePage = import('./commands/pages/homePage').HomePage;
+type NavbarPage = import('./commands/pages/navbarPage').NavbarPage;
+type LoginPage = import('./commands/pages/loginPage').LoginPage;
+type ClientsPage = import('./commands/pages/clientsPage').ClientsPage;
+type ClientDetailsPage = import('./commands/pages/clientDetailsPage').ClientDetailsPage;
+type ClientConfigPage = import('./commands/pages/clientConfigPage').ClientConfigPage;
 
 declare namespace Cypress {
     interface Chainable {
-        loginPage(pageFn: (page: LoginPageType) => void): Chainable<Element>;
-        navbarPage(pageFn: (page: NavbarPageType) => void): Chainable<Element>;
-        homePage(pageFn: (page: HomePageType) => void): Chainable<Element>;
-        clientsPage(pageFn: (page: ClientsPageType) => void): Chainable<Element>;
-        clientDetailsPage(pageFn: (page: ClientDetailsPageType) => void): Chainable<Element>;
+        loginPage(pageFn: (page: LoginPage) => void): Chainable<Element>;
+        navbarPage(pageFn: (page: NavbarPage) => void): Chainable<Element>;
+        homePage(pageFn: (page: HomePage) => void): Chainable<Element>;
+        clientsPage(pageFn: (page: ClientsPage) => void): Chainable<Element>;
+        clientDetailsPage(pageFn: (page: ClientDetailsPage) => void): Chainable<Element>;
+        clientConfigPage(pageFn: (page: ClientConfigPage) => void): Chainable<Element>;
         doLogin(): Chainable<Element>;
     }
 }

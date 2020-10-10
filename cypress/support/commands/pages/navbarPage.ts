@@ -69,5 +69,5 @@ const navbarPage = {
     clickClients
 };
 
-export type NavbarPageType = typeof navbarPage;
+export type NavbarPage = typeof navbarPage;
 export default createPage(navbarPage);

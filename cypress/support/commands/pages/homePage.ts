@@ -29,6 +29,6 @@ const homePage = {
     validatePage
 };
 
-export type HomePageType = typeof homePage;
+export type HomePage = typeof homePage;
 export default createPage(homePage);
 

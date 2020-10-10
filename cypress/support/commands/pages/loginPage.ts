@@ -55,5 +55,5 @@ const loginPage = {
     validatePage
 };
 
-export type LoginPageType = typeof loginPage;
+export type LoginPage = typeof loginPage;
 export default createPage(loginPage);

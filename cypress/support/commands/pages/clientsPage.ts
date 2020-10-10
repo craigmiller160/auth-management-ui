@@ -48,5 +48,5 @@ const clientsPage = {
     clickNewClientBtn
 };
 
-export type ClientsPageType = typeof clientsPage;
+export type ClientsPage = typeof clientsPage;
 export default createPage(clientsPage);
