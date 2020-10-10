@@ -48,6 +48,8 @@ const SELECT_CLIENT_NAME_LABEL = '#client-details-page label[for="client-name-fi
 const SELECT_CLIENT_KEY_LABEL = '#client-details-page label[for="client-key-field"]';
 const SELECT_CLIENT_SECRET_LABEL = '#client-details-page label[for="client-secret-field"]';
 
+// TODO this is going to have to be split up with each tab having it's own page factory
+
 const validatePageCommon = (newClient: boolean = false) => {
     cy.get(SELECT_PAGE_HEADER)
         .should('have.text', 'Client Details');
