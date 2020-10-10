@@ -61,32 +61,30 @@ const validatePageCommon = (newClient: boolean = false) => {
     }
 };
 
-const isTabSelected = (tabIndex: number) => {
+const getTabForIndex = (tabIndex: number) => {
     switch (tabIndex) {
-        case TAB_INDEX_CONFIG:
-            cy.get(SELECT_CLIENT_CONFIG_TAB)
-                .should('have.class', ACTIVE_TAB_CLASS);
-            break;
-        case TAB_INDEX_ROLES:
-            cy.get(SELECT_CLIENT_ROLES_TAB)
-                .should('have.class', ACTIVE_TAB_CLASS);
-            break;
-        case TAB_INDEX_GRANTS:
-            cy.get(SELECT_CLIENT_GRANTS_TAB)
-                .should('have.class', ACTIVE_TAB_CLASS);
-            break;
-        case TAB_INDEX_AUTHS:
-            cy.get(SELECT_CLIENT_AUTHS_TAB)
-                .should('have.class', ACTIVE_TAB_CLASS);
-            break;
+        case TAB_INDEX_CONFIG: return SELECT_CLIENT_CONFIG_TAB;
+        case TAB_INDEX_ROLES: return SELECT_CLIENT_ROLES_TAB;
+        case TAB_INDEX_GRANTS: return SELECT_CLIENT_GRANTS_TAB;
+        case TAB_INDEX_AUTHS: return SELECT_CLIENT_AUTHS_TAB;
         default:
             throw new Error(`Invalid tab index: ${tabIndex}`);
     }
 };
 
+const isTabSelected = (tabIndex: number) => {
+    cy.get(getTabForIndex(tabIndex))
+        .should('have.class', ACTIVE_TAB_CLASS);
+};
+
+const clickTab = (tabIndex: number) => {
+    cy.get(getTabForIndex(tabIndex)).click();
+};
+
 const clientDetailsPage = {
     validatePageCommon,
-    isTabSelected
+    isTabSelected,
+    clickTab
 };
 
 export type ClientDetailsPage = typeof clientDetailsPage;
