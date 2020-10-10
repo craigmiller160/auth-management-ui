@@ -28,7 +28,9 @@ export default (on: OnFn, config: CypressConfig) => {
   // `config` is the resolved Cypress config
     const pool = createPool(config.env);
 
-    on('file:preprocessor', cucumber());
+    on('file:preprocessor', cucumber({
+        typescript: require.resolve('typescript')
+    }));
 
     on('task', {
         deleteClient: deleteClient(pool),
