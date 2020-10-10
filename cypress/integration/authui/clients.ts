@@ -64,7 +64,7 @@ describe('Clients', () => {
             .alertPage((alertPage) => {
                 alertPage.isVisible();
                 alertPage.isSuccess();
-                alertPage.messageEquals('');
+                alertPage.messageEquals('Successfully saved client new');
                 alertPage.closeAlert();
             });
 
