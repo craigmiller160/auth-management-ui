@@ -16,13 +16,39 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool } from 'pg';
-import { CypressEnv } from '../../types/cypress';
+import { Pool, PoolClient, QueryResult } from 'pg';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { TaskEither } from 'fp-ts/es6/TaskEither';
+import { pipe } from 'fp-ts/es6/function';
 
-export const createPool = (env: CypressEnv): Pool => new Pool({
-    user: env.postgresUser,
-    password: env.postgresPassword,
-    host: env.postgresHost,
-    port: env.postgresPort,
-    database: env.postgresDatabase
-});
+const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): TaskEither<Error,QueryResult<R>> => {
+    return pipe(
+        TE.tryCatch(
+            () => pool.connect(),
+            (ex) => {
+                console.log('Error connecting to Postgres');
+                return ex as Error;
+            }
+        ),
+        TE.map((client: PoolClient) => {
+            return TE.tryCatch(
+                async () => {
+                    const result: QueryResult<R> = await client.query<R>(sql, params);
+                    client.release();
+                    return result;
+                },
+                (ex) => {
+                    console.log(`Error executing query: ${sql}`);
+                    client.release();
+                    return ex as Error;
+                }
+            )
+        }),
+        TE.flatten
+    );
+};
+
+const deleteClient = (pool: Pool) => (clientName: string): TaskEither<Error, QueryResult<any>> => {
+    const sql = 'DELETE FROM dev.clients WHERE client_name = $1';
+    return safelyExecuteQuery<any>(pool, sql, [clientName]);
+}
