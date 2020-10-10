@@ -37,6 +37,9 @@ const SELECT_ENABLED_FIELD = '#client-details-page #enabled-field';
 const SELECT_GEN_CLIENT_KEY_BTN = '#client-details-page #client-key-generate-btn';
 const SELECT_GEN_CLIENT_SECRET_BTN = '#client-details-page #client-secret-generate-btn';
 
+const SELECT_REDIRECT_URIS_LIST = '#client-details-page #redirect-uris-list';
+const SELECT_ADD_REDIRECT_BTN = '#client-details-page #add-redirect-uri-btn';
+
 const validatePageCommon = (newClient: boolean = false) => {
     cy.get(SELECT_PAGE_HEADER)
         .should('have.text', 'Client Details');
@@ -67,6 +70,10 @@ const validateClientConfigCommon = () => {
         .should('have.text', 'Generate');
     cy.get(SELECT_GEN_CLIENT_SECRET_BTN)
         .should('have.text', 'Generate');
+
+    cy.get(SELECT_ADD_REDIRECT_BTN)
+        .should('have.text', 'Add Redirect URI');
+
     // TODO validate labels
     // TODO that includes text of Enabled switch
 };
@@ -90,7 +97,10 @@ const validateNewClientConfig = () => {
     cy.get(SELECT_ENABLED_FIELD)
         .should('have.class', 'switch-true');
 
-    // TODO don't forget to test that there are no redirect-uris
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .should('exist')
+        .find('li')
+        .should('have.length', 0);
 };
 
 const clientDetailsPage = {

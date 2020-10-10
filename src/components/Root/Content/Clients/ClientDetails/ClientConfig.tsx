@@ -415,6 +415,7 @@ const ClientConfig = (props: Props) => {
                     >
                         <Typography variant="body1">Redirect URIs</Typography>
                         <List
+                            id="redirect-uris-list"
                             items={ redirectUriItems }
                             columnLayout
                         />
