@@ -16,13 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool } from 'pg';
-import { CypressEnv } from '../../types/cypress';
+export interface CypressEnv {
+    username: string;
+    password: string;
+    postgresUser: string;
+    postgresPassword: string;
+    postgresHost: string;
+    postgresPort: number;
+    postgresDatabase: string;
+}
 
-export const createPool = (env: CypressEnv): Pool => new Pool({
-    user: env.postgresUser,
-    password: env.postgresPassword,
-    host: env.postgresHost,
-    port: env.postgresPort,
-    database: env.postgresDatabase
-});
+export interface CypressConfig {
+    env: CypressEnv
+}
