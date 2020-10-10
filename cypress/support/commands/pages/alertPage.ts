@@ -60,6 +60,8 @@ const messageEquals = (message: string) => {
 
 const closeAlert = () => {
     cy.get(SELECT_ALERT_CLOSE_BTN).click();
+    cy.get(SELECT_COLLAPSE)
+        .should('have.class', COLLAPSE_HIDDEN_CLASS);
 };
 
 const alertPage = {

@@ -42,10 +42,19 @@ describe('Clients', () => {
                 clientConfigPage.validateNewClientConfigValues();
                 clientConfigPage.clickSaveBtn();
                 clientConfigPage.validateClientConfigCommon(false);
+
+                // TODO validate that saved data is present
+
             })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(false);
                 clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
+            })
+            .alertPage((alertPage) => {
+                alertPage.isVisible();
+                alertPage.isSuccess();
+                alertPage.messageEquals('');
+                alertPage.closeAlert();
             });
 
         // TODO execute SQL to clean up when done
