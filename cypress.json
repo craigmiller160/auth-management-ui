@@ -1,6 +1,11 @@
 {
   "env": {
     "username": "craig@gmail.com",
-    "password": "password"
+    "password": "password",
+    "postgresUser": "user",
+    "postgresPassword": "password",
+    "postgresHost": "localhost",
+    "postgresPort": 30001,
+    "postgresDatabase": "oauth2_server"
   }
 }
