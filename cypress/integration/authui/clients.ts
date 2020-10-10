@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import clientConfigPage from '../../support/commands/pages/clientConfigPage';
+
 describe('Clients', () => {
     beforeEach(() => {
         // TODO execute setup sql
@@ -33,8 +35,10 @@ describe('Clients', () => {
         })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(true);
-                clientDetailsPage.validateClientConfigCommon(true);
-                clientDetailsPage.validateNewClientConfigValues();
+            })
+            .clientConfigPage((clientConfigPage) => {
+                clientConfigPage.validateClientConfigCommon(true);
+                clientConfigPage.validateNewClientConfigValues();
             });
 
         // TODO execute SQL to clean up when done
