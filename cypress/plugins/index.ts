@@ -15,6 +15,7 @@
 import { CypressConfig } from '../types/cypress';
 import { createPool } from './sql/createPool';
 import { deleteClient } from './sql/deleteClient';
+import { insertClient } from './sql/insertClient';
 
 type OnFn = (name: string, value: object) => void;
 
@@ -27,6 +28,7 @@ export default (on: OnFn, config: CypressConfig) => {
     const pool = createPool(config.env);
 
     on('task', {
-        deleteClient: deleteClient(pool)
+        deleteClient: deleteClient(pool),
+        insertClient: insertClient(pool)
     });
 };

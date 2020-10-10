@@ -84,10 +84,6 @@ describe('Clients', () => {
             });
     });
 
-    it('warning when going back from client details', () => {
-        throw new Error();
-    });
-
     it('Edit Client Config', () => {
         // TODO don't forget about generating new key/secret
         throw new Error();
