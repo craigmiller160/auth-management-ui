@@ -28,7 +28,10 @@ describe('Clients', () => {
         cy.clientsPage((clientsPage) => {
             clientsPage.validatePage();
             clientsPage.clickNewClientBtn();
-        });
+        })
+            .clientDetailsPage((clientDetailsPage) => {
+                clientDetailsPage.validatePageCommon();
+            });
 
         // TODO execute SQL to clean up when done
     });

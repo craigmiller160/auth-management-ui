@@ -47,6 +47,7 @@ const ClientDetails = () => {
 
     const tabs: Array<TabConfig> = [
         {
+            id: 'client-config-tab',
             label: LABEL_CONFIG,
             path: PATH_CONFIG,
             component: ClientConfig
@@ -54,16 +55,19 @@ const ClientDetails = () => {
     ];
     if (id !== NEW_ID) {
         tabs.push({
+            id: 'client-roles-tab',
             label: LABEL_ROLES,
             path: PATH_ROLES,
             component: ClientRoles
         });
         tabs.push({
+            id: 'client-grants-tab',
             label: LABEL_GRANTS,
             path: PATH_GRANTS,
             component: ClientGrants
         });
         tabs.push({
+            id: 'client-auths-tab',
             label: LABEL_AUTHS,
             path: PATH_AUTHS,
             component: ClientAuths
@@ -71,9 +75,9 @@ const ClientDetails = () => {
     }
 
     return (
-        <div className="ClientDetails">
-            <PageHeader title="Client Details" />
-            <Tabs tabs={ tabs } />
+        <div id="client-details-page" className="ClientDetails">
+            <PageHeader id="client-details-page-header" title="Client Details" />
+            <Tabs id="client-details-tabs" tabs={ tabs } />
         </div>
     );
 };
