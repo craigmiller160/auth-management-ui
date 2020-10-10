@@ -34,6 +34,7 @@ interface BodyRow {
 interface Props {
     header: Array<String>;
     body: Array<BodyRow>;
+    id?: string;
 }
 
 const useStyles = makeStyles({
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
 const Table = (props: Props) => {
     const classes = useStyles();
     return (
-        <TableContainer>
+        <TableContainer id={ props.id }>
             <MuiTable>
                 <TableHead className={ classes.TableHeader }>
                     <TableRow>

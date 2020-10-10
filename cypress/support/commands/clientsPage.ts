@@ -18,13 +18,23 @@
 
 import createPage from './createPage';
 
-const validatePage = () => {
+const SELECT_PAGE_HEADER = '#clients-page #clients-page-header';
+const SELECT_CLIENTS_TABLE = '#clients-page #clients-table'
 
+const validatePage = () => {
+    cy.get(SELECT_PAGE_HEADER)
+        .should('have.text', 'Clients');
+    cy.get(SELECT_CLIENTS_TABLE)
+        .should('exist');
+    cy.get(SELECT_CLIENTS_TABLE)
+        .children('th.MuiTableCell-head')
+        .should('have.length', 2)
+        .each(($child) => console.log($child)); // TODO figure this out
 };
 
-const clientListPage = {
+const clientsPage = {
     validatePage
 };
 
-export type ClientListPage = typeof clientListPage;
-export default createPage(clientListPage);
+export type ClientsPageType = typeof clientsPage;
+export default createPage(clientsPage);

@@ -69,13 +69,14 @@ const Clients = () => {
     [state.clients, history]);
 
     return (
-        <div className="Clients">
-            <PageHeader title="Clients" />
+        <div id="clients-page" className="Clients">
+            <PageHeader id="clients-page-header" title="Clients" />
             <Grid
                 container
                 direction="row"
             >
                 <Table
+                    id="clients-table"
                     header={ header }
                     body={ body }
                 />

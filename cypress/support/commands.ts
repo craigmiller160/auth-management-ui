@@ -28,8 +28,10 @@ import loginPage from './commands/loginPage';
 import navbarPage from './commands/navbarPage';
 import doLogin from './commands/doLogin';
 import homePage from './commands/homePage';
+import clientsPage from './commands/clientsPage';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbarPage', navbarPage);
 Cypress.Commands.add('doLogin', doLogin);
 Cypress.Commands.add('homePage', homePage);
+Cypress.Commands.add('clientsPage', clientsPage);
