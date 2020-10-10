@@ -23,13 +23,13 @@ const validatePage = () => {
         .should('have.text', 'Welcome to OAuth Management');
 };
 
-const pageHome = {
+const homePage = {
     validatePage
 };
 
-export type PageHomeType = typeof pageHome;
+export type HomePageType = typeof homePage;
 
-export default (pageFn: (page: PageHomeType) => void) => {
-    pageFn(pageHome);
+export default (pageFn: (page: HomePageType) => void) => {
+    pageFn(homePage);
 };
 

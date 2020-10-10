@@ -27,9 +27,9 @@
 import loginPage from './commands/loginPage';
 import navbar from './commands/navbar';
 import doLogin from './commands/doLogin';
-import pageHome from './commands/pageHome';
+import homePage from './commands/homePage';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbar', navbar);
 Cypress.Commands.add('doLogin', doLogin);
-Cypress.Commands.add('pageHome', pageHome);
+Cypress.Commands.add('homePage', homePage);

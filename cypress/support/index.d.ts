@@ -18,12 +18,12 @@
 
 /// <reference types="cypress" />
 
-type PageHomeType = import('./commands/pageHome').PageHomeType;
+type HomePageType = import('./commands/homePage').HomePageType;
 
 declare namespace Cypress {
     interface Chainable {
         loginPage(key: string, args?: object): Chainable<Element>;
         navbar(key: string, args?: object): Chainable<Element>;
-        pageHome(pageFn: (page: PageHomeType) => void): Chainable<Element>;
+        homePage(pageFn: (page: HomePageType) => void): Chainable<Element>;
     }
 }

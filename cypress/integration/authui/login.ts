@@ -23,14 +23,14 @@ export {}
 describe('First Test', () => {
     it('before login', () => {
         cy.navbar('validateLoggedOut')
-            .pageHome((homePage) => {
+            .homePage((homePage) => {
                 homePage.validatePage();
             });
     });
 
     it('logging in', () => {
         cy.navbar('validateLoggedOut')
-            .pageHome((homePage) => {
+            .homePage((homePage) => {
                 homePage.validatePage();
             })
             .navbar('clickLogin')
@@ -40,7 +40,7 @@ describe('First Test', () => {
                 password: 'password'
             })
             .navbar('validateLoggedIn')
-            .pageHome((homePage) => {
+            .homePage((homePage) => {
                 homePage.validatePage();
             });
     });
