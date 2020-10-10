@@ -40,10 +40,9 @@ describe('First Test', () => {
                 navbarPage.validateLoggedOut();
                 navbarPage.clickLogin();
             })
-            .loginPage('validatePage')
-            .loginPage('login', {
-                username: 'craig@gmail.com',
-                password: 'password'
+            .loginPage((loginPage) => {
+                loginPage.validatePage();
+                loginPage.login('craig@gmail.com', 'password');
             })
             .navbarPage((navbarPage) => {
                 navbarPage.validateLoggedIn();
