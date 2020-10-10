@@ -18,11 +18,16 @@
 
 describe('Clients', () => {
     beforeEach(() => {
-        cy.doLogin();
+        cy.doLogin()
+            .navbarPage((navbarPage) => {
+                navbarPage.clickClients();
+            })
     });
 
     it('New Client', () => {
-        throw new Error();
+        cy.clientsPage((clientsPage) => {
+            clientsPage.validatePage();
+        });
     });
 
     it('Edit Client Config', () => {
