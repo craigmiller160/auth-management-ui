@@ -18,14 +18,22 @@
 
 import { TAB_INDEX_CONFIG } from '../../support/commands/pages/clientDetailsPage';
 
+type CleanupFn = () => void;
+
 describe('Clients', () => {
+    let cleanupTasks: Array<CleanupFn>;
+
     beforeEach(() => {
         // TODO execute setup sql
-
+        cleanupTasks = [];
         cy.doLogin()
             .navbarPage((navbarPage) => {
                 navbarPage.clickClients();
             });
+    });
+
+    afterEach(() => {
+        cleanupTasks.forEach((task) => task());
     });
 
     it('New Client', () => {
@@ -41,6 +49,9 @@ describe('Clients', () => {
                 clientConfigPage.validateClientConfigCommon(true);
                 clientConfigPage.validateNewClientConfigValues();
                 clientConfigPage.clickSaveBtn();
+
+                cleanupTasks.push(() => cy.task('deleteClient', 'New Client'));
+
                 clientConfigPage.validateClientConfigCommon(false);
 
                 // TODO validate that saved data is present
