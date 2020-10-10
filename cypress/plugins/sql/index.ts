@@ -39,6 +39,6 @@ const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = [])
         });
 
 export const deleteClient = (pool: Pool) => (clientName: string): Promise<void | QueryResult<any>> => {
-    const sql = 'DELETE FROM dev.clients WHERE client_name = $1';
+    const sql = 'DELETE FROM dev.clients WHERE name = $1';
     return safelyExecuteQuery<any>(pool, sql, [clientName]);
 };
