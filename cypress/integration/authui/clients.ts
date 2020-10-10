@@ -18,6 +18,7 @@
 
 import { TAB_INDEX_CONFIG } from '../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../support/commands/pages/clientConfigPage';
+import { InsertClient } from '../../plugins/sql/insertClient';
 
 type CleanupFn = () => void;
 
@@ -29,6 +30,16 @@ const postSaveNewClientValues: ClientConfigValues = {
     refreshTokenTimeout: 3600,
     authCodeTimeout: 60,
     redirectUris: []
+};
+
+const insertClient: InsertClient = {
+    name: 'Inserted Client',
+    clientKey: 'a4cc4fef-564e-44c1-82af-45572f124c1a',
+    clientSecret: '{bcrypt}$2a$10$HYKpEK6BFUFH99fHm5yOhuk4hn1gFErtLveeonVSHW1G7n5bUhGUe',
+    enabled: true,
+    accessTokenTimeout: 50,
+    refreshTokenTimeout: 500,
+    authCodeTimeout: 100
 };
 
 describe('Clients', () => {
@@ -83,6 +94,18 @@ describe('Clients', () => {
                 clientsPage.clientRecordExists('New Client');
             });
     });
+
+    it('cannot navigate away from new client', () => {
+        throw new Error();
+    });
+
+    it('cannot navigate away with unsaved changes', () => {
+        throw new Error();
+    });
+
+    it('can navigate away when changes are saved', () => {
+        throw new Error();
+    })
 
     it('Edit Client Config', () => {
         // TODO don't forget about generating new key/secret
