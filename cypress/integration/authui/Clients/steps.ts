@@ -18,7 +18,7 @@
 
 /// <reference path="../../../support/index.d.ts" />
 
-import { And, Given } from 'cypress-cucumber-preprocessor/steps';
+import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps';
 
 Given('I login to the application', () => {
     cy.doLogin();
@@ -27,5 +27,11 @@ Given('I login to the application', () => {
 And('I click on the clients link', () => {
     cy.navbarPage((navbarPage) => {
         navbarPage.clickClients();
+    });
+});
+
+Then('I am on the clients page', () => {
+    cy.clientsPage((clientsPage) => {
+        clientsPage.validatePage();
     });
 });
