@@ -75,6 +75,11 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         cy.get(SELECT_DELETE_BTN)
             .should('have.text', 'Delete');
     }
+
+    // Special validation for client secret save  bug
+    cy.get(SELECT_CLIENT_SECRET_LABEL)
+        .should('have.class', 'MuiInputLabel-shrink')
+        .should('have.class', 'MuiFormLabel-filled');
 };
 
 const validateNewClientConfigValues = () => {
