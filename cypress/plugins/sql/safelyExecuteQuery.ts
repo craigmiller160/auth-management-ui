@@ -20,21 +20,21 @@ import { Pool, QueryResult } from 'pg';
 
 export const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<QueryResult<R>> =>
     pool.connect()
-        .then((client) => {
-            return client.query<R>(sql, params)
+        .then((client) =>
+            client.query<R>(sql, params)
                 .then((result) => {
                     client.release();
                     return result;
                 })
                 .catch((ex) => {
                     client.release();
-                    console.log(`Error executing query: ${sql}`);
-                    console.log(ex);
+                    console.log(`Error executing query: ${sql}`); // eslint-disable-line no-console
+                    console.log(ex); // eslint-disable-line no-console
                     return null;
-                });
-        })
+                })
+        )
         .catch((ex) => {
-            console.log('Error connecting to Postgres');
-            console.log(ex);
+            console.log('Error connecting to Postgres'); // eslint-disable-line no-console
+            console.log(ex); // eslint-disable-line no-console
             return null;
         });

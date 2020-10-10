@@ -18,7 +18,7 @@
 
 /// <reference path="../../support/index.d.ts" />
 
-export {}
+export {};
 
 describe('First Test', () => {
     it('before login', () => {

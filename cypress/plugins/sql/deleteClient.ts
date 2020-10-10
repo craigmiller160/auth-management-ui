@@ -30,7 +30,9 @@ interface ClientIdRow {
 }
 
 export const deleteClient = (pool: Pool) => async (clientName: string) => {
-    const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(pool, SELECT_CLIENT_ID_SQL, [clientName]);
+    const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
+        pool, SELECT_CLIENT_ID_SQL, [clientName]
+    );
     const clientId = result.rows[0].id;
 
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [clientId]);

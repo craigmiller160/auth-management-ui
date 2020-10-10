@@ -29,4 +29,4 @@ export default (on: OnFn, config: CypressConfig) => {
     on('task', {
         deleteClient: deleteClient(pool)
     });
-}
+};

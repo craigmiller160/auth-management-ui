@@ -59,7 +59,7 @@ const clickUsers = () => {
 
 const clickClients = () => {
     cy.get(SELECT_CLIENTS_BTN).click();
-}
+};
 
 const navbarPage = {
     validateLoggedOut,
