@@ -71,4 +71,5 @@ const alertPage = {
     closeAlert
 };
 
+export type AlertPage = typeof alertPage;
 export default createPage(alertPage);

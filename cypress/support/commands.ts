@@ -31,6 +31,7 @@ import homePage from './commands/pages/homePage';
 import clientsPage from './commands/pages/clientsPage';
 import clientDetailsPage from './commands/pages/clientDetailsPage';
 import clientConfigPage from './commands/pages/clientConfigPage';
+import alertPage from './commands/pages/alertPage';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbarPage', navbarPage);
@@ -39,3 +40,4 @@ Cypress.Commands.add('homePage', homePage);
 Cypress.Commands.add('clientsPage', clientsPage);
 Cypress.Commands.add('clientDetailsPage', clientDetailsPage);
 Cypress.Commands.add('clientConfigPage', clientConfigPage);
+Cypress.Commands.add('alertPage', alertPage);

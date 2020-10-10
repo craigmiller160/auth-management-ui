@@ -24,6 +24,7 @@ type LoginPage = import('./commands/pages/loginPage').LoginPage;
 type ClientsPage = import('./commands/pages/clientsPage').ClientsPage;
 type ClientDetailsPage = import('./commands/pages/clientDetailsPage').ClientDetailsPage;
 type ClientConfigPage = import('./commands/pages/clientConfigPage').ClientConfigPage;
+type AlertPage = import('./commands/pages/alertPage').AlertPage;
 
 declare namespace Cypress {
     interface Chainable {
@@ -33,6 +34,7 @@ declare namespace Cypress {
         clientsPage(pageFn: (page: ClientsPage) => void): Chainable<Element>;
         clientDetailsPage(pageFn: (page: ClientDetailsPage) => void): Chainable<Element>;
         clientConfigPage(pageFn: (page: ClientConfigPage) => void): Chainable<Element>;
+        alertPage(pageFn: (page: AlertPage) => void): Chainable<Element>;
         doLogin(): Chainable<Element>;
     }
 }
