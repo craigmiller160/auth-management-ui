@@ -24,12 +24,12 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import loginPage from './commands/loginPage';
-import navbarPage from './commands/navbarPage';
+import loginPage from './commands/pages/loginPage';
+import navbarPage from './commands/pages/navbarPage';
 import doLogin from './commands/doLogin';
-import homePage from './commands/homePage';
-import clientsPage from './commands/clientsPage';
-import clientDetailsPage from './commands/clientDetailsPage';
+import homePage from './commands/pages/homePage';
+import clientsPage from './commands/pages/clientsPage';
+import clientDetailsPage from './commands/pages/clientDetailsPage';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbarPage', navbarPage);

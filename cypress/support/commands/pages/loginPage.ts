@@ -17,7 +17,6 @@
  */
 
 
-import createCommand from './createCommand';
 import createPage from './createPage';
 
 const SELECT_NAVBAR_BRAND = '#oauth2-login-page a.navbar-brand strong';

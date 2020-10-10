@@ -18,11 +18,11 @@
 
 /// <reference types="cypress" />
 
-type HomePageType = import('./commands/homePage').HomePageType;
-type NavbarPageType = import('./commands/navbarPage').NavbarPageType;
-type LoginPageType = import('./commands/loginPage').LoginPageType;
-type ClientsPageType = import('./commands/clientsPage').ClientsPageType;
-type ClientDetailsPageType = import('./commands/clientDetailsPage').ClientDetailsPageType;
+type HomePageType = import('./commands/pages/homePage').HomePageType;
+type NavbarPageType = import('./commands/pages/navbarPage').NavbarPageType;
+type LoginPageType = import('./commands/pages/loginPage').LoginPageType;
+type ClientsPageType = import('./commands/pages/clientsPage').ClientsPageType;
+type ClientDetailsPageType = import('./commands/pages/clientDetailsPage').ClientDetailsPageType;
 
 declare namespace Cypress {
     interface Chainable {

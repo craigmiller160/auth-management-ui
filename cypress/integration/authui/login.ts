@@ -18,7 +18,7 @@
 
 /// <reference path="../../support/index.d.ts" />
 
-import navbarPage from '../../support/commands/navbarPage';
+import navbarPage from '../../support/commands/pages/navbarPage';
 
 export {}
 

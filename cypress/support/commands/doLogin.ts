@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import navbarPage from './navbarPage';
-
 export default () => {
     cy.homePage((homePage) => {
         homePage.validatePage();
