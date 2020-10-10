@@ -16,39 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool, PoolClient, QueryResult } from 'pg';
-import * as TE from 'fp-ts/es6/TaskEither';
-import { TaskEither } from 'fp-ts/es6/TaskEither';
-import { pipe } from 'fp-ts/es6/function';
+import { Pool, QueryResult } from 'pg';
 
-const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): TaskEither<Error,QueryResult<R>> => {
-    return pipe(
-        TE.tryCatch(
-            () => pool.connect(),
-            (ex) => {
-                console.log('Error connecting to Postgres');
-                return ex as Error;
-            }
-        ),
-        TE.map((client: PoolClient) => {
-            return TE.tryCatch(
-                async () => {
-                    const result: QueryResult<R> = await client.query<R>(sql, params);
+// TODO more cleanup
+
+const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<void | QueryResult<R>> =>
+    pool.connect()
+        .then((client) => {
+            return client.query(sql, params)
+                .then((result) => {
                     client.release();
                     return result;
-                },
-                (ex) => {
-                    console.log(`Error executing query: ${sql}`);
+                })
+                .catch((ex) => {
                     client.release();
-                    return ex as Error;
-                }
-            )
-        }),
-        TE.flatten
-    );
-};
+                    console.log(ex);
+                });
+        })
+        .catch((ex) => {
+            console.log('Error connecting to Postgres');
+            console.log(ex);
+        });
 
-export const deleteClient = (pool: Pool) => (clientName: string): TaskEither<Error, QueryResult<any>> => {
+export const deleteClient = (pool: Pool) => (clientName: string): Promise<void | QueryResult<any>> => {
     const sql = 'DELETE FROM dev.clients WHERE client_name = $1';
     return safelyExecuteQuery<any>(pool, sql, [clientName]);
-}
+};
