@@ -42,7 +42,7 @@ describe('First Test', () => {
             })
             .loginPage((loginPage) => {
                 loginPage.validatePage();
-                loginPage.login('craig@gmail.com', 'password');
+                loginPage.login(Cypress.env('username'), Cypress.env('password'));
             })
             .navbarPage((navbarPage) => {
                 navbarPage.validateLoggedIn();

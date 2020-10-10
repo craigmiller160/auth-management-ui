@@ -16,15 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export default (username: string, password: string) => {
-    cy.navbar('validateLoggedOut')
-        .homePage('validatePage')
-        .navbar('clickLogin')
-        .loginPage('validatePage')
-        .loginPage('login', {
-            username,
-            password
+import navbarPage from './navbarPage';
+
+export default () => {
+    cy.homePage((homePage) => {
+        homePage.validatePage();
+    })
+        .navbarPage((navbarPage) => {
+            navbarPage.validateLoggedOut();
+            navbarPage.clickLogin();
         })
-        .navbar('validateLoggedIn')
-        .homePage('validatePage');
+        .loginPage((loginPage) => {
+            loginPage.validatePage();
+            loginPage.login(Cypress.env('username'), Cypress.env('password'));
+        })
+        .navbarPage((navbarPage) => {
+            navbarPage.validateLoggedIn();
+        })
+        .homePage((homePage) => {
+            homePage.validatePage();
+        });
 };

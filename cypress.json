@@ -1,1 +1,6 @@
-{}
+{
+  "env": {
+    "username": "craig@gmail.com",
+    "password": "password"
+  }
+}
