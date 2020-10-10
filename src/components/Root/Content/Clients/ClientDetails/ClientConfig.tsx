@@ -413,7 +413,7 @@ const ClientConfig = (props: Props) => {
                         item
                         md={ 5 }
                     >
-                        <Typography variant="body1">Redirect URIs</Typography>
+                        <Typography id="redirect-uris-label" variant="body1">Redirect URIs</Typography>
                         <List
                             id="redirect-uris-list"
                             items={ redirectUriItems }

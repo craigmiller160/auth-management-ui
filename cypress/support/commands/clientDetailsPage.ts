@@ -47,6 +47,10 @@ const SELECT_ENABLED_LABEL = '#client-details-page .switch-label .MuiFormControl
 const SELECT_CLIENT_NAME_LABEL = '#client-details-page label[for="client-name-field"]';
 const SELECT_CLIENT_KEY_LABEL = '#client-details-page label[for="client-key-field"]';
 const SELECT_CLIENT_SECRET_LABEL = '#client-details-page label[for="client-secret-field"]';
+const SELECT_ACCESS_TIME_LABEL = '#client-details-page label[for="access-token-time-field"]';
+const SELECT_REFRESH_TIME_LABEL = '#client-details-page label[for="refresh-token-time-field"]';
+const SELECT_CODE_TIME_LABEL = '#client-details-page label[for="auth-code-time-field"]';
+const SELECT_REDIRECT_URIS_LABEL = '#client-details-page #redirect-uris-label';
 
 // TODO this is going to have to be split up with each tab having it's own page factory
 
@@ -88,7 +92,14 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         .should('have.text', 'Client Secret');
     cy.get(SELECT_ENABLED_LABEL)
         .should('have.text', 'Enabled');
-    // TODO need remaining labels
+    cy.get(SELECT_ACCESS_TIME_LABEL)
+        .should('have.text', 'Access Token Timeout (Secs)');
+    cy.get(SELECT_REFRESH_TIME_LABEL)
+        .should('have.text', 'Refresh Token Timeout (Secs)');
+    cy.get(SELECT_CODE_TIME_LABEL)
+        .should('have.text', 'Auth Code Timeout (Secs)');
+    cy.get(SELECT_REDIRECT_URIS_LABEL)
+        .should('have.text', 'Redirect URIs');
 
     cy.get(SELECT_ADD_REDIRECT_BTN)
         .should('have.text', 'Add Redirect URI');
@@ -99,9 +110,6 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         cy.get(SELECT_DELETE_BTN)
             .should('have.text', 'Delete');
     }
-
-    // TODO validate labels
-    // TODO that includes text of Enabled switch
 };
 
 const validateNewClientConfigValues = () => {
