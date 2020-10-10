@@ -18,9 +18,7 @@
 
 import { Pool, QueryResult } from 'pg';
 
-// TODO more cleanup
-
-const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<QueryResult<R>> =>
+export const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = []): Promise<QueryResult<R>> =>
     pool.connect()
         .then((client) => {
             return client.query<R>(sql, params)
@@ -40,8 +38,3 @@ const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = [])
             console.log(ex);
             return null;
         });
-
-export const deleteClient = (pool: Pool) => (clientName: string): Promise<QueryResult<any>> => {
-    const sql = 'DELETE FROM dev.clients WHERE name = $1';
-    return safelyExecuteQuery<any>(pool, sql, [clientName]);
-};

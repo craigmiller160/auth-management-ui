@@ -14,7 +14,7 @@
 
 import { CypressConfig } from '../types/cypress';
 import { createPool } from './sql/createPool';
-import { deleteClient } from './sql';
+import { deleteClient } from './sql/deleteClient';
 
 type OnFn = (name: string, value: object) => void;
 
