@@ -46,7 +46,6 @@ const SELECT_REDIRECT_URIS_LABEL = '#client-config-page #redirect-uris-label';
 
 export interface ClientConfigValues {
     clientName: string;
-    clientKey: string;
     accessTokenTimeout: number;
     refreshTokenTimeout: number;
     authCodeTimeout: number;
@@ -92,7 +91,35 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         .should('have.class', 'MuiFormLabel-filled');
 };
 
-const validateNewClientConfigValues = () => {
+const validateClientConfigValues = (values: ClientConfigValues) => {
+    cy.get(SELECT_CLIENT_NAME_FIELD)
+        .should('have.value', values.clientName);
+    cy.get(SELECT_CLIENT_KEY_FIELD)
+        .should('not.have.value', ''); // TODO improve this
+    cy.get(SELECT_CLIENT_SECRET_FIELD)
+        .should('not.have.value', '')
+        .should('not.have.value', '**********'); // TODO improve this
+
+    cy.get(SELECT_ACCESS_TIME_FIELD)
+        .should('have.value', values.accessTokenTimeout);
+    cy.get(SELECT_REFRESH_TIME_FIELD)
+        .should('have.value', values.refreshTokenTimeout);
+    cy.get(SELECT_CODE_TIME_FIELD)
+        .should('have.value', values.authCodeTimeout);
+
+    cy.get(SELECT_ENABLED_FIELD)
+        .should('have.class', values.enabled ? 'switch-true' : 'switch-false');
+
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .should('exist')
+        .find('li')
+        .should('have.length', values.redirectUris.length)
+        .each(($li, index) => {
+            expect($li.text()).to.equal(values.redirectUris[index]);
+        });
+};
+
+const validateNewClientConfigValues = () => { // TODO delete this
     cy.get(SELECT_CLIENT_NAME_FIELD)
         .should('have.value', 'New Client');
     cy.get(SELECT_CLIENT_KEY_FIELD)
@@ -117,7 +144,7 @@ const validateNewClientConfigValues = () => {
         .should('have.length', 0);
 };
 
-const validateExistingClientConfigValues = (values: ClientConfigValues) => {
+const validateExistingClientConfigValues = (values: ClientConfigValues) => { // TODO delete this
     // Client Key & Secret are
     cy.get(SELECT_CLIENT_NAME_FIELD)
         .should('have.value', values.clientName);
@@ -149,6 +176,7 @@ const clientConfigPage = {
     validateClientConfigCommon,
     validateNewClientConfigValues,
     validateExistingClientConfigValues,
+    validateClientConfigValues,
     clickSaveBtn,
     clickDeleteBtn
 };

@@ -1964,6 +1964,11 @@
   resolved "http://localhost:30000/@types%2fcolor-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/cucumber@^6.0.1":
+  version "6.0.1"
+  resolved "http://localhost:30000/@types%2fcucumber/-/cucumber-6.0.1.tgz#0fe9673d34568d35ff21957af049883635472fcd"
+  integrity sha512-+GZV6xfN0MeN9shDCdny8GbC8N0+U6uca8cjyaJndcwmrUhwS6qOU2vmYn0d71EOwJF568/v3SxJ8VKxuZNYRw==
+
 "@types/cypress-cucumber-preprocessor@^1.14.1":
   version "1.14.1"
   resolved "http://localhost:30000/@types%2fcypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-1.14.1.tgz#9787f4e89553ebc6359ce157a26ad51ed14aa98b"

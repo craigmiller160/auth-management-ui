@@ -18,11 +18,12 @@
 
 /// <reference path="../../../support/index.d.ts" />
 
-import { And, Given, Then } from 'cypress-cucumber-preprocessor/steps';
+import { And, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { TableDefinition } from 'cucumber';
+import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
+import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 
-Given('I login to the application', () => {
-    cy.doLogin();
-});
+const isNewClient = (clientType: string) => 'new' === clientType;
 
 And('I click on the clients link', () => {
     cy.navbarPage((navbarPage) => {
@@ -35,3 +36,67 @@ Then('I am on the clients page', () => {
         clientsPage.validatePage();
     });
 });
+
+When('I click the new client button', () => {
+    cy.clientsPage((clientsPage) => {
+        clientsPage.clickNewClientBtn();
+    });
+});
+
+Then('I am on the client details page for a {string} client', (clientType: string) => {
+    cy.clientDetailsPage((clientDetailsPage) => {
+        clientDetailsPage.validatePageCommon(isNewClient(clientType));
+    });
+});
+
+And('the client config tab is selected with these values ', (data: TableDefinition) => {
+    const values: ClientConfigValues = data.rows()
+        .map((row): ClientConfigValues => ({
+            clientName: row[0],
+            accessTokenTimeout: parseInt(row[1]),
+            refreshTokenTimeout: parseInt(row[2]),
+            authCodeTimeout: parseInt(row[3]),
+            enabled: row[4] === 'true',
+            redirectUris: []
+        }))[0];
+
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.validateClientConfigValues(values);
+    });
+});
+
+// TODO delete this one
+And('the client config tab is selected with {string} client information', (clientType: string) => {
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.validateClientConfigCommon(isNewClient(clientType));
+        if (isNewClient(clientType)) {
+            clientConfigPage.validateNewClientConfigValues();
+        }
+    });
+});
+
+When('I click the save button', () => {
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.clickSaveBtn();
+
+        // TODO need to setup the delete task here
+    });
+});
+
+Then('the client {string} is saved successfully', (clientId: string) => {
+    cy.alertPage((alertPage) => {
+        alertPage.isVisible();
+        alertPage.isSuccess();
+        alertPage.messageEquals(`Successfully saved client ${clientId}`);
+        alertPage.closeAlert();
+    });
+});
+
+
+/*
+cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.validateClientConfigCommon(false);
+        clientConfigPage.validateExistingClientConfigValues(postSaveNewClientValues);
+    })
+ */
+
