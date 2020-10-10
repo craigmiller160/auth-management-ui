@@ -18,8 +18,6 @@
 
 /// <reference path="../../support/index.d.ts" />
 
-import navbarPage from '../../support/commands/pages/navbarPage';
-
 export {}
 
 describe('First Test', () => {
