@@ -41,13 +41,15 @@ const Switch = <T extends object>(props: Props<T>) => {
         label
     } = props;
 
+    const labelClassName = `${className ?? ''} switch-label`;
+
     return (
         <Controller
             control={ control }
             name={ name as FieldName<T> }
             render={ ({ onChange, onBlur, value }) => (
                 <FormControlLabel
-                    className={ className }
+                    className={ labelClassName }
                     label={ label }
                     control={
                         <MuiSwitch

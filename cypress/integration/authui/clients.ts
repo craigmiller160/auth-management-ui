@@ -33,8 +33,8 @@ describe('Clients', () => {
         })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(true);
-                clientDetailsPage.validateClientConfigCommon();
-                clientDetailsPage.validateNewClientConfig();
+                clientDetailsPage.validateClientConfigCommon(true);
+                clientDetailsPage.validateNewClientConfigValues();
             });
 
         // TODO execute SQL to clean up when done

@@ -40,6 +40,14 @@ const SELECT_GEN_CLIENT_SECRET_BTN = '#client-details-page #client-secret-genera
 const SELECT_REDIRECT_URIS_LIST = '#client-details-page #redirect-uris-list';
 const SELECT_ADD_REDIRECT_BTN = '#client-details-page #add-redirect-uri-btn';
 
+const SELECT_SAVE_BTN = '#client-details-page #save-btn';
+const SELECT_DELETE_BTN = '#client-details-page #delete-btn';
+
+const SELECT_ENABLED_LABEL = '#client-details-page .switch-label .MuiFormControlLabel-label';
+const SELECT_CLIENT_NAME_LABEL = '#client-details-page label[for="client-name-field"]';
+const SELECT_CLIENT_KEY_LABEL = '#client-details-page label[for="client-key-field"]';
+const SELECT_CLIENT_SECRET_LABEL = '#client-details-page label[for="client-secret-field"]';
+
 const validatePageCommon = (newClient: boolean = false) => {
     cy.get(SELECT_PAGE_HEADER)
         .should('have.text', 'Client Details');
@@ -65,20 +73,36 @@ const validatePageCommon = (newClient: boolean = false) => {
     }
 };
 
-const validateClientConfigCommon = () => {
+const validateClientConfigCommon = (newClient: boolean = false) => {
     cy.get(SELECT_GEN_CLIENT_KEY_BTN)
         .should('have.text', 'Generate');
     cy.get(SELECT_GEN_CLIENT_SECRET_BTN)
         .should('have.text', 'Generate');
+    cy.get(SELECT_CLIENT_NAME_LABEL)
+        .should('have.text', 'Client Name');
+    cy.get(SELECT_CLIENT_KEY_LABEL)
+        .should('have.text', 'Client Key');
+    cy.get(SELECT_CLIENT_SECRET_LABEL)
+        .should('have.text', 'Client Secret');
+    cy.get(SELECT_ENABLED_LABEL)
+        .should('have.text', 'Enabled');
+    // TODO need remaining labels
 
     cy.get(SELECT_ADD_REDIRECT_BTN)
         .should('have.text', 'Add Redirect URI');
+
+    cy.get(SELECT_SAVE_BTN)
+        .should('have.text', 'Save');
+    if (!newClient) {
+        cy.get(SELECT_DELETE_BTN)
+            .should('have.text', 'Delete');
+    }
 
     // TODO validate labels
     // TODO that includes text of Enabled switch
 };
 
-const validateNewClientConfig = () => {
+const validateNewClientConfigValues = () => {
     cy.get(SELECT_CLIENT_NAME_FIELD)
         .should('have.value', 'New Client');
     cy.get(SELECT_CLIENT_KEY_FIELD)
@@ -105,7 +129,7 @@ const validateNewClientConfig = () => {
 
 const clientDetailsPage = {
     validatePageCommon,
-    validateNewClientConfig,
+    validateNewClientConfigValues,
     validateClientConfigCommon
 };
 
