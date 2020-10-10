@@ -23,6 +23,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 
 interface Props<T> {
+    id?: string;
     name: keyof T;
     control: Control<T>;
     label: string;
@@ -31,6 +32,7 @@ interface Props<T> {
 
 const Checkbox = <T extends object>(props: Props<T>) => {
     const {
+        id,
         name,
         control,
         color,
@@ -46,6 +48,7 @@ const Checkbox = <T extends object>(props: Props<T>) => {
                     label={ label }
                     control={
                         <MuiCheckbox
+                            id={ id }
                             onChange={ (event) => onChange(event.target.checked) }
                             onBlur={ onBlur }
                             checked={ value }
