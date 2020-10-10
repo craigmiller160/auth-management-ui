@@ -273,6 +273,7 @@ const ClientConfig = (props: Props) => {
                         alignItems='flex-start'
                     >
                         <TextField
+                            id="client-name-field"
                             className='Field'
                             name='name'
                             control={ control }
@@ -285,6 +286,7 @@ const ClientConfig = (props: Props) => {
                             direction='row'
                         >
                             <TextField
+                                id="client-key-field"
                                 className='Field'
                                 name='clientKey'
                                 control={ control }
@@ -294,6 +296,7 @@ const ClientConfig = (props: Props) => {
                                 disabled
                             />
                             <Button
+                                id="client-key-generate-btn"
                                 variant='text'
                                 color='default'
                                 onClick={ generateClientKey }
@@ -306,6 +309,7 @@ const ClientConfig = (props: Props) => {
                             direction='row'
                         >
                             <TextField
+                                id="client-secret-field"
                                 className='Field'
                                 name='clientSecret'
                                 control={ control }
@@ -314,6 +318,7 @@ const ClientConfig = (props: Props) => {
                                 disabled
                             />
                             <Button
+                                id="client-secret-generate-btn"
                                 variant='text'
                                 color='default'
                                 onClick={ generateClientSecret }
@@ -331,6 +336,7 @@ const ClientConfig = (props: Props) => {
                         alignItems='flex-start'
                     >
                         <TextField
+                            id="access-token-time-field"
                             className='Field'
                             name='accessTokenTimeoutSecs'
                             control={ control }
@@ -346,6 +352,7 @@ const ClientConfig = (props: Props) => {
                             transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                         <TextField
+                            id="refresh-token-time-field"
                             className='Field'
                             name='refreshTokenTimeoutSecs'
                             control={ control }
@@ -361,6 +368,7 @@ const ClientConfig = (props: Props) => {
                             transform={ (value: string) => value ? parseInt(value) : '' }
                         />
                         <TextField
+                            id="auth-code-time-field"
                             className='Field'
                             name='authCodeTimeoutSecs'
                             control={ control }
@@ -391,6 +399,7 @@ const ClientConfig = (props: Props) => {
                         alignItems='flex-start'
                     >
                         <Switch
+                            id="enabled-field"
                             className='Field shrink'
                             name='enabled'
                             control={ control }
@@ -410,6 +419,7 @@ const ClientConfig = (props: Props) => {
                             columnLayout
                         />
                         <Button
+                            id="add-redirect-uri-btn"
                             className="AddRedirect"
                             color="primary"
                             variant="contained"
@@ -426,6 +436,7 @@ const ClientConfig = (props: Props) => {
                     justify="space-around"
                 >
                     <Button
+                        id="save-btn"
                         variant="contained"
                         color="primary"
                         type="submit"
@@ -435,6 +446,7 @@ const ClientConfig = (props: Props) => {
                     {
                         state.clientId > 0 &&
                         <Button
+                            id="delete-btn"
                             variant="contained"
                             color="primary"
                             onClick={ () => toggleDeleteDialog(true) }

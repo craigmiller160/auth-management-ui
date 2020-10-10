@@ -40,6 +40,7 @@ describe('Clients', () => {
     });
 
     it('Edit Client Config', () => {
+        // TODO don't forget about generating new key/secret
         throw new Error();
     });
 
