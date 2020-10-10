@@ -53,10 +53,20 @@ const clickLogin = () => {
     cy.get(SELECT_AUTH_BTN).click();
 };
 
+const clickUsers = () => {
+    cy.get(SELECT_USERS_BTN).click();
+};
+
+const clickClients = () => {
+    cy.get(SELECT_CLIENTS_BTN).click();
+}
+
 const navbarPage = {
     validateLoggedOut,
     validateLoggedIn,
-    clickLogin
+    clickLogin,
+    clickUsers,
+    clickClients
 };
 
 export type NavbarPageType = typeof navbarPage;
