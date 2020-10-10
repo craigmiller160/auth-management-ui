@@ -32,7 +32,7 @@ describe('Clients', () => {
             clientsPage.clickNewClientBtn();
         })
             .clientDetailsPage((clientDetailsPage) => {
-                clientDetailsPage.validatePageCommon();
+                clientDetailsPage.validatePageCommon(true);
                 clientDetailsPage.validateNewClientConfig();
             });
 
