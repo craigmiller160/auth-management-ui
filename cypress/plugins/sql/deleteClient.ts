@@ -37,4 +37,5 @@ export const deleteClient = (pool: Pool) => async (clientName: string) => {
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [clientId]);
     await safelyExecuteQuery<any>(pool, DELETE_ROLES_SQL, [clientId]);
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_SQL, [clientId]);
+    return null;
 };
