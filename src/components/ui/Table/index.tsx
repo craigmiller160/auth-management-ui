@@ -26,9 +26,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 
-interface BodyRow {
+export interface BodyRow {
     click: () => void;
     items: Array<string | number | boolean>;
+    id?: string;
 }
 
 interface Props {
@@ -69,15 +70,18 @@ const Table = (props: Props) => {
                 </TableHead>
                 <TableBody className={ classes.TableBody }>
                     {
-                        props.body.map((row, index) => (
-                            <TableRow key={ index } onClick={ row.click }>
-                                {
-                                    row.items.map((item, index) => (
-                                        <TableCell key={ index }>{ item }</TableCell>
-                                    ))
-                                }
-                            </TableRow>
-                        ))
+                        props.body.map((row, index) => {
+                            const id = row.id ?? `id_${index}`;
+                            return (
+                                <TableRow id={ id } key={ index } onClick={ row.click }>
+                                    {
+                                        row.items.map((item, index) => (
+                                            <TableCell key={ index }>{ item }</TableCell>
+                                        ))
+                                    }
+                                </TableRow>
+                            );
+                        })
                     }
                 </TableBody>
             </MuiTable>

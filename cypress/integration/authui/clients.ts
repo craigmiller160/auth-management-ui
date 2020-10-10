@@ -27,7 +27,10 @@ describe('Clients', () => {
     it('New Client', () => {
         cy.clientsPage((clientsPage) => {
             clientsPage.validatePage();
+            clientsPage.clickNewClientBtn();
         });
+
+        // TODO execute SQL to clean up when done
     });
 
     it('Edit Client Config', () => {

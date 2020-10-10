@@ -19,7 +19,10 @@
 import createPage from './createPage';
 
 const SELECT_PAGE_HEADER = '#clients-page #clients-page-header';
-const SELECT_CLIENTS_TABLE = '#clients-page #clients-table'
+const SELECT_CLIENTS_TABLE = '#clients-page #clients-table';
+const SELECT_NEW_CLIENT_BTN = '#clients-page #new-client-btn';
+
+const tableHeader = ['Name', 'Key'];
 
 const validatePage = () => {
     cy.get(SELECT_PAGE_HEADER)
@@ -27,13 +30,22 @@ const validatePage = () => {
     cy.get(SELECT_CLIENTS_TABLE)
         .should('exist');
     cy.get(SELECT_CLIENTS_TABLE)
-        .children('th.MuiTableCell-head')
+        .find('th.MuiTableCell-head')
         .should('have.length', 2)
-        .each(($child) => console.log($child)); // TODO figure this out
+        .each(($child, index) => {
+            expect($child.text()).to.equal(tableHeader[index]);
+        });
+    cy.get(SELECT_NEW_CLIENT_BTN)
+        .should('have.text', 'New Client');
+};
+
+const clickNewClientBtn = () => {
+    cy.get(SELECT_NEW_CLIENT_BTN).click();
 };
 
 const clientsPage = {
-    validatePage
+    validatePage,
+    clickNewClientBtn
 };
 
 export type ClientsPageType = typeof clientsPage;
