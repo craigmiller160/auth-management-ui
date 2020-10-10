@@ -33,6 +33,7 @@ describe('Clients', () => {
         })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(true);
+                clientDetailsPage.validateClientConfigCommon();
                 clientDetailsPage.validateNewClientConfig();
             });
 

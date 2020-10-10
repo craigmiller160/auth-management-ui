@@ -52,6 +52,9 @@ const Switch = <T extends object>(props: Props<T>) => {
                     control={
                         <MuiSwitch
                             id={ id }
+                            classes={ {
+                                input: `switch-${value}`
+                            } }
                             onChange={ (event) => onChange(event.target.checked) }
                             onBlur={ onBlur }
                             checked={ value }
