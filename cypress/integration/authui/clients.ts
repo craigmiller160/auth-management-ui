@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import clientConfigPage from '../../support/commands/pages/clientConfigPage';
+import { TAB_INDEX_CONFIG } from '../../support/commands/pages/clientDetailsPage';
 
 describe('Clients', () => {
     beforeEach(() => {
@@ -35,6 +35,7 @@ describe('Clients', () => {
         })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(true);
+                clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
             })
             .clientConfigPage((clientConfigPage) => {
                 clientConfigPage.validateClientConfigCommon(true);

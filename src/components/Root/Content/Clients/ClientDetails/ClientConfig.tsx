@@ -254,7 +254,7 @@ const ClientConfig = (props: Props) => {
     };
 
     return (
-        <div className='ClientConfig'>
+        <div id="client-config-page" className='ClientConfig'>
             <Prompt
                 when={ (isDirty || state.redirectUriDirty || state.clientId === 0) && !state.allowNavigationOverride }
                 message='Are you sure you want to leave? Any unsaved changes will be lost.'
