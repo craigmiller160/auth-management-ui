@@ -16,19 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createPage from './createPage';
-
-const SELECT_PAGE_MESSAGE = '#home-page h3';
-
-const validatePage = () => {
-    cy.get(SELECT_PAGE_MESSAGE)
-        .should('have.text', 'Welcome to OAuth Management');
+export default <T>(pageObj: T) => (pageFn: (page: T) => void) => {
+    pageFn(pageObj);
 };
-
-const homePage = {
-    validatePage
-};
-
-export type HomePageType = typeof homePage;
-export default createPage(homePage);
-

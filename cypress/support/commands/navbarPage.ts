@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createCommand from './createCommand';
+import createPage from './createPage';
 
 const SELECT_NAVBAR_TITLE = '#navbar-title-btn';
 const SELECT_AUTH_BTN = '#navbar-auth-btn';
@@ -53,10 +53,11 @@ const clickLogin = () => {
     cy.get(SELECT_AUTH_BTN).click();
 };
 
-const navbar = {
+const navbarPage = {
     validateLoggedOut,
     validateLoggedIn,
     clickLogin
 };
 
-export default createCommand(navbar);
+export type NavbarPageType = typeof navbarPage;
+export default createPage(navbarPage);

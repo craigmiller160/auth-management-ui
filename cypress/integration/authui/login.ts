@@ -18,28 +18,36 @@
 
 /// <reference path="../../support/index.d.ts" />
 
+import navbarPage from '../../support/commands/navbarPage';
+
 export {}
 
 describe('First Test', () => {
     it('before login', () => {
-        cy.navbar('validateLoggedOut')
+        cy.navbarPage((navbarPage) => {
+            navbarPage.validateLoggedOut();
+        })
             .homePage((homePage) => {
                 homePage.validatePage();
             });
     });
 
     it('logging in', () => {
-        cy.navbar('validateLoggedOut')
-            .homePage((homePage) => {
-                homePage.validatePage();
+        cy.homePage((homePage) => {
+            homePage.validatePage();
+        })
+            .navbarPage((navbarPage) => {
+                navbarPage.validateLoggedOut();
+                navbarPage.clickLogin();
             })
-            .navbar('clickLogin')
             .loginPage('validatePage')
             .loginPage('login', {
                 username: 'craig@gmail.com',
                 password: 'password'
             })
-            .navbar('validateLoggedIn')
+            .navbarPage((navbarPage) => {
+                navbarPage.validateLoggedIn();
+            })
             .homePage((homePage) => {
                 homePage.validatePage();
             });
