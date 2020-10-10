@@ -40,6 +40,7 @@ describe('Clients', () => {
             .clientConfigPage((clientConfigPage) => {
                 clientConfigPage.validateClientConfigCommon(true);
                 clientConfigPage.validateNewClientConfigValues();
+                clientConfigPage.clickSaveBtn();
             });
 
         // TODO execute SQL to clean up when done

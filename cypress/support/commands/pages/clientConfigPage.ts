@@ -102,9 +102,19 @@ const validateNewClientConfigValues = () => {
         .should('have.length', 0);
 };
 
+const clickSaveBtn = () => {
+    cy.get(SELECT_SAVE_BTN).click();
+};
+
+const clickDeleteBtn = () => {
+    cy.get(SELECT_DELETE_BTN).click();
+};
+
 const clientConfigPage = {
     validateClientConfigCommon,
-    validateNewClientConfigValues
+    validateNewClientConfigValues,
+    clickSaveBtn,
+    clickDeleteBtn
 };
 
 export type ClientConfigPage = typeof clientConfigPage;
