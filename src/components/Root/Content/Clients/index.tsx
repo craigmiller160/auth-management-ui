@@ -60,7 +60,7 @@ const Clients = () => {
     const body: Array<BodyRow> = useMemo(() =>
         state.clients
             .map((client) => ({
-                id: `${client.name}-row`,
+                id: `${client.name.replaceAll(' ', '-')}-row`,
                 click: () => history.push(`/clients/${client.id}`),
                 items: [
                     client.name,

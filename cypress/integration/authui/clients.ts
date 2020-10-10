@@ -75,8 +75,13 @@ describe('Clients', () => {
                 alertPage.isSuccess();
                 alertPage.messageEquals('Successfully saved client new');
                 alertPage.closeAlert();
+            })
+            .navbarPage((navbarPage) => {
+                navbarPage.clickClients();
+            })
+            .clientsPage((clientsPage) => {
+                clientsPage.clientRecordExists('New Client');
             });
-        // TODO check the client list page to see the New Client there
     });
 
     it('warning when going back from client details', () => {

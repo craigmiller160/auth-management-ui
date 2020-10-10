@@ -118,10 +118,9 @@ const validateNewClientConfigValues = () => {
 };
 
 const validateExistingClientConfigValues = (values: ClientConfigValues) => {
+    // Client Key & Secret are
     cy.get(SELECT_CLIENT_NAME_FIELD)
         .should('have.value', values.clientName);
-    cy.get(SELECT_CLIENT_KEY_FIELD)
-        .should('have.value', values.clientKey);
     cy.get(SELECT_ACCESS_TIME_FIELD)
         .should('have.value', values.accessTokenTimeout);
     cy.get(SELECT_REFRESH_TIME_FIELD)
