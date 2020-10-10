@@ -17,8 +17,19 @@
  */
 
 import { TAB_INDEX_CONFIG } from '../../support/commands/pages/clientDetailsPage';
+import { ClientConfigValues } from '../../support/commands/pages/clientConfigPage';
 
 type CleanupFn = () => void;
+
+const postSaveNewClientValues: ClientConfigValues = {
+    clientName: 'New Client',
+    clientKey: '',
+    enabled: true,
+    accessTokenTimeout: 300,
+    refreshTokenTimeout: 3600,
+    authCodeTimeout: 60,
+    redirectUris: []
+};
 
 describe('Clients', () => {
     let cleanupTasks: Array<CleanupFn>;
@@ -53,9 +64,7 @@ describe('Clients', () => {
                 cleanupTasks.push(() => cy.task('deleteClient', 'New Client'));
 
                 clientConfigPage.validateClientConfigCommon(false);
-
-                // TODO validate that saved data is present
-
+                clientConfigPage.validateExistingClientConfigValues(postSaveNewClientValues);
             })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(false);
@@ -67,8 +76,7 @@ describe('Clients', () => {
                 alertPage.messageEquals('Successfully saved client new');
                 alertPage.closeAlert();
             });
-
-        // TODO execute SQL to clean up when done
+        // TODO check the client list page to see the New Client there
     });
 
     it('warning when going back from client details', () => {

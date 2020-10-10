@@ -44,6 +44,16 @@ const SELECT_REFRESH_TIME_LABEL = '#client-config-page label[for="refresh-token-
 const SELECT_CODE_TIME_LABEL = '#client-config-page label[for="auth-code-time-field"]';
 const SELECT_REDIRECT_URIS_LABEL = '#client-config-page #redirect-uris-label';
 
+export interface ClientConfigValues {
+    clientName: string;
+    clientKey: string;
+    accessTokenTimeout: number;
+    refreshTokenTimeout: number;
+    authCodeTimeout: number;
+    enabled: boolean;
+    redirectUris: Array<string>;
+}
+
 const validateClientConfigCommon = (newClient: boolean = false) => {
     cy.get(SELECT_GEN_CLIENT_KEY_BTN)
         .should('have.text', 'Generate');
@@ -107,6 +117,27 @@ const validateNewClientConfigValues = () => {
         .should('have.length', 0);
 };
 
+const validateExistingClientConfigValues = (values: ClientConfigValues) => {
+    cy.get(SELECT_CLIENT_NAME_FIELD)
+        .should('have.value', values.clientName);
+    cy.get(SELECT_CLIENT_KEY_FIELD)
+        .should('have.value', values.clientKey);
+    cy.get(SELECT_ACCESS_TIME_FIELD)
+        .should('have.value', values.accessTokenTimeout);
+    cy.get(SELECT_REFRESH_TIME_FIELD)
+        .should('have.value', values.refreshTokenTimeout);
+    cy.get(SELECT_CODE_TIME_FIELD)
+        .should('have.value', values.authCodeTimeout);
+    cy.get(SELECT_ENABLED_FIELD)
+        .should('have.class', values.enabled ? 'switch-true' : 'switch-false');
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .find('li')
+        .should('have.length', values.redirectUris.length)
+        .each(($li, index) => {
+            expect($li.text()).to.equal(values.redirectUris[index]);
+        });
+};
+
 const clickSaveBtn = () => {
     cy.get(SELECT_SAVE_BTN).click();
 };
@@ -118,6 +149,7 @@ const clickDeleteBtn = () => {
 const clientConfigPage = {
     validateClientConfigCommon,
     validateNewClientConfigValues,
+    validateExistingClientConfigValues,
     clickSaveBtn,
     clickDeleteBtn
 };
