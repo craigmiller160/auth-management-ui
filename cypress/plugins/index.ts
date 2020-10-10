@@ -13,7 +13,8 @@
 // the project's config changing)
 
 import { CypressConfig } from '../types/cypress';
-import { createPool } from './sql';
+import { createPool } from './sql/createPool';
+import { deleteClient } from './sql';
 
 type OnFn = (name: string, value: object) => void;
 
@@ -24,4 +25,8 @@ export default (on: OnFn, config: CypressConfig) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
     const pool = createPool(config.env);
+
+    on('task', {
+        deleteClient: deleteClient(pool)
+    });
 }

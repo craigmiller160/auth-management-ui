@@ -48,7 +48,7 @@ const safelyExecuteQuery = <R>(pool: Pool, sql: string, params: Array<any> = [])
     );
 };
 
-const deleteClient = (pool: Pool) => (clientName: string): TaskEither<Error, QueryResult<any>> => {
+export const deleteClient = (pool: Pool) => (clientName: string): TaskEither<Error, QueryResult<any>> => {
     const sql = 'DELETE FROM dev.clients WHERE client_name = $1';
     return safelyExecuteQuery<any>(pool, sql, [clientName]);
 }
