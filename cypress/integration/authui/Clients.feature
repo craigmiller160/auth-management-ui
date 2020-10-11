@@ -42,7 +42,7 @@ Feature: Clients Management Pages
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
     # TODO test for redirect URIs separately
 
-  Scenario: Cannot navigate away with unsaved changes
+  Scenario: Cannot navigate away with unsaved config value changes
     When I click the new client button
     Then I am on the client details page for a "new" client
     Then I set the following client config values
@@ -50,6 +50,9 @@ Feature: Clients Management Pages
       | Edit Client 2 | 40            | 50             | 60          | true    |
     And I click on the clients link
     Then I am on the client details page for a "new" client
+
+  Scenario: Cannot navigate away with unsaved redirect URIs
+    # TODO finish this
 
   Scenario: Deleting a client
     When I click on the client named "Edit Client"
@@ -64,10 +67,14 @@ Feature: Clients Management Pages
     And the client "Edit Client" is not in the list
 
   Scenario: Add/Edit/Delete client roles
+    # TODO finish this
 
   Scenario: Add/remove user grants & roles
+    # TODO finish this
 
   Scenario: Navigate to user page from client grant
+    # TODO finish this
 
   Scenario: View/remove user authentications
+    # TODO finish this
 
