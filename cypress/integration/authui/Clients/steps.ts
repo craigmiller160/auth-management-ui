@@ -65,7 +65,6 @@ And('the client config tab is selected with these values for {string} client', (
             authCodeTimeout: parseInt(row[3]),
             enabled: row[4] === 'true',
             clientSecretHasPlaceholder: row[5] === 'true',
-            redirectUris: [],
             clientKeyValidator: (value: string) => {
                 if (row[6] === 'true') {
                     cy.get(`@${CLIENT_KEY}`)
@@ -112,11 +111,11 @@ And('the list contains a client with the name {string}', (clientName: string) =>
     });
 });
 
-
-/*
-cy.clientConfigPage((clientConfigPage) => {
-        clientConfigPage.validateClientConfigCommon(false);
-        clientConfigPage.validateExistingClientConfigValues(postSaveNewClientValues);
-    })
- */
+And('the client config page contains these redirect uris', (data: TableDefinition) => {
+    const uris: Array<string> = data.rows()
+        .map((row) => row[0]);
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.validateRedirectUris(uris);
+    });
+});
 

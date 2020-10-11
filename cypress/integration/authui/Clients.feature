@@ -11,13 +11,15 @@ Feature: Clients Management Pages
     And the client config tab is selected with these values for "new" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | false                   | false             |           |
-    # TODO test for redirect URIs separately
+    And the client config page contains these redirect uris
+      | uri |
     When I click the save button
     Then the client "new" is saved successfully
     And the client config tab is selected with these values for "existing" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
-    # TODO test for redirect URIs separately
+    And the client config page contains these redirect uris
+      | uri |
     And I click on the clients link
     Then I am on the clients page
     And the list contains a client with the name "New Client"
