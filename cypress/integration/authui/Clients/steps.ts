@@ -24,6 +24,7 @@ import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsP
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 
 const CLIENT_TO_DELETE_NAME = 'clientToDeleteName';
+const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
 
 After(() => {
@@ -68,15 +69,28 @@ And('the client config tab is selected with these values for {string} client', (
             authCodeTimeout: parseInt(row[3]),
             enabled: row[4] === 'true',
             clientSecretHasPlaceholder: row[5] === 'true',
-            redirectUris: []
+            redirectUris: [],
+            clientKeyValidator: (value: string) => {
+                if (row[6] === 'true') {
+                    cy.get(`@${CLIENT_KEY}`)
+                        .then(($key) => expect($key).to.equal(value));
+                } else {
+                    expect(row[7]).to.equal(value);
+                }
+            }
         }))[0];
 
     cy.wrap(values.clientName).as(CLIENT_TO_DELETE_NAME);
 
-    cy.clientConfigPage((clientConfigPage) => {
-        clientConfigPage.validateClientConfigCommon(isNewClient(clientType));
-        clientConfigPage.validateClientConfigValues(values);
-    });
+    cy.clientDetailsPage((clientDetailsPage) => {
+        clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
+    })
+        .clientConfigPage((clientConfigPage) => {
+            clientConfigPage.validateClientConfigCommon(isNewClient(clientType));
+            clientConfigPage.validateClientConfigValues(values);
+            clientConfigPage.getClientKeyField()
+                .then(($key) => cy.wrap($key.val()).as(CLIENT_KEY));
+        });
 });
 
 When('I click the save button', () => {

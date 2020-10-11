@@ -52,6 +52,7 @@ export interface ClientConfigValues {
     enabled: boolean;
     redirectUris: Array<string>;
     clientSecretHasPlaceholder?: boolean;
+    clientKeyValidator: (value: string) => void;
 }
 
 const validateClientConfigCommon = (newClient: boolean = false) => {
@@ -92,13 +93,22 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         .should('have.class', 'MuiFormLabel-filled');
 };
 
+const getClientKeyField = () => cy.get(SELECT_CLIENT_KEY_FIELD);
+const getClientSecretField = () => cy.get(SELECT_CLIENT_SECRET_FIELD);
+
 const validateClientConfigValues = (values: ClientConfigValues) => {
     cy.get(SELECT_CLIENT_NAME_FIELD)
         .should('have.value', values.clientName);
     cy.get(SELECT_CLIENT_KEY_FIELD)
-        .should('not.have.value', ''); // TODO improve this
+        .should('not.have.value', '');
     cy.get(SELECT_CLIENT_SECRET_FIELD)
         .should('not.have.value', '');
+
+    cy.get(SELECT_CLIENT_KEY_FIELD)
+        .then(($keyField) => {
+            const key: string = $keyField.val() as string;
+            values.clientKeyValidator(key);
+        });
 
     if (values.clientSecretHasPlaceholder) {
         cy.get(SELECT_CLIENT_SECRET_FIELD)
@@ -186,7 +196,9 @@ const clientConfigPage = {
     validateExistingClientConfigValues,
     validateClientConfigValues,
     clickSaveBtn,
-    clickDeleteBtn
+    clickDeleteBtn,
+    getClientKeyField,
+    getClientSecretField
 };
 
 export type ClientConfigPage = typeof clientConfigPage;
