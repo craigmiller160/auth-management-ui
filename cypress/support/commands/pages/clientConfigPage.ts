@@ -51,6 +51,7 @@ export interface ClientConfigValues {
     authCodeTimeout: number;
     enabled: boolean;
     redirectUris: Array<string>;
+    clientSecretHasPlaceholder?: boolean;
 }
 
 const validateClientConfigCommon = (newClient: boolean = false) => {
@@ -97,8 +98,15 @@ const validateClientConfigValues = (values: ClientConfigValues) => {
     cy.get(SELECT_CLIENT_KEY_FIELD)
         .should('not.have.value', ''); // TODO improve this
     cy.get(SELECT_CLIENT_SECRET_FIELD)
-        .should('not.have.value', '')
-        .should('not.have.value', '**********'); // TODO improve this
+        .should('not.have.value', '');
+
+    if (values.clientSecretHasPlaceholder) {
+        cy.get(SELECT_CLIENT_SECRET_FIELD)
+            .should('have.value', '**********');
+    } else {
+        cy.get(SELECT_CLIENT_SECRET_FIELD)
+            .should('not.have.value', '**********');
+    }
 
     cy.get(SELECT_ACCESS_TIME_FIELD)
         .should('have.value', values.accessTokenTimeout);

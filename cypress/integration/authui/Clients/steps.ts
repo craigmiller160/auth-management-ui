@@ -49,7 +49,11 @@ Then('I am on the client details page for a {string} client', (clientType: strin
     });
 });
 
-And('the client config tab is selected with these values ', (data: TableDefinition) => {
+And('the client config tab is selected with these values for {string} client', (clientType: string, data: TableDefinition) => {
+    // TODO delete this after determining order
+    console.log(clientType);
+    console.log(data);
+
     const values: ClientConfigValues = data.rows()
         .map((row): ClientConfigValues => ({
             clientName: row[0],
@@ -57,21 +61,13 @@ And('the client config tab is selected with these values ', (data: TableDefiniti
             refreshTokenTimeout: parseInt(row[2]),
             authCodeTimeout: parseInt(row[3]),
             enabled: row[4] === 'true',
+            clientSecretHasPlaceholder: row[5] === 'true',
             redirectUris: []
         }))[0];
 
     cy.clientConfigPage((clientConfigPage) => {
-        clientConfigPage.validateClientConfigValues(values);
-    });
-});
-
-// TODO delete this one
-And('the client config tab is selected with {string} client information', (clientType: string) => {
-    cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.validateClientConfigCommon(isNewClient(clientType));
-        if (isNewClient(clientType)) {
-            clientConfigPage.validateNewClientConfigValues();
-        }
+        clientConfigPage.validateClientConfigValues(values);
     });
 });
 
