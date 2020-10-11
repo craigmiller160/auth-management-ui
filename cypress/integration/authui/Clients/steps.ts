@@ -161,6 +161,8 @@ Then('I generate a new client {string}', (genFieldName: string) => {
 Then('I set the following client config values', (data: TableDefinition) => {
     const values: ClientConfigValues = data.rows()
         .map(createClientKeyValidator)[0];
-
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.setConfigValues(values);
+    });
 });
 

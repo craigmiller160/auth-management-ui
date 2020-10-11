@@ -196,7 +196,8 @@ const clientConfigPage = {
     getClientKeyField,
     getClientSecretField,
     validateRedirectUris,
-    generateFieldValue
+    generateFieldValue,
+    setConfigValues
 };
 
 export type ClientConfigPage = typeof clientConfigPage;
