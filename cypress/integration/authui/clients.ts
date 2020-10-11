@@ -22,15 +22,15 @@ import { InsertClient } from '../../plugins/sql/insertClient';
 
 type CleanupFn = () => void;
 
-const postSaveNewClientValues: ClientConfigValues = {
-    clientName: 'New Client',
-    clientKey: '',
-    enabled: true,
-    accessTokenTimeout: 300,
-    refreshTokenTimeout: 3600,
-    authCodeTimeout: 60,
-    redirectUris: []
-};
+// const postSaveNewClientValues: ClientConfigValues = {
+//     clientName: 'New Client',
+//     clientKey: '',
+//     enabled: true,
+//     accessTokenTimeout: 300,
+//     refreshTokenTimeout: 3600,
+//     authCodeTimeout: 60,
+//     redirectUris: []
+// };
 
 const insertClient: InsertClient = {
     name: 'Inserted Client',
@@ -75,7 +75,7 @@ describe('Clients', () => {
                 cleanupTasks.push(() => cy.task('deleteClient', 'New Client'));
 
                 clientConfigPage.validateClientConfigCommon(false);
-                clientConfigPage.validateExistingClientConfigValues(postSaveNewClientValues);
+                // clientConfigPage.validateExistingClientConfigValues(postSaveNewClientValues);
             })
             .clientDetailsPage((clientDetailsPage) => {
                 clientDetailsPage.validatePageCommon(false);
