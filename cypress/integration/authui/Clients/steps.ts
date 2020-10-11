@@ -82,8 +82,6 @@ And('the client config tab is selected with these values for {string} client', (
 When('I click the save button', () => {
     cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.clickSaveBtn();
-
-        // TODO need to setup the delete task here
     });
 });
 
