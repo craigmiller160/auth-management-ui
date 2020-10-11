@@ -67,5 +67,7 @@ Feature: Clients Management Pages
 
   Scenario: Add/remove user grants & roles
 
+  Scenario: Navigate to user page from client grant
+
   Scenario: View/remove user authentications
 
