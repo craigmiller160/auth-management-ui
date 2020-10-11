@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import { safelyExecuteQuery } from './safelyExecuteQuery';
 
 export interface InsertClient {
@@ -27,12 +27,19 @@ export interface InsertClient {
     accessTokenTimeout: number;
     refreshTokenTimeout: number;
     authCodeTimeout: number;
+    redirectUris: Array<String>;
 }
 
+interface ClientIdRow {
+    id: number;
+}
+
+const SELECT_CLIENT_ID = 'SELECT id FROM dev.clients WHERE name = $1';
+const INSERT_URI_SQL = 'INSERT INTO dev.client_redirect_uris (client_id, redirect_uri) VALUES ($1, $2)';
 const INSERT_CLIENT_SQL = 'INSERT INTO dev.clients (name, client_key, client_secret, enabled, access_token_timeout_secs, refresh_token_timeout_secs, auth_code_timeout_secs) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
 export const insertClient = (pool: Pool) => async (client: InsertClient) => {
-    const params = [
+    const insertClientParams = [
         client.name,
         client.clientKey,
         client.clientSecret,
@@ -41,6 +48,15 @@ export const insertClient = (pool: Pool) => async (client: InsertClient) => {
         client.refreshTokenTimeout,
         client.authCodeTimeout
     ];
-    await safelyExecuteQuery<any>(pool, INSERT_CLIENT_SQL, params);
+    await safelyExecuteQuery<any>(pool, INSERT_CLIENT_SQL, insertClientParams);
+
+    const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
+        pool, SELECT_CLIENT_ID, [client.name]
+    );
+    const clientId = result.rows[0].id;
+
+    const promises = client.redirectUris
+        .map((uri) => safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [clientId, uri]));
+    await Promise.all(promises);
     return null;
 };
