@@ -22,7 +22,7 @@ export default () => {
     })
         .navbarPage((navbarPage) => {
             navbarPage.validateLoggedOut();
-            navbarPage.clickLogin();
+            navbarPage.clickAuthBtn();
         })
         .loginPage((loginPage) => {
             loginPage.validatePage();

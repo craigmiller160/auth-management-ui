@@ -18,7 +18,7 @@
 
 /// <reference path="../../../support/index.d.ts" />
 
-import { And, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { And, Then, When, After } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
@@ -26,7 +26,7 @@ import { ClientConfigValues } from '../../../support/commands/pages/clientConfig
 const CLIENT_TO_DELETE_NAME = 'clientToDeleteName';
 const isNewClient = (clientType: string) => 'new' === clientType;
 
-afterEach(() => {
+After(() => {
     cy.get(`@${CLIENT_TO_DELETE_NAME}`)
         .then(($name) => cy.task('deleteClient', $name));
 });
