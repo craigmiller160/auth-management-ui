@@ -25,17 +25,17 @@ Feature: Clients Management Pages
     And the list contains a client with the name "New Client"
 
   Scenario: Editing existing client config
-    When I click on the client named "Edit Client"
+    When I click on the client named "Test Client"
     Then I am on the client details page for a "existing" client
     And the client config tab is selected with these values for "new" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
-      | Edit Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
+      | Test Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
     # TODO test for redirect URIs separately
     Then I generate a new client "key"
     Then I generate a new client "secret"
     Then I set the following client config values
       | name          | accessTimeout | refreshTimeout | codeTimeout | enabled |
-      | Edit Client 2 | 40            | 50             | 60          | true    |
+      | Test Client 2 | 40            | 50             | 60          | true    |
     # TODO add, edit, and remove redirect URIs
     When I click the save button
     Then the client "###" is saved successfully
