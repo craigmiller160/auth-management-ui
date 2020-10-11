@@ -42,8 +42,8 @@ Feature: Clients Management Pages
     When I click the save button
     Then the client "###" is saved successfully
     And the client config tab is selected with these values for "existing" client
-      | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
-      | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
+      | name          | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
+      | Test Client 2 | 40            | 50             | 60          | true    | true                    | true              |           |
     # TODO test for redirect URIs separately
 
   Scenario: Cannot navigate away with unsaved config value changes

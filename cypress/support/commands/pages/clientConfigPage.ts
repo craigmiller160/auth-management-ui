@@ -18,6 +18,9 @@
 
 import createPage from './createPage';
 
+const CLIENT_KEY = 'clientKey';
+const CLIENT_SECRET = 'clientSecret';
+
 const SELECT_CLIENT_KEY_FIELD = '#client-config-page #client-key-field';
 const SELECT_CLIENT_SECRET_FIELD = '#client-config-page #client-secret-field';
 const SELECT_CLIENT_NAME_FIELD = '#client-config-page #client-name-field';
@@ -51,7 +54,7 @@ export interface ClientConfigValues {
     authCodeTimeout: number;
     enabled: boolean;
     clientSecretHasPlaceholder?: boolean;
-    clientKeyValidator: (value: string) => void;
+    clientKeyValidator?: (value: string) => void;
 }
 
 const validateClientConfigCommon = (newClient: boolean = false) => {
@@ -106,11 +109,13 @@ const validateClientConfigValues = (values: ClientConfigValues) => {
     cy.get(SELECT_CLIENT_SECRET_FIELD)
         .should('not.have.value', '');
 
-    cy.get(SELECT_CLIENT_KEY_FIELD)
-        .then(($keyField) => {
-            const key: string = $keyField.val() as string;
-            values.clientKeyValidator(key);
-        });
+    if (values.clientKeyValidator) {
+        cy.get(SELECT_CLIENT_KEY_FIELD)
+            .then(($keyField) => {
+                const key: string = $keyField.val() as string;
+                values.clientKeyValidator(key);
+            });
+    }
 
     if (values.clientSecretHasPlaceholder) {
         cy.get(SELECT_CLIENT_SECRET_FIELD)
@@ -148,6 +153,41 @@ const clickDeleteBtn = () => {
     cy.get(SELECT_DELETE_BTN).click();
 };
 
+const generateFieldValue = (genFieldName: string) => {
+    if (CLIENT_KEY === genFieldName) {
+        cy.get(SELECT_CLIENT_KEY_FIELD)
+            .then(($keyField) => cy.wrap($keyField.val()).as(CLIENT_KEY));
+        cy.get(SELECT_GEN_CLIENT_KEY_BTN).click();
+        cy.get(SELECT_CLIENT_KEY_FIELD)
+            .then(($keyField) => {
+                expect($keyField.val()).not.to.equal(cy.get(`@${CLIENT_KEY}`));
+            });
+    } else if (CLIENT_SECRET === genFieldName) {
+        cy.get(SELECT_CLIENT_SECRET_FIELD)
+            .then(($keyField) => cy.wrap($keyField.val()).as(CLIENT_SECRET));
+        cy.get(SELECT_GEN_CLIENT_SECRET_BTN).click();
+        cy.get(SELECT_CLIENT_SECRET_FIELD)
+            .then(($keyField) => {
+                expect($keyField.val()).not.to.equal(cy.get(`@${CLIENT_SECRET}`));
+            });
+    } else {
+        throw new Error(`Invalid field name to generate value: ${genFieldName}`);
+    }
+};
+
+const setConfigValues = (values: ClientConfigValues) => {
+    cy.get(SELECT_CLIENT_NAME_FIELD)
+        .type(values.clientName);
+    cy.get(SELECT_ACCESS_TIME_FIELD)
+        .type(`${values.accessTokenTimeout}`);
+    cy.get(SELECT_REFRESH_TIME_FIELD)
+        .type(`${values.refreshTokenTimeout}`);
+    cy.get(SELECT_CODE_TIME_FIELD)
+        .type(`${values.authCodeTimeout}`);
+
+    // TODO how to handle enabled?
+};
+
 const clientConfigPage = {
     validateClientConfigCommon,
     validateClientConfigValues,
@@ -155,7 +195,8 @@ const clientConfigPage = {
     clickDeleteBtn,
     getClientKeyField,
     getClientSecretField,
-    validateRedirectUris
+    validateRedirectUris,
+    generateFieldValue
 };
 
 export type ClientConfigPage = typeof clientConfigPage;

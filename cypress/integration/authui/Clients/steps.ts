@@ -23,6 +23,7 @@ import { Before, TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 import { InsertClient } from '../../../plugins/sql/insertClient';
+import { TableFooterClassKey } from '@material-ui/core';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -78,26 +79,28 @@ Then('I am on the client details page for a {string} client', (clientType: strin
     });
 });
 
+const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
+    clientName: row[0],
+    accessTokenTimeout: parseInt(row[1]),
+    refreshTokenTimeout: parseInt(row[2]),
+    authCodeTimeout: parseInt(row[3]),
+    enabled: row[4] === 'true',
+    clientSecretHasPlaceholder: row[5] === 'true',
+    clientKeyValidator: (value: string) => {
+        if (row[6] === 'true') {
+            cy.get(`@${CLIENT_KEY}`)
+                .then(($key) => expect($key).to.equal(value));
+        } else if(row[7]) {
+            expect(row[7]).to.equal(value);
+        } else {
+            expect('').not.to.equal(value);
+        }
+    }
+});
+
 And('the client config tab is selected with these values for {string} client', (clientType: string, data: TableDefinition) => {
     const values: ClientConfigValues = data.rows()
-        .map((row): ClientConfigValues => ({
-            clientName: row[0],
-            accessTokenTimeout: parseInt(row[1]),
-            refreshTokenTimeout: parseInt(row[2]),
-            authCodeTimeout: parseInt(row[3]),
-            enabled: row[4] === 'true',
-            clientSecretHasPlaceholder: row[5] === 'true',
-            clientKeyValidator: (value: string) => {
-                if (row[6] === 'true') {
-                    cy.get(`@${CLIENT_KEY}`)
-                        .then(($key) => expect($key).to.equal(value));
-                } else if(row[7]) {
-                    expect(row[7]).to.equal(value);
-                } else {
-                    expect('').not.to.equal(value);
-                }
-            }
-        }))[0];
+        .map(createClientKeyValidator)[0];
 
     cy.clientDetailsPage((clientDetailsPage) => {
         clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
@@ -143,5 +146,21 @@ When('I click on the client named {string}', (clientName: string) => {
     cy.clientsPage((clientsPage) => {
         clientsPage.clickClientRow(clientName);
     });
+});
+
+Then('I generate a new client {string}', (genFieldName: string) => {
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.generateFieldValue(genFieldName);
+        if (CLIENT_KEY === genFieldName) {
+            clientConfigPage.getClientKeyField()
+                .then(($key) => cy.wrap($key.val()).as(CLIENT_KEY));
+        }
+    });
+});
+
+Then('I set the following client config values', (data: TableDefinition) => {
+    const values: ClientConfigValues = data.rows()
+        .map(createClientKeyValidator)[0];
+
 });
 
