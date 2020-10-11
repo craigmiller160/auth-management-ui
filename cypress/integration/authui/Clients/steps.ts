@@ -19,17 +19,24 @@
 /// <reference path="../../../support/index.d.ts" />
 
 import { And, Then, When, After } from 'cypress-cucumber-preprocessor/steps';
-import { TableDefinition } from 'cucumber';
+import { Before, TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 
-const CLIENT_TO_DELETE_NAME = 'clientToDeleteName';
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
 
+const cleanup = () => {
+    cy.task('deleteClient', 'New Client');
+    cy.task('deleteClient', 'Test Client');
+};
+
+Before(() => {
+    cleanup();
+});
+
 After(() => {
-    cy.get(`@${CLIENT_TO_DELETE_NAME}`)
-        .then(($name) => cy.task('deleteClient', $name));
+    cleanup();
 });
 
 And('I click on the clients link', () => {
@@ -76,8 +83,6 @@ And('the client config tab is selected with these values for {string} client', (
                 }
             }
         }))[0];
-
-    cy.wrap(values.clientName).as(CLIENT_TO_DELETE_NAME);
 
     cy.clientDetailsPage((clientDetailsPage) => {
         clientDetailsPage.isTabSelected(TAB_INDEX_CONFIG);
