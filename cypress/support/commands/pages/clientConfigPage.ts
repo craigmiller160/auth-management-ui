@@ -177,12 +177,16 @@ const generateFieldValue = (genFieldName: string) => {
 
 const setConfigValues = (values: ClientConfigValues) => {
     cy.get(SELECT_CLIENT_NAME_FIELD)
+        .clear()
         .type(values.clientName);
     cy.get(SELECT_ACCESS_TIME_FIELD)
+        .clear()
         .type(`${values.accessTokenTimeout}`);
     cy.get(SELECT_REFRESH_TIME_FIELD)
+        .clear()
         .type(`${values.refreshTokenTimeout}`);
     cy.get(SELECT_CODE_TIME_FIELD)
+        .clear()
         .type(`${values.authCodeTimeout}`);
 
     // TODO how to handle enabled?
