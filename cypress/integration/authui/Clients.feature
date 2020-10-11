@@ -41,3 +41,13 @@ Feature: Clients Management Pages
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
     # TODO test for redirect URIs separately
+
+  Scenario: Cannot navigate away with unsaved changes
+    When I click the new client button
+    Then I am on the client details page for a "new" client
+    Then I set the following client config values
+      | name          | accessTimeout | refreshTimeout | codeTimeout | enabled |
+      | Edit Client 2 | 40            | 50             | 60          | true    |
+    And I click on the clients link
+    Then I am on the client details page for a "new" client
+
