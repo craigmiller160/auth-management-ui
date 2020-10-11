@@ -14,7 +14,7 @@ Feature: Clients Management Pages
     And the client config page contains these redirect uris
       | uri |
     When I click the save button
-    Then the client "new" is saved successfully
+    Then the client is saved successfully
     And the client config tab is selected with these values for "existing" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
@@ -33,14 +33,14 @@ Feature: Clients Management Pages
     And the client config page contains these redirect uris
       | uri                            |
       | https://localhost:123/authcode |
-    Then I generate a new client "key"
-    Then I generate a new client "secret"
+    Then I generate a new client "clientKey"
+    Then I generate a new client "clientSecret"
     Then I set the following client config values
       | name          | accessTimeout | refreshTimeout | codeTimeout | enabled |
       | Test Client 2 | 40            | 50             | 60          | true    |
     # TODO add, edit, and remove redirect URIs
     When I click the save button
-    Then the client "###" is saved successfully
+    Then the client is saved successfully
     And the client config tab is selected with these values for "existing" client
       | name          | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Test Client 2 | 40            | 50             | 60          | true    | true                    | true              |           |

@@ -119,11 +119,11 @@ When('I click the save button', () => {
     });
 });
 
-Then('the client {string} is saved successfully', (clientId: string) => {
+Then('the client is saved successfully', () => {
     cy.alertPage((alertPage) => {
         alertPage.isVisible();
         alertPage.isSuccess();
-        alertPage.messageEquals(`Successfully saved client ${clientId}`);
+        alertPage.messageContains(`Successfully saved client`);
         alertPage.closeAlert();
     });
 });

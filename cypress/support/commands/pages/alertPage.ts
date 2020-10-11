@@ -58,6 +58,11 @@ const messageEquals = (message: string) => {
         .should('have.text', message);
 };
 
+const messageContains = (message: string) => {
+    cy.get(SELECT_ALERT_MESSAGE)
+        .should('contain.text', message);
+};
+
 const closeAlert = () => {
     cy.get(SELECT_ALERT_CLOSE_BTN).click();
     cy.get(SELECT_COLLAPSE)
@@ -70,7 +75,8 @@ const alertPage = {
     isSuccess,
     isError,
     messageEquals,
-    closeAlert
+    closeAlert,
+    messageContains
 };
 
 export type AlertPage = typeof alertPage;

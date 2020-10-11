@@ -138,7 +138,7 @@ const validateClientConfigValues = (values: ClientConfigValues) => {
 
 const validateRedirectUris = (uris: Array<String>) => {
     cy.get(SELECT_REDIRECT_URIS_LIST)
-        .find('li')
+        .find('li span.MuiTypography-body1')
         .should('have.length', uris.length)
         .each(($li, index) => {
             expect($li.text()).to.equal(uris[index]);
