@@ -23,7 +23,13 @@ import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 
+const CLIENT_TO_DELETE_NAME = 'clientToDeleteName';
 const isNewClient = (clientType: string) => 'new' === clientType;
+
+afterEach(() => {
+    cy.get(`@${CLIENT_TO_DELETE_NAME}`)
+        .then(($name) => cy.task('deleteClient', $name));
+});
 
 And('I click on the clients link', () => {
     cy.navbarPage((navbarPage) => {
@@ -64,6 +70,8 @@ And('the client config tab is selected with these values for {string} client', (
             clientSecretHasPlaceholder: row[5] === 'true',
             redirectUris: []
         }))[0];
+
+    cy.wrap(values.clientName).as(CLIENT_TO_DELETE_NAME);
 
     cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.validateClientConfigCommon(isNewClient(clientType));
