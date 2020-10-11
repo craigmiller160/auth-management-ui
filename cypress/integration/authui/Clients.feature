@@ -18,4 +18,4 @@ Feature: Clients Management Pages
       | New Client | 300           | 3600           | 60          | true    | true                    |
     And I click on the clients link
     Then I am on the clients page
-    And the created client is in the list
+    And the list contains a client with the name "New Client"

@@ -88,6 +88,12 @@ Then('the client {string} is saved successfully', (clientId: string) => {
     });
 });
 
+And('the list contains a client with the name {string}', (clientName: string) => {
+    cy.clientsPage((clientsPage) => {
+        clientsPage.clientRecordExists(clientName);
+    });
+});
+
 
 /*
 cy.clientConfigPage((clientConfigPage) => {
