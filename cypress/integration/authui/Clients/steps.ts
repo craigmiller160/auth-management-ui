@@ -74,8 +74,10 @@ And('the client config tab is selected with these values for {string} client', (
                 if (row[6] === 'true') {
                     cy.get(`@${CLIENT_KEY}`)
                         .then(($key) => expect($key).to.equal(value));
-                } else {
+                } else if(row[7]) {
                     expect(row[7]).to.equal(value);
+                } else {
+                    expect('').not.to.equal(value);
                 }
             }
         }))[0];
