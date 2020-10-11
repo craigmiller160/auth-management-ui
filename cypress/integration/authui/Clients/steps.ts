@@ -18,12 +18,11 @@
 
 /// <reference path="../../../support/index.d.ts" />
 
-import { And, Then, When, After } from 'cypress-cucumber-preprocessor/steps';
-import { Before, TableDefinition } from 'cucumber';
+import { And, Then, When, After, Before } from 'cypress-cucumber-preprocessor/steps';
+import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
 import { InsertClient } from '../../../plugins/sql/insertClient';
-import { TableFooterClassKey } from '@material-ui/core';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -47,6 +46,7 @@ const testClient: InsertClient = {
 };
 
 Before(() => {
+    console.log('BEFORE'); // TODO delete this
     cleanup();
     cy.task('insertClient', testClient);
 });
