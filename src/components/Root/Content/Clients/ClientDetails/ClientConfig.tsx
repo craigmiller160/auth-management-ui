@@ -105,7 +105,10 @@ const ClientConfig = (props: Props) => {
                     draft.redirectUriDirty = false;
                     draft.redirectUris = client.redirectUris;
                 });
-                reset(client);
+                reset({
+                    ...client,
+                    clientSecret: SECRET_PLACEHOLDER
+                });
                 const path = props.match.path.replace(':id', `${client.id}`);
                 dispatch(showSuccessReduxAlert(`Successfully saved client ${id}`));
                 history.push(path);
