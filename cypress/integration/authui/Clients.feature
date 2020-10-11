@@ -11,11 +11,13 @@ Feature: Clients Management Pages
     And the client config tab is selected with these values for "new" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | false                   | false             |           |
+    # TODO test for redirect URIs separately
     When I click the save button
     Then the client "new" is saved successfully
     And the client config tab is selected with these values for "existing" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
+    # TODO test for redirect URIs separately
     And I click on the clients link
     Then I am on the clients page
     And the list contains a client with the name "New Client"
@@ -26,5 +28,16 @@ Feature: Clients Management Pages
     And the client config tab is selected with these values for "new" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Edit Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
+    # TODO test for redirect URIs separately
     Then I generate a new client "key"
     Then I generate a new client "secret"
+    Then I set the following client config values
+      | name          | accessTimeout | refreshTimeout | codeTimeout | enabled |
+      | Edit Client 2 | 40            | 50             | 60          | true    |
+    # TODO add, edit, and remove redirect URIs
+    When I click the save button
+    Then the client "###" is saved successfully
+    And the client config tab is selected with these values for "existing" client
+      | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
+      | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
+    # TODO test for redirect URIs separately
