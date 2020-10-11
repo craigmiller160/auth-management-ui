@@ -45,14 +45,21 @@ const clickNewClientBtn = () => {
 
 const clientRecordExists = (clientName: string) => {
     cy.get(SELECT_CLIENTS_TABLE)
-        .find('#New-Client-row')
+        .find(`${clientName}-row`)
         .should('exist');
+};
+
+const clickClientRow = (clientName: string) => {
+    cy.get(SELECT_CLIENTS_TABLE)
+        .find(`${clientName}-row`)
+        .click();
 };
 
 const clientsPage = {
     validatePage,
     clickNewClientBtn,
-    clientRecordExists
+    clientRecordExists,
+    clickClientRow
 };
 
 export type ClientsPage = typeof clientsPage;

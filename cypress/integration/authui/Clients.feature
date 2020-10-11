@@ -30,7 +30,9 @@ Feature: Clients Management Pages
     And the client config tab is selected with these values for "new" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Test Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
-    # TODO test for redirect URIs separately
+    And the client config page contains these redirect uris
+      | uri                            |
+      | https://localhost:123/authcode |
     Then I generate a new client "key"
     Then I generate a new client "secret"
     Then I set the following client config values

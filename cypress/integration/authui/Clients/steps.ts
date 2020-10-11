@@ -22,6 +22,7 @@ import { And, Then, When, After } from 'cypress-cucumber-preprocessor/steps';
 import { Before, TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
+import { InsertClient } from '../../../plugins/sql/insertClient';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -31,8 +32,22 @@ const cleanup = () => {
     cy.task('deleteClient', 'Test Client');
 };
 
+const testClient: InsertClient = {
+    name: 'Test Client',
+    clientKey: 'ABCDEFG',
+    clientSecret: '{bcrypt}$2a$10$HYKpEK6BFUFH99fHm5yOhuk4hn1gFErtLveeonVSHW1G7n5bUhGUe',
+    enabled: false,
+    accessTokenTimeout: 10,
+    refreshTokenTimeout: 20,
+    authCodeTimeout: 30,
+    redirectUris: [
+        'https://localhost:123/authcode'
+    ]
+};
+
 Before(() => {
     cleanup();
+    cy.task('insertClient', testClient);
 });
 
 After(() => {
@@ -121,6 +136,12 @@ And('the client config page contains these redirect uris', (data: TableDefinitio
         .map((row) => row[0]);
     cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.validateRedirectUris(uris);
+    });
+});
+
+When('I click on the client named {string}', (clientName: string) => {
+    cy.clientsPage((clientsPage) => {
+        clientsPage.clickClientRow(clientName);
     });
 });
 
