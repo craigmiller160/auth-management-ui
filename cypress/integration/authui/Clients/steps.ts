@@ -57,10 +57,6 @@ Then('I am on the client details page for a {string} client', (clientType: strin
 });
 
 And('the client config tab is selected with these values for {string} client', (clientType: string, data: TableDefinition) => {
-    // TODO delete this after determining order
-    console.log(clientType);
-    console.log(data);
-
     const values: ClientConfigValues = data.rows()
         .map((row): ClientConfigValues => ({
             clientName: row[0],
