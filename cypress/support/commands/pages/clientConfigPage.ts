@@ -53,6 +53,8 @@ const SELECT_DELETE_DIALOG_BODY = '#delete-client-dialog p';
 const SELECT_DELETE_DIALOG_CONFIRM = '#delete-client-dialog #delete-client-dialog-btn-0';
 const SELECT_DELETE_DIALOG_CANCEL = '#delete-client-dialog #delete-client-dialog-btn-1';
 
+const SELECT_REDIRECT_DIALOG = '#redirect-uri-dialog';
+
 export interface ClientConfigValues {
     clientName: string;
     accessTokenTimeout: number;

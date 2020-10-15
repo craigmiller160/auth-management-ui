@@ -461,6 +461,7 @@ const ClientConfig = (props: Props) => {
                 </Grid>
             </form>
             <InputDialog
+                id="redirect-uri-dialog"
                 open={ state.showRedirectUriDialog }
                 title="Redirect URI"
                 onCancel={ cancelRedirectUri }
