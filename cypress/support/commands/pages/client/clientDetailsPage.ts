@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createPage from './createPage';
+import createPage from '../createPage';
 
 export const TAB_INDEX_CONFIG = 0;
 export const TAB_INDEX_ROLES = 1;

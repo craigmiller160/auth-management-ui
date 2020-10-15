@@ -21,9 +21,9 @@
 type HomePage = import('./commands/pages/homePage').HomePage;
 type NavbarPage = import('./commands/pages/navbarPage').NavbarPage;
 type LoginPage = import('./commands/pages/loginPage').LoginPage;
-type ClientsPage = import('./commands/pages/clientsPage').ClientsPage;
-type ClientDetailsPage = import('./commands/pages/clientDetailsPage').ClientDetailsPage;
-type ClientConfigPage = import('./commands/pages/clientConfigPage').ClientConfigPage;
+type ClientsPage = import('./commands/pages/client/clientsPage').ClientsPage;
+type ClientDetailsPage = import('./commands/pages/client/clientDetailsPage').ClientDetailsPage;
+type ClientConfigPage = import('./commands/pages/client/clientConfigPage').ClientConfigPage;
 type AlertPage = import('./commands/pages/alertPage').AlertPage;
 
 declare namespace Cypress {

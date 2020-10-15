@@ -28,9 +28,9 @@ import loginPage from './commands/pages/loginPage';
 import navbarPage from './commands/pages/navbarPage';
 import doLogin from './commands/doLogin';
 import homePage from './commands/pages/homePage';
-import clientsPage from './commands/pages/clientsPage';
-import clientDetailsPage from './commands/pages/clientDetailsPage';
-import clientConfigPage from './commands/pages/clientConfigPage';
+import clientsPage from './commands/pages/client/clientsPage';
+import clientDetailsPage from './commands/pages/client/clientDetailsPage';
+import clientConfigPage from './commands/pages/client/clientConfigPage';
 import alertPage from './commands/pages/alertPage';
 
 Cypress.Commands.add('loginPage', loginPage);

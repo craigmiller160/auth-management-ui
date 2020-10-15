@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createPage from './createPage';
+import createPage from '../createPage';
 
 const SELECT_PAGE_HEADER = '#clients-page #clients-page-header';
 const SELECT_CLIENTS_TABLE = '#clients-page #clients-table';

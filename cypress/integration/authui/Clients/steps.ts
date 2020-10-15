@@ -20,8 +20,8 @@
 
 import { And, Then, When, After, Before } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
-import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/clientDetailsPage';
-import { ClientConfigValues } from '../../../support/commands/pages/clientConfigPage';
+import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/client/clientDetailsPage';
+import { ClientConfigValues } from '../../../support/commands/pages/client/clientConfigPage';
 import { InsertClient } from '../../../plugins/sql/insertClient';
 
 const CLIENT_KEY = 'clientKey';

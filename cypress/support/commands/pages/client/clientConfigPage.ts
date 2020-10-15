@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createPage from './createPage';
+import createPage from '../createPage';
 
 const CLIENT_KEY = 'clientKey';
 const CLIENT_SECRET = 'clientSecret';
