@@ -469,6 +469,7 @@ const ClientConfig = (props: Props) => {
                 initialValue={ state.selectedRedirectUri }
             />
             <ConfirmDialog
+                id="delete-client-dialog"
                 open={ state.showDeleteDialog }
                 title="Delete Client"
                 message="Are you sure you want to delete this client?"

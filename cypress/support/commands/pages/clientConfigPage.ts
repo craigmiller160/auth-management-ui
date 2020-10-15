@@ -47,6 +47,12 @@ const SELECT_REFRESH_TIME_LABEL = '#client-config-page label[for="refresh-token-
 const SELECT_CODE_TIME_LABEL = '#client-config-page label[for="auth-code-time-field"]';
 const SELECT_REDIRECT_URIS_LABEL = '#client-config-page #redirect-uris-label';
 
+const SELECT_DELETE_DIALOG = '#client-config-page #delete-client-dialog';
+const SELECT_DELETE_DIALOG_TITLE = '#client-config-page #delete-client-dialog h2';
+const SELECT_DELETE_DIALOG_BODY = '#client-config-page #delete-client-dialog p';
+const SELECT_DELETE_DIALOG_CONFIRM = '#client-config-page #delete-client-dialog #delete-client-dialog-btn-0';
+const SELECT_DELETE_DIALOG_CANCEL = '#client-config-page #delete-client-dialog #delete-client-dialog-btn-1';
+
 export interface ClientConfigValues {
     clientName: string;
     accessTokenTimeout: number;

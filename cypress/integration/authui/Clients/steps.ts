@@ -166,3 +166,11 @@ Then('I set the following client config values', (data: TableDefinition) => {
     });
 });
 
+When('I click the delete button, and confirm the prompt', () => {
+    // TODO finish this
+});
+
+And('the client {string} is not in the list', (clientName: string) => {
+    // TODO finish this
+});
+
