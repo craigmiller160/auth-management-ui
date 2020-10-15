@@ -40,7 +40,7 @@ Feature: Clients Management Pages
       | Test Client 2 | 40            | 50             | 60          | true    |
     # TODO add, edit, and remove redirect URIs
     When I click the save button
-    Then the client is saved successfully
+    Then a "success" alert appears with a message containing "Successfully saved client"
     And the client config tab is selected with these values for "existing" client
       | name          | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Test Client 2 | 40            | 50             | 60          | true    | true                    | true              |           |
