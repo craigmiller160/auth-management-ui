@@ -30,6 +30,7 @@ const isNewClient = (clientType: string) => 'new' === clientType;
 const cleanup = () => {
     cy.task('deleteClient', 'New Client');
     cy.task('deleteClient', 'Test Client');
+    cy.task('deleteClient', 'Test Client 2');
 };
 
 const testClient: InsertClient = {
@@ -46,7 +47,6 @@ const testClient: InsertClient = {
 };
 
 Before(() => {
-    console.log('BEFORE'); // TODO delete this
     cleanup();
     cy.task('insertClient', testClient);
 });
@@ -153,7 +153,9 @@ Then('I generate a new client {string}', (genFieldName: string) => {
         clientConfigPage.generateFieldValue(genFieldName);
         if (CLIENT_KEY === genFieldName) {
             clientConfigPage.getClientKeyField()
-                .then(($key) => cy.wrap($key.val()).as(CLIENT_KEY));
+                .then(($key) => {
+                    cy.wrap($key.val()).as(CLIENT_KEY);
+                });
         }
     });
 });

@@ -164,6 +164,7 @@ const generateFieldValue = (genFieldName: string) => {
         cy.get(SELECT_CLIENT_KEY_FIELD)
             .then(($keyField) => cy.wrap($keyField.val()).as(CLIENT_KEY));
         cy.get(SELECT_GEN_CLIENT_KEY_BTN).click();
+        cy.wait(1000);
         cy.get(SELECT_CLIENT_KEY_FIELD)
             .then(($keyField) => {
                 expect($keyField.val()).not.to.equal(cy.get(`@${CLIENT_KEY}`));
@@ -195,7 +196,7 @@ const setConfigValues = (values: ClientConfigValues) => {
         .clear()
         .type(`${values.authCodeTimeout}`);
 
-    // TODO how to handle enabled?
+    cy.get(SELECT_ENABLED_FIELD).click();
 };
 
 const clientConfigPage = {
