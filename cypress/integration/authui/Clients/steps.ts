@@ -168,11 +168,17 @@ Then('I set the following client config values', (data: TableDefinition) => {
 When('I click the delete button, and confirm the prompt', () => {
     cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.clickDeleteBtn();
-        clientConfigPage.validateDeleteDialog(true);
-        clientConfigPage.clickDeleteCancel();
-        clientConfigPage.validateDeleteDialog(false);
-        clientConfigPage.clickDeleteBtn();
-        clientConfigPage.clickDeleteConfirm();
-    });
+    })
+        .clientConfigDeleteDialog((clientConfigDeleteDialog) => {
+            clientConfigDeleteDialog.validateDeleteDialog(true);
+            clientConfigDeleteDialog.clickDeleteCancel();
+            clientConfigDeleteDialog.validateDeleteDialog(false);
+        })
+        .clientConfigPage((clientConfigPage) => {
+            clientConfigPage.clickDeleteBtn();
+        })
+        .clientConfigDeleteDialog((clientConfigDeleteDialog) => {
+            clientConfigDeleteDialog.clickDeleteConfirm();
+        });
 });
 

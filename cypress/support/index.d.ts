@@ -37,7 +37,7 @@ declare namespace Cypress {
         clientsPage(pageFn: PageFunction<ClientsPage>): Chainable<Element>;
         clientDetailsPage(pageFn: PageFunction<ClientDetailsPage>): Chainable<Element>;
         clientConfigPage(pageFn: PageFunction<ClientConfigPage>): Chainable<Element>;
-        clientConfigDeleteDialog(pageFn: PageFunction<ClientConfigDeleteDialog>) => void): Chainable<Element>;
+        clientConfigDeleteDialog(pageFn: PageFunction<ClientConfigDeleteDialog>): Chainable<Element>;
         alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
         doLogin(): Chainable<Element>;
     }
