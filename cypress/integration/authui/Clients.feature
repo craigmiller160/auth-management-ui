@@ -22,7 +22,7 @@ Feature: Clients Management Pages
       | uri |
     And I click on the clients link
     Then I am on the clients page
-    And the list contains a client with the name "New Client"
+    And the list "does" contain a client with the name "New Client"
 
   Scenario: Editing existing client config
     When I click on the client named "Test Client"
@@ -56,7 +56,7 @@ Feature: Clients Management Pages
     When I click the delete button, and confirm the prompt
     Then I am on the clients page
     # TODO alert for successful delete
-    And the client "Test Client" is not in the list
+    And the list "does not" contain a client with the name "Test Client"
 
   Scenario: Add/Edit/Delete client roles
     # TODO finish this

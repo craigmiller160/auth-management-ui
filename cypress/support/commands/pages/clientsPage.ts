@@ -43,10 +43,10 @@ const clickNewClientBtn = () => {
     cy.get(SELECT_NEW_CLIENT_BTN).click();
 };
 
-const clientRecordExists = (clientName: string) => {
+const clientRecordExists = (clientName: string, shouldExist: boolean) => {
     cy.get(SELECT_CLIENTS_TABLE)
         .find(`#${clientName.replace(' ', '-')}-row`)
-        .should('exist');
+        .should(`${!shouldExist ? 'not.' : ''}exist`);
 };
 
 const clickClientRow = (clientName: string) => {

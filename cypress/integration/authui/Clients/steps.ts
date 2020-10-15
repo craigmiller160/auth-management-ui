@@ -128,9 +128,15 @@ Then('the client is saved successfully', () => {
     });
 });
 
-And('the list contains a client with the name {string}', (clientName: string) => {
+And('the list {string} contain a client with the name {string}', (action: string, clientName: string) => {
     cy.clientsPage((clientsPage) => {
-        clientsPage.clientRecordExists(clientName);
+        if ('does' === action) {
+            clientsPage.clientRecordExists(clientName, true);
+        } else if('does not' === action) {
+            clientsPage.clientRecordExists(clientName, false);
+        } else {
+            throw new Error(`Invalid action: ${action}`);
+        }
     });
 });
 
@@ -169,10 +175,13 @@ Then('I set the following client config values', (data: TableDefinition) => {
 });
 
 When('I click the delete button, and confirm the prompt', () => {
-    // TODO finish this
-});
-
-And('the client {string} is not in the list', (clientName: string) => {
-    // TODO finish this
+    cy.clientConfigPage((clientConfigPage) => {
+        clientConfigPage.clickDeleteBtn();
+        clientConfigPage.validateDeleteDialog(true);
+        clientConfigPage.clickDeleteCancel();
+        clientConfigPage.validateDeleteDialog(false);
+        clientConfigPage.clickDeleteBtn();
+        clientConfigPage.clickDeleteConfirm();
+    });
 });
 
