@@ -119,15 +119,6 @@ When('I click the save button', () => {
     });
 });
 
-Then('the client is saved successfully', () => {
-    cy.alertPage((alertPage) => {
-        alertPage.isVisible();
-        alertPage.isSuccess();
-        alertPage.messageContains(`Successfully saved client`);
-        alertPage.closeAlert();
-    });
-});
-
 And('the list {string} contain a client with the name {string}', (action: string, clientName: string) => {
     cy.clientsPage((clientsPage) => {
         if ('does' === action) {

@@ -16,8 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Given } from 'cypress-cucumber-preprocessor/steps';
+import { Given, Then } from 'cypress-cucumber-preprocessor/steps';
 
 Given('I login to the application', () => {
     cy.doLogin();
+});
+
+Then('a {string} alert appears with a message containing {string}', (alertType: string, message: string) => {
+    cy.alertPage((alertPage) => {
+        alertPage.isVisible();
+        alertPage.isSuccess();
+        alertPage.messageContains(`Successfully saved client`);
+        alertPage.closeAlert();
+    });
 });

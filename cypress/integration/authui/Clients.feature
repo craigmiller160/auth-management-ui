@@ -14,7 +14,7 @@ Feature: Clients Management Pages
     And the client config page contains these redirect uris
       | uri |
     When I click the save button
-    Then the client is saved successfully
+    Then a "success" alert appears with a message containing "Successfully saved client"
     And the client config tab is selected with these values for "existing" client
       | name       | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | New Client | 300           | 3600           | 60          | true    | true                    | true              |           |
@@ -55,7 +55,7 @@ Feature: Clients Management Pages
     # TODO test for redirect URIs separately
     When I click the delete button, and confirm the prompt
     Then I am on the clients page
-    # TODO alert for successful delete
+    Then a "success" alert appears with a message containing "Successfully deleted client"
     And the list "does not" contain a client with the name "Test Client"
 
   Scenario: Add/Edit/Delete client roles
