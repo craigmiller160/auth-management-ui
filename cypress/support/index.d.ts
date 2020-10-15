@@ -24,17 +24,21 @@ type LoginPage = import('./commands/pages/loginPage').LoginPage;
 type ClientsPage = import('./commands/pages/client/clientsPage').ClientsPage;
 type ClientDetailsPage = import('./commands/pages/client/clientDetailsPage').ClientDetailsPage;
 type ClientConfigPage = import('./commands/pages/client/clientConfigPage').ClientConfigPage;
+type ClientConfigDeleteDialog = import('./commands/pages/client/clientConfigDeleteDialog').ClientConfigDeleteDialog;
 type AlertPage = import('./commands/pages/alertPage').AlertPage;
+
+type PageFunction<T> = (page: T) => void;
 
 declare namespace Cypress {
     interface Chainable {
-        loginPage(pageFn: (page: LoginPage) => void): Chainable<Element>;
-        navbarPage(pageFn: (page: NavbarPage) => void): Chainable<Element>;
-        homePage(pageFn: (page: HomePage) => void): Chainable<Element>;
-        clientsPage(pageFn: (page: ClientsPage) => void): Chainable<Element>;
-        clientDetailsPage(pageFn: (page: ClientDetailsPage) => void): Chainable<Element>;
-        clientConfigPage(pageFn: (page: ClientConfigPage) => void): Chainable<Element>;
-        alertPage(pageFn: (page: AlertPage) => void): Chainable<Element>;
+        loginPage(pageFn: PageFunction<LoginPage>): Chainable<Element>;
+        navbarPage(pageFn: PageFunction<NavbarPage>): Chainable<Element>;
+        homePage(pageFn: PageFunction<HomePage>): Chainable<Element>;
+        clientsPage(pageFn: PageFunction<ClientsPage>): Chainable<Element>;
+        clientDetailsPage(pageFn: PageFunction<ClientDetailsPage>): Chainable<Element>;
+        clientConfigPage(pageFn: PageFunction<ClientConfigPage>): Chainable<Element>;
+        clientConfigDeleteDialog(pageFn: PageFunction<ClientConfigDeleteDialog>) => void): Chainable<Element>;
+        alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
         doLogin(): Chainable<Element>;
     }
 }
