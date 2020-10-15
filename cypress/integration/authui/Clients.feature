@@ -51,7 +51,7 @@ Feature: Clients Management Pages
     Then I am on the client details page for a "existing" client
     And the client config tab is selected with these values for "existing" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
-      | Edit Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
+      | Test Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
     # TODO test for redirect URIs separately
     When I click the delete button, and confirm the prompt
     Then I am on the clients page
