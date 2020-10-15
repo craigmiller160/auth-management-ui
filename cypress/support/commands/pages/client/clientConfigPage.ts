@@ -47,10 +47,6 @@ const SELECT_REFRESH_TIME_LABEL = '#client-config-page label[for="refresh-token-
 const SELECT_CODE_TIME_LABEL = '#client-config-page label[for="auth-code-time-field"]';
 const SELECT_REDIRECT_URIS_LABEL = '#client-config-page #redirect-uris-label';
 
-
-
-const SELECT_REDIRECT_DIALOG = '#redirect-uri-dialog';
-
 export interface ClientConfigValues {
     clientName: string;
     accessTokenTimeout: number;
