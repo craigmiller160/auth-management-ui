@@ -29,9 +29,9 @@ const COLLAPSE_HIDDEN_CLASS = 'MuiCollapse-hidden';
 const ALERT_SUCCESS_CLASS = 'MuiAlert-standardSuccess';
 const ALERT_ERROR_CLASS = 'MuiAlert-standardError';
 
-const isVisible = () => {
+const isVisible = (visible: boolean) => {
     cy.get(SELECT_COLLAPSE)
-        .should('have.class', COLLAPSE_VISIBLE_CLASS);
+        .should(`${!visible ? 'not.' : ''}have.class`, COLLAPSE_VISIBLE_CLASS);
 };
 
 const isHidden = () => {

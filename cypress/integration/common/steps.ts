@@ -24,9 +24,20 @@ Given('I login to the application', () => {
 
 Then('a {string} alert appears with a message containing {string}', (alertType: string, message: string) => {
     cy.alertPage((alertPage) => {
-        alertPage.isVisible();
-        alertPage.isSuccess();
+        alertPage.isVisible(true);
+        switch (alertType) {
+            case 'success':
+                alertPage.isSuccess();
+                break;
+            case 'error':
+                alertPage.isError;
+                break;
+            default:
+                throw new Error(`Invalid alert type: ${alertType}`);
+        }
+
         alertPage.messageContains(`Successfully saved client`);
         alertPage.closeAlert();
+        alertPage.isVisible(false);
     });
 });
