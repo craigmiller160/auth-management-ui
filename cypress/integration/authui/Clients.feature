@@ -27,7 +27,7 @@ Feature: Clients Management Pages
   Scenario: Editing existing client config
     When I click on the client named "Test Client"
     Then I am on the client details page for a "existing" client
-    And the client config tab is selected with these values for "new" client
+    And the client config tab is selected with these values for "existing" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Test Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
     And the client config page contains these redirect uris
@@ -52,7 +52,9 @@ Feature: Clients Management Pages
     And the client config tab is selected with these values for "existing" client
       | name        | accessTimeout | refreshTimeout | codeTimeout | enabled | clientSecretPlaceholder | useSavedClientKey | clientKey |
       | Test Client | 10            | 20            | 30           | false   | true                    | false             | ABCDEFG   |
-    # TODO test for redirect URIs separately
+    And the client config page contains these redirect uris
+      | uri                            |
+      | https://localhost:123/authcode |
     When I click the delete button, and confirm the prompt
     Then I am on the clients page
     Then a "success" alert appears with a message containing "Successfully deleted client"

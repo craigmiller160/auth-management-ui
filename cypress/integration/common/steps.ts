@@ -36,7 +36,7 @@ Then('a {string} alert appears with a message containing {string}', (alertType: 
                 throw new Error(`Invalid alert type: ${alertType}`);
         }
 
-        alertPage.messageContains(`Successfully saved client`);
+        alertPage.messageContains(message);
         alertPage.closeAlert();
         alertPage.isVisible(false);
     });
