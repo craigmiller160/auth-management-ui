@@ -31,7 +31,8 @@
     "eject": "react-scripts eject",
     "dist": "node scripts/dist.js",
     "lint": "node scripts/eslint.js",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress": "node scripts/cypress-run.js"
   },
   "browserslist": {
     "production": [
