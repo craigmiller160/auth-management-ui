@@ -22,9 +22,27 @@ const SELECT_REDIRECT_URIS_LIST = '#client-config-page #redirect-uris-list';
 const SELECT_ADD_REDIRECT_BTN = '#client-config-page #add-redirect-uri-btn';
 
 const SELECT_REDIRECT_DIALOG = '#redirect-uri-dialog';
+const SELECT_REDIRECT_DIALOG_TITLE = '#redirect-uri-dialog div.MuiDialogTitle-root h2';
+const SELECT_REDIRECT_DIALOG_INPUT = '#redirect-uri-dialog input';
+const SELECT_REDIRECT_DIALOG_SAVE_BTN = '#redirect-uri-dialog-btn-0';
+const SELECT_REDIRECT_DIALOG_CANCEL_BTN = '#redirect-uri-dialog-btn-1';
 
-const validateRedirectDialog = (showDialog: boolean) => {
-    // TODO finish this
+const validateRedirectDialog = (showDialog: boolean, uriText: string = '') => {
+    if (showDialog) {
+        cy.get(SELECT_REDIRECT_DIALOG)
+            .should('exist');
+        cy.get(SELECT_REDIRECT_DIALOG_TITLE)
+            .should('have.text', 'Redirect URI');
+        cy.get(SELECT_REDIRECT_DIALOG_INPUT)
+            .should('have.value', uriText);
+        cy.get(SELECT_REDIRECT_DIALOG_SAVE_BTN)
+            .should('have.text', 'Save');
+        cy.get(SELECT_REDIRECT_DIALOG_CANCEL_BTN)
+            .should('have.text', 'Cancel');
+    } else {
+        cy.get(SELECT_REDIRECT_DIALOG)
+            .should('not.exist');
+    }
 };
 
 const validateRedirectList = (uris: Array<String>) => {
@@ -56,8 +74,18 @@ const validateRedirectList = (uris: Array<String>) => {
         });
 };
 
+const clickDialogSave = () => {
+    cy.get(SELECT_REDIRECT_DIALOG_SAVE_BTN).click();
+};
+
+const clickDialogCancel = () => {
+    cy.get(SELECT_REDIRECT_DIALOG_CANCEL_BTN).click();
+};
+
 const typeUriInDialog = (uri: string) => {
-    // TODO finish this
+    cy.get(SELECT_REDIRECT_DIALOG_INPUT)
+        .clear()
+        .type(uri);
 };
 
 const clickAddRedirectUri = () => {
@@ -68,7 +96,9 @@ const clientConfigRedirectUris = {
     validateRedirectDialog,
     typeUriInDialog,
     validateRedirectList,
-    clickAddRedirectUri
+    clickAddRedirectUri,
+    clickDialogSave,
+    clickDialogCancel
 };
 
 export type ClientConfigRedirectUris = typeof clientConfigRedirectUris;

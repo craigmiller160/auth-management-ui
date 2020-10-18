@@ -188,3 +188,25 @@ When('I click on the Add Redirect URI button', () => {
         clientConfigRedirectUris.clickAddRedirectUri();
     });
 });
+
+Then('the redirect uri dialog appears with {string} in its text field', (uriText) => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.validateRedirectDialog(true, uriText);
+        clientConfigRedirectUris.clickDialogCancel();
+        clientConfigRedirectUris.validateRedirectDialog(false);
+        clientConfigRedirectUris.clickAddRedirectUri();
+        clientConfigRedirectUris.validateRedirectDialog(true, uriText);
+    });
+});
+
+When('I type the uri {string} into the redirect uri dialog', (uriText: string) => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.typeUriInDialog(uriText);
+    });
+});
+
+And('I click the save button for the redirect uri dialog', () => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.clickDialogSave();
+    });
+});
