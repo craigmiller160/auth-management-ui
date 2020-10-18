@@ -87,6 +87,9 @@ const List = (props: Props) => {
                         className.push('active');
                     }
 
+                    const primaryTextId = id ? `${id}-text-primary` : '';
+                    const secondaryTextId = id ? `${id}-text-secondary` : '';
+
                     return (
                         <ListItem
                             key={ index }
@@ -107,6 +110,12 @@ const List = (props: Props) => {
                                 <ListItemText
                                     primary={ item.text.primary }
                                     secondary={ item.text.secondary }
+                                    primaryTypographyProps={ {
+                                        id: primaryTextId
+                                    } }
+                                    secondaryTypographyProps={ {
+                                        id: secondaryTextId
+                                    } }
                                 />
                                 {
                                     item.secondaryActions &&
@@ -114,16 +123,20 @@ const List = (props: Props) => {
                                         item
                                     >
                                         {
-                                            item.secondaryActions?.map((action, index) => (
-                                                <Button
-                                                    className={ classes.Button }
-                                                    key={ index }
-                                                    color="primary"
-                                                    onClick={ action.click }
-                                                >
-                                                    { action.text }
-                                                </Button>
-                                            ))
+                                            item.secondaryActions?.map((action, index) => {
+                                                const btnId = id ? `${id}-btn-${index}` : '';
+                                                return (
+                                                    <Button
+                                                        id={ btnId }
+                                                        className={ classes.Button }
+                                                        key={ index }
+                                                        color="primary"
+                                                        onClick={ action.click }
+                                                    >
+                                                        { action.text }
+                                                    </Button>
+                                                );
+                                            })
                                         }
                                     </Grid>
                                 }
