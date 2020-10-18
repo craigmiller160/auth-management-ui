@@ -25,6 +25,7 @@ const DELETE_ROLES_SQL = 'DELETE FROM dev.roles WHERE client_id = $1';
 const DELETE_CLIENT_USERS_SQL = 'DELETE FROM dev.client_users WHERE client_id = $1';
 const DELETE_CLIENT_USER_ROLES_SQL = 'DELETE FROM dev.client_user_roles WHERE client_id = $1';
 const DELETE_CLIENT_REDIRECT_URIS_SQL = 'DELETE FROM dev.client_redirect_uris WHERE client_id = $1';
+const DELETE_REFRESH_TOKENS_SQL = 'DELETE FROM dev.refresh_tokens WHERE client_id = $1';
 
 interface ClientIdRow {
     id: number;
@@ -37,6 +38,7 @@ export const deleteClient = (pool: Pool) => async (clientName: string) => {
     if (result.rows?.[0]?.id) {
         const clientId = result.rows[0].id;
 
+        await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [clientId]);
         await safelyExecuteQuery<any>(pool, DELETE_CLIENT_REDIRECT_URIS_SQL, [clientId]);
         await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [clientId]);
         await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [clientId]);
