@@ -33,10 +33,7 @@ const SELECT_CLIENT_AUTHS_TAB = '#client-details-page #client-auths-tab';
 
 const ACTIVE_TAB_CLASS = 'Mui-selected';
 
-// TODO this is going to have to be split up with each tab having it's own page factory
-
 const validatePageCommon = (newClient: boolean = false) => {
-    // TODO test for active tab
     cy.get(SELECT_PAGE_HEADER)
         .should('have.text', 'Client Details');
     cy.get(SELECT_TABS)

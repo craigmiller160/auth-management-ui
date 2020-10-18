@@ -38,8 +38,8 @@ interface Arg {
 
 const INSERT_USER_SQL = 'INSERT INTO dev.users (email, first_name, last_name, password, enabled) VALUES ($1,$2,$3,$4,$5)';
 const SELECT_USER_ID = 'SELECT id FROM dev.users WHERE email = $1';
-const INSERT_TOKEN_SQL = 'INSERT INTO dev.refresh_tokens (refresh_token, client_id, user_id) VALUES ($1,$2,$3)';
-const INSERT_USER_CLIENT_SQL = 'INSERT INTO dev.client_users (user_id, client_id)';
+const INSERT_TOKEN_SQL = 'INSERT INTO dev.refresh_tokens (id, refresh_token, client_id, user_id) VALUES ($1,$2,$3,$4)';
+const INSERT_USER_CLIENT_SQL = 'INSERT INTO dev.client_users (user_id, client_id) VALUES ($1,$2)';
 
 export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
     const { user, clientId } = arg;
@@ -60,6 +60,6 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
     const userId = result.rows[0].id;
 
     await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [userId, clientId]);
-    await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, ['ABCDEFG', clientId, userId]);
+    await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, ['1', 'ABCDEFG', clientId, userId]);
     return userId;
 };
