@@ -37,6 +37,10 @@ const validatePage = () => {
         });
     cy.get(SELECT_NEW_CLIENT_BTN)
         .should('have.text', 'New Client');
+
+    cy.get(SELECT_CLIENTS_TABLE)
+        .find('tbody tr')
+        .should('have.length.greaterThan', 0);
 };
 
 const clickNewClientBtn = () => {

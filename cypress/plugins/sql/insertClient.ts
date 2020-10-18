@@ -38,7 +38,7 @@ const SELECT_CLIENT_ID = 'SELECT id FROM dev.clients WHERE name = $1';
 const INSERT_URI_SQL = 'INSERT INTO dev.client_redirect_uris (client_id, redirect_uri) VALUES ($1, $2)';
 const INSERT_CLIENT_SQL = 'INSERT INTO dev.clients (name, client_key, client_secret, enabled, access_token_timeout_secs, refresh_token_timeout_secs, auth_code_timeout_secs) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
-export const insertClient = (pool: Pool) => async (client: InsertClient) => {
+export const insertClient = (pool: Pool) => async (client: InsertClient): Promise<number> => {
     const insertClientParams = [
         client.name,
         client.clientKey,
@@ -58,5 +58,5 @@ export const insertClient = (pool: Pool) => async (client: InsertClient) => {
     const promises = client.redirectUris
         .map((uri) => safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [clientId, uri]));
     await Promise.all(promises);
-    return null;
+    return clientId;
 };

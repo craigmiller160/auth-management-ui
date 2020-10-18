@@ -84,8 +84,9 @@ const ClientAuths = (props: Props) => {
         }));
 
     return (
-        <div className="ClientAuths">
+        <div id="client-auths-page" className="ClientAuths">
             <SectionHeader
+                id="client-auths-title"
                 title={ state.clientName }
                 noDivider
             />
@@ -100,11 +101,15 @@ const ClientAuths = (props: Props) => {
                 >
                     {
                         items.length > 0 &&
-                        <List items={ items } />
+                        <List
+                            id="client-auths-list"
+                            items={ items }
+                        />
                     }
                     {
                         items.length === 0 &&
                         <Typography
+                            id="no-auths-msg"
                             className="no-auths"
                             variant="body1"
                         >

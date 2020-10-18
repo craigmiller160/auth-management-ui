@@ -17,6 +17,8 @@ import { createPool } from './sql/createPool';
 import { deleteClient } from './sql/deleteClient';
 import { insertClient } from './sql/insertClient';
 import cucumber from 'cypress-cucumber-preprocessor';
+import { insertUser } from './sql/insertUser';
+import { deleteUser } from './sql/deleteUser';
 
 type OnFn = (name: string, value: object) => void;
 
@@ -34,6 +36,8 @@ export default (on: OnFn, config: CypressConfig) => {
 
     on('task', {
         deleteClient: deleteClient(pool),
-        insertClient: insertClient(pool)
+        insertClient: insertClient(pool),
+        insertUser: insertUser(pool),
+        deleteUser: deleteUser(pool)
     });
 };
