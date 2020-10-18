@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { And, Then } from 'cypress-cucumber-preprocessor/steps';
+import { And, Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 And('I click on the clients link', () => {
     cy.navbarPage((navbarPage) => {
@@ -27,5 +27,26 @@ And('I click on the clients link', () => {
 Then('I am on the clients page', () => {
     cy.clientsPage((clientsPage) => {
         clientsPage.validatePage();
+    });
+});
+
+When('I click on the {string} tab', (tabName: string) => {
+    cy.clientDetailsPage((clientDetailsPage) => {
+        switch (tabName) {
+            case 'Config':
+                clientDetailsPage.clickTab(0);
+                break;
+            case 'Roles':
+                clientDetailsPage.clickTab(1);
+                break;
+            case 'Grants':
+                clientDetailsPage.clickTab(2);
+                break;
+            case 'Authentications':
+                clientDetailsPage.clickTab(3);
+                break;
+            default:
+                throw new Error(`Invalid tab name: ${tabName}`);
+        }
     });
 });
