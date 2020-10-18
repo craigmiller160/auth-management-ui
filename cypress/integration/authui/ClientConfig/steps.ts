@@ -183,3 +183,8 @@ When('I click the delete button, and confirm the prompt', () => {
         });
 });
 
+When('I click on the Add Redirect URI button', () => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.clickAddRedirectUri();
+    });
+});

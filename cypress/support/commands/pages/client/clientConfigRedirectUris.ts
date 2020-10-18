@@ -60,10 +60,15 @@ const typeUriInDialog = (uri: string) => {
     // TODO finish this
 };
 
+const clickAddRedirectUri = () => {
+    cy.get(SELECT_ADD_REDIRECT_BTN).click();
+};
+
 const clientConfigRedirectUris = {
     validateRedirectDialog,
     typeUriInDialog,
-    validateRedirectList
+    validateRedirectList,
+    clickAddRedirectUri
 };
 
 export type ClientConfigRedirectUris = typeof clientConfigRedirectUris;
