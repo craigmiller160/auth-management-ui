@@ -22,7 +22,7 @@ import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './Clients.scss';
-import Table from '../../../ui/Table';
+import Table, { BodyRow } from '../../../ui/Table';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ClientListItem, ClientListResponse } from '../../../../types/client';
@@ -57,9 +57,10 @@ const Clients = () => {
 
     const newClick = () => history.push('/clients/new');
 
-    const body = useMemo(() =>
+    const body: Array<BodyRow> = useMemo(() =>
         state.clients
             .map((client) => ({
+                id: `${client.name.replaceAll(' ', '-')}-row`,
                 click: () => history.push(`/clients/${client.id}`),
                 items: [
                     client.name,
@@ -69,13 +70,14 @@ const Clients = () => {
     [state.clients, history]);
 
     return (
-        <div className="Clients">
-            <PageHeader title="Clients" />
+        <div id="clients-page" className="Clients">
+            <PageHeader id="clients-page-header" title="Clients" />
             <Grid
                 container
                 direction="row"
             >
                 <Table
+                    id="clients-table"
                     header={ header }
                     body={ body }
                 />
@@ -86,6 +88,7 @@ const Clients = () => {
                 className="actions"
             >
                 <Button
+                    id="new-client-btn"
                     variant="contained"
                     color="primary"
                     onClick={ newClick }

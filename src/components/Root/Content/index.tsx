@@ -44,7 +44,7 @@ const Content = () => {
 
     return (
         <Container className="Content">
-            <ReduxAlert />
+            <ReduxAlert id="global-alert" />
             <Switch>
                 <ProtectedRoute
                     path="/clients"

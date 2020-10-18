@@ -16,4 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+export interface CypressEnv {
+    username: string;
+    password: string;
+    postgresUser: string;
+    postgresPassword: string;
+    postgresHost: string;
+    postgresPort: number;
+    postgresDatabase: string;
+}
+
+export interface CypressConfig {
+    env: CypressEnv
+}

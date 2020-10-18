@@ -16,4 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+export default () => {
+    cy.homePage((homePage) => {
+        homePage.validatePage();
+    })
+        .navbarPage((navbarPage) => {
+            navbarPage.validateLoggedOut();
+            navbarPage.clickAuthBtn();
+        })
+        .loginPage((loginPage) => {
+            loginPage.validatePage();
+            loginPage.login(Cypress.env('username'), Cypress.env('password'));
+        })
+        .navbarPage((navbarPage) => {
+            navbarPage.validateLoggedIn();
+        })
+        .homePage((homePage) => {
+            homePage.validatePage();
+        });
+};

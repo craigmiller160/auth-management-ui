@@ -24,6 +24,7 @@ import { FieldRules } from '../../../types/form';
 
 
 interface Props<T> {
+    id?: string;
     name: keyof T;
     control: Control<T>;
     label: string;
@@ -38,6 +39,7 @@ interface Props<T> {
 
 const TextField = <T extends object>(props: Props<T>) => {
     const {
+        id,
         name,
         control,
         className,
@@ -57,6 +59,7 @@ const TextField = <T extends object>(props: Props<T>) => {
             rules={ rules }
             render={ ({ onChange, onBlur, value }) => (
                 <MuiTextField
+                    id={ id }
                     type={ type }
                     className={ className }
                     label={ label }

@@ -26,14 +26,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 
-interface BodyRow {
+export interface BodyRow {
     click: () => void;
     items: Array<string | number | boolean>;
+    id?: string;
 }
 
 interface Props {
     header: Array<String>;
     body: Array<BodyRow>;
+    id?: string;
 }
 
 const useStyles = makeStyles({
@@ -55,7 +57,7 @@ const useStyles = makeStyles({
 const Table = (props: Props) => {
     const classes = useStyles();
     return (
-        <TableContainer>
+        <TableContainer id={ props.id }>
             <MuiTable>
                 <TableHead className={ classes.TableHeader }>
                     <TableRow>
@@ -68,15 +70,18 @@ const Table = (props: Props) => {
                 </TableHead>
                 <TableBody className={ classes.TableBody }>
                     {
-                        props.body.map((row, index) => (
-                            <TableRow key={ index } onClick={ row.click }>
-                                {
-                                    row.items.map((item, index) => (
-                                        <TableCell key={ index }>{ item }</TableCell>
-                                    ))
-                                }
-                            </TableRow>
-                        ))
+                        props.body.map((row, index) => {
+                            const id = row.id ?? `id_${index}`;
+                            return (
+                                <TableRow id={ id } key={ index } onClick={ row.click }>
+                                    {
+                                        row.items.map((item, index) => (
+                                            <TableCell key={ index }>{ item }</TableCell>
+                                        ))
+                                    }
+                                </TableRow>
+                            );
+                        })
                     }
                 </TableBody>
             </MuiTable>

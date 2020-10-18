@@ -16,4 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+const { CLIEngine } = require('eslint');
+const path = require('path');
+
+// TODO if it works, move it to the eslint library.
+// TODO also downgrade that lib's eslint version to 6.8.x
+
+(async () => {
+    try {
+        const eslint = new CLIEngine({
+            errorOnUnmatchedPattern: false,
+            configFile: path.resolve(process.cwd(), 'eslint.config.js')
+        });
+        const report = eslint.executeOnFiles([
+            'src/**/*.{js,jsx,ts,tsx}',
+            'cypress/**/*.{js,jsx,ts,tsx}'
+        ]);
+
+        const formatter = eslint.getFormatter("stylish");
+        const resultText = formatter(report.results);
+
+        console.log(resultText);
+    } catch (ex) {
+        console.error(ex);
+        process.exitCode = 1;
+    }
+})();
+

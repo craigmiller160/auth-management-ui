@@ -16,4 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+import { Pool } from 'pg';
+import { CypressEnv } from '../../types/cypress';
+
+export const createPool = (env: CypressEnv): Pool => new Pool({
+    user: env.postgresUser,
+    password: env.postgresPassword,
+    host: env.postgresHost,
+    port: env.postgresPort,
+    database: env.postgresDatabase
+});

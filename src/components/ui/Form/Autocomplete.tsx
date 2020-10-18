@@ -29,6 +29,7 @@ export interface SelectOption<R> {
 }
 
 interface Props<T,R> {
+    id?: string;
     name: keyof T;
     control: Control<T>;
     error?: FieldError;
@@ -40,6 +41,7 @@ interface Props<T,R> {
 
 const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
     const {
+        id,
         name,
         control,
         error,
@@ -56,6 +58,7 @@ const Autocomplete = <T extends object, R extends any>(props: Props<T,R>) => {
             rules={ rules }
             render={ ({ onChange, onBlur, value }) => (
                 <MuiAutocomplete
+                    id={ id }
                     className={ className }
                     options={ options }
                     getOptionLabel={ (option) => option?.label ?? '' }

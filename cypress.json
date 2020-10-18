@@ -1,0 +1,22 @@
+{
+  "testFiles": "**/*.feature",
+  "env": {
+    "username": "craig@gmail.com",
+    "password": "password",
+    "postgresUser": "user",
+    "postgresPassword": "password",
+    "postgresHost": "localhost",
+    "postgresPort": 30001,
+    "postgresDatabase": "oauth2_server"
+  },
+  "screenshotsFolder": "test-reports/screenshots",
+  "videosFolder": "test-reports/videos",
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "test-reports/reports",
+    "overwrite": false,
+    "html": false,
+    "json": true,
+    "timestamp": "yyyymmdd_HHMMss"
+  }
+}

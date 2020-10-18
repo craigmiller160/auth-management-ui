@@ -23,6 +23,7 @@ import MuiSwitch from '@material-ui/core/Switch';
 import { FormControlLabel } from '@material-ui/core';
 
 interface Props<T> {
+    id?: string;
     name: keyof T;
     control: Control<T>;
     label: string;
@@ -32,6 +33,7 @@ interface Props<T> {
 
 const Switch = <T extends object>(props: Props<T>) => {
     const {
+        id,
         className,
         name,
         control,
@@ -39,16 +41,22 @@ const Switch = <T extends object>(props: Props<T>) => {
         label
     } = props;
 
+    const labelClassName = `${className ?? ''} switch-label`;
+
     return (
         <Controller
             control={ control }
             name={ name as FieldName<T> }
             render={ ({ onChange, onBlur, value }) => (
                 <FormControlLabel
-                    className={ className }
+                    className={ labelClassName }
                     label={ label }
                     control={
                         <MuiSwitch
+                            id={ id }
+                            classes={ {
+                                input: `switch-${value}`
+                            } }
                             onChange={ (event) => onChange(event.target.checked) }
                             onBlur={ onBlur }
                             checked={ value }

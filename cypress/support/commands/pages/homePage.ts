@@ -16,4 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+import createPage from './createPage';
+
+const SELECT_PAGE_MESSAGE = '#home-page h3';
+
+const validatePage = () => {
+    cy.get(SELECT_PAGE_MESSAGE)
+        .should('have.text', 'Welcome to OAuth Management');
+};
+
+const homePage = {
+    validatePage
+};
+
+export type HomePage = typeof homePage;
+export default createPage(homePage);
+

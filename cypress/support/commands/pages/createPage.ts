@@ -16,4 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+export default <T>(pageObj: T) => (pageFn: (page: T) => void) => {
+    pageFn(pageObj);
+};

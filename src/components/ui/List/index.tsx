@@ -43,6 +43,7 @@ export interface Item {
 }
 
 interface Props {
+    id?: string;
     items: Array<Item>;
     columnLayout?: boolean;
 }
@@ -68,6 +69,7 @@ const useStyles = makeStyles({
 const List = (props: Props) => {
     const classes = useStyles();
     const {
+        id,
         items,
         columnLayout = false
     } = props;
@@ -76,7 +78,7 @@ const List = (props: Props) => {
     const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
 
     return (
-        <MuiList>
+        <MuiList id={ id }>
             {
                 items.map((item, index) => {
                     const Avatar = item.avatar ?? null;
@@ -84,6 +86,9 @@ const List = (props: Props) => {
                     if (item.active) {
                         className.push('active');
                     }
+
+                    const primaryTextId = id ? `${id}-text-primary` : '';
+                    const secondaryTextId = id ? `${id}-text-secondary` : '';
 
                     return (
                         <ListItem

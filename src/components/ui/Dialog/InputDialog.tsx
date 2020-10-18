@@ -27,6 +27,7 @@ interface InputForm {
 }
 
 interface Props {
+    id?: string;
     open: boolean;
     title: string;
     onCancel: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -39,6 +40,7 @@ interface Props {
 
 const InputDialog = (props: Props) => {
     const {
+        id,
         open,
         title,
         onCancel,
@@ -81,6 +83,7 @@ const InputDialog = (props: Props) => {
 
     return (
         <BaseDialog
+            id={ id }
             open={ open }
             title={ title }
             actions={ actions }

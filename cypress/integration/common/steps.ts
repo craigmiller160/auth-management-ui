@@ -16,4 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = require('@craigmiller160/eslint-config-cra-extension');
+import { Given, Then } from 'cypress-cucumber-preprocessor/steps';
+
+Given('I login to the application', () => {
+    cy.doLogin();
+});
+
+Then('a {string} alert appears with a message containing {string}', (alertType: string, message: string) => {
+    cy.alertPage((alertPage) => {
+        alertPage.isVisible(true);
+        switch (alertType) {
+            case 'success':
+                alertPage.isSuccess();
+                break;
+            case 'error':
+                alertPage.isError;
+                break;
+            default:
+                throw new Error(`Invalid alert type: ${alertType}`);
+        }
+
+        alertPage.messageContains(message);
+        alertPage.closeAlert();
+        alertPage.isVisible(false);
+    });
+});
