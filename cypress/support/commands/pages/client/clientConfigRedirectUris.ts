@@ -34,12 +34,25 @@ const validateRedirectList = (uris: Array<String>) => {
     cy.get(SELECT_ADD_REDIRECT_BTN)
         .should('have.text', 'Add Redirect URI');
 
-    // TODO validate edit/delete buttons on each items
     cy.get(SELECT_REDIRECT_URIS_LIST)
-        .find('li span.MuiTypography-body1')
+        .find('li')
         .should('have.length', uris.length)
         .each(($li, index) => {
-            expect($li.text()).to.equal(uris[index]);
+            cy.wrap($li)
+                .find('.MuiListItemText-primary')
+                .should('have.text', uris[index]);
+            cy.wrap($li)
+                .find('button')
+                .should('have.length', 2)
+                .each(($btn, index) => {
+                    if (index === 0) {
+                        cy.wrap($btn)
+                            .should('have.text', 'Edit');
+                    } else {
+                        cy.wrap($btn)
+                            .should('have.text', 'Remove');
+                    }
+                });
         });
 };
 
