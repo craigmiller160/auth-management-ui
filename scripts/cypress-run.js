@@ -18,7 +18,7 @@
 
 const cypress = require('cypress');
 const { merge } = require('mochawesome-merge');
-const fs = require('fs'); // TODO get rid of this
+const fs = require('fs');
 const path = require('path');
 const reportGenerator = require('mochawesome-report-generator');
 const opn = require('opn');
