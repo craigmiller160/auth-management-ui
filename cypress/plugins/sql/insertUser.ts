@@ -31,12 +31,18 @@ interface UserIdRow {
     id: number;
 }
 
+interface Arg {
+    user: InsertUser;
+    clientId: number;
+}
+
 const INSERT_USER_SQL = 'INSERT INTO dev.users (email, first_name, last_name, password, enabled) VALUES ($1,$2,$3,$4,$5)';
 const SELECT_USER_ID = 'SELECT id FROM dev.users WHERE email = $1';
 const INSERT_TOKEN_SQL = 'INSERT INTO dev.refresh_tokens (refresh_token, client_id, user_id) VALUES ($1,$2,$3)';
 const INSERT_USER_CLIENT_SQL = 'INSERT INTO dev.client_users (user_id, client_id)';
 
-export const insertUser = (pool: Pool) => async (user: InsertUser, clientId: number): Promise<number> => {
+export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
+    const { user, clientId } = arg;
     const insertUserParams = [
         user.email,
         user.firstName,
