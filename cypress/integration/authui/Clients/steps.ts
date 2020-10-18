@@ -23,6 +23,7 @@ import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/client/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/client/clientConfigPage';
 import { InsertClient } from '../../../plugins/sql/insertClient';
+import clientConfigRedirectUris from '../../../support/commands/pages/client/clientConfigRedirectUris';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -134,8 +135,8 @@ And('the list {string} contain a client with the name {string}', (action: string
 And('the client config page contains these redirect uris', (data: TableDefinition) => {
     const uris: Array<string> = data.rows()
         .map((row) => row[0]);
-    cy.clientConfigPage((clientConfigPage) => {
-        clientConfigPage.validateRedirectUris(uris);
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.validateRedirectList(uris);
     });
 });
 

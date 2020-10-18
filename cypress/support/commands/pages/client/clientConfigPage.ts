@@ -32,9 +32,6 @@ const SELECT_ENABLED_FIELD = '#client-config-page #enabled-field';
 const SELECT_GEN_CLIENT_KEY_BTN = '#client-config-page #client-key-generate-btn';
 const SELECT_GEN_CLIENT_SECRET_BTN = '#client-config-page #client-secret-generate-btn';
 
-const SELECT_REDIRECT_URIS_LIST = '#client-config-page #redirect-uris-list';
-const SELECT_ADD_REDIRECT_BTN = '#client-config-page #add-redirect-uri-btn';
-
 const SELECT_SAVE_BTN = '#client-config-page #save-btn';
 const SELECT_DELETE_BTN = '#client-config-page #delete-btn';
 
@@ -78,12 +75,6 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
         .should('have.text', 'Auth Code Timeout (Secs)');
     cy.get(SELECT_REDIRECT_URIS_LABEL)
         .should('have.text', 'Redirect URIs');
-
-    cy.get(SELECT_REDIRECT_URIS_LIST)
-        .should('exist');
-
-    cy.get(SELECT_ADD_REDIRECT_BTN)
-        .should('have.text', 'Add Redirect URI');
 
     cy.get(SELECT_SAVE_BTN)
         .should('have.text', 'Save');
@@ -134,15 +125,6 @@ const validateClientConfigValues = (values: ClientConfigValues) => {
 
     cy.get(SELECT_ENABLED_FIELD)
         .should('have.class', values.enabled ? 'switch-true' : 'switch-false');
-};
-
-const validateRedirectUris = (uris: Array<String>) => {
-    cy.get(SELECT_REDIRECT_URIS_LIST)
-        .find('li span.MuiTypography-body1')
-        .should('have.length', uris.length)
-        .each(($li, index) => {
-            expect($li.text()).to.equal(uris[index]);
-        });
 };
 
 const clickSaveBtn = () => {
@@ -200,7 +182,6 @@ const clientConfigPage = {
     clickDeleteBtn,
     getClientKeyField,
     getClientSecretField,
-    validateRedirectUris,
     generateFieldValue,
     setConfigValues
 };

@@ -18,30 +18,40 @@
 
 import createPage from '../createPage';
 
+const SELECT_REDIRECT_URIS_LIST = '#client-config-page #redirect-uris-list';
+const SELECT_ADD_REDIRECT_BTN = '#client-config-page #add-redirect-uri-btn';
+
 const SELECT_REDIRECT_DIALOG = '#redirect-uri-dialog';
 
 const validateRedirectDialog = (showDialog: boolean) => {
     // TODO finish this
 };
 
-const typeUri = (uri: string) => {
+const validateRedirectList = (uris: Array<String>) => {
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .should('exist');
+
+    cy.get(SELECT_ADD_REDIRECT_BTN)
+        .should('have.text', 'Add Redirect URI');
+
+    // TODO validate edit/delete buttons on each items
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .find('li span.MuiTypography-body1')
+        .should('have.length', uris.length)
+        .each(($li, index) => {
+            expect($li.text()).to.equal(uris[index]);
+        });
+};
+
+const typeUriInDialog = (uri: string) => {
     // TODO finish this
 };
 
-const clickSaveBtn = () => {
-    // TODO finish this
-};
-
-const clickDeleteBtn = () => {
-    // TODO finish this
-};
-
-const clientConfigRedirectDialog = {
+const clientConfigRedirectUris = {
     validateRedirectDialog,
-    typeUri,
-    clickSaveBtn,
-    clickDeleteBtn
+    typeUriInDialog,
+    validateRedirectList
 };
 
-export type ClientConfigRedirectDialog = typeof clientConfigRedirectDialog;
-export default createPage(clientConfigRedirectDialog);
+export type ClientConfigRedirectUris = typeof clientConfigRedirectUris;
+export default createPage(clientConfigRedirectUris);
