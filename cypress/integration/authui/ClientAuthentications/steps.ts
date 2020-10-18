@@ -19,6 +19,7 @@
 import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { testClient } from '../../../data/client';
 import { testUser } from '../../../data/user';
+import { TableDefinition } from 'cucumber';
 
 const cleanup = () => {
     cy.task('deleteUser', 'test@gmail.com');
@@ -36,20 +37,16 @@ After(() => {
     cleanup();
 });
 
-Then('the authentications page is displayed', () => {
+Then('the authentications page is displayed', (data: TableDefinition) => {
+    const userEmails = data.rows().map((row) => row[0]);
+
     cy.clientAuthsPage((clientAuthsPage) => {
-        clientAuthsPage.validatePage();
+        clientAuthsPage.validatePage(userEmails);
     });
 });
 
-And('the authentication for {string} is visible', (userEmail: string) => {
-    // TODO finish this
-});
-
 When('I click the revoke button for authentication {int}', (authIndex: number) => {
-    // TODO finish this
-});
-
-Then('no authentications are visible', () => {
-    // TODO finish this
+    cy.clientAuthsPage((clientAuthsPage) => {
+        clientAuthsPage.clickRevokeAuthBtn(authIndex);
+    });
 });

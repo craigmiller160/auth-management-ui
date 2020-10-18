@@ -23,12 +23,46 @@ const SELECT_CLIENT_AUTHS_TITLE = '#client-auths-page #client-auths-title';
 const SELECT_CLIENT_AUTHS_LIST = '#client-auths-page #client-auths-list';
 const SELECT_NO_AUTHS_MSG = '#client-auths-page #no-auths-msg';
 
-const validatePage = () => {
-    // TODO finish this
+const validatePage = (userEmails: Array<string>) => {
+    cy.get(SELECT_CLIENT_AUTHS)
+        .should('exist');
+    cy.get(SELECT_CLIENT_AUTHS_TITLE)
+        .should('have.text', 'Test Client');
+
+    if (userEmails.length > 0) {
+        cy.get(SELECT_CLIENT_AUTHS_LIST)
+            .should('exist')
+            .find('li')
+            .each(($li, index) => {
+                cy.wrap($li)
+                    .find('.MuiListItemText-primary')
+                    .should('have.text', `User: ${userEmails[0]}`);
+                cy.wrap($li)
+                    .find('.MuiListItemText-secondary')
+                    .should('contain.text', 'Last Authenticated');
+                cy.wrap($li)
+                    .find('button')
+                    .should('have.text', 'Revoke');
+            });
+    } else {
+        cy.get(SELECT_CLIENT_AUTHS_LIST)
+            .should('not.exist');
+        cy.get(SELECT_NO_AUTHS_MSG)
+            .should('have.text', 'No Authorizations');
+    }
+};
+
+const clickRevokeAuthBtn = (authIndex: number) => {
+    cy.get(SELECT_CLIENT_AUTHS_LIST)
+        .find('li')
+        .eq(authIndex)
+        .find('button')
+        .click();
 };
 
 const clientAuthsPage = {
-    validatePage
+    validatePage,
+    clickRevokeAuthBtn
 };
 
 export type ClientAuthsPage = typeof clientAuthsPage;
