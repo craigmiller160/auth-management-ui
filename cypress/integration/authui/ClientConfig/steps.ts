@@ -55,18 +55,6 @@ After(() => {
     cleanup();
 });
 
-And('I click on the clients link', () => {
-    cy.navbarPage((navbarPage) => {
-        navbarPage.clickClients();
-    });
-});
-
-Then('I am on the clients page', () => {
-    cy.clientsPage((clientsPage) => {
-        clientsPage.validatePage();
-    });
-});
-
 When('I click the new client button', () => {
     cy.clientsPage((clientsPage) => {
         clientsPage.clickNewClientBtn();
