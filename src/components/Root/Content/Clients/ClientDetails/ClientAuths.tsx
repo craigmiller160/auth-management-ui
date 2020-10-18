@@ -100,7 +100,10 @@ const ClientAuths = (props: Props) => {
                 >
                     {
                         items.length > 0 &&
-                        <List items={ items } />
+                        <List
+                            id="client-auths-list"
+                            items={ items }
+                        />
                     }
                     {
                         items.length === 0 &&
