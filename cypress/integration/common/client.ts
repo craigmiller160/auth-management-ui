@@ -50,3 +50,9 @@ When('I click on the {string} tab', (tabName: string) => {
         }
     });
 });
+
+When('I click on the client named {string}', (clientName: string) => {
+    cy.clientsPage((clientsPage) => {
+        clientsPage.clickClientRow(clientName);
+    });
+});

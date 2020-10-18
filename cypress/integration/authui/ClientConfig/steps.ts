@@ -114,12 +114,6 @@ And('the client config page contains these redirect uris', (data: TableDefinitio
     });
 });
 
-When('I click on the client named {string}', (clientName: string) => {
-    cy.clientsPage((clientsPage) => {
-        clientsPage.clickClientRow(clientName);
-    });
-});
-
 Then('I generate a new client {string}', (genFieldName: string) => {
     cy.clientConfigPage((clientConfigPage) => {
         clientConfigPage.generateFieldValue(genFieldName);

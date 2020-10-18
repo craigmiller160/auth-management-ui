@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { After, Before, When } from 'cypress-cucumber-preprocessor/steps';
+import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { testClient } from '../../../data/client';
 import { testUser } from '../../../data/user';
 
@@ -34,4 +34,20 @@ Before(() => {
 
 After(() => {
     cleanup();
+});
+
+Then('the authentications page is displayed', () => {
+    // TODO finish this
+});
+
+And('the authentication for {string} is visible', (userEmail: string) => {
+    // TODO finish this
+});
+
+When('I click the revoke button for authentication {int}', (authIndex: number) => {
+    // TODO finish this
+});
+
+Then('no authentications are visible', () => {
+    // TODO finish this
 });

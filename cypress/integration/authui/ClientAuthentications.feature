@@ -6,11 +6,13 @@ Feature: Client List Page
     Then I am on the clients page
 
   Scenario: Client authentications displayed
+    When I click on the client named "Test Client"
     When I click on the "Authentications" tab
     Then the authentications page is displayed
     And the authentication for "test@gmail.com" is visible
 
   Scenario: Remove Client Authentication
+    When I click on the client named "Test Client"
     When I click on the "Authentications" tab
     Then the authentications page is displayed
     And the authentication for "test@gmail.com" is visible
