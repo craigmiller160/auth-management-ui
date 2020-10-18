@@ -22,7 +22,7 @@ import { And, Then, When, After, Before } from 'cypress-cucumber-preprocessor/st
 import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/client/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/client/clientConfigPage';
-import { InsertClient } from '../../../plugins/sql/insertClient';
+import { testClient } from '../../../data/client';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -31,19 +31,6 @@ const cleanup = () => {
     cy.task('deleteClient', 'New Client');
     cy.task('deleteClient', 'Test Client');
     cy.task('deleteClient', 'Test Client 2');
-};
-
-const testClient: InsertClient = {
-    name: 'Test Client',
-    clientKey: 'ABCDEFG',
-    clientSecret: '{bcrypt}$2a$10$HYKpEK6BFUFH99fHm5yOhuk4hn1gFErtLveeonVSHW1G7n5bUhGUe',
-    enabled: false,
-    accessTokenTimeout: 10,
-    refreshTokenTimeout: 20,
-    authCodeTimeout: 30,
-    redirectUris: [
-        'https://localhost:123/authcode'
-    ]
 };
 
 Before(() => {
