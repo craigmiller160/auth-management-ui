@@ -61,6 +61,14 @@ Feature: Client Config Page
     Then a "success" alert appears with a message containing "Successfully deleted client"
     And the list "does not" contain a client with the name "Test Client"
 
+  Scenario: Redirect uri dialog cancel button
+    When I click on the client named "Test Client"
+    Then I am on the client details page for a "existing" client
+    When I click on the Add Redirect URI button
+    Then the redirect uri dialog appears with "" in its text field
+    And I click the "cancel" button for the redirect uri dialog
+    Then the redirect uri dialog disappears
+
   Scenario: Adding a redirect URI
     When I click on the client named "Test Client"
     Then I am on the client details page for a "existing" client
@@ -73,12 +81,12 @@ Feature: Client Config Page
     When I click on the Add Redirect URI button
     Then the redirect uri dialog appears with "" in its text field
     When I type the uri "https://localhost:456/authcode" into the redirect uri dialog
-    And I click the save button for the redirect uri dialog
+    And I click the "save" button for the redirect uri dialog
     Then I am on the client details page for a "existing" client
     And the client config page contains these redirect uris
       | uri                            |
       | https://localhost:123/authcode |
-      | https://localhost:456/authcode
+      | https://localhost:456/authcode |
     When I click the save button
     Then a "success" alert appears with a message containing "Successfully saved client"
     And I click on the clients link
@@ -106,7 +114,7 @@ Feature: Client Config Page
     When I click on the "edit" button for URI 0
     Then the redirect uri dialog appears with "https://localhost:123/authcode" in its text field
     When I type the uri "https://localhost:456/authcode" into the redirect uri dialog
-    And I click the save button for the redirect uri dialog
+    And I click the "save" button for the redirect uri dialog
     Then I am on the client details page for a "existing" client
     And the client config page contains these redirect uris
       | uri                            |

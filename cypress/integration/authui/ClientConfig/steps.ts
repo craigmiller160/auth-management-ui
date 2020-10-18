@@ -23,7 +23,6 @@ import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/client/clientDetailsPage';
 import { ClientConfigValues } from '../../../support/commands/pages/client/clientConfigPage';
 import { InsertClient } from '../../../plugins/sql/insertClient';
-import clientConfigRedirectUris from '../../../support/commands/pages/client/clientConfigRedirectUris';
 
 const CLIENT_KEY = 'clientKey';
 const isNewClient = (clientType: string) => 'new' === clientType;
@@ -192,10 +191,6 @@ When('I click on the Add Redirect URI button', () => {
 Then('the redirect uri dialog appears with {string} in its text field', (uriText) => {
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
         clientConfigRedirectUris.validateRedirectDialog(true, uriText);
-        clientConfigRedirectUris.clickDialogCancel();
-        clientConfigRedirectUris.validateRedirectDialog(false);
-        clientConfigRedirectUris.clickAddRedirectUri();
-        clientConfigRedirectUris.validateRedirectDialog(true, uriText);
     });
 });
 
@@ -205,9 +200,15 @@ When('I type the uri {string} into the redirect uri dialog', (uriText: string) =
     });
 });
 
-And('I click the save button for the redirect uri dialog', () => {
+And('I click the {string} button for the redirect uri dialog', (buttonType: string) => {
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
-        clientConfigRedirectUris.clickDialogSave();
+        if ('save' === buttonType) {
+            clientConfigRedirectUris.clickDialogSave();
+        } else if ('cancel' === buttonType) {
+            clientConfigRedirectUris.clickDialogCancel();
+        } else {
+            throw new Error(`Invalid button type: ${buttonType}`);
+        }
     });
 });
 
@@ -220,5 +221,11 @@ When('I click on the {string} button for URI {int}', (buttonType: string, index:
         } else {
             throw new Error(`Invalid button type: ${buttonType}`);
         }
+    });
+});
+
+Then('the redirect uri dialog disappears', () => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        clientConfigRedirectUris.validateRedirectDialog(false);
     });
 });
