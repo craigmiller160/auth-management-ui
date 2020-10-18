@@ -37,7 +37,9 @@ After(() => {
 });
 
 Then('the authentications page is displayed', () => {
-    // TODO finish this
+    cy.clientAuthsPage((clientAuthsPage) => {
+        clientAuthsPage.validatePage();
+    });
 });
 
 And('the authentication for {string} is visible', (userEmail: string) => {
