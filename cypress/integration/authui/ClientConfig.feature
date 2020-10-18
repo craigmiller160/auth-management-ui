@@ -1,4 +1,4 @@
-Feature: Clients Management Pages
+Feature: Client Config Page
 
   Background:
     Given I login to the application
@@ -59,18 +59,6 @@ Feature: Clients Management Pages
     Then I am on the clients page
     Then a "success" alert appears with a message containing "Successfully deleted client"
     And the list "does not" contain a client with the name "Test Client"
-
-  Scenario: Add/Edit/Delete client roles
-    # TODO finish this
-
-  Scenario: Add/remove user grants & roles
-    # TODO finish this
-
-  Scenario: Navigate to user page from client grant
-    # TODO finish this
-
-  Scenario: View/remove user authentications
-    # TODO finish this
 
 #  Scenario: Cannot navigate away with unsaved config value changes
 #    When I click the new client button
