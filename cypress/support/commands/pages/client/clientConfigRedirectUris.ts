@@ -92,13 +92,33 @@ const clickAddRedirectUri = () => {
     cy.get(SELECT_ADD_REDIRECT_BTN).click();
 };
 
+const clickEditUriBtn = (index: number) => {
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .find('li')
+        .eq(index)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickRemoveUriBtn = (index: number) => {
+    cy.get(SELECT_REDIRECT_URIS_LIST)
+        .find('li')
+        .eq(index)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
 const clientConfigRedirectUris = {
     validateRedirectDialog,
     typeUriInDialog,
     validateRedirectList,
     clickAddRedirectUri,
     clickDialogSave,
-    clickDialogCancel
+    clickDialogCancel,
+    clickEditUriBtn,
+    clickRemoveUriBtn
 };
 
 export type ClientConfigRedirectUris = typeof clientConfigRedirectUris;

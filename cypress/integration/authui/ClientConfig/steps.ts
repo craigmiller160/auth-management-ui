@@ -210,3 +210,15 @@ And('I click the save button for the redirect uri dialog', () => {
         clientConfigRedirectUris.clickDialogSave();
     });
 });
+
+When('I click on the {string} button for URI {int}', (buttonType: string, index: number) => {
+    cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
+        if ('edit' === buttonType) {
+            clientConfigRedirectUris.clickEditUriBtn(index);
+        } else if ('remove' === buttonType) {
+            clientConfigRedirectUris.clickRemoveUriBtn(index);
+        } else {
+            throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
+});

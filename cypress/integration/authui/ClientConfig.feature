@@ -103,7 +103,7 @@ Feature: Client Config Page
     And the client config page contains these redirect uris
       | uri                            |
       | https://localhost:123/authcode |
-    When I click on the "edit" button for URI "0"
+    When I click on the "edit" button for URI 0
     Then the redirect uri dialog appears with "https://localhost:123/authcode" in its text field
     When I type the uri "https://localhost:456/authcode" into the redirect uri dialog
     And I click the save button for the redirect uri dialog
@@ -133,7 +133,7 @@ Feature: Client Config Page
     And the client config page contains these redirect uris
       | uri                            |
       | https://localhost:123/authcode |
-    When I click on the "remove" button for URI "0"
+    When I click on the "remove" button for URI 0
     Then I am on the client details page for a "existing" client
     And the client config page contains these redirect uris
       | uri |
