@@ -167,8 +167,9 @@ const ClientRoles = (props: Props) => {
         });
 
     return (
-        <div className="ClientRoles">
+        <div id="client-roles-page" className="ClientRoles">
             <SectionHeader
+                id="client-roles-title"
                 title={ state.clientName }
                 noDivider
             />
@@ -183,11 +184,15 @@ const ClientRoles = (props: Props) => {
                 >
                     {
                         items.length > 0 &&
-                        <List items={ items } />
+                        <List
+                            id="client-roles-list"
+                            items={ items }
+                        />
                     }
                     {
                         items.length === 0 &&
                         <Typography
+                            id="no-roles-msg"
                             className="no-roles"
                             variant="body1"
                         >
@@ -206,6 +211,7 @@ const ClientRoles = (props: Props) => {
                     md={ 5 }
                 >
                     <Button
+                        id="add-role-btn"
                         className="AddRole"
                         color="primary"
                         variant="contained"
@@ -216,6 +222,7 @@ const ClientRoles = (props: Props) => {
                 </Grid>
             </Grid>
             <InputDialog
+                id="client-role-dialog"
                 open={ state.showRoleDialog }
                 title="Role"
                 onCancel={ cancelRoleDialog }
@@ -226,6 +233,7 @@ const ClientRoles = (props: Props) => {
                 initialValue={ getSelectedRole() }
             />
             <ConfirmDialog
+                id="delete-client-role-dialog"
                 open={ state.showDeleteDialog }
                 title="Delete Role"
                 message="Are you sure you want to delete this role?"

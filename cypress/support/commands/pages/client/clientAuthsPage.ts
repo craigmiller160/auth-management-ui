@@ -36,7 +36,7 @@ const validatePage = (userEmails: Array<string>) => {
             .each(($li, index) => {
                 cy.wrap($li)
                     .find('.MuiListItemText-primary')
-                    .should('have.text', `User: ${userEmails[0]}`);
+                    .should('have.text', `User: ${userEmails[index]}`);
                 cy.wrap($li)
                     .find('.MuiListItemText-secondary')
                     .should('contain.text', 'Last Authenticated');
@@ -44,6 +44,8 @@ const validatePage = (userEmails: Array<string>) => {
                     .find('button')
                     .should('have.text', 'Revoke');
             });
+        cy.get(SELECT_NO_AUTHS_MSG)
+            .should('not.exist');
     } else {
         cy.get(SELECT_CLIENT_AUTHS_LIST)
             .should('not.exist');

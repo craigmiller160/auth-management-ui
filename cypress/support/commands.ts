@@ -35,6 +35,7 @@ import alertPage from './commands/pages/alertPage';
 import clientConfigDeleteDialog from './commands/pages/client/clientConfigDeleteDialog';
 import clientConfigRedirectUris from './commands/pages/client/clientConfigRedirectUris';
 import clientAuthsPage from './commands/pages/client/clientAuthsPage';
+import clientRolesPage from './commands/pages/client/clientRolesPage';
 
 Cypress.Commands.add('loginPage', loginPage);
 Cypress.Commands.add('navbarPage', navbarPage);
@@ -46,4 +47,5 @@ Cypress.Commands.add('clientConfigPage', clientConfigPage);
 Cypress.Commands.add('clientConfigDeleteDialog', clientConfigDeleteDialog);
 Cypress.Commands.add('clientConfigRedirectUris', clientConfigRedirectUris);
 Cypress.Commands.add('clientAuthsPage', clientAuthsPage);
+Cypress.Commands.add('clientRolesPage', clientRolesPage);
 Cypress.Commands.add('alertPage', alertPage);
