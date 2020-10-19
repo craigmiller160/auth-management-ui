@@ -93,11 +93,33 @@ And('I select {string} in the user dialog', (userEmail: string) => {
 });
 
 When('I click on the {string} button in the user dialog', (buttonType: string) => {
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        switch (buttonType) {
+            case 'select':
+                clientGrantsPage.clickUserDialogSelectBtn();
+                break;
+            case 'cancel':
+                clientGrantsPage.clickUserDialogCancelBtn();
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
 });
 
 When('I click on the {string} button of user {int}', (buttonType: string, userIndex: number) => {
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        switch (buttonType) {
+            case 'go':
+                clientGrantsPage.clickUserGoBtn(userIndex);
+                break;
+            case 'remove':
+                clientGrantsPage.clickUserRemoveBtn(userIndex);
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
 });
 
 Then('the remove user dialog is visible', () => {
@@ -135,5 +157,17 @@ Then('I am on the user config page for {string}', (userEmail: string) => {
 When('I click on the Add Role button', () => {
     cy.clientGrantsPage((clientGrantsPage) => {
         clientGrantsPage.clickAddRoleBtn();
+    });
+});
+
+When('I click on the {string} button for role {int}', (buttonType: string, roleIndex: number) => {
+    cy.clientGrantsPage((clientGrantsPage) => {
+        switch (buttonType) {
+            case 'remove':
+                clientGrantsPage.clickRoleRemoveBtn(roleIndex);
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
     });
 });

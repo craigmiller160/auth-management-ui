@@ -150,12 +150,58 @@ const validateUserDialog = () => {
         .should('have.text', 'Cancel');
 };
 
+const clickUserDialogSelectBtn = () => {
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickUserDialogCancelBtn = () => {
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
+const clickUserGoBtn = (userIndex: number) => {
+    cy.get(SELECT_CLIENT_USERS_LIST)
+        .find('li')
+        .eq(userIndex)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickUserRemoveBtn = (userIndex: number) => {
+    cy.get(SELECT_CLIENT_USERS_LIST)
+        .find('li')
+        .eq(userIndex)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
+const clickRoleRemoveBtn = (roleIndex: number) => {
+    cy.get(SELECT_CLIENT_GRANT_ROLES_LIST)
+        .find('li')
+        .eq(roleIndex)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
 const clientGrantsPage = {
     validatePage,
     selectUser,
     clickAddUserBtn,
     clickAddRoleBtn,
-    validateUserDialog
+    validateUserDialog,
+    clickUserDialogSelectBtn,
+    clickUserDialogCancelBtn,
+    clickUserGoBtn,
+    clickUserRemoveBtn,
+    clickRoleRemoveBtn
 };
 
 export type ClientGrantsPage = typeof clientGrantsPage;
