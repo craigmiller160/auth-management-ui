@@ -62,8 +62,66 @@ const validatePage = (roles: Array<string>) => {
     }
 };
 
+const clickAddRoleButton = () => {
+    cy.get(SELECT_ADD_ROLE_BTN).click();
+};
+
+const validateRoleDialog = (text: string) => {
+    cy.get(SELECT_ROLE_DIALOG)
+        .should('exist');
+    cy.get(SELECT_ROLE_DIALOG)
+        .find('input')
+        .should('have.value', text);
+};
+
+const typeRoleInDialog = (text: string) => {
+    cy.get(SELECT_ROLE_DIALOG)
+        .find('input')
+        .clear()
+        .type(text);
+};
+
+const clickRoleDialogSaveBtn = () => {
+    cy.get(SELECT_ROLE_DIALOG)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickRoleDialogCancelBtn = () => {
+    cy.get(SELECT_ROLE_DIALOG)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
+const clickEditRoleBtn = (roleIndex: number) => {
+    cy.get(SELECT_CLIENT_ROLES_LIST)
+        .find('li')
+        .eq(roleIndex)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickDeleteRoleBtn = (roleIndex: number) => {
+    cy.get(SELECT_CLIENT_ROLES_LIST)
+        .find('li')
+        .eq(roleIndex)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
 const clientRolesPage = {
-    validatePage
+    validatePage,
+    clickAddRoleButton,
+    validateRoleDialog,
+    typeRoleInDialog,
+    clickRoleDialogSaveBtn,
+    clickRoleDialogCancelBtn,
+    clickEditRoleBtn,
+    clickDeleteRoleBtn,
 };
 
 export type ClientRolesPage = typeof clientRolesPage;

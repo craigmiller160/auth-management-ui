@@ -55,3 +55,22 @@ Feature: Client Roles Page
     When I click the "confirm" button in the role delete dialog
     Then the roles page is displayed
       | role       |
+
+  Scenario: Validate dialog cancel buttons
+    When I click on the client named "Test Client"
+    When I click on the "Roles" tab
+    Then the roles page is displayed
+      | role       |
+      | ROLE_READ  |
+    When I click on the "delete" button for role 0
+    Then the role delete dialog is visible
+    When I click the "cancel" button in the role delete dialog
+    Then the roles page is displayed
+      | role       |
+      | ROLE_READ  |
+    When I click on the add role button
+    Then the role dialog is visible with "" in the text field
+    When I click the "cancel" button in the roles dialog
+    Then the roles page is displayed
+      | role       |
+      | ROLE_READ  |

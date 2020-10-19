@@ -27,23 +27,51 @@ Then('the roles page is displayed', (data: TableDefinition) => {
 });
 
 When('I click on the add role button', () => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        clientRolesPage.clickAddRoleButton();
+    });
 });
 
 Then('the role dialog is visible with {string} in the text field', (fieldText: string) => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        clientRolesPage.validateRoleDialog(fieldText);
+    });
 });
 
 When('I enter {string} into the text field', (text: string) => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        clientRolesPage.typeRoleInDialog(text);
+    });
 });
 
 When('I click the {string} button in the roles dialog', (buttonType: string) => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        switch (buttonType) {
+            case 'save':
+                clientRolesPage.clickRoleDialogSaveBtn();
+                break;
+            case 'cancel':
+                clientRolesPage.clickRoleDialogCancelBtn();
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
 });
 
 When('I click on the {string} button for role {int}', (buttonType: string, roleIndex: number) => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        switch (buttonType) {
+            case 'edit':
+                clientRolesPage.clickEditRoleBtn(roleIndex);
+                break;
+            case 'delete':
+                clientRolesPage.clickDeleteRoleBtn(roleIndex);
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
 });
 
 Then('the role delete dialog is visible', () => {
