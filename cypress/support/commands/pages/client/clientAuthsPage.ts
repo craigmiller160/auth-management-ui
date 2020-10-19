@@ -33,6 +33,7 @@ const validatePage = (userEmails: Array<string>) => {
         cy.get(SELECT_CLIENT_AUTHS_LIST)
             .should('exist')
             .find('li')
+            .should('have.length', userEmails.length)
             .each(($li, index) => {
                 cy.wrap($li)
                     .find('.MuiListItemText-primary')

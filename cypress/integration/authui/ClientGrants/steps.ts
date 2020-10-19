@@ -20,12 +20,7 @@ import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/st
 import { testUser, testUser2 } from '../../../data/user';
 import { testClient } from '../../../data/client';
 import { TableDefinition } from 'cucumber';
-
-interface GrantData {
-    users: Array<string>;
-    roles: Array<string>;
-    selectedUser?: string;
-}
+import { GrantData } from '../../../support/commands/pages/client/clientGrantsPage';
 
 const cleanup = () => {
     cy.task('deleteUser', 'test@gmail.com');
@@ -70,7 +65,9 @@ Then('the client grants page is displayed', (data: TableDefinition) => {
             };
         }, { users: [], roles: [] });
 
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        clientGrantsPage.validatePage(grantData);
+    });
 });
 
 When('I select user {int}', (userIndex: number) => {

@@ -38,6 +38,7 @@ const validatePage = (roles: Array<string>) => {
         cy.get(SELECT_CLIENT_ROLES_LIST)
             .should('exist')
             .find('li')
+            .should('have.length', roles.length)
             .each(($li, index) => {
                 cy.wrap($li)
                     .find('.MuiListItemText-primary')

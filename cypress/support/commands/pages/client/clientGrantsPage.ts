@@ -33,8 +33,74 @@ const SELECT_ADD_CLIENT_ROLE_BTN = '#client-grants-page #add-client-role-btn';
 const SELECT_CLIENT_ROLE_DIALOG = '#client-role-dialog';
 const SELECT_REMOVE_CLIENT_ROLE_DIALOG = '#remove-client-role-dialog';
 
-const validatePage = () => {
+export interface GrantData {
+    users: Array<string>;
+    roles: Array<string>;
+    selectedUser?: string;
+}
 
+const validatePage = (grantData: GrantData) => {
+    cy.get(SELECT_CLIENT_GRANTS)
+        .should('exist');
+    cy.get(SELECT_CLIENT_GRANTS_TITLE)
+        .should('have.text', 'Test Client');
+
+    cy.get(SELECT_CLIENT_USERS_TITLE)
+        .should('have.text', 'Users');
+    cy.get(SELECT_CLIENT_USERS_LIST)
+        .should('exist')
+        .find('li')
+        .should('have.length', grantData.users.length)
+        .each(($li, index) => {
+            // TODO need a way to validate what roles a user has assigned
+            cy.wrap($li)
+                .find('.MuiListItemText-primary')
+                .should('have.text', grantData.users[index]);
+
+            cy.wrap($li)
+                .find('button')
+                .eq(0)
+                .should('have.text', 'Go');
+            cy.wrap($li)
+                .find('button')
+                .eq(1)
+                .should('have.text', 'Remove');
+        });
+
+    cy.get(SELECT_CLIENT_GRANT_ROLES_TITLE)
+        .should('have.text', 'Roles');
+    if (grantData.selectedUser && grantData.roles.length > 0) {
+        cy.get(SELECT_NO_CLIENT_ROLES_MSG)
+            .should('not.exist', 'No Roles');
+        cy.get(SELECT_CLIENT_GRANT_ROLES_LIST)
+            .should('exist')
+            .find('li')
+            .should('have.length', grantData.roles.length)
+            .each(($li, index) => {
+                cy.wrap($li)
+                    .find('.MuiListItemText-primary')
+                    .should('have.text', grantData.roles[index]);
+                cy.wrap($li)
+                    .find('button')
+                    .should('have.text', 'Remove');
+            });
+        cy.get(SELECT_ADD_CLIENT_ROLE_BTN)
+            .should('have.text', 'Add Role');
+    } else if (grantData.selectedUser && grantData.roles.length === 0) {
+        cy.get(SELECT_NO_CLIENT_ROLES_MSG)
+            .should('have.text', 'No Roles');
+        cy.get(SELECT_CLIENT_GRANT_ROLES_LIST)
+            .should('not.exist');
+        cy.get(SELECT_ADD_CLIENT_ROLE_BTN)
+            .should('have.text', 'Add Role');
+    } else {
+        cy.get(SELECT_NO_CLIENT_ROLES_MSG)
+            .should('not.exist');
+        cy.get(SELECT_CLIENT_GRANT_ROLES_LIST)
+            .should('not.exist');
+        cy.get(SELECT_ADD_CLIENT_ROLE_BTN)
+            .should('not.exist');
+    }
 };
 
 const clientGrantsPage = {

@@ -124,3 +124,5 @@ Feature: Client List Page
     Then the client grants page is displayed
       | users     | roles     | selectedUser |
       | Test User | ROLE_READ | Test User    |
+
+    # TODO need a scenario that tests for disabling the add role and add user buttons when all are added
