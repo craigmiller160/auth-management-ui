@@ -113,6 +113,39 @@ const clickDeleteRoleBtn = (roleIndex: number) => {
         .click();
 };
 
+const validateDeleteRoleDialog = () => {
+    cy.get(SELECT_DELETE_DIALOG)
+        .should('exist');
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('div.MuiDialogTitle-root h2')
+        .should('have.text', 'Delete Role');
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('p')
+        .should('have.text', 'Are you sure you want to delete this role?');
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('button')
+        .eq(0)
+        .should('have.text', 'Confirm');
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('button')
+        .eq(1)
+        .should('have.text', 'Cancel');
+};
+
+const clickDeleteConfirmBtn = () => {
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('button')
+        .eq(0)
+        .click();
+};
+
+const clickDeleteCancelBtn = () => {
+    cy.get(SELECT_DELETE_DIALOG)
+        .find('button')
+        .eq(1)
+        .click();
+};
+
 const clientRolesPage = {
     validatePage,
     clickAddRoleButton,
@@ -122,6 +155,9 @@ const clientRolesPage = {
     clickRoleDialogCancelBtn,
     clickEditRoleBtn,
     clickDeleteRoleBtn,
+    validateDeleteRoleDialog,
+    clickDeleteConfirmBtn,
+    clickDeleteCancelBtn
 };
 
 export type ClientRolesPage = typeof clientRolesPage;

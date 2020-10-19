@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { but, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
 
 Then('the roles page is displayed', (data: TableDefinition) => {
@@ -75,9 +75,22 @@ When('I click on the {string} button for role {int}', (buttonType: string, roleI
 });
 
 Then('the role delete dialog is visible', () => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        clientRolesPage.validateDeleteRoleDialog();
+    });
 });
 
 When('I click the {string} button in the role delete dialog', (buttonType: string) => {
-    // TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        switch (buttonType) {
+            case 'confirm':
+                clientRolesPage.clickDeleteConfirmBtn();
+                break;
+            case 'cancel':
+                clientRolesPage.clickDeleteCancelBtn();
+                break;
+            default:
+                throw new Error(`Invalid button type: ${buttonType}`);
+        }
+    });
 });
