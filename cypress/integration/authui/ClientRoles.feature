@@ -11,7 +11,6 @@ Feature: Client Roles Page
     Then the roles page is displayed
     | role       |
     | ROLE_READ  |
-    | ROLE_WRITE |
 
   Scenario: Add role
     When I click on the client named "Test Client"
@@ -19,7 +18,6 @@ Feature: Client Roles Page
     Then the roles page is displayed
       | role       |
       | ROLE_READ  |
-      | ROLE_WRITE |
     When I click on the add role button
     Then the role dialog is visible with "" in the text field
     When I enter "admin" into the text field
@@ -29,7 +27,6 @@ Feature: Client Roles Page
       | role       |
       | ROLE_ADMIN |
       | ROLE_READ  |
-      | ROLE_WRITE |
 
 
   Scenario: Edit role
@@ -38,7 +35,6 @@ Feature: Client Roles Page
     Then the roles page is displayed
       | role       |
       | ROLE_READ  |
-      | ROLE_WRITE |
     When I click on the "edit" button for role 0
     Then the role dialog is visible with "EDIT" in the text field
     When I enter "admin" into the text field
@@ -47,7 +43,6 @@ Feature: Client Roles Page
     Then the roles page is displayed
       | role       |
       | ROLE_ADMIN |
-      | ROLE_WRITE |
 
   Scenario: Delete role
     When I click on the client named "Test Client"
@@ -55,10 +50,8 @@ Feature: Client Roles Page
     Then the roles page is displayed
       | role       |
       | ROLE_READ  |
-      | ROLE_WRITE |
     When I click on the "delete" button for role 0
     Then the role delete dialog is visible
     When I click the "confirm" button in the role delete dialog
     Then the roles page is displayed
       | role       |
-      | ROLE_WRITE |
