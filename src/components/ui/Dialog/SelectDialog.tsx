@@ -27,6 +27,7 @@ interface SelectForm<T> {
 }
 
 interface Props<T> {
+    id?: string;
     label: string;
     open: boolean;
     title: string;
@@ -41,6 +42,7 @@ const defaultForm: SelectForm<any> = {
 
 const SelectDialog = <T extends any>(props: Props<T>) => {
     const {
+        id,
         open,
         title,
         onSelect,
@@ -69,6 +71,7 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
 
     return (
         <BaseDialog
+            id={ id }
             open={ open }
             title={ title }
             actions={ actions }

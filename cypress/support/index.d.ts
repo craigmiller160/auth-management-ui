@@ -28,6 +28,7 @@ type ClientConfigDeleteDialog = import('./commands/pages/client/clientConfigDele
 type ClientConfigRedirectUris = import('./commands/pages/client/clientConfigRedirectUris').ClientConfigRedirectUris;
 type ClientAuthsPage = import('./commands/pages/client/clientAuthsPage').ClientAuthsPage;
 type ClientRolesPage = import('./commands/pages/client/clientRolesPage').ClientRolesPage;
+type ClientGrantsPage = import('./commands/pages/client/clientGrantsPage').ClientGrantsPage;
 type AlertPage = import('./commands/pages/alertPage').AlertPage;
 
 type PageFunction<T> = (page: T) => void;
@@ -44,6 +45,7 @@ declare namespace Cypress {
         clientConfigRedirectUris(pageFn: PageFunction<ClientConfigRedirectUris>): Chainable<Element>;
         clientAuthsPage(pagFn: PageFunction<ClientAuthsPage>): Chainable<Element>;
         clientRolesPage(pageFn: PageFunction<ClientRolesPage>): Chainable<Element>;
+        clientGrantsPage(pageFn: PageFunction<ClientGrantsPage>): Chainable<Element>;
         alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
         doLogin(): Chainable<Element>;
     }

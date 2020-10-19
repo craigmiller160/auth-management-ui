@@ -161,8 +161,9 @@ const ClientGrants = (props: Props) => {
         });
 
     return (
-        <div className="ClientGrants">
+        <div id="client-grants-page" className="ClientGrants">
             <SectionHeader
+                id="client-grants-title"
                 title={ state.clientName }
                 noDivider
             />
@@ -193,7 +194,10 @@ const ClientGrants = (props: Props) => {
                     item
                     md={ 5 }
                 >
-                    <SectionHeader title="Roles" />
+                    <SectionHeader
+                        id="client-grant-roles-title"
+                        title="Roles"
+                    />
                     {
                         pipe(
                             state.selectedUser,

@@ -101,11 +101,15 @@ const ClientGrantRoles = (props: Props) => {
         <>
             {
                 roleItems.length > 0 &&
-                <List items={ roleItems } />
+                <List
+                    id="client-grant-roles-list"
+                    items={ roleItems }
+                />
             }
             {
                 roleItems.length === 0 &&
                 <Typography
+                    id="no-client-roles-msg"
                     className="no-items"
                     variant="body1"
                 >
@@ -113,6 +117,7 @@ const ClientGrantRoles = (props: Props) => {
                 </Typography>
             }
             <Button
+                id="add-client-role-btn"
                 variant="contained"
                 color="primary"
                 onClick={ () => setState((draft) => {
@@ -123,6 +128,7 @@ const ClientGrantRoles = (props: Props) => {
                 Add Role
             </Button>
             <SelectDialog
+                id="client-role-dialog"
                 label="Role"
                 open={ state.showRoleDialog }
                 title="Add Role"
@@ -133,6 +139,7 @@ const ClientGrantRoles = (props: Props) => {
                 options={ roleOptions }
             />
             <ConfirmDialog
+                id="remove-client-role-dialog"
                 open={ state.showRemoveDialog }
                 title="Remove Role"
                 message="Are you sure you want to remove this role?"

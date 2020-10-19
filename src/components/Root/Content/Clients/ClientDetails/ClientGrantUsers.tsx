@@ -117,14 +117,21 @@ const ClientGrantUsers = (props: Props) => {
 
     return (
         <>
-            <SectionHeader title="Users" />
+            <SectionHeader
+                id="client-grant-users-title"
+                title="Users"
+            />
             {
                 userItems.length > 0 &&
-                <List items={ userItems } />
+                <List
+                    id="client-grant-users-list"
+                    items={ userItems }
+                />
             }
             {
                 userItems.length === 0 &&
                 <Typography
+                    id="no-client-grant-users-msg"
                     className="no-items"
                     variant="body1"
                 >
@@ -132,6 +139,7 @@ const ClientGrantUsers = (props: Props) => {
                 </Typography>
             }
             <Button
+                id="add-client-user-btn"
                 variant="contained"
                 color="primary"
                 onClick={ () => setState((draft) => {
@@ -142,6 +150,7 @@ const ClientGrantUsers = (props: Props) => {
                 Add User
             </Button>
             <SelectDialog
+                id="add-client-user-dialog"
                 label="User"
                 open={ state.showUserDialog }
                 title="Add User"
@@ -152,6 +161,7 @@ const ClientGrantUsers = (props: Props) => {
                 options={ availableUserOptions }
             />
             <ConfirmDialog
+                id="remove-client-user-dialog"
                 open={ state.showRemoveDialog }
                 title="Remove User"
                 message="Are you sure you want to remove this user?"
