@@ -29,8 +29,8 @@ Before(() => {
     cleanup();
     cy.task('insertClient', testClient)
         .then((clientId) => {
-            cy.task('insertUser', { user: testUser, clientId });
-            cy.task('insertRole', { name: 'ROLE_WRITE', clientId });
+            cy.task('insertUser', { user: testUser, clientId })
+                .then(() => cy.task('insertRole', { name: 'ROLE_WRITE', clientId }));
         });
 });
 
