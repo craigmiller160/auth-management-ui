@@ -17,12 +17,13 @@
  */
 
 import { After, Before } from 'cypress-cucumber-preprocessor/steps';
-import { testUser } from '../../../data/user';
+import { testUser, testUser2 } from '../../../data/user';
 import { testClient } from '../../../data/client';
 
 const cleanup = () => {
     cy.task('deleteUser', 'test@gmail.com');
     cy.task('deleteClient', 'Test Client');
+    cy.task('deleteUser', 'test2@gmail.com');
 };
 
 Before(() => {
@@ -32,6 +33,7 @@ Before(() => {
             cy.task('insertUser', { user: testUser, clientId })
                 .then(() => cy.task('insertRole', { name: 'ROLE_WRITE', clientId }));
         });
+    cy.task('insertUser', testUser2);
 });
 
 After(() => {

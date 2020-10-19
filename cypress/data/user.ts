@@ -25,3 +25,11 @@ export const testUser: InsertUser = {
     password: 'password',
     enabled: true
 };
+
+export const testUser2: InsertUser = {
+    email: 'test2@gmail.com',
+    firstName: 'Test2',
+    lastName: 'User',
+    password: 'password',
+    enabled: true
+};

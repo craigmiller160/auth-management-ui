@@ -34,7 +34,7 @@ interface UserIdRow {
 interface RoleRow {
     id: number;
     name: string;
-    client_id: number;
+    client_id?: number;
 }
 
 interface Arg {
@@ -67,13 +67,15 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
 
     const userId = result.rows[0].id;
 
-    await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [userId, clientId]);
-    await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, ['1', 'ABCDEFG', clientId, userId]);
+    if (userId && clientId) {
+        await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [userId, clientId]);
+        await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, ['1', 'ABCDEFG', clientId, userId]);
 
-    const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(pool, SELECT_ROLES_SQL, [clientId])
-    const rolePromises = roleResult.rows
-        .map((role) => safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [userId, clientId, role.id]));
-    await Promise.all(rolePromises);
+        const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(pool, SELECT_ROLES_SQL, [clientId])
+        const rolePromises = roleResult.rows
+            .map((role) => safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [userId, clientId, role.id]));
+        await Promise.all(rolePromises);
+    }
 
     return userId;
 };
