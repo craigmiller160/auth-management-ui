@@ -222,7 +222,7 @@ const ClientRoles = (props: Props) => {
                 </Grid>
             </Grid>
             <InputDialog
-                id="role-dialog"
+                id="client-role-dialog"
                 open={ state.showRoleDialog }
                 title="Role"
                 onCancel={ cancelRoleDialog }
@@ -233,7 +233,7 @@ const ClientRoles = (props: Props) => {
                 initialValue={ getSelectedRole() }
             />
             <ConfirmDialog
-                id="delete-role-dialog"
+                id="delete-client-role-dialog"
                 open={ state.showDeleteDialog }
                 title="Delete Role"
                 message="Are you sure you want to delete this role?"

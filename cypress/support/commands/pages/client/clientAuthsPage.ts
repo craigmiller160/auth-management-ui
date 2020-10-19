@@ -44,6 +44,8 @@ const validatePage = (userEmails: Array<string>) => {
                     .find('button')
                     .should('have.text', 'Revoke');
             });
+        cy.get(SELECT_NO_AUTHS_MSG)
+            .should('not.exist');
     } else {
         cy.get(SELECT_CLIENT_AUTHS_LIST)
             .should('not.exist');
