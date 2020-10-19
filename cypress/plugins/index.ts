@@ -19,6 +19,7 @@ import { insertClient } from './sql/insertClient';
 import cucumber from 'cypress-cucumber-preprocessor';
 import { insertUser } from './sql/insertUser';
 import { deleteUser } from './sql/deleteUser';
+import { insertRole } from './sql/insertRole';
 
 type OnFn = (name: string, value: object) => void;
 
@@ -38,6 +39,7 @@ export default (on: OnFn, config: CypressConfig) => {
         deleteClient: deleteClient(pool),
         insertClient: insertClient(pool),
         insertUser: insertUser(pool),
-        deleteUser: deleteUser(pool)
+        deleteUser: deleteUser(pool),
+        insertRole: insertRole(pool)
     });
 };
