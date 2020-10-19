@@ -16,8 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { After, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
+import { testClient } from '../../../data/client';
+
+const cleanup = () => {
+    cy.task('deleteClient', 'Test Client');
+};
+
+Before(() => {
+    cleanup();
+    cy.task('insertClient', testClient);
+});
+
+After(() => {
+    cleanup();
+});
 
 Then('the roles page is displayed', (data: TableDefinition) => {
     const roles = data.rows().map((row) => row[0]);
