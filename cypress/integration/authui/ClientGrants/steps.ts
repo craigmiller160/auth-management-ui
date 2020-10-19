@@ -16,9 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { After, Before } from 'cypress-cucumber-preprocessor/steps';
+import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { testUser, testUser2 } from '../../../data/user';
 import { testClient } from '../../../data/client';
+import { TableDefinition } from 'cucumber';
+
+interface GrantData {
+    users: Array<string>;
+    roles: Array<string>;
+    selectedUser?: string;
+}
 
 const cleanup = () => {
     cy.task('deleteUser', 'test@gmail.com');
@@ -38,4 +45,86 @@ Before(() => {
 
 After(() => {
     cleanup();
+});
+
+Then('the client grants page is displayed', (data: TableDefinition) => {
+    const grantData: GrantData = data.rows()
+        .reduce((acc: GrantData, row: Array<string>, index: number) => {
+            const users = [...acc.users];
+            const roles = [...acc.roles];
+
+            const selectedUser = index === 0 ? row[2] : acc.selectedUser;
+
+            if (row[0]) {
+                users.push(row[0]);
+            }
+
+            if (row[1]) {
+                roles.push(row[1]);
+            }
+
+            return {
+                users,
+                roles,
+                selectedUser
+            };
+        }, { users: [], roles: [] });
+
+    // TODO finish this
+});
+
+When('I select user {int}', (userIndex: number) => {
+    // TODO finish this
+});
+
+When('I click the Add User button', () => {
+    // TODO finish this
+});
+
+Then('the user dialog is visible', () => {
+    // TODO finish this
+});
+
+And('I select {string} in the user dialog', (userEmail: string) => {
+    // TODO finish this
+});
+
+When('I click on the {string} button in the user dialog', (buttonType: string) => {
+    // TODO finish this
+});
+
+When('I click on the {string} button of user {int}', (buttonType: string, userIndex: number) => {
+    // TODO finish this
+});
+
+Then('the remove user dialog is visible', () => {
+    // TODO finish this
+});
+
+When('I click on the {string} button of the remove user dialog', (buttonType: string) => {
+    // TODO finish this
+});
+
+Then('the role dialog is visible', () => {
+    // TODO finish this
+});
+
+And('I select {string} in the role dialog', (roleName: string) => {
+    // TODO finish this
+});
+
+When('I click on the {string} button in the role dialog', (buttonType: string) => {
+    // TODO finish this
+});
+
+Then('the remove role dialog is visible', () => {
+    // TODO finish this
+});
+
+When('I click on the {string} button of the remove role dialog', (buttonType: string) => {
+    // TODO finish this
+});
+
+Then('I am on the user config page for {string}', (userEmail: string) => {
+    // TODO finish this
 });
