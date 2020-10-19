@@ -54,7 +54,7 @@ Feature: Client List Page
     Then the client grants page is displayed
       | users     | roles     | selectedUser |
       | Test User | ROLE_READ | Test User    |
-    When I click on the add role button
+    When I click on the Add Role button
     Then the role dialog is visible
     And I select "ROLE_WRITE" in the role dialog
     When I click on the "select" button in the role dialog

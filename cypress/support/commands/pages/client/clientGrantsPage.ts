@@ -53,6 +53,11 @@ const validatePage = (grantData: GrantData) => {
         .should('have.length', grantData.users.length)
         .each(($li, index) => {
             // TODO need a way to validate what roles a user has assigned
+
+            const isSelected = grantData.users[index] === grantData.selectedUser;
+            cy.wrap($li)
+                .should(`${isSelected ? '' : 'not.'}have.class`, 'active');
+
             cy.wrap($li)
                 .find('.MuiListItemText-primary')
                 .should('have.text', grantData.users[index]);
@@ -103,8 +108,27 @@ const validatePage = (grantData: GrantData) => {
     }
 };
 
+const selectUser = (userIndex: number) => {
+    cy.get(SELECT_CLIENT_USERS_LIST)
+        .find('li')
+        .eq(userIndex)
+        .click()
+        .should('have.class', 'active');
+};
+
+const clickAddUserBtn = () => {
+    cy.get(SELECT_ADD_CLIENT_USER_BTN).click();
+};
+
+const clickAddRoleBtn = () => {
+    cy.get(SELECT_ADD_CLIENT_ROLE_BTN).click();
+};
+
 const clientGrantsPage = {
-    validatePage
+    validatePage,
+    selectUser,
+    clickAddUserBtn,
+    clickAddRoleBtn
 };
 
 export type ClientGrantsPage = typeof clientGrantsPage;

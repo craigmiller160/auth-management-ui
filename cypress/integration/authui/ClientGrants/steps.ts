@@ -71,11 +71,15 @@ Then('the client grants page is displayed', (data: TableDefinition) => {
 });
 
 When('I select user {int}', (userIndex: number) => {
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        clientGrantsPage.selectUser(userIndex);
+    });
 });
 
 When('I click the Add User button', () => {
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        clientGrantsPage.clickAddUserBtn();
+    });
 });
 
 Then('the user dialog is visible', () => {
@@ -124,4 +128,10 @@ When('I click on the {string} button of the remove role dialog', (buttonType: st
 
 Then('I am on the user config page for {string}', (userEmail: string) => {
     // TODO finish this
+});
+
+When('I click on the Add Role button', () => {
+    cy.clientGrantsPage((clientGrantsPage) => {
+        clientGrantsPage.clickAddRoleBtn();
+    });
 });
