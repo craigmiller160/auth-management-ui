@@ -83,7 +83,9 @@ When('I click the Add User button', () => {
 });
 
 Then('the user dialog is visible', () => {
-    // TODO finish this
+    cy.clientGrantsPage((clientGrantsPage) => {
+        clientGrantsPage.validateUserDialog();
+    });
 });
 
 And('I select {string} in the user dialog', (userEmail: string) => {

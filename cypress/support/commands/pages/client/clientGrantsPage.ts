@@ -124,11 +124,38 @@ const clickAddRoleBtn = () => {
     cy.get(SELECT_ADD_CLIENT_ROLE_BTN).click();
 };
 
+const validateUserDialog = () => {
+    // TODO how to validate the list of users here
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .should('exist');
+
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('.MuiDialogTitle-root h2')
+        .should('have.text', 'Add User');
+
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('.MuiAutocomplete-root')
+        .should('exist')
+        .find('label')
+        .should('have.text', 'User');
+
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('button')
+        .eq(0)
+        .should('have.text', 'Select');
+
+    cy.get(SELECT_ADD_USER_DIALOG)
+        .find('button')
+        .eq(1)
+        .should('have.text', 'Cancel');
+};
+
 const clientGrantsPage = {
     validatePage,
     selectUser,
     clickAddUserBtn,
-    clickAddRoleBtn
+    clickAddRoleBtn,
+    validateUserDialog
 };
 
 export type ClientGrantsPage = typeof clientGrantsPage;
