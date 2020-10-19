@@ -24,17 +24,34 @@ const SELECT_CLIENT_ROLES_LIST = '#client-roles-page #client-roles-list';
 const SELECT_NO_ROLES_MSG = '#client-roles-page #no-roles-msg';
 const SELECT_ROLE_DIALOG = '#client-role-dialog';
 const SELECT_DELETE_DIALOG = '#delete-client-role-dialog';
+const SELECT_ADD_ROLE_BTN = '#client-roles-page #add-role-btn';
 
 const validatePage = (roles: Array<string>) => {
     cy.get(SELECT_CLIENT_ROLES)
         .should('exist');
     cy.get(SELECT_CLIENT_ROLES_TITLE)
         .should('have.text', 'Test Client');
+    cy.get(SELECT_ADD_ROLE_BTN)
+        .should('have.text', 'Add Role');
 
     if (roles.length > 0) {
         cy.get(SELECT_CLIENT_ROLES_LIST)
-            .should('exist');
-        // TODO tests for role items
+            .should('exist')
+            .find('li')
+            .each(($li, index) => {
+                cy.wrap($li)
+                    .find('.MuiListItemText-primary')
+                    .should('have.text', roles[index]);
+                cy.wrap($li)
+                    .find('button')
+                    .eq(0)
+                    .should('have.text', 'Edit');
+                cy.wrap($li)
+                    .find('button')
+                    .eq(1)
+                    .should('have.text', 'Delete');
+            });
+
         cy.get(SELECT_NO_ROLES_MSG)
             .should('not.exist');
     } else {

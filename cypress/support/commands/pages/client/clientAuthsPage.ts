@@ -36,7 +36,7 @@ const validatePage = (userEmails: Array<string>) => {
             .each(($li, index) => {
                 cy.wrap($li)
                     .find('.MuiListItemText-primary')
-                    .should('have.text', `User: ${userEmails[0]}`);
+                    .should('have.text', `User: ${userEmails[index]}`);
                 cy.wrap($li)
                     .find('.MuiListItemText-secondary')
                     .should('contain.text', 'Last Authenticated');

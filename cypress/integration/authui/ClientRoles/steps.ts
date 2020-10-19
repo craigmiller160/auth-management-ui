@@ -21,7 +21,9 @@ import { TableDefinition } from 'cucumber';
 
 Then('the roles page is displayed', (data: TableDefinition) => {
     const roles = data.rows().map((row) => row[0]);
-    //  TODO finish this
+    cy.clientRolesPage((clientRolesPage) => {
+        clientRolesPage.validatePage(roles);
+    });
 });
 
 When('I click on the add role button', () => {
