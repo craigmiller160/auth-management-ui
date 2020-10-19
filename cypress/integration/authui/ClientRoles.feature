@@ -36,7 +36,7 @@ Feature: Client Roles Page
       | role       |
       | ROLE_READ  |
     When I click on the "edit" button for role 0
-    Then the role dialog is visible with "EDIT" in the text field
+    Then the role dialog is visible with "READ" in the text field
     When I enter "admin" into the text field
     Then the role dialog is visible with "ADMIN" in the text field
     When I click the "save" button in the roles dialog
