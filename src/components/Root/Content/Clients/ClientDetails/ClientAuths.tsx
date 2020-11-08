@@ -17,19 +17,19 @@
  */
 
 import React, { useCallback, useEffect } from 'react';
-import { UserAuthDetails } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getAuthDetailsForClient } from '../../../../../services/ClientService';
 import { map } from 'fp-ts/es6/Either';
 import { Grid, Typography } from '@material-ui/core';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { LockOpen } from '@material-ui/icons';
+import { UserAuthDetails } from '../../../../../types/user';
+import { getAuthDetailsForClient } from '../../../../../services/ClientService';
 import './ClientAuths.scss';
 import List, { Item } from '../../../../ui/List';
-import { LockOpen } from '@material-ui/icons';
 import { formatApiDateTime } from '../../../../../utils/date';
 import { revokeUserAuthAccess } from '../../../../../services/UserService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props extends IdMatchProps {}
 
@@ -40,8 +40,8 @@ interface State {
 }
 
 const ClientAuths = (props: Props) => {
-    const id = props.match.params.id;
-    const [state, setState] = useImmer<State>({
+    const { id } = props.match.params;
+    const [ state, setState ] = useImmer<State>({
         clientId: id !== NEW_ID ? parseInt(id) : 0,
         clientName: '',
         userAuthDetails: []
@@ -56,7 +56,7 @@ const ClientAuths = (props: Props) => {
                     draft.userAuthDetails = clientAuthDetails.userAuthDetails;
                 });
             })
-        ), [state.clientId, setState]);
+        ), [ state.clientId, setState ]);
 
     const doRevoke = async (userId: number) =>
         pipe(
@@ -66,7 +66,7 @@ const ClientAuths = (props: Props) => {
 
     useEffect(() => {
         loadAuthDetails();
-    }, [loadAuthDetails]);
+    }, [ loadAuthDetails ]);
 
     const items: Array<Item> = state.userAuthDetails
         .map((auth) => ({

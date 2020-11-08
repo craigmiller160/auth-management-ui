@@ -31,16 +31,16 @@ const DELETE_USER_SQL = 'DELETE FROM dev.users WHERE id = $1';
 
 export const deleteUser = (pool: Pool) => async (email: string) => {
     const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
-        pool, SELECT_USER_ID_SQL, [email]
+        pool, SELECT_USER_ID_SQL, [ email ]
     );
 
     if (result.rows?.[0]?.id) {
         const userId = result.rows[0].id;
 
-        await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [userId]);
-        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [userId]);
-        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [userId]);
-        await safelyExecuteQuery<any>(pool, DELETE_USER_SQL, [userId]);
+        await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [ userId ]);
+        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [ userId ]);
+        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [ userId ]);
+        await safelyExecuteQuery<any>(pool, DELETE_USER_SQL, [ userId ]);
     }
     return null;
 };

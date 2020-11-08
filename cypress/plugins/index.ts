@@ -12,11 +12,11 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+import cucumber from 'cypress-cucumber-preprocessor';
 import { CypressConfig } from '../types/cypress';
 import { createPool } from './sql/createPool';
 import { deleteClient } from './sql/deleteClient';
 import { insertClient } from './sql/insertClient';
-import cucumber from 'cypress-cucumber-preprocessor';
 import { insertUser } from './sql/insertUser';
 import { deleteUser } from './sql/deleteUser';
 import { insertRole } from './sql/insertRole';

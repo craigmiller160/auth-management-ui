@@ -26,5 +26,5 @@ export interface FieldRules {
     maxLength?: ValidationRule<ReactText>;
     minLength?: ValidationRule<ReactText>;
     pattern?: ValidationRule<RegExp>;
-    validate?: Validate | Record<string,Validate>;
+    validate?: Validate | Record<string, Validate>;
 }

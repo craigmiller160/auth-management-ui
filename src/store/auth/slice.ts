@@ -17,8 +17,8 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthUser } from '../../types/auth';
 import { none, Option } from 'fp-ts/es6/Option';
+import { AuthUser } from '../../types/auth';
 
 interface StateType {
     userData: Option<AuthUser>,

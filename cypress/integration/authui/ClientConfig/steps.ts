@@ -25,7 +25,7 @@ import { ClientConfigValues } from '../../../support/commands/pages/client/clien
 import { testClient } from '../../../data/client';
 
 const CLIENT_KEY = 'clientKey';
-const isNewClient = (clientType: string) => 'new' === clientType;
+const isNewClient = (clientType: string) => clientType === 'new';
 
 const cleanup = () => {
     cy.task('deleteClient', 'New Client');
@@ -65,7 +65,7 @@ const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
         if (row[6] === 'true') {
             cy.get(`@${CLIENT_KEY}`)
                 .then(($key) => expect($key).to.equal(value));
-        } else if(row[7]) {
+        } else if (row[7]) {
             expect(row[7]).to.equal(value);
         } else {
             expect('').not.to.equal(value);
@@ -96,9 +96,9 @@ When('I click the save button', () => {
 
 And('the list {string} contain a client with the name {string}', (action: string, clientName: string) => {
     cy.clientsPage((clientsPage) => {
-        if ('does' === action) {
+        if (action === 'does') {
             clientsPage.clientRecordExists(clientName, true);
-        } else if('does not' === action) {
+        } else if (action === 'does not') {
             clientsPage.clientRecordExists(clientName, false);
         } else {
             throw new Error(`Invalid action: ${action}`);
@@ -171,9 +171,9 @@ When('I type the uri {string} into the redirect uri dialog', (uriText: string) =
 
 And('I click the {string} button for the redirect uri dialog', (buttonType: string) => {
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
-        if ('save' === buttonType) {
+        if (buttonType === 'save') {
             clientConfigRedirectUris.clickDialogSave();
-        } else if ('cancel' === buttonType) {
+        } else if (buttonType === 'cancel') {
             clientConfigRedirectUris.clickDialogCancel();
         } else {
             throw new Error(`Invalid button type: ${buttonType}`);
@@ -183,9 +183,9 @@ And('I click the {string} button for the redirect uri dialog', (buttonType: stri
 
 When('I click on the {string} button for URI {int}', (buttonType: string, index: number) => {
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
-        if ('edit' === buttonType) {
+        if (buttonType === 'edit') {
             clientConfigRedirectUris.clickEditUriBtn(index);
-        } else if ('remove' === buttonType) {
+        } else if (buttonType === 'remove') {
             clientConfigRedirectUris.clickRemoveUriBtn(index);
         } else {
             throw new Error(`Invalid button type: ${buttonType}`);

@@ -70,4 +70,3 @@ const clientAuthsPage = {
 
 export type ClientAuthsPage = typeof clientAuthsPage;
 export default createPage(clientAuthsPage);
-

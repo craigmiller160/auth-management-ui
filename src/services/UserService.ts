@@ -17,6 +17,7 @@
  */
 
 import { Either, map } from 'fp-ts/es6/Either';
+import { pipe } from 'fp-ts/es6/pipeable';
 import {
     UserAuthDetailsList,
     UserClient,
@@ -26,7 +27,6 @@ import {
     UserList,
     UserRole
 } from '../types/user';
-import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import {
     AddClientToUserWrapper,
@@ -40,7 +40,7 @@ import {
     UserDetailsWrapper
 } from '../types/graphApi';
 
-export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
+export const getAllUsers = async (): Promise<Either<Error, UserList>> =>
     pipe(
         await api.graphql<UserList>({
             payload: `
@@ -57,7 +57,7 @@ export const getAllUsers = async (): Promise<Either<Error,UserList>> =>
         })
     );
 
-export const getUserDetails = async (userId: number): Promise<Either<Error,UserDetails>> =>
+export const getUserDetails = async (userId: number): Promise<Either<Error, UserDetails>> =>
     pipe(
         await api.graphql<UserDetailsWrapper>({
             payload: `
@@ -76,7 +76,7 @@ export const getUserDetails = async (userId: number): Promise<Either<Error,UserD
         map((wrapper: UserDetailsWrapper) => wrapper.user)
     );
 
-export const getUserClients = async (userId: number): Promise<Either<Error,UserClients>> =>
+export const getUserClients = async (userId: number): Promise<Either<Error, UserClients>> =>
     pipe(
         await api.graphql<UserClientsWrapper>({
             payload: `
@@ -175,7 +175,7 @@ export const deleteUser = async (userId: number): Promise<Either<Error, UserDeta
     );
 
 export const removeClientFromUser = async (userId: number, clientId: number):
-    Promise<Either<Error,Array<UserClient>>> =>
+    Promise<Either<Error, Array<UserClient>>> =>
     pipe(
         await api.graphql<RemoveClientFromUserWrapper>({
             payload: `
@@ -259,14 +259,14 @@ export const addRoleToUser = async (userId: number, clientId: number, roleId: nu
         map((wrapper: AddRoleToUserWrapper) => wrapper.addRoleToUser)
     );
 
-export const getAllUserAuthDetails = async (userId: number): Promise<Either<Error,UserAuthDetailsList>> =>
+export const getAllUserAuthDetails = async (userId: number): Promise<Either<Error, UserAuthDetailsList>> =>
     api.get<UserAuthDetailsList>({
         uri: `/users/auth/${userId}`,
         errorMsg: `Error getting all auth details for user ${userId}`
     });
 
-export const revokeUserAuthAccess = async (userId: number, clientId: number): Promise<Either<Error,void>> =>
-    api.post<void,void>({
+export const revokeUserAuthAccess = async (userId: number, clientId: number): Promise<Either<Error, void>> =>
+    api.post<void, void>({
         uri: `/users/auth/${userId}/${clientId}/revoke`,
         errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
     });

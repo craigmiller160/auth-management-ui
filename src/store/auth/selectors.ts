@@ -17,8 +17,8 @@
  */
 
 import { createSelector } from '@reduxjs/toolkit';
-import { AuthUser } from '../../types/auth';
 import { Option, isSome } from 'fp-ts/es6/Option';
+import { AuthUser } from '../../types/auth';
 import { RootState } from '../index';
 
 const userDataSelector = (state: RootState): Option<AuthUser> => state.auth.userData;

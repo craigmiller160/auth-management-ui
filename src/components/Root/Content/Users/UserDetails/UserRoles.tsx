@@ -19,15 +19,15 @@
 import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
 import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
-import { UserClient, UserRole } from '../../../../../types/user';
 import { Typography } from '@material-ui/core';
-import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { useImmer } from 'use-immer';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
-import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import List, { Item } from '../../../../ui/List';
+import { UserClient, UserRole } from '../../../../../types/user';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
@@ -48,7 +48,7 @@ const UserRoles = (props: Props) => {
         userId,
         updateUserRoles
     } = props;
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         showAddRoleDialog: false,
         showRemoveRoleDialog: false,
         roleIdToRemove: 0
@@ -92,8 +92,7 @@ const UserRoles = (props: Props) => {
         selectedClient,
         map((client: UserClient) =>
             client.allRoles
-                .filter((r1) => !client.userRoles.find((r2) => r1.id === r2.id))
-        ),
+                .filter((r1) => !client.userRoles.find((r2) => r1.id === r2.id))),
         getOrElse((): Array<UserRole> => [])
     )
         .map((role: UserRole) => ({

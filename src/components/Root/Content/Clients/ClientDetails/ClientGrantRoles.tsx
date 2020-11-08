@@ -17,13 +17,13 @@
  */
 
 import React from 'react';
-import { ClientRole, ClientUser } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
-import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import List, { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { Button, Typography } from '@material-ui/core';
 import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import List, { Item } from '../../../../ui/List';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { ClientRole, ClientUser } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
@@ -47,7 +47,7 @@ const ClientGrantRoles = (props: Props) => {
         allRoles
     } = props;
 
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         showRoleDialog: false,
         showRemoveDialog: false,
         roleToRemoveId: 0

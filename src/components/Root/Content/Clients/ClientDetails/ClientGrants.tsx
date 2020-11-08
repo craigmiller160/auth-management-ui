@@ -17,20 +17,20 @@
  */
 
 import React, { useCallback, useEffect } from 'react';
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientRole, ClientUser } from '../../../../../types/client';
 import { Grid } from '@material-ui/core';
+import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
+import { ClientRole, ClientUser } from '../../../../../types/client';
 import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';
-import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface Props extends IdMatchProps {}
 
@@ -44,9 +44,9 @@ interface State {
 }
 
 const ClientGrants = (props: Props) => {
-    const id = props.match.params.id;
+    const { id } = props.match.params;
 
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         clientId: id !== NEW_ID ? parseInt(id) : 0,
         clientName: '',
         allRoles: [],
@@ -58,7 +58,7 @@ const ClientGrants = (props: Props) => {
     const loadFullClientDetails = useCallback(async () =>
         pipe(
             await getFullClientDetails(state.clientId),
-            map( (fullClientDetails) => {
+            map((fullClientDetails) => {
                 setState((draft) => {
                     draft.clientName = fullClientDetails.name;
                     draft.allRoles = fullClientDetails.roles;
@@ -67,7 +67,7 @@ const ClientGrants = (props: Props) => {
                 return fullClientDetails.users;
             }),
             getOrElse((): Array<ClientUser> => [])
-        ), [state.clientId, setState]);
+        ), [ state.clientId, setState ]);
 
     const loadUsers = useCallback(async (clientUsers: Array<ClientUser>) =>
         pipe(
@@ -77,19 +77,17 @@ const ClientGrants = (props: Props) => {
                 users.filter((user) => {
                     const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
                     return index === -1;
-                })
-            ),
+                })),
             map((users) =>
                 setState((draft) => {
                     draft.allUsers = users;
-                })
-            )
-        ), [setState]);
+                }))
+        ), [ setState ]);
 
     const loadAll = useCallback(async () => {
         const clientUsers = await loadFullClientDetails();
         await loadUsers(clientUsers);
-    }, [loadFullClientDetails, loadUsers]);
+    }, [ loadFullClientDetails, loadUsers ]);
 
     const removeUser = async (userId: number) => {
         await removeUserFromClient(userId, state.clientId);
@@ -108,7 +106,7 @@ const ClientGrants = (props: Props) => {
 
     useEffect(() => {
         loadAll();
-    }, [loadAll]);
+    }, [ loadAll ]);
 
     const saveAddRole = (roleId: number) =>
         pipe(

@@ -20,11 +20,11 @@ import React, { ElementType, MouseEvent } from 'react';
 import MuiList from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import theme from '../../theme';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import { Grid, useMediaQuery } from '@material-ui/core';
+import theme from '../../theme';
 
 export interface ItemSecondaryAction {
     text: string;
@@ -82,7 +82,7 @@ const List = (props: Props) => {
             {
                 items.map((item, index) => {
                     const Avatar = item.avatar ?? null;
-                    const className = [classes.ListItem];
+                    const className = [ classes.ListItem ];
                     if (item.active) {
                         className.push('active');
                     }

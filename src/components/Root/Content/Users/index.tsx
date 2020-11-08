@@ -18,25 +18,25 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
-import { getAllUsers } from '../../../../services/UserService';
 import Grid from '@material-ui/core/Grid';
 import Table from '../../../ui/Table';
 import Button from '@material-ui/core/Button';
 import './Users.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { UserDetails, UserList } from '../../../../types/user';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
+import { UserDetails, UserList } from '../../../../types/user';
+import { getAllUsers } from '../../../../services/UserService';
 
 interface State {
     users: Array<UserDetails>;
 }
 
-const header = ['Email', 'First Name', 'Last Name'];
+const header = [ 'Email', 'First Name', 'Last Name' ];
 
 const Users = () => {
     const history = useHistory();
-    const [state, setState] = useState<State>({
+    const [ state, setState ] = useState<State>({
         users: []
     });
 
@@ -61,9 +61,9 @@ const Users = () => {
         state.users
             .map((user) => ({
                 click: () => history.push(`/users/${user.id}`),
-                items: [user.email, user.firstName, user.lastName]
+                items: [ user.email, user.firstName, user.lastName ]
             })),
-    [state.users, history]);
+    [ state.users, history ]);
 
     return (
         <div className="Users">

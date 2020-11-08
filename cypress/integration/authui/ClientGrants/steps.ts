@@ -17,9 +17,9 @@
  */
 
 import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { TableDefinition } from 'cucumber';
 import { testUser, testUser2 } from '../../../data/user';
 import { testClient } from '../../../data/client';
-import { TableDefinition } from 'cucumber';
 import { GrantData } from '../../../support/commands/pages/client/clientGrantsPage';
 
 const cleanup = () => {
@@ -45,8 +45,8 @@ After(() => {
 Then('the client grants page is displayed', (data: TableDefinition) => {
     const grantData: GrantData = data.rows()
         .reduce((acc: GrantData, row: Array<string>, index: number) => {
-            const users = [...acc.users];
-            const roles = [...acc.roles];
+            const users = [ ...acc.users ];
+            const roles = [ ...acc.roles ];
 
             const selectedUser = index === 0 ? row[2] : acc.selectedUser;
 

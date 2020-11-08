@@ -62,18 +62,18 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
     await safelyExecuteQuery<any>(pool, INSERT_USER_SQL, insertUserParams);
 
     const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
-        pool, SELECT_USER_ID, [user.email]
+        pool, SELECT_USER_ID, [ user.email ]
     );
 
     const userId = result.rows[0].id;
 
     if (userId && clientId) {
-        await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [userId, clientId]);
-        await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, ['1', 'ABCDEFG', clientId, userId]);
+        await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [ userId, clientId ]);
+        await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, [ '1', 'ABCDEFG', clientId, userId ]);
 
-        const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(pool, SELECT_ROLES_SQL, [clientId])
+        const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(pool, SELECT_ROLES_SQL, [ clientId ]);
         const rolePromises = roleResult.rows
-            .map((role) => safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [userId, clientId, role.id]));
+            .map((role) => safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [ userId, clientId, role.id ]));
         await Promise.all(rolePromises);
     }
 

@@ -43,7 +43,7 @@ interface RouteConfig {
 
 const ClientDetails = () => {
     const match = useRouteMatch<IdMatchParams>();
-    const id = match.params.id;
+    const { id } = match.params;
 
     const tabs: Array<TabConfig> = [
         {

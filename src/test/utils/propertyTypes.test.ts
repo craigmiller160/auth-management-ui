@@ -77,7 +77,7 @@ describe('isPropertyType', () => {
 
     describe('assignNumberProperty', () => {
         it('is number property', () => {
-            const result= assignNumberProperty(obj, 'two', 3);
+            const result = assignNumberProperty(obj, 'two', 3);
             expect(result).toEqual(true);
             expect(obj.two).toEqual(3);
         });
@@ -101,7 +101,7 @@ describe('isPropertyType', () => {
 
     describe('assignBooleanProperty', () => {
         it('is boolean property', () => {
-            const result= assignBooleanProperty(obj, 'three', true);
+            const result = assignBooleanProperty(obj, 'three', true);
             expect(result).toEqual(true);
             expect(obj.three).toEqual(true);
         });

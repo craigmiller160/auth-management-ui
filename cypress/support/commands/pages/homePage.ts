@@ -31,4 +31,3 @@ const homePage = {
 
 export type HomePage = typeof homePage;
 export default createPage(homePage);
-

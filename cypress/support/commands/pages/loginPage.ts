@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import createPage from './createPage';
 
 const SELECT_NAVBAR_BRAND = '#oauth2-login-page a.navbar-brand strong';

@@ -22,7 +22,7 @@ const SELECT_PAGE_HEADER = '#clients-page #clients-page-header';
 const SELECT_CLIENTS_TABLE = '#clients-page #clients-table';
 const SELECT_NEW_CLIENT_BTN = '#clients-page #new-client-btn';
 
-const tableHeader = ['Name', 'Key'];
+const tableHeader = [ 'Name', 'Key' ];
 
 const validatePage = () => {
     cy.get(SELECT_PAGE_HEADER)

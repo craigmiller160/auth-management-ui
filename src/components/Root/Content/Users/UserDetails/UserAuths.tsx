@@ -19,17 +19,17 @@
 import React, { useEffect } from 'react';
 import './UserAuths.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user';
 import { useImmer } from 'use-immer';
-import List, { Item } from '../../../../ui/List';
 import { LockOpen } from '@material-ui/icons';
-import { formatApiDateTime } from '../../../../../utils/date';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { formatApiDateTime } from '../../../../../utils/date';
+import List, { Item } from '../../../../ui/List';
+import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user';
+import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
 
 interface State {
     userId: number;
@@ -43,8 +43,8 @@ const defaultUserAuths: UserAuthDetailsList = {
 };
 
 const UserAuths = (props: Props) => {
-    const id = props.match.params.id;
-    const [state, setState] = useImmer<State>({
+    const { id } = props.match.params;
+    const [ state, setState ] = useImmer<State>({
         userId: id !== NEW_ID ? parseInt(id) : 0,
         userAuths: defaultUserAuths
     });
@@ -61,15 +61,14 @@ const UserAuths = (props: Props) => {
         };
 
         action();
-    }, [setState, state.userId]);
+    }, [ setState, state.userId ]);
 
     const doRevoke = async (clientId: number) => {
         const authDetails = pipe(
             await revokeUserAuthAccess(state.userId, clientId),
             map(() =>
                 state.userAuths.authDetails
-                    .filter((auth) => auth.clientId !== clientId)
-            ),
+                    .filter((auth) => auth.clientId !== clientId)),
             getOrElse((): Array<UserAuthDetails> => state.userAuths.authDetails)
         );
         setState((draft) => {
