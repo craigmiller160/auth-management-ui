@@ -23,6 +23,7 @@
     "use-immer": "^0.4.1"
   },
   "scripts": {
+    "build": "web-config-scripts webpack",
     "lint": "web-config-scripts lint",
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js"
