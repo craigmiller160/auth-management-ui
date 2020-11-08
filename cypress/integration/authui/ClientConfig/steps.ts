@@ -56,9 +56,9 @@ Then('I am on the client details page for a {string} client', (clientType: strin
 
 const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
     clientName: row[0],
-    accessTokenTimeout: parseInt(row[1]),
-    refreshTokenTimeout: parseInt(row[2]),
-    authCodeTimeout: parseInt(row[3]),
+    accessTokenTimeout: parseInt(row[1], 10),
+    refreshTokenTimeout: parseInt(row[2], 10),
+    authCodeTimeout: parseInt(row[3], 10),
     enabled: row[4] === 'true',
     clientSecretHasPlaceholder: row[5] === 'true',
     clientKeyValidator: (value: string) => {
@@ -73,7 +73,8 @@ const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
     }
 });
 
-And('the client config tab is selected with these values for {string} client', (clientType: string, data: TableDefinition) => {
+And('the client config tab is selected with these values for {string} client',
+    (clientType: string, data: TableDefinition) => {
     const values: ClientConfigValues = data.rows()
         .map(createClientKeyValidator)[0];
 

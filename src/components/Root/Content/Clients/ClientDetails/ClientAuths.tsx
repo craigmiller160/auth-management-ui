@@ -23,6 +23,7 @@ import { map } from 'fp-ts/es6/Either';
 import { Grid, Typography } from '@material-ui/core';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { LockOpen } from '@material-ui/icons';
+import { nanoid } from 'nanoid';
 import { UserAuthDetails } from '../../../../../types/user';
 import { getAuthDetailsForClient } from '../../../../../services/ClientService';
 import './ClientAuths.scss';
@@ -42,7 +43,7 @@ interface State {
 const ClientAuths = (props: Props) => {
     const { id } = props.match.params;
     const [ state, setState ] = useImmer<State>({
-        clientId: id !== NEW_ID ? parseInt(id) : 0,
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
         clientName: '',
         userAuthDetails: []
     });
@@ -70,6 +71,7 @@ const ClientAuths = (props: Props) => {
 
     const items: Array<Item> = state.userAuthDetails
         .map((auth) => ({
+            uuid: nanoid(),
             avatar: () => <LockOpen />,
             text: {
                 primary: `User: ${auth.userEmail}`,
@@ -77,6 +79,7 @@ const ClientAuths = (props: Props) => {
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Revoke',
                     click: () => doRevoke(auth.userId)
                 }

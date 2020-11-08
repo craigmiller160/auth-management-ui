@@ -34,7 +34,7 @@ type AlertPage = import('./commands/pages/alertPage').AlertPage;
 type PageFunction<T> = (page: T) => void;
 
 declare namespace Cypress {
-    interface Chainable {
+    interface Chainable { // eslint-disable-line @typescript-eslint/no-unused-vars
         loginPage(pageFn: PageFunction<LoginPage>): Chainable<Element>;
         navbarPage(pageFn: PageFunction<NavbarPage>): Chainable<Element>;
         homePage(pageFn: PageFunction<HomePage>): Chainable<Element>;

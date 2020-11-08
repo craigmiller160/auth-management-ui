@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { After, And, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { After, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
 import { testClient } from '../../../data/client';
 import { testUser } from '../../../data/user';

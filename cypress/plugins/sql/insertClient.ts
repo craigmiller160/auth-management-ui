@@ -35,10 +35,12 @@ interface ClientIdRow {
     id: number;
 }
 
+/* eslint-disable max-len */
 const SELECT_CLIENT_ID = 'SELECT id FROM dev.clients WHERE name = $1';
 const INSERT_URI_SQL = 'INSERT INTO dev.client_redirect_uris (client_id, redirect_uri) VALUES ($1, $2)';
 const INSERT_CLIENT_SQL = 'INSERT INTO dev.clients (name, client_key, client_secret, enabled, access_token_timeout_secs, refresh_token_timeout_secs, auth_code_timeout_secs) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 const INSERT_ROLE_SQL = 'INSERT INTO dev.roles (name, client_id) VALUES ($1,$2)';
+/* eslint-enable max-len */
 
 export const insertClient = (pool: Pool) => async (client: InsertClient): Promise<number> => {
     const insertClientParams = [

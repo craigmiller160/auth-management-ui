@@ -62,8 +62,8 @@ const validateRedirectList = (uris: Array<String>) => {
             cy.wrap($li)
                 .find('button')
                 .should('have.length', 2)
-                .each(($btn, index) => {
-                    if (index === 0) {
+                .each(($btn, index2) => {
+                    if (index2 === 0) {
                         cy.wrap($btn)
                             .should('have.text', 'Edit');
                     } else {
