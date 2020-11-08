@@ -41,7 +41,8 @@ export class PropertyTypeError extends Error {
     }
 }
 
-export const objectHasProperty = (obj: object, name: string): obj is AnyPropName => obj.hasOwnProperty(name);
+export const objectHasProperty = (obj: object, name: string): obj is AnyPropName =>
+    Object.prototype.hasOwnProperty.call(obj, name);
 
 export const isStringProperty = (obj: object, name: string): obj is AnyPropString => {
     if (objectHasProperty(obj, name)) {
@@ -52,7 +53,7 @@ export const isStringProperty = (obj: object, name: string): obj is AnyPropStrin
 
 export const assignStringProperty = (obj: object, name: string, value: string): boolean => {
     if (isStringProperty(obj, name)) {
-        obj[name] = value;
+        obj[name] = value; // eslint-disable-line no-param-reassign
         return true;
     }
     return false;
@@ -67,7 +68,7 @@ export const isNumberProperty = (obj: object, name: string): obj is AnyPropNumbe
 
 export const assignNumberProperty = (obj: object, name: string, value: number): boolean => {
     if (isNumberProperty(obj, name)) {
-        obj[name] = value;
+        obj[name] = value; // eslint-disable-line no-param-reassign
         return true;
     }
     return false;
@@ -82,7 +83,7 @@ export const isBooleanProperty = (obj: object, name: string): obj is AnyPropBool
 
 export const assignBooleanProperty = (obj: object, name: string, value: boolean): boolean => {
     if (isBooleanProperty(obj, name)) {
-        obj[name] = value;
+        obj[name] = value; // eslint-disable-line no-param-reassign
         return true;
     }
     return false;
