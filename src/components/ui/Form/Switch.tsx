@@ -51,7 +51,7 @@ const Switch = <T extends object>(props: Props<T>) => {
                 <FormControlLabel
                     className={ labelClassName }
                     label={ label }
-                    control={
+                    control={ (
                         <MuiSwitch
                             id={ id }
                             classes={ {
@@ -62,7 +62,7 @@ const Switch = <T extends object>(props: Props<T>) => {
                             checked={ value }
                             color={ color ?? 'primary' }
                         />
-                    }
+                    ) }
                 />
             ) }
         />

@@ -17,10 +17,10 @@
  */
 
 import React, { MouseEvent } from 'react';
-import Autocomplete, { SelectOption } from '../Form/Autocomplete';
 import { useForm } from 'react-hook-form';
-import './SelectDialog.scss';
 import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
+import Autocomplete, { SelectOption } from '../Form/Autocomplete';
+import './SelectDialog.scss';
 
 interface SelectForm<T> {
     value: SelectOption<T> | null;

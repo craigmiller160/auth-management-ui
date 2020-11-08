@@ -63,7 +63,7 @@ const Autocomplete = <T extends object, R extends any>(props: Props<T, R>) => {
                     options={ options }
                     getOptionLabel={ (option) => option?.label ?? '' }
                     value={ value }
-                    onChange={ (event, newValue) => onChange(newValue)}
+                    onChange={ (event, newValue) => onChange(newValue) }
                     onBlur={ onBlur }
                     renderInput={ (params) => (
                         <TextField
