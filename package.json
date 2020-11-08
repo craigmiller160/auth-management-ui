@@ -1,7 +1,7 @@
 {
   "name": "auth-management-ui",
   "version": "1.3.0-beta",
-  "private": true,
+  "sideEffects": false,
   "dependencies": {
     "@craigmiller160/react-material-ui-common": "file:.yalc/@craigmiller160/react-material-ui-common",
     "@craigmiller160/react-protected-route": "file:.yalc/@craigmiller160/react-protected-route",
@@ -27,18 +27,6 @@
     "lint": "web-config-scripts lint",
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@craigmiller160/web-config": "file:.yalc/@craigmiller160/web-config",
