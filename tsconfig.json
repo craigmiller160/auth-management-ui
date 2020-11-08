@@ -1,5 +1,8 @@
 {
   "extends": "@craigmiller160/web-config/typescript/tsconfig.esmodule.json",
+  "compilerOptions": {
+    "declaration": false
+  },
   "include": [
     "./src/**/*"
   ],
