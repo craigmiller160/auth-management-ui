@@ -28,6 +28,7 @@ import { UserDetails } from '../../../../../types/user';
 import { ClientUser } from '../../../../../types/client';
 import List, { Item } from '../../../../ui/List';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
+import { nanoid } from 'nanoid';
 
 interface Props {
     clientUsers: Array<ClientUser>;
@@ -69,6 +70,7 @@ const ClientGrantUsers = (props: Props) => {
 
     const userItems: Array<Item> = clientUsers
         .map((user) => ({
+            uuid: nanoid(),
             avatar: () => <PersonIcon />,
             click: () => selectUser(user),
             active: exists((selected: ClientUser) => selected.id === user.id)(selectedUser),
@@ -78,10 +80,12 @@ const ClientGrantUsers = (props: Props) => {
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Go',
                     click: () => history.push(`/users/${user.id}`)
                 },
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: (event: MouseEvent) => {
                         event.stopPropagation();
