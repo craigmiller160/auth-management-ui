@@ -25,6 +25,7 @@ import { LockOpen } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { formatApiDateTime } from '../../../../../utils/date';
 import List, { Item } from '../../../../ui/List';
@@ -45,7 +46,7 @@ const defaultUserAuths: UserAuthDetailsList = {
 const UserAuths = (props: Props) => {
     const { id } = props.match.params;
     const [ state, setState ] = useImmer<State>({
-        userId: id !== NEW_ID ? parseInt(id) : 0,
+        userId: id !== NEW_ID ? parseInt(id, 10) : 0,
         userAuths: defaultUserAuths
     });
 
@@ -79,6 +80,7 @@ const UserAuths = (props: Props) => {
     const items: Array<Item> = state.userAuths.authDetails
         .filter((auth) => auth.tokenId)
         .map((auth) => ({
+            uuid: nanoid(),
             avatar: () => <LockOpen />,
             text: {
                 primary: `Client: ${auth.clientName}`,
@@ -86,6 +88,7 @@ const UserAuths = (props: Props) => {
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Revoke',
                     click: () => doRevoke(auth.clientId)
                 }

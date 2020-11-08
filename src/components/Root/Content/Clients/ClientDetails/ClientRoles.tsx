@@ -53,7 +53,7 @@ const ClientRoles = (props: Props) => {
         selectedRoleIndex: -1,
         clientName: '',
         roles: [],
-        clientId: id !== NEW_ID ? parseInt(id) : 0
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0
     });
 
     const loadClientRoles = useCallback(async () => {

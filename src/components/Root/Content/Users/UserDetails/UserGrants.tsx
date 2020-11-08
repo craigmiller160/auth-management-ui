@@ -22,10 +22,10 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse } from 'fp-ts/es6/Either';
 import { Grid } from '@material-ui/core';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import { getUserClients } from '../../../../../services/UserService';
 import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
 import './UserGrants.scss';
-import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
@@ -46,7 +46,7 @@ const defaultUser: UserClientsType = {
 const UserGrants = (props: Props) => {
     const { id } = props.match.params;
     const [ state, setState ] = useImmer<State>({
-        userId: id !== NEW_ID ? parseInt(id) : 0,
+        userId: id !== NEW_ID ? parseInt(id, 10) : 0,
         user: defaultUser,
         selectedClient: none
     });

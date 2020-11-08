@@ -24,6 +24,7 @@ import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
 import List, { Item } from '../../../../ui/List';
@@ -76,12 +77,13 @@ const UserRoles = (props: Props) => {
         getOrElse((): Array<UserRole> => [])
     )
         .map((role: UserRole) => ({
-            click: () => {},
+            uuid: nanoid(),
             text: {
                 primary: role.name
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: () => removeRoleClick(role.id)
                 }

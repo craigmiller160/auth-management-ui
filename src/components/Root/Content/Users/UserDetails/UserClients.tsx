@@ -25,6 +25,7 @@ import { exists, Option } from 'fp-ts/es6/Option';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
 import { getAllClients } from '../../../../../services/ClientService';
@@ -92,6 +93,7 @@ const UserClients = (props: Props) => {
     };
 
     const clientItems: Array<Item> = userClients.map((client) => ({
+        uuid: nanoid(),
         click: () => selectClient(client),
         avatar: () => <Business />,
         text: {
@@ -99,10 +101,12 @@ const UserClients = (props: Props) => {
         },
         secondaryActions: [
             {
+                uuid: nanoid(),
                 text: 'Go',
                 click: () => goToClient(client.id)
             },
             {
+                uuid: nanoid(),
                 text: 'Remove',
                 click: (event: MouseEvent) => {
                     event.stopPropagation();
@@ -118,11 +122,11 @@ const UserClients = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = async (selectedClient: SelectOption<number>) => {
+    const addClientSelect = async (clientToAdd: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddClientDialog = false;
         });
-        const clientId = selectedClient.value;
+        const clientId = clientToAdd.value;
         const clients = pipe(
             await addClientToUser(userId, clientId),
             getOrElse((): Array<UserClient> => [])

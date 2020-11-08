@@ -26,12 +26,12 @@ import { isRight } from 'fp-ts/es6/These';
 import { useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import TextField from '../../../../ui/Form/TextField';
 import { email } from '../../../../../utils/validations';
 import './UserConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import { createUser, deleteUser, getUserDetails, updateUser } from '../../../../../services/UserService';
 import { UserDetails, UserInput } from '../../../../../types/user';
 
@@ -68,7 +68,7 @@ const UserConfig = (props: Props) => {
     const [ state, setState ] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        userId: id !== NEW_ID ? parseInt(id) : 0
+        userId: id !== NEW_ID ? parseInt(id, 10) : 0
     });
     const { control, handleSubmit, errors, reset, getValues, watch, formState: { isDirty } } = useForm<UserForm>({
         mode: 'onBlur',
@@ -99,7 +99,7 @@ const UserConfig = (props: Props) => {
         if (state.userId === 0) {
             doSubmit(() => createUser(payload));
         } else {
-            doSubmit(() => updateUser(parseInt(id), payload));
+            doSubmit(() => updateUser(parseInt(id, 10), payload));
         }
     };
 
@@ -138,7 +138,7 @@ const UserConfig = (props: Props) => {
         });
 
     const doDelete = async () => {
-        const result = await deleteUser(parseInt(id));
+        const result = await deleteUser(parseInt(id, 10));
         if (isRight(result)) {
             setState((draft) => {
                 draft.allowNavigationOverride = true;

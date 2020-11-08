@@ -16,15 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { ComponentType } from 'react';
+import React from 'react';
 import { useRouteMatch } from 'react-router';
+import { PageHeader, TabConfig, Tabs } from '@craigmiller160/react-material-ui-common';
 import ClientConfig from './ClientConfig';
 import ClientRoles from './ClientRoles';
 import ClientGrants from './ClientGrants';
 import ClientAuths from './ClientAuths';
 import './ClientDetails.scss';
 import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
-import { PageHeader, TabConfig, Tabs } from '@craigmiller160/react-material-ui-common';
 
 const PATH_CONFIG = '/config';
 const PATH_ROLES = '/roles';
@@ -35,11 +35,6 @@ const LABEL_CONFIG = 'Config';
 const LABEL_ROLES = 'Roles';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
-
-interface RouteConfig {
-    path: string;
-    component: ComponentType<any>;
-}
 
 const ClientDetails = () => {
     const match = useRouteMatch<IdMatchParams>();

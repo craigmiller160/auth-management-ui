@@ -17,14 +17,14 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { getAllClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import './Clients.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
+import { getAllClients } from '../../../../services/ClientService';
+import './Clients.scss';
 import { ClientListItem, ClientListResponse } from '../../../../types/client';
 import Table, { BodyRow } from '../../../ui/Table';
 
