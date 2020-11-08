@@ -25,6 +25,7 @@ import List, { Item } from '../../../../ui/List';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { ClientRole, ClientUser } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
+import { nanoid } from 'nanoid';
 
 interface Props {
     selectedUser: ClientUser;
@@ -68,12 +69,14 @@ const ClientGrantRoles = (props: Props) => {
 
     const roleItems: Array<Item> = selectedUser.roles
         .map((role) => ({
+            uuid: nanoid(),
             avatar: () => <AssignIcon />,
             text: {
                 primary: role.name
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: () => showRemoveDialog(role.id)
                 }
