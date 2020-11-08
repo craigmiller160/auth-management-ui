@@ -19,12 +19,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
-import Table from '../../../ui/Table';
-import Button from '@material-ui/core/Button';
-import './Users.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
+import Button from '@material-ui/core/Button';
+import Table from '../../../ui/Table';
+import './Users.scss';
 import { UserDetails, UserList } from '../../../../types/user';
 import { getAllUsers } from '../../../../services/UserService';
 

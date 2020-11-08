@@ -18,9 +18,9 @@
 
 import React, { MouseEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
 import TextField from '../Form/TextField';
 import './InputDialog.scss';
-import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
 
 interface InputForm {
     value: string;
