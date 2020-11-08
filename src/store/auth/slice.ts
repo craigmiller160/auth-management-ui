@@ -30,9 +30,9 @@ const initialState: StateType = {
     hasChecked: false
 };
 
-const setUserData = (state: StateType, action: PayloadAction<Option<AuthUser>>) => {
-    state.userData = action.payload;
-    state.hasChecked = true;
+const setUserData = (draft: StateType, action: PayloadAction<Option<AuthUser>>) => {
+    draft.userData = action.payload;
+    draft.hasChecked = true;
 };
 
 export default createSlice({

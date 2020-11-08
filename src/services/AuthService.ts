@@ -33,9 +33,9 @@ export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
             uri: '/oauth/authcode/login',
             errorMsg: 'Error getting login URL'
         }),
-        map((login: AuthCodeLogin) => {
-            window.location.href = login.url;
-            return login;
+        map((loginData: AuthCodeLogin) => {
+            window.location.href = loginData.url;
+            return loginData;
         })
     );
 
