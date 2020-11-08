@@ -24,6 +24,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import List, { Item } from '../../../../ui/List';
 import { ClientRole } from '../../../../../types/client';
 import { getClientWithRoles } from '../../../../../services/ClientService';
@@ -121,16 +122,19 @@ const ClientRoles = (props: Props) => {
         });
 
     const items: Array<Item> = state.roles.map((role, index) => ({
+        uuid: nanoid(),
         avatar: () => <AssignIcon />,
         text: {
             primary: role.name
         },
         secondaryActions: [
             {
+                uuid: nanoid(),
                 text: 'Edit',
                 click: () => selectRole(index)
             },
             {
+                uuid: nanoid(),
                 text: 'Delete',
                 click: () => checkDelete(index)
             }

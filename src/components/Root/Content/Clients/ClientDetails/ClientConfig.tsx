@@ -22,6 +22,8 @@ import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
+import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
+import { Language } from '@material-ui/icons';
 import { isRight } from 'fp-ts/es6/These';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { Grid, Typography } from '@material-ui/core';
@@ -31,10 +33,8 @@ import './ClientConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
-import { Language } from '@material-ui/icons';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
-import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import { ClientDetails, ClientInput } from '../../../../../types/client';
 import {
     createClient,
@@ -85,7 +85,7 @@ const ClientConfig = (props: Props) => {
     const [ state, setState ] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        clientId: id !== NEW_ID ? parseInt(id) : 0,
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
         redirectUris: [],
         showRedirectUriDialog: false,
         redirectUriDirty: false
@@ -125,7 +125,7 @@ const ClientConfig = (props: Props) => {
         if (state.clientId === 0) {
             doSubmit(() => createClient(payload));
         } else {
-            doSubmit(() => updateClient(parseInt(id), payload));
+            doSubmit(() => updateClient(parseInt(id, 10), payload));
         }
     };
 
@@ -352,7 +352,7 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value) : '') }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="refresh-token-time-field"
@@ -368,7 +368,7 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value) : '') }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="auth-code-time-field"
@@ -384,7 +384,7 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value) : '') }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                     </Grid>
                 </Grid>

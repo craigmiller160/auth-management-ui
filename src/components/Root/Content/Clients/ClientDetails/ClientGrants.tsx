@@ -47,7 +47,7 @@ const ClientGrants = (props: Props) => {
     const { id } = props.match.params;
 
     const [ state, setState ] = useImmer<State>({
-        clientId: id !== NEW_ID ? parseInt(id) : 0,
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
         clientName: '',
         allRoles: [],
         clientUsers: [],
