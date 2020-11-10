@@ -21,7 +21,7 @@ import { none, Option } from 'fp-ts/es6/Option';
 import { AuthUser } from '../../types/auth';
 
 interface StateType {
-    userData: Option<AuthUser>,
+    userData: Option<AuthUser>;
     hasChecked: boolean;
 }
 

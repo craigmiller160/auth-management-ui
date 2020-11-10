@@ -66,7 +66,7 @@ export interface UserDetailsWrapper {
 }
 
 export interface UserClientsWrapper {
-    user: UserClients
+    user: UserClients;
 }
 
 export interface UpdateUserWrapper {

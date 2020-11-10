@@ -31,13 +31,13 @@ const instance = axios.create({
     withCredentials: true
 });
 
-export type SuppressErrorFn = (ex: Error) => Boolean
+export type SuppressErrorFn = (ex: Error) => Boolean;
 
 export interface RequestConfig {
     uri: string;
     config?: AxiosRequestConfig;
     errorMsg?: string;
-    suppressError?: SuppressErrorFn
+    suppressError?: SuppressErrorFn;
 }
 export interface RequestBodyConfig<B> extends RequestConfig {
     body?: B;

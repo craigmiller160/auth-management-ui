@@ -19,11 +19,11 @@
 // TODO make separate library
 
 type AnyPropName = {
-    [name: string]: any
+    [name: string]: any;
 };
 
 export type AnyPropString = {
-    [name: string]: string
+    [name: string]: string;
 };
 
 export type AnyPropNumber = {

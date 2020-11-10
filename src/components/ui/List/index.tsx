@@ -39,7 +39,7 @@ export interface Item {
     text: {
         primary: string;
         secondary?: string;
-    }
+    };
     secondaryActions?: Array<ItemSecondaryAction>;
     active?: boolean;
 }

@@ -23,12 +23,12 @@ import { useHistory } from 'react-router';
 import { Button, Typography } from '@material-ui/core';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { UserDetails } from '../../../../../types/user';
 import { ClientUser } from '../../../../../types/client';
 import List, { Item } from '../../../../ui/List';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
-import { nanoid } from 'nanoid';
 
 interface Props {
     clientUsers: Array<ClientUser>;

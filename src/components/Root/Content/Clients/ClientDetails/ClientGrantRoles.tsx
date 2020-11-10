@@ -21,11 +21,11 @@ import { useImmer } from 'use-immer';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { Button, Typography } from '@material-ui/core';
 import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
 import List, { Item } from '../../../../ui/List';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { ClientRole, ClientUser } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
-import { nanoid } from 'nanoid';
 
 interface Props {
     selectedUser: ClientUser;
