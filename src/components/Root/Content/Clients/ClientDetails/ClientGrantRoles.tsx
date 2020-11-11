@@ -19,7 +19,8 @@
 import React from 'react';
 import { useImmer } from 'use-immer';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
-import { Button, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import List, { Item } from '../../../../ui/List';

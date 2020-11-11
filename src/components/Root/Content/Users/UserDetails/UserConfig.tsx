@@ -24,7 +24,7 @@ import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { useForm } from 'react-hook-form';
 import { isRight } from 'fp-ts/es6/These';
 import { useDispatch } from 'react-redux';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import TextField from '../../../../ui/Form/TextField';

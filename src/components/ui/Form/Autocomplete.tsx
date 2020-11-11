@@ -20,7 +20,7 @@ import React from 'react';
 import { Control, Controller, FieldError } from 'react-hook-form';
 import { FieldName } from 'react-hook-form/dist/types/form';
 import MuiAutocomplete from '@material-ui/lab/Autocomplete';
-import { TextField } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 import { FieldRules } from '../../../types/form';
 
 export interface SelectOption<R> {

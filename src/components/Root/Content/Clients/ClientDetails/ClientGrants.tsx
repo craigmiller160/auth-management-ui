@@ -20,7 +20,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';

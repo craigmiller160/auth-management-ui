@@ -19,7 +19,7 @@
 import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
 import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { useImmer } from 'use-immer';

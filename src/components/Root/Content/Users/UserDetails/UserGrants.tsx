@@ -20,7 +20,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse } from 'fp-ts/es6/Either';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
 import { getUserClients } from '../../../../../services/UserService';

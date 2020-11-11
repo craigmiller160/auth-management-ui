@@ -20,7 +20,7 @@ import React, { useEffect, useMemo, MouseEvent } from 'react';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
 import Button from '@material-ui/core/Button';
-import { Business } from '@material-ui/icons';
+import Business from '@material-ui/icons/Business';
 import { exists, Option } from 'fp-ts/es6/Option';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';

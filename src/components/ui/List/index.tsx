@@ -23,7 +23,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import theme from '../../theme';
 
 export interface ItemSecondaryAction {
