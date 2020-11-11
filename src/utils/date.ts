@@ -16,7 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { format, parse } from 'date-fns';
+import format from 'date-fns/format/index';
+import parse from 'date-fns/parse/index';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap } from 'fp-ts/es6/Option';
 
