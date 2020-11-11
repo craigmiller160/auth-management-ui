@@ -28,6 +28,9 @@
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js"
   },
+  "resolutions": {
+    "es-abstract": "^1.18.0-next.1"
+  },
   "devDependencies": {
     "@craigmiller160/web-config": "file:.yalc/@craigmiller160/web-config",
     "@types/cucumber": "^6.0.1",
