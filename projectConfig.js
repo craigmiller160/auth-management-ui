@@ -20,7 +20,7 @@ module.exports = {
     title: 'OAuth Management',
     devServerPort: 3000,
     devServerHttps: true,
-    proxy: {
+    devServerProxy: {
         '/api': {
             target: 'https://localhost:7004',
             changeOrigin: true,
