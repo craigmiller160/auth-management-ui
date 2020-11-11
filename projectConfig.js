@@ -19,5 +19,25 @@
 module.exports = {
     title: 'OAuth Management',
     devServerPort: 3000,
-    devServerHttps: true
+    devServerHttps: true,
+    proxy: {
+        '/api': {
+            target: 'https://localhost:7004',
+            changeOrigin: true,
+            secure: false,
+            pathRewrite: {
+                '^/api': ''
+            },
+            logLevel: 'debug'
+        },
+        '/oauth2': {
+            target: 'https://localhost:7003',
+            changeOrigin: true,
+            secure: false,
+            pathRewrite: {
+                '^/oauth2': ''
+            },
+            logLevel: 'debug'
+        }
+    }
 }
