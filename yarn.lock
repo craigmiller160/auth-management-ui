@@ -1075,7 +1075,7 @@
 "@craigmiller160/react-material-ui-common@file:.yalc/@craigmiller160/react-material-ui-common":
   version "1.1.0-beta"
   dependencies:
-    "@craigmiller160/web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-react-material-ui-common-1.1.0-beta-c6f702e4-5be8-4e2e-b2ee-8339a466d73c-1605067026415/node_modules/@craigmiller160/react-material-ui-common/.yalc/@craigmiller160/web-config"
+    "@craigmiller160/web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-react-material-ui-common-1.1.0-beta-814511bc-62d7-46d0-b373-83f817798e15-1605068353543/node_modules/@craigmiller160/react-material-ui-common/.yalc/@craigmiller160/web-config"
     "@material-ui/core" "^4.11.0"
     "@material-ui/icons" "^4.9.1"
     "@material-ui/lab" "^4.0.0-alpha.56"

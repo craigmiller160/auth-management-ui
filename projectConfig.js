@@ -17,5 +17,7 @@
  */
 
 module.exports = {
-    title: 'OAuth Management'
+    title: 'OAuth Management',
+    devServerPort: 3000,
+    devServerHttps: true
 }
