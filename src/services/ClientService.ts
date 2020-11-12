@@ -16,9 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import api from './Api';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import api from './Api';
 import {
     ClientAuthDetails,
     ClientDetails,
@@ -39,7 +39,7 @@ import {
     UpdateClientWrapper
 } from '../types/graphApi';
 
-export const getAllClients = (): Promise<Either<Error,ClientListResponse>> =>
+export const getAllClients = (): Promise<Either<Error, ClientListResponse>> =>
     api.graphql<ClientListResponse>({
         payload: `
             query {
@@ -107,7 +107,7 @@ export const getClientDetails = async (clientId: number): Promise<Either<Error, 
                     }
                 }
             `,
-            errorMsg: ``
+            errorMsg: ''
         }),
         map((wrapper: ClientDetailsWrapper) => wrapper.client)
     );
@@ -163,7 +163,7 @@ export const updateClient = async (clientId: number, clientInput: ClientInput): 
         map((wrapper: UpdateClientWrapper) => wrapper.updateClient)
     );
 
-export const createClient = async (clientInput: ClientInput): Promise<Either<Error,ClientDetails>> =>
+export const createClient = async (clientInput: ClientInput): Promise<Either<Error, ClientDetails>> =>
     pipe(
         await api.graphql<CreateClientWrapper>({
             payload: `

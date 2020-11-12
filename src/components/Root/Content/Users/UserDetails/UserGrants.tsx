@@ -19,16 +19,16 @@
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getUserClients } from '../../../../../services/UserService';
 import { getOrElse } from 'fp-ts/es6/Either';
-import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
-import { Grid } from '@material-ui/core';
-import './UserGrants.scss';
+import Grid from '@material-ui/core/Grid';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
+import { getUserClients } from '../../../../../services/UserService';
+import { UserClient, UserClients as UserClientsType, UserRole } from '../../../../../types/user';
+import './UserGrants.scss';
 import UserClients from './UserClients';
 import UserRoles from './UserRoles';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 
 interface State {
     userId: number;
@@ -44,9 +44,9 @@ const defaultUser: UserClientsType = {
 };
 
 const UserGrants = (props: Props) => {
-    const id = props.match.params.id;
-    const [state, setState] = useImmer<State>({
-        userId: id !== NEW_ID ? parseInt(id) : 0,
+    const { id } = props.match.params;
+    const [ state, setState ] = useImmer<State>({
+        userId: id !== NEW_ID ? parseInt(id, 10) : 0,
         user: defaultUser,
         selectedClient: none
     });
@@ -59,7 +59,7 @@ const UserGrants = (props: Props) => {
         setState((draft) => {
             draft.user = user;
         });
-    }, [state.userId, setState]);
+    }, [ state.userId, setState ]);
 
     const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
         const newSelectedClient = pipe(
@@ -84,7 +84,7 @@ const UserGrants = (props: Props) => {
 
     useEffect(() => {
         loadUser();
-    }, [loadUser]);
+    }, [ loadUser ]);
 
     const selectClient = (client: UserClient) =>
         setState((draft) => {

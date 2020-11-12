@@ -18,12 +18,26 @@
 
 import React, { useEffect } from 'react';
 import { Prompt, useHistory } from 'react-router';
-import { ClientDetails, ClientInput } from '../../../../../types/client';
 import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
+import { nanoid } from 'nanoid';
+import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
+import Language from '@material-ui/icons/Language';
 import { isRight } from 'fp-ts/es6/These';
+import { pipe } from 'fp-ts/es6/pipeable';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import TextField from '../../../../ui/Form/TextField';
+import './ClientConfig.scss';
+import Switch from '../../../../ui/Form/Switch';
+import { greaterThanZero } from '../../../../../utils/validations';
+import List, { Item } from '../../../../ui/List';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import InputDialog from '../../../../ui/Dialog/InputDialog';
+import { ClientDetails, ClientInput } from '../../../../../types/client';
 import {
     createClient,
     deleteClient,
@@ -31,18 +45,6 @@ import {
     getClientDetails,
     updateClient
 } from '../../../../../services/ClientService';
-import { pipe } from 'fp-ts/es6/pipeable';
-import { Grid, Typography } from '@material-ui/core';
-import TextField from '../../../../ui/Form/TextField';
-import './ClientConfig.scss';
-import Button from '@material-ui/core/Button';
-import Switch from '../../../../ui/Form/Switch';
-import { greaterThanZero } from '../../../../../utils/validations';
-import List, { Item } from '../../../../ui/List';
-import { Language } from '@material-ui/icons';
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import InputDialog from '../../../../ui/Dialog/InputDialog';
-import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 const SECRET_PLACEHOLDER = '**********';
 
@@ -79,13 +81,13 @@ const defaultClientForm: ClientForm = {
 };
 
 const ClientConfig = (props: Props) => {
-    const id = props.match.params.id;
+    const { id } = props.match.params;
     const dispatch = useDispatch();
     const history = useHistory();
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         allowNavigationOverride: false,
         showDeleteDialog: false,
-        clientId: id !== NEW_ID ? parseInt(id) : 0,
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
         redirectUris: [],
         showRedirectUriDialog: false,
         redirectUriDirty: false
@@ -125,7 +127,7 @@ const ClientConfig = (props: Props) => {
         if (state.clientId === 0) {
             doSubmit(() => createClient(payload));
         } else {
-            doSubmit(() => updateClient(parseInt(id), payload));
+            doSubmit(() => updateClient(parseInt(id, 10), payload));
         }
     };
 
@@ -145,7 +147,7 @@ const ClientConfig = (props: Props) => {
         };
 
         const loadNewClient = async () => {
-            const [key, secret] = await Promise.all([generateGuid(), generateGuid()]);
+            const [ key, secret ] = await Promise.all([ generateGuid(), generateGuid() ]);
             if (isRight(key) && isRight(secret)) {
                 reset({
                     ...defaultClientForm,
@@ -168,7 +170,7 @@ const ClientConfig = (props: Props) => {
         } else {
             loadNewClient();
         }
-    }, [reset, state.clientId, setState]);
+    }, [ reset, state.clientId, setState ]);
 
     const generateClientKey = async () => {
         const guid = pipe(
@@ -203,16 +205,19 @@ const ClientConfig = (props: Props) => {
 
     const redirectUriItems: Array<Item> = redirectUris
         .map((uri, index) => ({
+            uuid: nanoid(),
             avatar: () => <Language />,
             text: {
                 primary: uri
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Edit',
                     click: () => showRedirectUriDialog(uri)
                 },
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: () => removeRedirectUri(index)
                 }
@@ -257,51 +262,51 @@ const ClientConfig = (props: Props) => {
     };
 
     return (
-        <div id="client-config-page" className='ClientConfig'>
+        <div id="client-config-page" className="ClientConfig">
             <Prompt
                 when={ (isDirty || state.redirectUriDirty || state.clientId === 0) && !state.allowNavigationOverride }
-                message='Are you sure you want to leave? Any unsaved changes will be lost.'
+                message="Are you sure you want to leave? Any unsaved changes will be lost."
             />
             <form onSubmit={ handleSubmit(onSubmit) }>
                 <Grid
                     container
-                    direction='row'
-                    justify='space-around'
+                    direction="row"
+                    justify="space-around"
                 >
                     <Grid
                         container
-                        direction='column'
+                        direction="column"
                         item
                         md={ 5 }
-                        alignItems='flex-start'
+                        alignItems="flex-start"
                     >
                         <TextField
                             id="client-name-field"
-                            className='Field'
-                            name='name'
+                            className="Field"
+                            name="name"
                             control={ control }
-                            label='Client Name'
+                            label="Client Name"
                             rules={ { required: 'Required' } }
                             error={ errors.name }
                         />
                         <Grid
                             container
-                            direction='row'
+                            direction="row"
                         >
                             <TextField
                                 id="client-key-field"
-                                className='Field'
-                                name='clientKey'
+                                className="Field"
+                                name="clientKey"
                                 control={ control }
-                                label='Client Key'
+                                label="Client Key"
                                 rules={ { required: 'Required' } }
                                 error={ errors.clientKey }
                                 disabled
                             />
                             <Button
                                 id="client-key-generate-btn"
-                                variant='text'
-                                color='default'
+                                variant="text"
+                                color="default"
                                 onClick={ generateClientKey }
                             >
                                 Generate
@@ -309,21 +314,21 @@ const ClientConfig = (props: Props) => {
                         </Grid>
                         <Grid
                             container
-                            direction='row'
+                            direction="row"
                         >
                             <TextField
                                 id="client-secret-field"
-                                className='Field'
-                                name='clientSecret'
+                                className="Field"
+                                name="clientSecret"
                                 control={ control }
-                                label='Client Secret'
-                                error={ errors.clientSecret}
+                                label="Client Secret"
+                                error={ errors.clientSecret }
                                 disabled
                             />
                             <Button
                                 id="client-secret-generate-btn"
-                                variant='text'
-                                color='default'
+                                variant="text"
+                                color="default"
                                 onClick={ generateClientSecret }
                             >
                                 Generate
@@ -332,19 +337,19 @@ const ClientConfig = (props: Props) => {
                     </Grid>
                     <Grid item md={ 2 } />
                     <Grid
-                        direction='column'
+                        direction="column"
                         container
                         item
                         md={ 5 }
-                        alignItems='flex-start'
+                        alignItems="flex-start"
                     >
                         <TextField
                             id="access-token-time-field"
-                            className='Field'
-                            name='accessTokenTimeoutSecs'
+                            className="Field"
+                            name="accessTokenTimeoutSecs"
                             control={ control }
-                            label='Access Token Timeout (Secs)'
-                            type='number'
+                            label="Access Token Timeout (Secs)"
+                            type="number"
                             error={ errors.accessTokenTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -352,15 +357,15 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => value ? parseInt(value) : '' }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="refresh-token-time-field"
-                            className='Field'
-                            name='refreshTokenTimeoutSecs'
+                            className="Field"
+                            name="refreshTokenTimeoutSecs"
                             control={ control }
-                            label='Refresh Token Timeout (Secs)'
-                            type='number'
+                            label="Refresh Token Timeout (Secs)"
+                            type="number"
                             error={ errors.refreshTokenTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -368,15 +373,15 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => value ? parseInt(value) : '' }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="auth-code-time-field"
-                            className='Field'
-                            name='authCodeTimeoutSecs'
+                            className="Field"
+                            name="authCodeTimeoutSecs"
                             control={ control }
-                            label='Auth Code Timeout (Secs)'
-                            type='number'
+                            label="Auth Code Timeout (Secs)"
+                            type="number"
                             error={ errors.authCodeTimeoutSecs }
                             rules={ {
                                 required: 'Required',
@@ -384,34 +389,34 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => value ? parseInt(value) : '' }
+                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                     </Grid>
                 </Grid>
                 <div className="divider" />
                 <Grid
                     container
-                    direction='row'
-                    justify='space-around'
+                    direction="row"
+                    justify="space-around"
                 >
                     <Grid
                         container
-                        direction='column'
+                        direction="column"
                         item
                         md={ 5 }
-                        alignItems='flex-start'
+                        alignItems="flex-start"
                     >
                         <Switch
                             id="enabled-field"
-                            className='Field shrink'
-                            name='enabled'
+                            className="Field shrink"
+                            name="enabled"
                             control={ control }
-                            label='Enabled'
+                            label="Enabled"
                         />
                     </Grid>
                     <Grid item md={ 2 } />
                     <Grid
-                        direction='column'
+                        direction="column"
                         container
                         item
                         md={ 5 }

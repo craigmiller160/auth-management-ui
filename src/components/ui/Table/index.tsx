@@ -19,12 +19,12 @@
 import React from 'react';
 import TableContainer from '@material-ui/core/TableContainer';
 import { makeStyles } from '@material-ui/core/styles';
-import theme from '../../theme';
 import MuiTable from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
+import theme from '../../theme';
 
 export interface BodyRow {
     click: () => void;
@@ -33,7 +33,7 @@ export interface BodyRow {
 }
 
 interface Props {
-    header: Array<String>;
+    header: Array<string>;
     body: Array<BodyRow>;
     id?: string;
 }
@@ -63,7 +63,7 @@ const Table = (props: Props) => {
                     <TableRow>
                         {
                             props.header.map((name, index) => (
-                                <TableCell key={ index }>{ name }</TableCell>
+                                <TableCell key={ name }>{ name }</TableCell>
                             ))
                         }
                     </TableRow>
@@ -73,10 +73,10 @@ const Table = (props: Props) => {
                         props.body.map((row, index) => {
                             const id = row.id ?? `id_${index}`;
                             return (
-                                <TableRow id={ id } key={ index } onClick={ row.click }>
+                                <TableRow id={ id } key={ id } onClick={ row.click }>
                                     {
-                                        row.items.map((item, index) => (
-                                            <TableCell key={ index }>{ item }</TableCell>
+                                        row.items.map((item) => (
+                                            <TableCell key={ `${item}` }>{ item }</TableCell>
                                         ))
                                     }
                                 </TableRow>

@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { Either, map } from 'fp-ts/es6/Either';
+import { pipe } from 'fp-ts/es6/pipeable';
 import api from './Api';
 import { ClientRole } from '../types/client';
 import { Role } from '../types/role';
-import { Either, map } from 'fp-ts/es6/Either';
-import { pipe } from 'fp-ts/es6/pipeable';
 import { CreateRoleWrapper, DeleteRoleWrapper, UpdateRoleWrapper } from '../types/graphApi';
 
 export const createRole = async (clientId: number, role: ClientRole): Promise<Either<Error, Role>> =>

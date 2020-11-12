@@ -17,20 +17,21 @@
  */
 
 import React, { useEffect, useMemo, MouseEvent } from 'react';
-import { ClientListItem, ClientListResponse } from '../../../../../types/client';
-import { UserClient } from '../../../../../types/user';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
-import List, { Item } from '../../../../ui/List';
 import Button from '@material-ui/core/Button';
-import { Business } from '@material-ui/icons';
+import Business from '@material-ui/icons/Business';
 import { exists, Option } from 'fp-ts/es6/Option';
-import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { getAllClients } from '../../../../../services/ClientService';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { addClientToUser, removeClientFromUser } from '../../../../../services/UserService';
+import { getAllClients } from '../../../../../services/ClientService';
+import List, { Item } from '../../../../ui/List';
+import { UserClient } from '../../../../../types/user';
+import { ClientListItem, ClientListResponse } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
@@ -58,7 +59,7 @@ const UserClients = (props: Props) => {
     } = props;
 
     const history = useHistory();
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         allClients: [],
         showAddClientDialog: false,
         showRemoveClientDialog: false,
@@ -79,7 +80,7 @@ const UserClients = (props: Props) => {
         };
 
         action();
-    }, [setState]);
+    }, [ setState ]);
 
     const goToClient = (clientId: number) =>
         history.push(`/clients/${clientId}`);
@@ -92,6 +93,7 @@ const UserClients = (props: Props) => {
     };
 
     const clientItems: Array<Item> = userClients.map((client) => ({
+        uuid: nanoid(),
         click: () => selectClient(client),
         avatar: () => <Business />,
         text: {
@@ -99,10 +101,12 @@ const UserClients = (props: Props) => {
         },
         secondaryActions: [
             {
+                uuid: nanoid(),
                 text: 'Go',
                 click: () => goToClient(client.id)
             },
             {
+                uuid: nanoid(),
                 text: 'Remove',
                 click: (event: MouseEvent) => {
                     event.stopPropagation();
@@ -118,12 +122,12 @@ const UserClients = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = async (selectedClient: SelectOption<number>) => {
+    const addClientSelect = async (clientToAdd: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddClientDialog = false;
         });
-        const clientId = selectedClient.value;
-        const clients = pipe (
+        const clientId = clientToAdd.value;
+        const clients = pipe(
             await addClientToUser(userId, clientId),
             getOrElse((): Array<UserClient> => [])
         );
@@ -143,7 +147,7 @@ const UserClients = (props: Props) => {
                     label: client.name,
                     value: client.id
                 })),
-        [state.allClients, userClients]);
+        [ state.allClients, userClients ]);
 
     const removeClientOnCancel = () =>
         setState((draft) => {

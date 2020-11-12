@@ -16,30 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const { CLIEngine } = require('eslint');
-const path = require('path');
-
-// TODO if it works, move it to the eslint library.
-// TODO also downgrade that lib's eslint version to 6.8.x
-
-(async () => {
-    try {
-        const eslint = new CLIEngine({
-            errorOnUnmatchedPattern: false,
-            configFile: path.resolve(process.cwd(), 'eslint.config.js')
-        });
-        const report = eslint.executeOnFiles([
-            'src/**/*.{js,jsx,ts,tsx}',
-            'cypress/**/*.{js,jsx,ts,tsx}'
-        ]);
-
-        const formatter = eslint.getFormatter("stylish");
-        const resultText = formatter(report.results);
-
-        console.log(resultText);
-    } catch (ex) {
-        console.error(ex);
-        process.exitCode = 1;
+module.exports = {
+    title: 'OAuth Management',
+    devServerPort: 3000,
+    devServerHttps: true,
+    devServerProxy: {
+        '/api': {
+            target: 'https://localhost:7004',
+            changeOrigin: true,
+            secure: false,
+            pathRewrite: {
+                '^/api': ''
+            },
+            logLevel: 'debug'
+        },
+        '/oauth2': {
+            target: 'https://localhost:7003',
+            changeOrigin: true,
+            secure: false,
+            pathRewrite: {
+                '^/oauth2': ''
+            },
+            logLevel: 'debug'
+        }
     }
-})();
-
+}

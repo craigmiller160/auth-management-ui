@@ -19,11 +19,11 @@
 import React from 'react';
 import { Navbar, NavbarItem } from '@craigmiller160/react-material-ui-common';
 import { useDispatch, useSelector } from 'react-redux';
+import { none } from 'fp-ts/es6/Option';
 import { isAuthorized } from '../../../store/auth/selectors';
 import { RootState } from '../../../store';
 import { login, logout } from '../../../services/AuthService';
 import authSlice from '../../../store/auth/slice';
-import { none } from 'fp-ts/es6/Option';
 
 const AuthNavbar = () => {
     const isAuth = useSelector(isAuthorized);

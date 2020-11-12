@@ -22,7 +22,6 @@ import MuiTextField from '@material-ui/core/TextField';
 import { FieldName } from 'react-hook-form/dist/types/form';
 import { FieldRules } from '../../../types/form';
 
-
 interface Props<T> {
     id?: string;
     name: keyof T;

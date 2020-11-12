@@ -1,4 +1,3 @@
-
 /*
  *     Auth Management UI
  *     Copyright (C) 2020 Craig Miller

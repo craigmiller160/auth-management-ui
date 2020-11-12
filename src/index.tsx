@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import '@craigmiller160/web-config/polyfills'; // TODO see if this can be added through a separate webpack entrypoint
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';

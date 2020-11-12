@@ -18,18 +18,20 @@
 
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { Grid, Typography } from '@material-ui/core';
-import List, { Item } from '../../../../ui/List';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
-import { ClientRole } from '../../../../../types/client';
-import { getClientWithRoles } from '../../../../../services/ClientService';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
-import './ClientRoles.scss';
 import Button from '@material-ui/core/Button';
+import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import List, { Item } from '../../../../ui/List';
+import { ClientRole } from '../../../../../types/client';
+import { getClientWithRoles } from '../../../../../services/ClientService';
+import './ClientRoles.scss';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
-import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
 
 const ROLE_PREFIX = 'ROLE_';
@@ -46,14 +48,14 @@ interface State {
 }
 
 const ClientRoles = (props: Props) => {
-    const id = props.match.params.id;
-    const [state, setState] = useImmer<State>({
+    const { id } = props.match.params;
+    const [ state, setState ] = useImmer<State>({
         showRoleDialog: false,
         showDeleteDialog: false,
         selectedRoleIndex: -1,
         clientName: '',
         roles: [],
-        clientId: id !== NEW_ID ? parseInt(id) : 0
+        clientId: id !== NEW_ID ? parseInt(id, 10) : 0
     });
 
     const loadClientRoles = useCallback(async () => {
@@ -67,11 +69,11 @@ const ClientRoles = (props: Props) => {
                 });
             })
         );
-    }, [state.clientId, setState]);
+    }, [ state.clientId, setState ]);
 
     useEffect(() => {
         loadClientRoles();
-    }, [loadClientRoles]);
+    }, [ loadClientRoles ]);
 
     const selectRole = (index: number) => {
         setState((draft) => {
@@ -101,7 +103,6 @@ const ClientRoles = (props: Props) => {
             action = () => updateRole(state.clientId, role.id, role);
         } else {
             action = () => createRole(state.clientId, role);
-
         }
         pipe(
             await action(),
@@ -122,16 +123,19 @@ const ClientRoles = (props: Props) => {
         });
 
     const items: Array<Item> = state.roles.map((role, index) => ({
+        uuid: nanoid(),
         avatar: () => <AssignIcon />,
         text: {
             primary: role.name
         },
         secondaryActions: [
             {
+                uuid: nanoid(),
                 text: 'Edit',
                 click: () => selectRole(index)
             },
             {
+                uuid: nanoid(),
                 text: 'Delete',
                 click: () => checkDelete(index)
             }

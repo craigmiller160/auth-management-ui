@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getAuthUser } from '../../services/AuthService';
-import authSlice from './slice';
 import { Dispatch } from 'redux';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { fromEither } from 'fp-ts/es6/Option';
+import authSlice from './slice';
+import { getAuthUser } from '../../services/AuthService';
 
 export const loadAuthUser = () => async (dispatch: Dispatch) => {
     const authUserOption = pipe(

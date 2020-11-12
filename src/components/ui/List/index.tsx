@@ -20,24 +20,27 @@ import React, { ElementType, MouseEvent } from 'react';
 import MuiList from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import theme from '../../theme';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import theme from '../../theme';
 
 export interface ItemSecondaryAction {
+    uuid: string;
     text: string;
     click: (event: MouseEvent) => void;
 }
 
 export interface Item {
+    uuid: string;
     click?: (event: MouseEvent) => void;
     avatar?: ElementType;
     text: {
         primary: string;
         secondary?: string;
-    }
+    };
     secondaryActions?: Array<ItemSecondaryAction>;
     active?: boolean;
 }
@@ -80,9 +83,9 @@ const List = (props: Props) => {
     return (
         <MuiList id={ id }>
             {
-                items.map((item, index) => {
+                items.map((item) => {
                     const Avatar = item.avatar ?? null;
-                    const className = [classes.ListItem];
+                    const className = [ classes.ListItem ];
                     if (item.active) {
                         className.push('active');
                     }
@@ -92,7 +95,7 @@ const List = (props: Props) => {
 
                     return (
                         <ListItem
-                            key={ index }
+                            key={ item.uuid }
                             className={ className.join(' ') }
                             onClick={ item.click }
                         >
@@ -109,7 +112,13 @@ const List = (props: Props) => {
                             >
                                 <ListItemText
                                     primary={ item.text.primary }
+                                    primaryTypographyProps={ {
+                                        id: primaryTextId
+                                    } }
                                     secondary={ item.text.secondary }
+                                    secondaryTypographyProps={ {
+                                        id: secondaryTextId
+                                    } }
                                 />
                                 {
                                     item.secondaryActions &&
@@ -117,10 +126,10 @@ const List = (props: Props) => {
                                         item
                                     >
                                         {
-                                            item.secondaryActions?.map((action, index) => (
+                                            item.secondaryActions?.map((action) => (
                                                 <Button
                                                     className={ classes.Button }
-                                                    key={ index }
+                                                    key={ action.uuid }
                                                     color="primary"
                                                     onClick={ action.click }
                                                 >

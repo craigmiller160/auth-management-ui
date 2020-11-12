@@ -17,13 +17,15 @@
  */
 
 import React from 'react';
-import { ClientRole, ClientUser } from '../../../../../types/client';
 import { useImmer } from 'use-immer';
-import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import List, { Item } from '../../../../ui/List';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
-import { Button, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import List, { Item } from '../../../../ui/List';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { ClientRole, ClientUser } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
@@ -47,7 +49,7 @@ const ClientGrantRoles = (props: Props) => {
         allRoles
     } = props;
 
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         showRoleDialog: false,
         showRemoveDialog: false,
         roleToRemoveId: 0
@@ -68,12 +70,14 @@ const ClientGrantRoles = (props: Props) => {
 
     const roleItems: Array<Item> = selectedUser.roles
         .map((role) => ({
+            uuid: nanoid(),
             avatar: () => <AssignIcon />,
             text: {
                 primary: role.name
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: () => showRemoveDialog(role.id)
                 }

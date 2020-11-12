@@ -18,8 +18,8 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import authSlice from './auth/slice';
 import { reduxAlertReducer } from '@craigmiller160/react-material-ui-common';
+import authSlice from './auth/slice';
 
 const rootReducer = combineReducers({
     alert: reduxAlertReducer,

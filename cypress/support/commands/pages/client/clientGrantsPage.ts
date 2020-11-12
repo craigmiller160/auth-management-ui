@@ -18,6 +18,7 @@
 
 import createPage from '../createPage';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const SELECT_CLIENT_GRANTS = '#client-grants-page';
 const SELECT_CLIENT_GRANTS_TITLE = '#client-grants-page #client-grants-title';
 const SELECT_CLIENT_USERS_TITLE = '#client-grants-page #client-grant-users-title';
@@ -32,6 +33,7 @@ const SELECT_NO_CLIENT_ROLES_MSG = '#client-grants-page #no-client-roles-msg';
 const SELECT_ADD_CLIENT_ROLE_BTN = '#client-grants-page #add-client-role-btn';
 const SELECT_CLIENT_ROLE_DIALOG = '#client-role-dialog';
 const SELECT_REMOVE_CLIENT_ROLE_DIALOG = '#remove-client-role-dialog';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export interface GrantData {
     users: Array<string>;

@@ -20,7 +20,7 @@ import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { FieldName } from 'react-hook-form/dist/types/form';
 import MuiSwitch from '@material-ui/core/Switch';
-import { FormControlLabel } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 interface Props<T> {
     id?: string;
@@ -51,7 +51,7 @@ const Switch = <T extends object>(props: Props<T>) => {
                 <FormControlLabel
                     className={ labelClassName }
                     label={ label }
-                    control={
+                    control={ (
                         <MuiSwitch
                             id={ id }
                             classes={ {
@@ -62,7 +62,7 @@ const Switch = <T extends object>(props: Props<T>) => {
                             checked={ value }
                             color={ color ?? 'primary' }
                         />
-                    }
+                    ) }
                 />
             ) }
         />

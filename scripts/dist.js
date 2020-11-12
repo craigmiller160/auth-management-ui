@@ -1,3 +1,5 @@
+// TODO this probably needs to be deleted... or moved to config lib
+
 const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');

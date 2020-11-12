@@ -27,5 +27,5 @@ export interface CypressEnv {
 }
 
 export interface CypressConfig {
-    env: CypressEnv
+    env: CypressEnv;
 }

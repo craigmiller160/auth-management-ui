@@ -18,26 +18,26 @@
 
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { none } from 'fp-ts/es6/Option';
+import { Either, left, right } from 'fp-ts/es6/Either';
+import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 import store from '../store';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
-import { Either, left, right } from 'fp-ts/es6/Either';
 import { GraphQLQueryResponse } from '../types/graphApi';
-import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 
 const instance = axios.create({
     baseURL: '/api',
     withCredentials: true
 });
 
-export type SuppressErrorFn = (ex: Error) => Boolean
+export type SuppressErrorFn = (ex: Error) => Boolean;
 
 export interface RequestConfig {
     uri: string;
     config?: AxiosRequestConfig;
     errorMsg?: string;
-    suppressError?: SuppressErrorFn
+    suppressError?: SuppressErrorFn;
 }
 export interface RequestBodyConfig<B> extends RequestConfig {
     body?: B;
@@ -83,8 +83,8 @@ const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressEr
 const getGraphQLErrorMessage = <R> (data: GraphQLQueryResponse<R>): string =>
     data.errors
         ?.map((error) => error.message)
-        ?.join('\n')
-        ?? '';
+        ?.join('\n') ??
+        '';
 
 const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {
@@ -96,7 +96,7 @@ const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     }
 };
 
-const post = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
+const post = async <B, R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
         const res = await instance.post<R>(req.uri, req.body, req.config);
         return right(res.data);
@@ -116,22 +116,21 @@ const graphql = async <R>(req: GraphQLRequest): Promise<Either<Error, R>> => {
             }
         };
         const res = await instance.post<GraphQLQueryResponse<R>>('/graphql', req.payload, config);
-        const data: GraphQLQueryResponse<R> = res.data;
+        const { data } = res;
         if (data.errors) {
             const message = getGraphQLErrorMessage(data);
             const error = new Error(message);
             handleError(error, req.errorMsg, req.suppressError);
             return left(error);
-        } else {
+        } 
             return right(data.data);
-        }
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
         return left(ex);
     }
 };
 
-const put = async <B,R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
+const put = async <B, R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
         const res = await instance.put<R>(req.uri, req.body, req.config);
         return right(res.data);

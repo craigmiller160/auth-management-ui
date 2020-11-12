@@ -17,26 +17,26 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { getAllClients } from '../../../../services/ClientService';
 import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import './Clients.scss';
-import Table, { BodyRow } from '../../../ui/Table';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
-import { ClientListItem, ClientListResponse } from '../../../../types/client';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
+import { getAllClients } from '../../../../services/ClientService';
+import './Clients.scss';
+import { ClientListItem, ClientListResponse } from '../../../../types/client';
+import Table, { BodyRow } from '../../../ui/Table';
 
 interface State {
     clients: Array<ClientListItem>;
 }
 
-const header = ['Name', 'Key'];
+const header = [ 'Name', 'Key' ];
 
 const Clients = () => {
     const history = useHistory();
-    const [state, setState] = useState<State>({
+    const [ state, setState ] = useState<State>({
         clients: []
     });
 
@@ -48,7 +48,7 @@ const Clients = () => {
                 getOrElse((): Array<ClientListItem> => ([]))
             );
             setState({
-                clients: clients
+                clients
             });
         };
 
@@ -67,7 +67,7 @@ const Clients = () => {
                     client.clientKey
                 ]
             })),
-    [state.clients, history]);
+    [ state.clients, history ]);
 
     return (
         <div id="clients-page" className="Clients">

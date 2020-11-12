@@ -46,7 +46,7 @@ const Checkbox = <T extends object>(props: Props<T>) => {
             render={ ({ onChange, onBlur, value }) => (
                 <FormControlLabel
                     label={ label }
-                    control={
+                    control={ (
                         <MuiCheckbox
                             id={ id }
                             onChange={ (event) => onChange(event.target.checked) }
@@ -54,7 +54,7 @@ const Checkbox = <T extends object>(props: Props<T>) => {
                             checked={ value }
                             color={ color ?? 'primary' }
                         />
-                    }
+                    ) }
                 />
             ) }
         />

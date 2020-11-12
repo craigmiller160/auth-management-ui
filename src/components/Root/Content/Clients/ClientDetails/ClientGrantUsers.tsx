@@ -17,16 +17,18 @@
  */
 
 import React, { MouseEvent } from 'react';
-import List, { Item } from '../../../../ui/List';
 import PersonIcon from '@material-ui/icons/Person';
 import { exists, Option } from 'fp-ts/es6/Option';
-import { ClientUser } from '../../../../../types/client';
 import { useHistory } from 'react-router';
-import { UserDetails } from '../../../../../types/user';
-import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { Button, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { UserDetails } from '../../../../../types/user';
+import { ClientUser } from '../../../../../types/client';
+import List, { Item } from '../../../../ui/List';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
@@ -55,7 +57,7 @@ const ClientGrantUsers = (props: Props) => {
         saveAddUser
     } = props;
 
-    const [state, setState] = useImmer<State>({
+    const [ state, setState ] = useImmer<State>({
         showUserDialog: false,
         showRemoveDialog: false,
         userToRemoveId: 0
@@ -69,6 +71,7 @@ const ClientGrantUsers = (props: Props) => {
 
     const userItems: Array<Item> = clientUsers
         .map((user) => ({
+            uuid: nanoid(),
             avatar: () => <PersonIcon />,
             click: () => selectUser(user),
             active: exists((selected: ClientUser) => selected.id === user.id)(selectedUser),
@@ -78,10 +81,12 @@ const ClientGrantUsers = (props: Props) => {
             },
             secondaryActions: [
                 {
+                    uuid: nanoid(),
                     text: 'Go',
                     click: () => history.push(`/users/${user.id}`)
                 },
                 {
+                    uuid: nanoid(),
                     text: 'Remove',
                     click: (event: MouseEvent) => {
                         event.stopPropagation();
@@ -91,7 +96,7 @@ const ClientGrantUsers = (props: Props) => {
             ]
         }));
 
-    const availableUserOptions:  Array<SelectOption<number>> = allUsers
+    const availableUserOptions: Array<SelectOption<number>> = allUsers
         .filter((user) => {
             const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
             return index === -1;

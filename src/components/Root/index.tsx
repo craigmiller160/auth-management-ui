@@ -17,8 +17,8 @@
  */
 
 import React, { useEffect } from 'react';
-import Content from './Content';
 import { useDispatch, useSelector } from 'react-redux';
+import Content from './Content';
 import { loadAuthUser } from '../../store/auth/actions';
 import { RootState } from '../../store';
 import AuthNavbar from './AuthNavbar';
@@ -28,7 +28,7 @@ const Root = () => {
     const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
     useEffect(() => {
         dispatch(loadAuthUser());
-    }, [dispatch]);
+    }, [ dispatch ]);
 
     return (
         <div>

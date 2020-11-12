@@ -16,10 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import api, { isAxiosError } from './Api';
-import { AuthCodeLogin, AuthUser } from '../types/auth';
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import api, { isAxiosError } from './Api';
+import { AuthCodeLogin, AuthUser } from '../types/auth';
 
 export const logout = (): Promise<Either<Error, void>> =>
     api.get<void>({
@@ -29,13 +29,13 @@ export const logout = (): Promise<Either<Error, void>> =>
 
 export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
     pipe(
-        await api.post<void,AuthCodeLogin>({
+        await api.post<void, AuthCodeLogin>({
             uri: '/oauth/authcode/login',
             errorMsg: 'Error getting login URL'
         }),
-        map((login: AuthCodeLogin) => {
-            window.location.href = login.url;
-            return login;
+        map((loginData: AuthCodeLogin) => {
+            window.location.href = loginData.url;
+            return loginData;
         })
     );
 

@@ -30,7 +30,7 @@ Then('a {string} alert appears with a message containing {string}', (alertType: 
                 alertPage.isSuccess();
                 break;
             case 'error':
-                alertPage.isError;
+                alertPage.isError();
                 break;
             default:
                 throw new Error(`Invalid alert type: ${alertType}`);

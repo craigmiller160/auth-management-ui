@@ -18,9 +18,9 @@
 
 import React, { MouseEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
 import TextField from '../Form/TextField';
 import './InputDialog.scss';
-import { BaseDialog, DialogAction } from '@craigmiller160/react-material-ui-common';
 
 interface InputForm {
     value: string;
@@ -63,7 +63,7 @@ const InputDialog = (props: Props) => {
         reset({
             value: initialValue
         });
-    }, [open, initialValue, reset]);
+    }, [ open, initialValue, reset ]);
 
     const onSubmit = (values: InputForm) => {
         if (values.value) {
@@ -76,7 +76,7 @@ const InputDialog = (props: Props) => {
         { label: 'Cancel', onClick: onCancel }
     ];
 
-    const prefixClasses = ['prefix'];
+    const prefixClasses = [ 'prefix' ];
     if (errors.value) {
         prefixClasses.push('error');
     }

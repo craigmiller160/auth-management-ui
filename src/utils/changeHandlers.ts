@@ -35,7 +35,7 @@ const handleCheckbox = (handler: (handledEvent: HandledChangeEvent) => void) =>
 
 const handleNumberField = (handler: (handledEvent: HandledChangeEvent) => void) =>
     (changeEvent: ChangeEvent<HTMLInputElement>) => {
-    const value = changeEvent.target.value ? parseInt(changeEvent.target.value) : 0;
+    const value = changeEvent.target.value ? parseInt(changeEvent.target.value, 10) : 0;
     handler({
         name: changeEvent.target.name,
         value
