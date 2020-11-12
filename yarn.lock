@@ -1075,7 +1075,7 @@
 "@craigmiller160/react-material-ui-common@file:.yalc/@craigmiller160/react-material-ui-common":
   version "1.1.0-beta"
   dependencies:
-    "@craigmiller160/web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-react-material-ui-common-1.1.0-beta-63727006-4508-4404-ab86-3245d917cc43-1605075149617/node_modules/@craigmiller160/react-material-ui-common/.yalc/@craigmiller160/web-config"
+    "@craigmiller160/web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-react-material-ui-common-1.1.0-beta-92288c92-d38f-434e-8dc9-4ab96758c3f2-1605142240280/node_modules/@craigmiller160/react-material-ui-common/.yalc/@craigmiller160/web-config"
     "@material-ui/core" "^4.11.0"
     "@material-ui/icons" "^4.9.1"
     "@material-ui/lab" "^4.0.0-alpha.56"
@@ -1157,7 +1157,7 @@
     webpack-merge "^5.3.0"
 
 "@craigmiller160/web-config@file:.yalc/@craigmiller160/web-config":
-  version "1.1.0-beta"
+  version "2.0.0-beta"
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/plugin-transform-runtime" "^7.12.1"
