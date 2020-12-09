@@ -1109,10 +1109,10 @@
     react-router "^5.2.0"
     react-router-dom "^5.2.0"
 
-"@craigmiller160/web-config@^2.2.0":
-  version "2.2.0"
-  resolved "http://localhost:30000/@craigmiller160%2fweb-config/-/web-config-2.2.0.tgz#7811524e0dcdeb2b15ce4655c924fe8195da453d"
-  integrity sha512-OIeSXuLDBZVwIdwb83wUecq9waXo1ZI5vSFLJLYNsFD7vD8YK9hM+2id2pRUB6hTIM35orPKNML5cn3Foy6UEg==
+"@craigmiller160/web-config@^2.3.0":
+  version "2.3.0"
+  resolved "http://localhost:30000/@craigmiller160%2fweb-config/-/web-config-2.3.0.tgz#50094d1da838243ad8a56a9d72de5de6515fa9d0"
+  integrity sha512-eSesiA9b7nJ4HBMbDNXycIRmlGrGZ7DQd9YySZPr3jI06O/vQpEweW0YF7ZNkW40NHIzAdxNX+0AXQa11+bJRA==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/plugin-transform-modules-commonjs" "^7.12.1"
