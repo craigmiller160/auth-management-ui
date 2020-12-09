@@ -27,7 +27,7 @@ import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
 
 const instance = axios.create({
-    baseURL: '/api',
+    baseURL: '/auth-manage-ui/api',
     withCredentials: true
 });
 
