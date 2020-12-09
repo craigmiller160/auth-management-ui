@@ -21,21 +21,21 @@ module.exports = {
     devServerPort: 3000,
     devServerHttps: true,
     devServerProxy: {
-        '/api': {
+        '/auth-manage-ui/api': {
             target: 'https://localhost:7004',
             changeOrigin: true,
             secure: false,
             pathRewrite: {
-                '^/api': ''
+                '^/auth-manage-ui/api': ''
             },
             logLevel: 'debug'
         },
-        '/oauth2': {
+        '/auth-manage-ui/oauth2': {
             target: 'https://localhost:7003',
             changeOrigin: true,
             secure: false,
             pathRewrite: {
-                '^/oauth2': ''
+                '^/auth-manage-ui/oauth2': ''
             },
             logLevel: 'debug'
         }
