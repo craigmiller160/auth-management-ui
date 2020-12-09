@@ -26,7 +26,7 @@ import theme from './theme';
 
 const App = () => (
     <ReduxProvider store={ store }>
-        <BrowserRouter>
+        <BrowserRouter basename="/auth-manage-ui">
             <ThemeProvider theme={ theme }>
                 <Root />
             </ThemeProvider>
