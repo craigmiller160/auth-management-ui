@@ -30,11 +30,10 @@ kind: Service
 metadata:
   name: auth-management-ui-service
 spec:
-  type: NodePort
+  type: ClusterIP 
   selector:
     app: auth-management-ui
   ports:
     - port: 443
       targetPort: 443
-      nodePort: 31004
       protocol: TCP
