@@ -20,6 +20,7 @@ module.exports = {
     title: 'OAuth Management',
     devServerPort: 3000,
     devServerHttps: true,
+    publicPath: '/auth-manage-ui',
     devServerProxy: {
         '/auth-manage-ui/api': {
             target: 'https://localhost:7004',
