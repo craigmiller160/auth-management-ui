@@ -16,9 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { parseApiDateTime } from '../../src/utils/date';
+import { displayFormatApiDateTime, formatApiDateTime, parseApiDateTime } from '../../src/utils/date';
 
 const dateTimeString = '2020-12-11T19:34:08.785314Z';
+const formattedDateTimeString = '2020-12-11 07:34:08 PM';
 const expectedDate = new Date(2020, 11, 11, 19, 34, 8, 785);
 
 describe('date functions', () => {
@@ -28,14 +29,17 @@ describe('date functions', () => {
     });
 
     it('displayFormatApiDateTime', () => {
-        throw new Error();
+        const result = displayFormatApiDateTime(dateTimeString);
+        expect(result).toEqual(formattedDateTimeString);
     });
 
     it('formatApiDateTime', () => {
-        throw new Error();
+        const result = formatApiDateTime(dateTimeString);
+        expect(result).toEqual(formattedDateTimeString);
     });
 
     it('formatApiDateTime null value', () => {
-        throw new Error();
+        const result = formatApiDateTime(null);
+        expect(result).toEqual('');
     });
 });
