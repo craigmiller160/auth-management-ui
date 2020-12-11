@@ -210,6 +210,7 @@ const UserConfig = (props: Props) => {
                         <TextField
                             className="Field"
                             name="password"
+                            type="password"
                             control={ control }
                             label="Password"
                             error={ errors.password }
