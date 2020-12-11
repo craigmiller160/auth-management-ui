@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "web-config-scripts lint && && web-config-scripts test && web-config-scripts webpack",
+    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "web-config-scripts lint",
