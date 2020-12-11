@@ -1,4 +1,3 @@
-
 /*
  *     Auth Management UI
  *     Copyright (C) 2020 Craig Miller
@@ -17,9 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { parseApiDateTime } from '../../src/utils/date';
+
+const dateTimeString = '2020-12-11T19:34:08.785314Z';
+const expectedDate = new Date(2020, 11, 11, 19, 34, 8, 785);
+
 describe('date functions', () => {
     it('parseApiDateTime', () => {
-        throw new Error();
+        const date = parseApiDateTime(dateTimeString);
+        expect(date.getTime()).toEqual(expectedDate.getTime());
     });
 
     it('displayFormatApiDateTime', () => {
@@ -27,6 +32,10 @@ describe('date functions', () => {
     });
 
     it('formatApiDateTime', () => {
+        throw new Error();
+    });
+
+    it('formatApiDateTime null value', () => {
         throw new Error();
     });
 });

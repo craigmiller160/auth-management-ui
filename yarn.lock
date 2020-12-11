@@ -1183,10 +1183,8 @@
     react-router "^5.2.0"
     react-router-dom "^5.2.0"
 
-"@craigmiller160/react-web-config@^2.5.0":
-  version "2.5.0"
-  resolved "http://localhost:30000/@craigmiller160%2freact-web-config/-/react-web-config-2.5.0.tgz#755778535032d528d469bcb1cf8ca40c08f7ed6e"
-  integrity sha512-va2mr05+qlPa4IPZu9pW7HoKr6+NXCAvcMNm9UN4GaFUM1otB6DMJUUzN9QvchrPFSth++mhnU8T0bjuev0MoQ==
+"@craigmiller160/react-web-config@file:.yalc/@craigmiller160/react-web-config":
+  version "2.6.0-beta"
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/plugin-proposal-class-properties" "^7.12.1"
