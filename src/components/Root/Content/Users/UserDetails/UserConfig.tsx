@@ -84,7 +84,11 @@ const UserConfig = (props: Props) => {
                 setState((draft) => {
                     draft.userId = user.id;
                 });
-                reset(user);
+                reset({
+                    ...user,
+                    password: '',
+                    confirmPassword: ''
+                });
                 const path = props.match.path.replace(':id', `${user.id}`);
                 dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`));
                 history.push(path);
@@ -210,6 +214,7 @@ const UserConfig = (props: Props) => {
                         <TextField
                             className="Field"
                             name="password"
+                            type="password"
                             control={ control }
                             label="Password"
                             error={ errors.password }
