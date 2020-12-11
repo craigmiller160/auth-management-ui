@@ -21,7 +21,7 @@ import parse from 'date-fns/parse/index';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap } from 'fp-ts/es6/Option';
 
-export const API_DATE_TIME_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSSSS\'Z\'';
+export const API_DATE_TIME_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSSSSX';
 export const DISPLAY_DATE_TIME_FORMAT = 'yyyy-MM-dd hh:mm:ss a';
 
 export const parseApiDateTime = (apiDateTimeString: string): Date =>
