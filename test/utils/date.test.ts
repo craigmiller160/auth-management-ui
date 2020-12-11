@@ -20,7 +20,7 @@ import { displayFormatApiDateTime, formatApiDateTime, parseApiDateTime } from '.
 
 const dateTimeString = '2020-12-11T19:34:08.785314Z';
 const formattedDateTimeString = '2020-12-11 07:34:08 PM';
-const expectedDate = new Date(2020, 11, 11, 19, 34, 8, 785);
+const expectedDate = new Date('2020-12-11T19:34:08.785314Z');
 
 describe('date functions', () => {
     it('parseApiDateTime', () => {
