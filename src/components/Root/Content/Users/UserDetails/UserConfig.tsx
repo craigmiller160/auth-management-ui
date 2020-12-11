@@ -84,7 +84,11 @@ const UserConfig = (props: Props) => {
                 setState((draft) => {
                     draft.userId = user.id;
                 });
-                reset(user);
+                reset({
+                    ...user,
+                    password: '',
+                    confirmPassword: ''
+                });
                 const path = props.match.path.replace(':id', `${user.id}`);
                 dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`));
                 history.push(path);
