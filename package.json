@@ -29,13 +29,14 @@
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "web-config-scripts lint",
     "cypress:open": "cypress open",
-    "cypress": "node scripts/cypress-run.js"
+    "cypress": "node scripts/cypress-run.js",
+    "test": "web-config-scripts test"
   },
   "resolutions": {
     "es-abstract": "^1.18.0-next.1"
   },
   "devDependencies": {
-    "@craigmiller160/react-web-config": "^2.5.0",
+    "@craigmiller160/react-web-config": "^2.5.1",
     "@types/cucumber": "^6.0.1",
     "@types/cypress-cucumber-preprocessor": "^1.14.1",
     "@types/node": "^14.11.8",
