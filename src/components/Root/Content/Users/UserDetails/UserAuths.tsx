@@ -78,7 +78,6 @@ const UserAuths = (props: Props) => {
     };
 
     const items: Array<Item> = state.userAuths.authDetails
-        .filter((auth) => auth.tokenId)
         .map((auth) => ({
             uuid: nanoid(),
             avatar: () => <LockOpen />,

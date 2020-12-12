@@ -55,7 +55,6 @@ export interface UserList {
 }
 
 export interface UserAuthDetails {
-    tokenId: string | null;
     clientId: number;
     clientName: string;
     userId: number;
