@@ -1,6 +1,6 @@
 {
   "name": "auth-management-ui",
-  "version": "1.4.8",
+  "version": "1.4.7.1",
   "sideEffects": false,
   "dependencies": {
     "@craigmiller160/react-material-ui-common": "^1.1.0",
