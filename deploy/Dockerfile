@@ -1,4 +1,4 @@
-FROM craigmiller160-nginx-base:1.0.0
+FROM craigmiller160-nginx-base:1.0.0.2
 
 RUN apt-get update && apt-get install unzip
 
