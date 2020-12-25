@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth-management-ui
-          image: localhost:32000/auth-management-ui:1.4.9.6
+          image: localhost:32000/auth-management-ui:1.4.9.8
           ports:
             - containerPort: 443
           livenessProbe:
