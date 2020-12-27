@@ -21,11 +21,13 @@ import { none, Option } from 'fp-ts/es6/Option';
 import { AuthUser } from '../../types/auth';
 
 interface StateType {
+    csrfToken: Option<string>;
     userData: Option<AuthUser>;
     hasChecked: boolean;
 }
 
-const initialState: StateType = {
+export const initialState: StateType = {
+    csrfToken: none,
     userData: none,
     hasChecked: false
 };
@@ -35,10 +37,15 @@ const setUserData = (draft: StateType, action: PayloadAction<Option<AuthUser>>) 
     draft.hasChecked = true;
 };
 
+const setCsrfToken = (draft: StateType, action: PayloadAction<Option<string>>) => {
+    draft.csrfToken = action.payload;
+};
+
 export default createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setUserData
+        setUserData,
+        setCsrfToken
     }
 });

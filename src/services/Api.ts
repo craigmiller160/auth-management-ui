@@ -16,17 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { none } from 'fp-ts/es6/Option';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { filter, map, none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
+import { pipe } from 'fp-ts/es6/pipeable';
 import store from '../store';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
 
-const instance = axios.create({
+export const instance: AxiosInstance = axios.create({
     baseURL: '/auth-manage-ui/api',
     withCredentials: true
 });
@@ -50,11 +51,27 @@ export interface GraphQLRequest {
     config?: AxiosRequestConfig;
 }
 
+const addCsrfTokenInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
+    const { csrfToken } = store.getState().auth;
+    pipe(
+        csrfToken,
+        filter((token) => config.method !== 'get'),
+        map((token) => {
+            config.headers = { // eslint-disable-line no-param-reassign
+                ...config.headers,
+                'x-csrf-token': token
+            };
+        })
+    );
+    return config;
+};
+instance.interceptors.request.use(addCsrfTokenInterceptor);
+
 export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => ex.response !== undefined;
 
 const getFullMessage = (errorMsg: string, ex: Error): string => {
     if (isAxiosError(ex) && ex.response) {
-        const { status, data: { message } } = ex.response;
+        const { status, data: { message } } = ex.response; // TODO this is not always reliable, neither data nor message
         return new MessageBuilder(errorMsg)
             .append(status ? `Status: ${status}` : '')
             .append(message ? `Message: ${message}` : '')
@@ -74,7 +91,7 @@ const handle401Error = (ex: Error) => {
 const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressErrorFn = (e) => false) => {
     if (!suppressError(ex)) {
         const fullMessage = getFullMessage(errorMsg, ex);
-        console.log(fullMessage, ex); // eslint-disable-line no-console
+        console.error(fullMessage, ex);
         store.dispatch(showErrorReduxAlert(fullMessage));
     }
     handle401Error(ex);
@@ -90,6 +107,16 @@ const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     try {
         const res = await instance.get<R>(req.uri, req.config);
         return right(res.data);
+    } catch (ex) {
+        handleError(ex, req.errorMsg, req.suppressError);
+        return left(ex);
+    }
+};
+
+const getRaw = async <R>(req: RequestConfig): Promise<Either<Error, AxiosResponse<R>>> => {
+    try {
+        const res = await instance.get<R>(req.uri, req.config);
+        return right(res);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);
         return left(ex);
@@ -152,6 +179,7 @@ const doDelete = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
 
 export default {
     get,
+    getRaw,
     put,
     post,
     graphql,
