@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const path = require('path');
+
 module.exports = {
     title: 'OAuth Management',
     devServerPort: 3000,
@@ -40,5 +42,8 @@ module.exports = {
             },
             logLevel: 'debug'
         }
-    }
+    },
+    jestSetupFiles: [
+        path.resolve(process.cwd(), 'test/setupTests.ts')
+    ]
 }
