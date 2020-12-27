@@ -64,6 +64,7 @@ describe('AuthService', () => {
     it('getAuthUser', async () => {
         mockApi.onGet('/auth-manage-ui/api/oauth/user')
             .reply((config) => {
+                expect(config.headers['x-csrf-token']).toEqual('fetch');
                 return [
                     200,
                     authUser,
@@ -86,6 +87,7 @@ describe('AuthService', () => {
     it('getAuthUser set CSRF on failure', async () => {
         mockApi.onGet('/auth-manage-ui/api/oauth/user')
             .reply((config) => {
+                expect(config.headers['x-csrf-token']).toEqual('fetch');
                 return [
                     400,
                     authUser,
