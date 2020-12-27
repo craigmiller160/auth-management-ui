@@ -18,11 +18,11 @@
 
 import { instance } from '../../src/services/Api';
 import MockAdapter from 'axios-mock-adapter';
-import { getAuthUser, logout } from '../../src/services/AuthService';
+import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import { Either, isLeft, isRight, Right } from 'fp-ts/es6/Either';
 import store from '../../src/store';
 import { MockStore, MockStoreCreator } from 'redux-mock-store';
-import { AuthUser } from '../../src/types/auth';
+import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
 import { Option, some } from 'fp-ts/es6/Option';
 
 jest.mock('../../src/store', () => {
@@ -42,6 +42,10 @@ const authUser: AuthUser = {
     roles: []
 };
 
+const authCodeLogin: AuthCodeLogin = {
+    url: 'theUrl'
+};
+
 const csrfToken = 'CSRF';
 
 describe('AuthService', () => {
@@ -57,8 +61,13 @@ describe('AuthService', () => {
         expect(isRight(result)).toEqual(true);
     });
 
-    it('login', () => {
-        throw new Error();
+    it('login', async () => {
+        mockApi.onPost('/auth-manage-ui/api/oauth/authcode/login')
+            .reply(200, authCodeLogin);
+        const result = await login();
+        expect(isRight(result)).toEqual(true);
+        expect((result as Right<AuthCodeLogin>).right).toEqual(authCodeLogin);
+        expect(window.location.assign).toHaveBeenCalledWith(authCodeLogin.url);
     });
 
     it('getAuthUser', async () => {
