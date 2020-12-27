@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { none } from 'fp-ts/es6/Option';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { map, none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 import store from '../store';
@@ -25,8 +25,9 @@ import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
+import { pipe } from 'fp-ts/es6/pipeable';
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
     baseURL: '/auth-manage-ui/api',
     withCredentials: true
 });
@@ -49,6 +50,21 @@ export interface GraphQLRequest {
     suppressError?: SuppressErrorFn;
     config?: AxiosRequestConfig;
 }
+
+const addCsrfTokenInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
+    const { csrfToken } = store.getState().auth;
+    pipe(
+        csrfToken,
+        map((token) => {
+            config.headers = {
+                ...config.headers,
+                'x-csrf-token': token
+            };
+        })
+    );
+    return config;
+};
+instance.interceptors.request.use(addCsrfTokenInterceptor);
 
 export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => ex.response !== undefined;
 
