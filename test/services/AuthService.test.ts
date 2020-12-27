@@ -16,24 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { instance } from '../../src/services/Api';
 import MockAdapter from 'axios-mock-adapter';
-import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import { Either, isLeft, isRight, Right } from 'fp-ts/es6/Either';
-import store from '../../src/store';
-import { MockStore, MockStoreCreator } from 'redux-mock-store';
-import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
+import { MockStore } from 'redux-mock-store';
 import { Option, some } from 'fp-ts/es6/Option';
+import { instance } from '../../src/services/Api';
+import { getAuthUser, login, logout } from '../../src/services/AuthService';
+import store from '../../src/store';
+import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
 
 jest.mock('../../src/store', () => {
     const createMockStore = jest.requireActual('redux-mock-store').default;
-    const { none, Option } = jest.requireActual('fp-ts/lib/Option');
-    const store: MockStore<{ auth: { csrfToken: Option<string> } }> = createMockStore([])({ auth: { csrfToken: none } });
-    return store;
-})
+    const { none } = jest.requireActual('fp-ts/lib/Option');
+    const theMockStore: MockStore<{ auth: { csrfToken: Option<string>; }; }> =
+        createMockStore([])({ auth: { csrfToken: none } });
+    return theMockStore;
+});
 
 const mockApi = new MockAdapter(instance);
-const mockStore: MockStore<{ auth: { csrfToken: Option<string> } }> = store as MockStore;
+const mockStore: MockStore<{ auth: { csrfToken: Option<string>; }; }> = store as MockStore;
 
 const authUser: AuthUser = {
     username: 'user',

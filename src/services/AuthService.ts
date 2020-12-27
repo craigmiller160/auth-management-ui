@@ -18,12 +18,12 @@
 
 import { bimap, Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import { AxiosResponse } from 'axios';
+import { fromNullable } from 'fp-ts/es6/Option';
 import api, { isAxiosError } from './Api';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
 import store from '../store';
 import authSlice from '../store/auth/slice';
-import { AxiosResponse } from 'axios';
-import { fromNullable } from 'fp-ts/es6/Option';
 
 export const logout = (): Promise<Either<Error, void>> =>
     api.get<void>({

@@ -20,12 +20,12 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import { filter, map, none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
+import { pipe } from 'fp-ts/es6/pipeable';
 import store from '../store';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
-import { pipe } from 'fp-ts/es6/pipeable';
 
 export const instance: AxiosInstance = axios.create({
     baseURL: '/auth-manage-ui/api',
@@ -57,7 +57,7 @@ const addCsrfTokenInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig
         csrfToken,
         filter((token) => config.method !== 'get'),
         map((token) => {
-            config.headers = {
+            config.headers = { // eslint-disable-line no-param-reassign
                 ...config.headers,
                 'x-csrf-token': token
             };
