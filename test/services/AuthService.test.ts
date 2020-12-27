@@ -19,7 +19,7 @@
 import { instance } from '../../src/services/Api';
 import MockAdapter from 'axios-mock-adapter';
 import { getAuthUser, logout } from '../../src/services/AuthService';
-import { Either, isRight, Right } from 'fp-ts/es6/Either';
+import { Either, isLeft, isRight, Right } from 'fp-ts/es6/Either';
 import store from '../../src/store';
 import { MockStore, MockStoreCreator } from 'redux-mock-store';
 import { AuthUser } from '../../src/types/auth';
@@ -83,7 +83,28 @@ describe('AuthService', () => {
         ]);
     });
 
-    it('getAuthUser set CSRF on failure', () => {
-        throw new Error();
+    it('getAuthUser set CSRF on failure', async () => {
+        mockApi.onGet('/auth-manage-ui/api/oauth/user')
+            .reply((config) => {
+                return [
+                    400,
+                    authUser,
+                    {
+                        'x-csrf-token': csrfToken
+                    }
+                ];
+            });
+        const result: Either<Error, AuthUser> = await getAuthUser();
+        expect(isLeft(result)).toEqual(true);
+        expect(mockStore.getActions()).toEqual([
+            {
+                type: 'alert/showErrorAlert',
+                payload: 'Error getting authenticated user Status: 400'
+            },
+            {
+                type: 'auth/setCsrfToken',
+                payload: some(csrfToken)
+            }
+        ]);
     });
 });
