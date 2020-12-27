@@ -16,9 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { logout } from '../../src/services/AuthService';
+import { isRight } from 'fp-ts/es6/Either';
+
+const mockApi = new MockAdapter(axios);
+
 describe('AuthService', () => {
-    it('logout', () => {
-        throw new Error();
+    beforeEach(() => {
+        mockApi.reset();
+    });
+
+    it('logout', async () => {
+        mockApi.onGet('/auth-manage-ui/api/oauth/logout')
+            .reply(200);
+        const result = await logout();
+        expect(isRight(result)).toEqual(true);
     });
 
     it('login', () => {
