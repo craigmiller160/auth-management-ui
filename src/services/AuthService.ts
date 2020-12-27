@@ -16,10 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, map } from 'fp-ts/es6/Either';
+import { bimap, Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import api, { isAxiosError } from './Api';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
+import store from '../store';
+import authSlice from '../store/auth/slice';
+import { AxiosResponse } from 'axios';
+import { fromNullable } from 'fp-ts/es6/Option';
 
 export const logout = (): Promise<Either<Error, void>> =>
     api.get<void>({
@@ -39,14 +43,29 @@ export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
         })
     );
 
-export const getAuthUser = (): Promise<Either<Error, AuthUser>> =>
-    api.get<AuthUser>({
-        uri: '/oauth/user',
-        errorMsg: 'Error getting authenticated user',
-        suppressError: (ex: Error) => {
-            if (isAxiosError(ex)) {
-                return ex.response?.status === 401;
+export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
+    pipe(
+        await api.getRaw<AuthUser>({
+            uri: '/oauth/user',
+            errorMsg: 'Error getting authenticated user',
+            suppressError: (ex: Error) => {
+                if (isAxiosError(ex)) {
+                    return ex.response?.status === 401;
+                }
+                return false;
             }
-            return false;
-        }
-    });
+        }),
+        bimap((error: Error) => {
+            if (isAxiosError(error)) {
+                const csrfToken = error.response?.headers?.['x-csrf-token'];
+                const csrfTokenOption = fromNullable(csrfToken);
+                store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
+            }
+            return error;
+        }, (res: AxiosResponse<AuthUser>) => {
+            const csrfToken = res.headers['x-csrf-token'];
+            const csrfTokenOption = fromNullable(csrfToken);
+            store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
+            return res.data;
+        })
+    );

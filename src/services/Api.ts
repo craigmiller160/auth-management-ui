@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { filter, map, none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
@@ -113,6 +113,16 @@ const get = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
     }
 };
 
+const getRaw = async <R>(req: RequestConfig): Promise<Either<Error, AxiosResponse<R>>> => {
+    try {
+        const res = await instance.get<R>(req.uri, req.config);
+        return right(res);
+    } catch (ex) {
+        handleError(ex, req.errorMsg, req.suppressError);
+        return left(ex);
+    }
+};
+
 const post = async <B, R>(req: RequestBodyConfig<B>): Promise<Either<Error, R>> => {
     try {
         const res = await instance.post<R>(req.uri, req.body, req.config);
@@ -169,6 +179,7 @@ const doDelete = async <R>(req: RequestConfig): Promise<Either<Error, R>> => {
 
 export default {
     get,
+    getRaw,
     put,
     post,
     graphql,
