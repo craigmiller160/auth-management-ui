@@ -27,7 +27,7 @@ import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
 import { pipe } from 'fp-ts/es6/pipeable';
 
-const instance: AxiosInstance = axios.create({
+export const instance: AxiosInstance = axios.create({
     baseURL: '/auth-manage-ui/api',
     withCredentials: true
 });
@@ -91,7 +91,7 @@ const handle401Error = (ex: Error) => {
 const handleError = (ex: Error, errorMsg: string = '', suppressError: SuppressErrorFn = (e) => false) => {
     if (!suppressError(ex)) {
         const fullMessage = getFullMessage(errorMsg, ex);
-        console.log(fullMessage, ex); // eslint-disable-line no-console
+        console.error(fullMessage, ex);
         store.dispatch(showErrorReduxAlert(fullMessage));
     }
     handle401Error(ex);
