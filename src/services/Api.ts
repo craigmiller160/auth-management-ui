@@ -17,7 +17,7 @@
  */
 
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { map, none } from 'fp-ts/es6/Option';
+import { filter, map, none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 import store from '../store';
@@ -55,6 +55,7 @@ const addCsrfTokenInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig
     const { csrfToken } = store.getState().auth;
     pipe(
         csrfToken,
+        filter((token) => config.method !== 'get'),
         map((token) => {
             config.headers = {
                 ...config.headers,
