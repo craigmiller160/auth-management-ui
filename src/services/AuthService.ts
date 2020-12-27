@@ -47,6 +47,11 @@ export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
     pipe(
         await api.getRaw<AuthUser>({
             uri: '/oauth/user',
+            config: {
+                headers: {
+                    'x-csrf-token': 'fetch'
+                }
+            },
             errorMsg: 'Error getting authenticated user',
             suppressError: (ex: Error) => {
                 if (isAxiosError(ex)) {
