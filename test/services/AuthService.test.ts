@@ -18,13 +18,35 @@
 
 import { instance } from '../../src/services/Api';
 import MockAdapter from 'axios-mock-adapter';
-import { logout } from '../../src/services/AuthService';
-import { isRight } from 'fp-ts/es6/Either';
+import { getAuthUser, logout } from '../../src/services/AuthService';
+import { Either, isRight, Right } from 'fp-ts/es6/Either';
+import store from '../../src/store';
+import { MockStore, MockStoreCreator } from 'redux-mock-store';
+import { AuthUser } from '../../src/types/auth';
+import { Option, some } from 'fp-ts/es6/Option';
+
+jest.mock('../../src/store', () => {
+    const createMockStore = jest.requireActual('redux-mock-store').default;
+    const { none, Option } = jest.requireActual('fp-ts/lib/Option');
+    const store: MockStore<{ auth: { csrfToken: Option<string> } }> = createMockStore([])({ auth: { csrfToken: none } });
+    return store;
+})
 
 const mockApi = new MockAdapter(instance);
+const mockStore: MockStore<{ auth: { csrfToken: Option<string> } }> = store as MockStore;
+
+const authUser: AuthUser = {
+    username: 'user',
+    firstName: 'first',
+    lastName: 'last',
+    roles: []
+};
+
+const csrfToken = 'CSRF';
 
 describe('AuthService', () => {
     beforeEach(() => {
+        mockStore.clearActions();
         mockApi.reset();
     });
 
@@ -39,8 +61,26 @@ describe('AuthService', () => {
         throw new Error();
     });
 
-    it('getAuthUser', () => {
-        throw new Error();
+    it('getAuthUser', async () => {
+        mockApi.onGet('/auth-manage-ui/api/oauth/user')
+            .reply((config) => {
+                return [
+                    200,
+                    authUser,
+                    {
+                        'x-csrf-token': csrfToken
+                    }
+                ];
+            });
+        const result: Either<Error, AuthUser> = await getAuthUser();
+        expect(isRight(result)).toEqual(true);
+        expect((result as Right<AuthUser>).right).toEqual(authUser);
+        expect(mockStore.getActions()).toEqual([
+            {
+                type: 'auth/setCsrfToken',
+                payload: some(csrfToken)
+            }
+        ]);
     });
 
     it('getAuthUser set CSRF on failure', () => {
