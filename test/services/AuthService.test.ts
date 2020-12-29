@@ -63,6 +63,8 @@ describe('AuthService', () => {
     });
 
     it('login', async () => {
+        mockApi.onOptions('/auth-manage-ui/api/oauth/authcode/login')
+            .reply(200, '', {});
         mockApi.onPost('/auth-manage-ui/api/oauth/authcode/login')
             .reply(200, authCodeLogin);
         const result = await login();
