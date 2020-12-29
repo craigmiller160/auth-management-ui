@@ -51,18 +51,25 @@ export interface GraphQLRequest {
     config?: AxiosRequestConfig;
 }
 
-const addCsrfTokenInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
-    const { csrfToken } = store.getState().auth;
-    pipe(
-        csrfToken,
-        filter((token) => config.method !== 'get'),
-        map((token) => {
-            config.headers = { // eslint-disable-line no-param-reassign
+const CSRF_METHODS = ['post', 'put', 'delete'];
+
+const addCsrfTokenInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+    if (CSRF_METHODS.includes(config.method ?? '')) {
+        try {
+            const optionsRes = await instance.options(config.url ?? '', {
+                headers: {
+                    'x-csrf-token': 'fetch'
+                }
+            });
+            const token = optionsRes.headers['x-csrf-token']
+            config.headers = {
                 ...config.headers,
-                'x-csrf-token': token
+                ['x-csrf-token']: token
             };
-        })
-    );
+        } catch (ex) {
+            throw new Error('Request failed preflight');
+        }
+    }
     return config;
 };
 instance.interceptors.request.use(addCsrfTokenInterceptor);
