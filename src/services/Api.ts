@@ -17,10 +17,9 @@
  */
 
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { filter, map, none } from 'fp-ts/es6/Option';
+import { none } from 'fp-ts/es6/Option';
 import { Either, left, right } from 'fp-ts/es6/Either';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
-import { pipe } from 'fp-ts/es6/pipeable';
 import store from '../store';
 import authSlice from '../store/auth/slice';
 import MessageBuilder from '../utils/MessageBuilder';
@@ -51,7 +50,7 @@ export interface GraphQLRequest {
     config?: AxiosRequestConfig;
 }
 
-const CSRF_METHODS = ['post', 'put', 'delete'];
+const CSRF_METHODS = [ 'post', 'put', 'delete' ];
 
 const addCsrfTokenInterceptor = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
     if (CSRF_METHODS.includes(config.method ?? '')) {
@@ -61,10 +60,10 @@ const addCsrfTokenInterceptor = async (config: AxiosRequestConfig): Promise<Axio
                     'x-csrf-token': 'fetch'
                 }
             });
-            const token = optionsRes.headers['x-csrf-token']
-            config.headers = {
+            const token = optionsRes.headers['x-csrf-token'];
+            config.headers = { // eslint-disable-line no-param-reassign
                 ...config.headers,
-                ['x-csrf-token']: token
+                'x-csrf-token': token
             };
         } catch (ex) {
             throw new Error('Request failed preflight');
