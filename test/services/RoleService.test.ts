@@ -20,8 +20,13 @@ import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
 import { instance } from '../../src/services/Api';
 import { ClientRole } from '../../src/types/client';
-import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphApi';
-import { createRole } from '../../src/services/RoleService';
+import {
+    CreateRoleWrapper,
+    DeleteRoleWrapper,
+    GraphQLQueryResponse,
+    UpdateRoleWrapper
+} from '../../src/types/graphApi';
+import { createRole, deleteRole, updateRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
@@ -37,17 +42,18 @@ declare global {
 
 const mockApi = new MockAdapter(instance);
 
+const role: ClientRole = {
+    id: 1,
+    name: 'The Role'
+};
+const clientId = 1;
+
 describe('RoleService', () => {
     beforeEach(() => {
         mockApi.reset();
     });
 
     it('createRole', async () => {
-        const role: ClientRole = {
-            id: 0,
-            name: 'The Role'
-        };
-        const clientId = 1;
         const payload = `
             mutation {
                 createRole(role: {
@@ -77,11 +83,60 @@ describe('RoleService', () => {
         });
     });
 
-    it('updateRole', () => {
-        throw new Error();
+    it('updateRole', async () => {
+        const payload = `
+                mutation {
+                    updateRole(roleId: ${role.id}, role: {
+                        name: "${role.name}",
+                        clientId: ${clientId}
+                    }) {
+                        id
+                        name
+                        clientId
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<UpdateRoleWrapper> = {
+            data: {
+                updateRole: {
+                    ...role,
+                    clientId
+                }
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error,Role> = await updateRole(clientId, role.id, role);
+        expect(result).eitherRightEquals<Role>({
+            ...role,
+            clientId
+        });
     });
 
-    it('deleteRole', () => {
-        throw new Error();
+    it('deleteRole', async () => {
+        const payload = `
+                mutation {
+                    deleteRole(roleId: ${role.id}) {
+                        id
+                        name
+                        clientId
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<DeleteRoleWrapper> = {
+            data: {
+                deleteRole: {
+                    ...role,
+                    clientId
+                }
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, Role> = await deleteRole(role.id);
+        expect(result).eitherRightEquals<Role>({
+            ...role,
+            clientId
+        });
     });
 });
