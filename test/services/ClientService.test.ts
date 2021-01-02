@@ -17,17 +17,21 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
-import { GraphQLQueryResponse } from '../../src/types/graphApi';
-import { ClientListResponse } from '../../src/types/client';
+import { GraphQLQueryResponse, OldClientDetailsWrapper } from '../../src/types/graphApi';
+import { ClientListResponse, FullClientDetails } from '../../src/types/client';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { instance } from '../../src/services/Api';
 import { Either } from 'fp-ts/es6/Either';
-import { getAllClients } from '../../src/services/ClientService';
+import { getAllClients, getFullClientDetails } from '../../src/services/ClientService';
 
 const mockApi = new MockAdapter(instance);
+const clientId = 1;
 
 describe('ClientService', () => {
+    beforeEach(() => {
+        mockApi.reset();
+    });
     it('getAllClients', async () => {
         const payload = `
             query {
@@ -63,8 +67,67 @@ describe('ClientService', () => {
         });
     });
 
-    it('getFullClientDetails', () => {
-        throw new Error();
+    it('getFullClientDetails', async () => {
+        const payload = `
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        enabled
+                        refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
+                        roles {
+                            id
+                            name
+                        }
+                        users {
+                            id
+                            email
+                            firstName
+                            lastName
+                            enabled
+                            roles {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<OldClientDetailsWrapper> = {
+            data: {
+                client: {
+                    id: 1,
+                    roles: [],
+                    users: [],
+                    name: 'Client',
+                    clientKey: 'Key',
+                    enabled: true,
+                    accessTokenTimeoutSecs: 1,
+                    refreshTokenTimeoutSecs: 2,
+                    authCodeTimeoutSecs: 3,
+                    redirectUris: []
+                }
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, FullClientDetails> = await getFullClientDetails(clientId);
+        expect(result).toEqualRight({
+            id: 1,
+            roles: [],
+            users: [],
+            name: 'Client',
+            clientKey: 'Key',
+            enabled: true,
+            accessTokenTimeoutSecs: 1,
+            refreshTokenTimeoutSecs: 2,
+            authCodeTimeoutSecs: 3,
+            redirectUris: []
+        });
     });
 
     it('getClientDetails', () => {
