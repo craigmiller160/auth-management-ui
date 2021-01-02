@@ -24,14 +24,7 @@ import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphAp
 import { createRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
 import { mockCsrfPreflight } from './mockCsrf';
-
-declare global {
-    namespace jest {
-        interface Matchers<R> {
-            stringsToEqualIgnoreWhitespace(expected: string): CustomMatcherResult;
-        }
-    }
-}
+import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 
 const mockApi = new MockAdapter(instance);
 
@@ -67,14 +60,7 @@ describe('RoleService', () => {
             }
         };
         mockCsrfPreflight(mockApi);
-        mockApi.onPost('/graphql')
-            .reply((config) => {
-                expect(config.data.trim()).stringsToEqualIgnoreWhitespace(payload.trim());
-                return [
-                    200,
-                    responseData
-                ];
-            });
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, Role> = await createRole(clientId, role);
         expect(result).toEqual({
             _tag: 'Right',
