@@ -23,7 +23,6 @@ import { ClientRole } from '../../src/types/client';
 import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphApi';
 import { createRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
-import '../maybe';
 
 declare global {
     namespace jest {
@@ -48,37 +47,6 @@ const mockPreflight = () =>
                 }
             ];
         });
-
-// TODO move this to library
-expect.extend({
-    stringsToEqualIgnoreWhitespace(received: string, expected: string) {
-        if (typeof received !== 'string') {
-            return {
-                message: () => 'Received value is not a string',
-                pass: false
-            };
-        }
-        if (typeof expected !== 'string') {
-            return {
-                message: () => 'Expected value is not a string',
-                pass: false
-            };
-        }
-        const receivedNoWhitespace = received.trim().replace(/\s/g, '');
-        const expectedNoWhitespace = expected.trim().replace(/\s/g, '');
-        const pass = receivedNoWhitespace === expectedNoWhitespace;
-        if (pass) {
-            return {
-                message: () => '',
-                pass: true
-            };
-        } 
-            return {
-                message: () => 'Expected strings to be equal if ignoring whitespace',
-                pass: false
-            };
-    }
-});
 
 describe('RoleService', () => {
     beforeEach(() => {
