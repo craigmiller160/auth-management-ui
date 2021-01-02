@@ -31,15 +31,6 @@ import { Role } from '../../src/types/role';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 
-declare global {
-    namespace jest {
-        interface Matchers<R> {
-            eitherRightEquals<R>(expected: R): CustomMatcherResult;
-            eitherLeftEquals<L>(expected: L): CustomMatcherResult;
-        }
-    }
-}
-
 const mockApi = new MockAdapter(instance);
 
 const role: ClientRole = {
@@ -77,7 +68,7 @@ describe('RoleService', () => {
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, Role> = await createRole(clientId, role);
-        expect(result).eitherRightEquals<Role>({
+        expect(result).toEqualRight({
             ...role,
             clientId
         });
@@ -107,7 +98,7 @@ describe('RoleService', () => {
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error,Role> = await updateRole(clientId, role.id, role);
-        expect(result).eitherRightEquals<Role>({
+        expect(result).toEqualRight({
             ...role,
             clientId
         });
@@ -134,7 +125,7 @@ describe('RoleService', () => {
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, Role> = await deleteRole(role.id);
-        expect(result).eitherRightEquals<Role>({
+        expect(result).toEqualRight({
             ...role,
             clientId
         });
