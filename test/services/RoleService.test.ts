@@ -23,6 +23,7 @@ import { ClientRole } from '../../src/types/client';
 import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphApi';
 import { createRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
+import { mockCsrfPreflight } from './mockCsrf';
 
 declare global {
     namespace jest {
@@ -33,20 +34,6 @@ declare global {
 }
 
 const mockApi = new MockAdapter(instance);
-
-// TODO move this to ajax-api library... do it in VideoManagerClient first
-const mockPreflight = () =>
-    mockApi.onOptions('/graphql')
-        .reply((config) => {
-            expect(config.headers['x-csrf-token']).toEqual('fetch');
-            return [
-                200,
-                null,
-                {
-                    'x-csrf-token': 'ABCDEFG'
-                }
-            ];
-        });
 
 describe('RoleService', () => {
     beforeEach(() => {
@@ -79,7 +66,7 @@ describe('RoleService', () => {
                 }
             }
         };
-        mockPreflight();
+        mockCsrfPreflight(mockApi);
         mockApi.onPost('/graphql')
             .reply((config) => {
                 expect(config.data.trim()).stringsToEqualIgnoreWhitespace(payload.trim());
