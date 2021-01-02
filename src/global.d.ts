@@ -17,3 +17,11 @@
  */
 
 import '@relmify/jest-fp-ts';
+
+declare global {
+    namespace jest {
+        interface Matchers<R> {
+            stringsToEqualIgnoreWhitespace(expected: string): CustomMatcherResult;
+        }
+    }
+}

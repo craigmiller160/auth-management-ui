@@ -19,14 +19,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import { GraphQLQueryResponse } from '../../src/types/graphApi';
 
-declare global {
-    namespace jest {
-        interface Matchers<R> {
-            stringsToEqualIgnoreWhitespace(expected: string): CustomMatcherResult;
-        }
-    }
-}
-
 // TODO move to ajax-api library test-utils
 export const mockAndValidateGraphQL = <R>(
     mockApi: MockAdapter, uri: string, payload: string, responseData: GraphQLQueryResponse<R>
