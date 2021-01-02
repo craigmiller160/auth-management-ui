@@ -17,12 +17,13 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
+import { Either } from 'fp-ts/es6/Either';
 import { instance } from '../../src/services/Api';
 import { ClientRole } from '../../src/types/client';
 import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphApi';
 import { createRole } from '../../src/services/RoleService';
-import { Either } from 'fp-ts/es6/Either';
 import { Role } from '../../src/types/role';
+import '../maybe';
 
 declare global {
     namespace jest {
@@ -34,6 +35,7 @@ declare global {
 
 const mockApi = new MockAdapter(instance);
 
+// TODO move this to ajax-api library... do it in VideoManagerClient first
 const mockPreflight = () =>
     mockApi.onOptions('/graphql')
         .reply((config) => {
@@ -42,7 +44,7 @@ const mockPreflight = () =>
                 200,
                 null,
                 {
-                    ['x-csrf-token']: 'ABCDEFG'
+                    'x-csrf-token': 'ABCDEFG'
                 }
             ];
         });
@@ -50,6 +52,18 @@ const mockPreflight = () =>
 // TODO move this to library
 expect.extend({
     stringsToEqualIgnoreWhitespace(received: string, expected: string) {
+        if (typeof received !== 'string') {
+            return {
+                message: () => 'Received value is not a string',
+                pass: false
+            };
+        }
+        if (typeof expected !== 'string') {
+            return {
+                message: () => 'Expected value is not a string',
+                pass: false
+            };
+        }
         const receivedNoWhitespace = received.trim().replace(/\s/g, '');
         const expectedNoWhitespace = expected.trim().replace(/\s/g, '');
         const pass = receivedNoWhitespace === expectedNoWhitespace;
@@ -58,12 +72,11 @@ expect.extend({
                 message: () => '',
                 pass: true
             };
-        } else {
+        } 
             return {
                 message: () => 'Expected strings to be equal if ignoring whitespace',
                 pass: false
             };
-        }
     }
 });
 
