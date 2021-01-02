@@ -25,7 +25,7 @@ export const mockAndValidateGraphQL = <R>(
 ) =>
     mockApi.onPost(uri)
         .reply((config) => {
-            expect(config.data).stringsToEqualIgnoreWhitespace(payload);
+            expect(config.data).stringsEqualIgnoreWhitespace(payload);
             return [
                 200,
                 responseData

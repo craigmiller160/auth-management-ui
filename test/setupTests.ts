@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, Left, Right } from 'fp-ts/es6/Either';
 import '@relmify/jest-fp-ts';
+import '@craigmiller160/jest-matchers-common';
 
 beforeEach(() => {
     // @ts-ignore
@@ -30,35 +30,4 @@ beforeEach(() => {
         hash: '',
         href: ''
     };
-});
-
-// TODO move this to library
-expect.extend({
-    stringsToEqualIgnoreWhitespace(received: string, expected: string) {
-        if (typeof received !== 'string') {
-            return {
-                message: () => 'Received value is not a string',
-                pass: false
-            };
-        }
-        if (typeof expected !== 'string') {
-            return {
-                message: () => 'Expected value is not a string',
-                pass: false
-            };
-        }
-        const receivedNoWhitespace = received.trim().replace(/\s/g, '');
-        const expectedNoWhitespace = expected.trim().replace(/\s/g, '');
-        const pass = receivedNoWhitespace === expectedNoWhitespace;
-        if (pass) {
-            return {
-                message: () => '',
-                pass: true
-            };
-        }
-        return {
-            message: () => 'Expected strings to be equal if ignoring whitespace',
-            pass: false
-        };
-    }
 });
