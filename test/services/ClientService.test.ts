@@ -17,16 +17,31 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
-import { GraphQLQueryResponse, OldClientDetailsWrapper } from '../../src/types/graphApi';
-import { ClientListResponse, FullClientDetails } from '../../src/types/client';
+import { ClientDetailsWrapper, GraphQLQueryResponse, OldClientDetailsWrapper } from '../../src/types/graphApi';
+import { ClientDetails, ClientListResponse, FullClientDetails } from '../../src/types/client';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { instance } from '../../src/services/Api';
 import { Either } from 'fp-ts/es6/Either';
-import { getAllClients, getFullClientDetails } from '../../src/services/ClientService';
+import { getAllClients, getClientDetails, getFullClientDetails } from '../../src/services/ClientService';
 
 const mockApi = new MockAdapter(instance);
 const clientId = 1;
+const client: ClientDetails = {
+    id: 1,
+    name: 'Client',
+    clientKey: 'Key',
+    enabled: true,
+    accessTokenTimeoutSecs: 1,
+    refreshTokenTimeoutSecs: 2,
+    authCodeTimeoutSecs: 3,
+    redirectUris: []
+};
+const fullClient: FullClientDetails = {
+    ...client,
+    roles: [],
+    users: []
+}
 
 describe('ClientService', () => {
     beforeEach(() => {
@@ -42,21 +57,7 @@ describe('ClientService', () => {
                 }
             }
         `;
-        const responseData: GraphQLQueryResponse<ClientListResponse> = {
-            data: {
-                clients: [
-                    {
-                        id: 1,
-                        name: 'Client',
-                        clientKey: 'Key'
-                    }
-                ]
-            }
-        };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientListResponse> = await getAllClients();
-        expect(result).toEqualRight({
+        const data: ClientListResponse = {
             clients: [
                 {
                     id: 1,
@@ -64,7 +65,14 @@ describe('ClientService', () => {
                     clientKey: 'Key'
                 }
             ]
-        });
+        };
+        const responseData: GraphQLQueryResponse<ClientListResponse> = {
+            data
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, ClientListResponse> = await getAllClients();
+        expect(result).toEqualRight(data);
     });
 
     it('getFullClientDetails', async () => {
@@ -97,41 +105,43 @@ describe('ClientService', () => {
                     }
                 }
             `;
+        const data: OldClientDetailsWrapper = {
+            client: fullClient
+        };
         const responseData: GraphQLQueryResponse<OldClientDetailsWrapper> = {
-            data: {
-                client: {
-                    id: 1,
-                    roles: [],
-                    users: [],
-                    name: 'Client',
-                    clientKey: 'Key',
-                    enabled: true,
-                    accessTokenTimeoutSecs: 1,
-                    refreshTokenTimeoutSecs: 2,
-                    authCodeTimeoutSecs: 3,
-                    redirectUris: []
-                }
-            }
+            data
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, FullClientDetails> = await getFullClientDetails(clientId);
-        expect(result).toEqualRight({
-            id: 1,
-            roles: [],
-            users: [],
-            name: 'Client',
-            clientKey: 'Key',
-            enabled: true,
-            accessTokenTimeoutSecs: 1,
-            refreshTokenTimeoutSecs: 2,
-            authCodeTimeoutSecs: 3,
-            redirectUris: []
-        });
+        expect(result).toEqualRight(fullClient);
     });
 
-    it('getClientDetails', () => {
-        throw new Error();
+    it('getClientDetails', async () => {
+        const payload = `
+                query {
+                    client(clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        enabled
+                        redirectUris
+                    }
+                }
+            `;
+        const data: ClientDetailsWrapper = {
+            client
+        };
+        const responseData: GraphQLQueryResponse<ClientDetailsWrapper> = {
+            data
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, ClientDetails> = await getClientDetails(clientId);
+        expect(result).toEqualRight(client);
     });
 
     it('getClientWithRoles', () => {
