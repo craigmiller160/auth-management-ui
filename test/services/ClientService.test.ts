@@ -17,10 +17,50 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
+import { GraphQLQueryResponse } from '../../src/types/graphApi';
+import { ClientListResponse } from '../../src/types/client';
+import { mockCsrfPreflight } from './mockCsrf';
+import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
+import { instance } from '../../src/services/Api';
+import { Either } from 'fp-ts/es6/Either';
+import { getAllClients } from '../../src/services/ClientService';
+
+const mockApi = new MockAdapter(instance);
 
 describe('ClientService', () => {
-    it('getAllClients', () => {
-        throw new Error();
+    it('getAllClients', async () => {
+        const payload = `
+            query {
+                clients {
+                    id
+                    name
+                    clientKey
+                }
+            }
+        `;
+        const responseData: GraphQLQueryResponse<ClientListResponse> = {
+            data: {
+                clients: [
+                    {
+                        id: 1,
+                        name: 'Client',
+                        clientKey: 'Key'
+                    }
+                ]
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, ClientListResponse> = await getAllClients();
+        expect(result).toEqualRight({
+            clients: [
+                {
+                    id: 1,
+                    name: 'Client',
+                    clientKey: 'Key'
+                }
+            ]
+        });
     });
 
     it('getFullClientDetails', () => {
