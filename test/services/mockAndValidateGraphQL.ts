@@ -27,6 +27,7 @@ declare global {
     }
 }
 
+// TODO move to ajax-api library test-utils
 export const mockAndValidateGraphQL = <R>(
     mockApi: MockAdapter, uri: string, payload: string, responseData: GraphQLQueryResponse<R>
 ) =>

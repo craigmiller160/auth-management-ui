@@ -17,6 +17,8 @@
  */
 
 // @ts-ignore
+import { Either, Left, Right } from 'fp-ts/es6/Either';
+
 beforeEach(() => {
     // @ts-ignore
     delete window.location;
@@ -60,3 +62,41 @@ expect.extend({
         };
     }
 });
+
+// TODO move to testing library
+expect.extend({
+    eitherRightEquals<R>(received: Either<any, R>, expected: R) {
+        try {
+            expect(received._tag).toEqual('Right');
+            expect((received as Right<R>).right).toEqual(expected);
+            return {
+                message: () => 'Either "right" value is correct',
+                pass: true
+            };
+        } catch (ex) {
+            return {
+                message: () => ex.message,
+                pass: false
+            };
+        }
+    }
+});
+
+// TODO move to testing library
+expect.extend({
+    eitherLeftEquals<L>(received: Either<L,any>, expected: L) {
+        try {
+            expect(received._tag).toEqual('Left');
+            expect((received as Left<L>).left).toEqual(expected);
+            return {
+                message: () => 'Either "left" value is correct',
+                pass: true
+            };
+        } catch (ex) {
+            return {
+                message: () => ex.message,
+                pass: false
+            };
+        }
+    }
+})
