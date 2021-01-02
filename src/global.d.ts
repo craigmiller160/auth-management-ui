@@ -17,11 +17,4 @@
  */
 
 import '@relmify/jest-fp-ts';
-
-declare global {
-    namespace jest {
-        interface Matchers<R> {
-            stringsEqualIgnoreWhitespace(expected: string): CustomMatcherResult;
-        }
-    }
-}
+import '@craigmiller160/jest-matchers-common/lib/global';
