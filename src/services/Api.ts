@@ -77,6 +77,7 @@ export const isAxiosError = (ex: any): ex is AxiosError<ErrorResponse> => ex.res
 
 const getFullMessage = (errorMsg: string, ex: Error): string => {
     if (isAxiosError(ex) && ex.response) {
+        console.log(ex); // TODO delete this
         const { status, data: { message } } = ex.response; // TODO this is not always reliable, neither data nor message
         return new MessageBuilder(errorMsg)
             .append(status ? `Status: ${status}` : '')
