@@ -97,7 +97,7 @@ describe('RoleService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error,Role> = await updateRole(clientId, role.id, role);
+        const result: Either<Error, Role> = await updateRole(clientId, role.id, role);
         expect(result).toEqualRight({
             ...role,
             clientId
