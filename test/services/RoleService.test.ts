@@ -21,7 +21,6 @@ import { instance } from '../../src/services/Api';
 import { ClientRole } from '../../src/types/client';
 import { CreateRoleWrapper, GraphQLQueryResponse } from '../../src/types/graphApi';
 import { createRole } from '../../src/services/RoleService';
-import '../jest.d.ts';
 import { Either } from 'fp-ts/es6/Either';
 import { Role } from '../../src/types/role';
 
