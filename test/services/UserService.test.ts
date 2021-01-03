@@ -18,12 +18,27 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { instance } from '../../src/services/Api';
-import { UserClient, UserClients, UserDetails, UserList } from '../../src/types/user';
-import { GraphQLQueryResponse, UserClientsWrapper, UserDetailsWrapper } from '../../src/types/graphApi';
+import { UserClient, UserClients, UserDetails, UserInput, UserList, UserRole } from '../../src/types/user';
+import {
+    AddClientToUserWrapper, AddRoleToUserWrapper,
+    CreateUserWrapper, DeleteUserWrapper,
+    GraphQLQueryResponse, RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
+    UpdateUserWrapper,
+    UserClientsWrapper,
+    UserDetailsWrapper
+} from '../../src/types/graphApi';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { Either } from 'fp-ts/es6/Either';
-import { getAllUsers, getUserClients, getUserDetails } from '../../src/services/UserService';
+import {
+    createUser,
+    getAllUsers,
+    getUserClients,
+    getUserDetails,
+    updateUser,
+    deleteUser,
+    removeClientFromUser, addClientToUser, removeRoleFromUser, addRoleToUser
+} from '../../src/services/UserService';
 
 const mockApi = new MockAdapter(instance);
 const clientId = 1;
@@ -35,29 +50,39 @@ const user: UserDetails = {
     lastName: 'Saget',
     enabled: true
 };
+const userClient: UserClient = {
+    id: 1,
+    name: 'Client',
+    clientKey: 'Key',
+    allRoles: [
+        {
+            id: 1,
+            name: 'Role'
+        }
+    ],
+    userRoles: [
+        {
+            id: 1,
+            name: 'Role'
+        }
+    ]
+};
 const userClients: UserClients = {
     id: 1,
     email: 'user@gmail.com',
     clients: [
-        {
-            id: 1,
-            name: 'Client',
-            clientKey: 'Key',
-            allRoles: [
-                {
-                    id: 1,
-                    name: 'Role'
-                }
-            ],
-            userRoles: [
-                {
-                    id: 1,
-                    name: 'Role'
-                }
-            ]
-        }
+        userClient
     ]
-}
+};
+const userInput: UserInput = {
+    ...user,
+    password: '12345'
+};
+const role: UserRole = {
+    id: 1,
+    name: 'Role'
+};
+const roleId = 3;
 
 describe('UserService', () => {
     beforeEach(() => {
@@ -145,32 +170,191 @@ describe('UserService', () => {
         expect(result).toEqualRight(userClients);
     });
 
-    it('updateUser', () => {
-        throw new Error();
+    it('updateUser', async () => {
+        const payload = `
+                mutation {
+                    updateUser(userId: ${userId}, user: {
+                        email: "${userInput.email}",
+                        password: "${userInput.password || ''}",
+                        firstName: "${userInput.firstName}",
+                        lastName: "${userInput.lastName}",
+                        enabled: ${userInput.enabled}
+                    }) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        enabled
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<UpdateUserWrapper> = {
+            data: {
+                updateUser: user
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserDetails> = await updateUser(userId, userInput);
+        expect(result).toEqualRight(user);
     });
 
-    it('createUser', () => {
-        throw new Error();
+    it('createUser', async () => {
+        const payload = `
+                mutation {
+                    createUser(user: {
+                        email: "${userInput.email}",
+                        password: "${userInput.password}",
+                        firstName: "${userInput.firstName}",
+                        lastName: "${userInput.lastName}",
+                        enabled: ${userInput.enabled}
+                    }) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        enabled
+                    }                  
+                }
+            `;
+        const responseData: GraphQLQueryResponse<CreateUserWrapper> = {
+            data: {
+                createUser: user
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserDetails> = await createUser(userInput);
+        expect(result).toEqualRight(user);
     });
 
-    it('deleteUser', () => {
-        throw new Error();
+    it('deleteUser', async () => {
+        const payload = `
+                mutation {
+                    deleteUser(userId: ${userId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        enabled
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<DeleteUserWrapper> = {
+            data: {
+                deleteUser: user
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserDetails> = await deleteUser(userId);
+        expect(result).toEqualRight(user);
     });
 
-    it('removeClientFromUser', () => {
-        throw new Error();
+    it('removeClientFromUser', async () => {
+        const payload = `
+                mutation {
+                    removeClientFromUser(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        allRoles {
+                            id
+                            name
+                        }
+                        userRoles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<RemoveClientFromUserWrapper> = {
+            data: {
+                removeClientFromUser: [
+                    userClient
+                ]
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, Array<UserClient>> = await removeClientFromUser(userId, clientId);
+        expect(result).toEqualRight([ userClient ]);
     });
 
-    it('addClientToUser', () => {
-        throw new Error();
+    it('addClientToUser', async () => {
+        const payload = `
+                mutation {
+                    addClientToUser(userId: ${userId}, clientId: ${clientId}) {
+                        id
+                        name
+                        clientKey
+                        allRoles {
+                            id
+                            name
+                        }
+                        userRoles {
+                            id
+                            name
+                        }
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<AddClientToUserWrapper> = {
+            data: {
+                addClientToUser: [
+                    userClient
+                ]
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, Array<UserClient>> = await addClientToUser(userId, clientId);
+        expect(result).toEqualRight([ userClient ]);
     });
 
-    it('removeRoleFromUser', () => {
-        throw new Error();
+    it('removeRoleFromUser', async () => {
+        const payload = `
+                mutation {
+                    removeRoleFromUser(userId: ${userId}, clientId: ${clientId}, roleId: ${roleId}) {
+                        id
+                        name
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<RemoveRoleFromUserWrapper> = {
+            data: {
+                removeRoleFromUser: [
+                    role
+                ]
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId);
+        expect(result).toEqualRight([ userClient ]);
     });
 
-    it('addRoleToUser', () => {
-        throw new Error();
+    it('addRoleToUser', async () => {
+        const payload = `
+                mutation {
+                    addRoleToUser(userId: ${userId}, clientId: ${clientId}, roleId: ${roleId}) {
+                        id
+                        name
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<AddRoleToUserWrapper> = {
+            data: {
+                addRoleToUser: [
+                    role
+                ]
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId);
+        expect(result).toEqualRight([ userClient ]);
     });
 
     it('getAllUserAuthDetails', () => {
