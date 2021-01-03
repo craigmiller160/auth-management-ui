@@ -332,7 +332,7 @@ describe('UserService', () => {
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId);
-        expect(result).toEqualRight([ userClient ]);
+        expect(result).toEqualRight([ role ]);
     });
 
     it('addRoleToUser', async () => {
@@ -354,7 +354,7 @@ describe('UserService', () => {
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
         const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId);
-        expect(result).toEqualRight([ userClient ]);
+        expect(result).toEqualRight([ role ]);
     });
 
     it('getAllUserAuthDetails', () => {
