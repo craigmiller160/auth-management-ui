@@ -18,12 +18,12 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { instance } from '../../src/services/Api';
-import { UserDetails, UserList } from '../../src/types/user';
-import { GraphQLQueryResponse, UserDetailsWrapper } from '../../src/types/graphApi';
+import { UserClient, UserClients, UserDetails, UserList } from '../../src/types/user';
+import { GraphQLQueryResponse, UserClientsWrapper, UserDetailsWrapper } from '../../src/types/graphApi';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { Either } from 'fp-ts/es6/Either';
-import { getAllUsers, getUserDetails } from '../../src/services/UserService';
+import { getAllUsers, getUserClients, getUserDetails } from '../../src/services/UserService';
 
 const mockApi = new MockAdapter(instance);
 const clientId = 1;
@@ -35,6 +35,29 @@ const user: UserDetails = {
     lastName: 'Saget',
     enabled: true
 };
+const userClients: UserClients = {
+    id: 1,
+    email: 'user@gmail.com',
+    clients: [
+        {
+            id: 1,
+            name: 'Client',
+            clientKey: 'Key',
+            allRoles: [
+                {
+                    id: 1,
+                    name: 'Role'
+                }
+            ],
+            userRoles: [
+                {
+                    id: 1,
+                    name: 'Role'
+                }
+            ]
+        }
+    ]
+}
 
 describe('UserService', () => {
     beforeEach(() => {
@@ -89,8 +112,37 @@ describe('UserService', () => {
         expect(result).toEqualRight(user);
     });
 
-    it('getUserClients', () => {
-        throw new Error();
+    it('getUserClients', async () => {
+        const payload = `
+                query {
+                    user(userId: ${userId}) {
+                        id
+                        email
+                        clients {
+                            id
+                            name
+                            clientKey
+                            allRoles {
+                                id
+                                name
+                            }
+                            userRoles {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<UserClientsWrapper> = {
+            data: {
+                user: userClients
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserClients> = await getUserClients(userId);
+        expect(result).toEqualRight(userClients);
     });
 
     it('updateUser', () => {
