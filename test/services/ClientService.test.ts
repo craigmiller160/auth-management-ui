@@ -17,6 +17,7 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
+import { Either } from 'fp-ts/es6/Either';
 import {
     AddUserToClientWrapper,
     ClientDetailsWrapper,
@@ -35,7 +36,6 @@ import {
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { instance } from '../../src/services/Api';
-import { Either } from 'fp-ts/es6/Either';
 import {
     addUserToClient,
     createClient, deleteClient, generateGuid,
@@ -395,7 +395,7 @@ describe('ClientService', () => {
         };
         mockApi.onGet(`/clients/auth/${clientId}`)
             .reply(200, authDetails);
-        const result: Either<Error,ClientAuthDetails> = await getAuthDetailsForClient(clientId);
+        const result: Either<Error, ClientAuthDetails> = await getAuthDetailsForClient(clientId);
         expect(result).toEqualRight(authDetails);
     });
 });

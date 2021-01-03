@@ -17,6 +17,7 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
+import { Either } from 'fp-ts/es6/Either';
 import { instance } from '../../src/services/Api';
 import {
     UserAuthDetailsList,
@@ -37,7 +38,6 @@ import {
 } from '../../src/types/graphApi';
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
-import { Either } from 'fp-ts/es6/Either';
 import {
     createUser,
     getAllUsers,
