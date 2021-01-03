@@ -18,7 +18,15 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { instance } from '../../src/services/Api';
-import { UserClient, UserClients, UserDetails, UserInput, UserList, UserRole } from '../../src/types/user';
+import {
+    UserAuthDetailsList,
+    UserClient,
+    UserClients,
+    UserDetails,
+    UserInput,
+    UserList,
+    UserRole
+} from '../../src/types/user';
 import {
     AddClientToUserWrapper, AddRoleToUserWrapper,
     CreateUserWrapper, DeleteUserWrapper,
@@ -37,7 +45,12 @@ import {
     getUserDetails,
     updateUser,
     deleteUser,
-    removeClientFromUser, addClientToUser, removeRoleFromUser, addRoleToUser
+    removeClientFromUser,
+    addClientToUser,
+    removeRoleFromUser,
+    addRoleToUser,
+    getAllUserAuthDetails,
+    revokeUserAuthAccess
 } from '../../src/services/UserService';
 
 const mockApi = new MockAdapter(instance);
@@ -83,6 +96,10 @@ const role: UserRole = {
     name: 'Role'
 };
 const roleId = 3;
+const userAuthDetailsList: UserAuthDetailsList = {
+    email: 'user@gmail.com',
+    authDetails: []
+};
 
 describe('UserService', () => {
     beforeEach(() => {
@@ -357,11 +374,29 @@ describe('UserService', () => {
         expect(result).toEqualRight([ role ]);
     });
 
-    it('getAllUserAuthDetails', () => {
-        throw new Error();
+    it('getAllUserAuthDetails', async () => {
+        mockApi.onGet(`/users/auth/${userId}`)
+            .reply(200, userAuthDetailsList);
+        const result: Either<Error, UserAuthDetailsList> = await getAllUserAuthDetails(userId);
+        expect(result).toEqualRight(userAuthDetailsList);
     });
 
-    it('revokeUserAuthAccess', () => {
-        throw new Error();
+    it('revokeUserAuthAccess', async () => {
+        mockApi.onPost(`/users/auth/${userId}/${clientId}/revoke`)
+            .reply(200);
+        // TODO move this one into re-usable function in library
+        mockApi.onOptions(`/users/auth/${userId}/${clientId}/revoke`)
+            .reply((config) => {
+                expect(config.headers['x-csrf-token']).toEqual('fetch');
+                return [
+                    200,
+                    null,
+                    {
+                        'x-csrf-token': 'ABCDEFG'
+                    }
+                ];
+            });
+        const result: Either<Error, void> = await revokeUserAuthAccess(userId, clientId);
+        expect(result).toBeRight();
     });
 });
