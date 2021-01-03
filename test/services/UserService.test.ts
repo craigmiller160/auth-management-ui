@@ -17,14 +17,76 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
+import { instance } from '../../src/services/Api';
+import { UserDetails, UserList } from '../../src/types/user';
+import { GraphQLQueryResponse, UserDetailsWrapper } from '../../src/types/graphApi';
+import { mockCsrfPreflight } from './mockCsrf';
+import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
+import { Either } from 'fp-ts/es6/Either';
+import { getAllUsers, getUserDetails } from '../../src/services/UserService';
+
+const mockApi = new MockAdapter(instance);
+const clientId = 1;
+const userId = 1;
+const user: UserDetails = {
+    id: 1,
+    email: 'user@gmail.com',
+    firstName: 'Bob',
+    lastName: 'Saget',
+    enabled: true
+};
 
 describe('UserService', () => {
-    it('getAllUsers', () => {
-        throw new Error();
+    beforeEach(() => {
+        mockApi.reset();
     });
 
-    it('getUserDetails', () => {
-        throw new Error();
+    it('getAllUsers', async () => {
+        const payload = `
+                query {
+                    users {
+                        id
+                        email
+                        firstName
+                        lastName
+                    }
+                }
+            `;
+        const data: UserList = {
+            users: [
+                user
+            ]
+        };
+        const responseData: GraphQLQueryResponse<UserList> = {
+            data
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserList> = await getAllUsers();
+        expect(result).toEqualRight(data);
+    });
+
+    it('getUserDetails', async () => {
+        const payload = `
+                query {
+                    user(userId: ${userId}) {
+                        id
+                        email
+                        firstName
+                        lastName
+                        enabled
+                    }
+                }
+            `;
+        const responseData: GraphQLQueryResponse<UserDetailsWrapper> = {
+            data: {
+                user
+            }
+        };
+        mockCsrfPreflight(mockApi);
+        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        const result: Either<Error, UserDetails> = await getUserDetails(userId);
+        expect(result).toEqualRight(user);
     });
 
     it('getUserClients', () => {
