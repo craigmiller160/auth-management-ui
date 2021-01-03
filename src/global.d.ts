@@ -17,17 +17,4 @@
  */
 
 import '@relmify/jest-fp-ts';
-import '@craigmiller160/jest-matchers-common';
-
-beforeEach(() => {
-    // @ts-ignore
-    delete window.location;
-    // @ts-ignore
-    window.location = {
-        assign: jest.fn(),
-        pathname: '/',
-        search: '',
-        hash: '',
-        href: ''
-    };
-});
+import '@craigmiller160/jest-matchers-common/lib/global';

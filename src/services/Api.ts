@@ -155,7 +155,7 @@ const graphql = async <R>(req: GraphQLRequest): Promise<Either<Error, R>> => {
             const error = new Error(message);
             handleError(error, req.errorMsg, req.suppressError);
             return left(error);
-        } 
+        }
             return right(data.data);
     } catch (ex) {
         handleError(ex, req.errorMsg, req.suppressError);

@@ -107,7 +107,7 @@ export const getClientDetails = async (clientId: number): Promise<Either<Error, 
                     }
                 }
             `,
-            errorMsg: ''
+            errorMsg: `Error getting client ${clientId}`
         }),
         map((wrapper: ClientDetailsWrapper) => wrapper.client)
     );

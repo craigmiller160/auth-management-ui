@@ -16,18 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@relmify/jest-fp-ts';
-import '@craigmiller160/jest-matchers-common';
+import MockAdapter from 'axios-mock-adapter';
+import { GraphQLQueryResponse } from '../../src/types/graphApi';
 
-beforeEach(() => {
-    // @ts-ignore
-    delete window.location;
-    // @ts-ignore
-    window.location = {
-        assign: jest.fn(),
-        pathname: '/',
-        search: '',
-        hash: '',
-        href: ''
-    };
-});
+// TODO move to ajax-api library test-utils
+export const mockAndValidateGraphQL = <R>(
+    mockApi: MockAdapter, uri: string, payload: string, responseData: GraphQLQueryResponse<R>
+) =>
+    mockApi.onPost(uri)
+        .reply((config) => {
+            expect(config.data).stringsEqualIgnoreWhitespace(payload);
+            return [
+                200,
+                responseData
+            ];
+        });
