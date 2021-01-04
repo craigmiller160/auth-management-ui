@@ -45,13 +45,8 @@ export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
 
 export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
     pipe(
-        await api.getRaw<AuthUser>({
+        await api.get<AuthUser>({
             uri: '/oauth/user',
-            config: {
-                headers: {
-                    'x-csrf-token': 'fetch'
-                }
-            },
             errorMsg: 'Error getting authenticated user',
             suppressError: (ex: Error) => {
                 if (isAxiosError(ex)) {
@@ -59,18 +54,5 @@ export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
                 }
                 return false;
             }
-        }),
-        bimap((error: Error) => {
-            if (isAxiosError(error)) {
-                const csrfToken = error.response?.headers?.['x-csrf-token'];
-                const csrfTokenOption = fromNullable(csrfToken);
-                store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
-            }
-            return error;
-        }, (res: AxiosResponse<AuthUser>) => {
-            const csrfToken = res.headers['x-csrf-token'];
-            const csrfTokenOption = fromNullable(csrfToken);
-            store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
-            return res.data;
         })
     );
