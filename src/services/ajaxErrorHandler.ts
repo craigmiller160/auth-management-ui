@@ -1,6 +1,5 @@
 import { DefaultErrorHandler } from '@craigmiller160/ajax-api-fp-ts/';
 import MessageBuilder from '../utils/MessageBuilder';
-import { isAxiosError } from './Api'; // TODO remove this
 import store from '../store';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 import { AxiosError, AxiosResponse } from 'axios';
