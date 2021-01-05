@@ -18,15 +18,14 @@
 
 import { bimap, Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { AxiosResponse } from 'axios';
-import { fromNullable } from 'fp-ts/es6/Option';
 import api, { isAxiosError } from './Api';
+import ajaxApi from './AjaxApi';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
-import store from '../store';
-import authSlice from '../store/auth/slice';
+import { TaskEither } from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
 
-export const logout = (): Promise<Either<Error, void>> =>
-    api.get<void>({
+export const logout = (): TaskEither<Error, AxiosResponse<void>> =>
+    ajaxApi.get<void>({
         uri: '/oauth/logout',
         errorMsg: 'Error logging out'
     });
