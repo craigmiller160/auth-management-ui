@@ -21,6 +21,7 @@ import { Either, isLeft, isRight, Right } from 'fp-ts/es6/Either';
 import { MockStore } from 'redux-mock-store';
 import { Option, some } from 'fp-ts/es6/Option';
 import { instance } from '../../src/services/Api';
+import ajaxApi from '../../src/services/AjaxApi';
 import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import store from '../../src/store';
 import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
@@ -34,6 +35,7 @@ jest.mock('../../src/store', () => {
 });
 
 const mockApi = new MockAdapter(instance);
+const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const mockStore: MockStore<{ auth: { csrfToken: Option<string>; }; }> = store as MockStore;
 
 const authUser: AuthUser = {
@@ -56,9 +58,9 @@ describe('AuthService', () => {
     });
 
     it('logout', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/logout')
+        mockAjaxApi.onGet('/auth-manage-ui/api/oauth/logout')
             .reply(200);
-        const result = await logout();
+        const result = await logout()();
         expect(isRight(result)).toEqual(true);
     });
 
@@ -75,50 +77,9 @@ describe('AuthService', () => {
 
     it('getAuthUser', async () => {
         mockApi.onGet('/auth-manage-ui/api/oauth/user')
-            .reply((config) => {
-                expect(config.headers['x-csrf-token']).toEqual('fetch');
-                return [
-                    200,
-                    authUser,
-                    {
-                        'x-csrf-token': csrfToken
-                    }
-                ];
-            });
+            .reply(200, authUser);
         const result: Either<Error, AuthUser> = await getAuthUser();
         expect(isRight(result)).toEqual(true);
         expect((result as Right<AuthUser>).right).toEqual(authUser);
-        expect(mockStore.getActions()).toEqual([
-            {
-                type: 'auth/setCsrfToken',
-                payload: some(csrfToken)
-            }
-        ]);
-    });
-
-    it('getAuthUser set CSRF on failure', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/user')
-            .reply((config) => {
-                expect(config.headers['x-csrf-token']).toEqual('fetch');
-                return [
-                    400,
-                    authUser,
-                    {
-                        'x-csrf-token': csrfToken
-                    }
-                ];
-            });
-        const result: Either<Error, AuthUser> = await getAuthUser();
-        expect(isLeft(result)).toEqual(true);
-        expect(mockStore.getActions()).toEqual([
-            {
-                type: 'alert/showErrorAlert',
-                payload: 'Error getting authenticated user Status: 400'
-            },
-            {
-                type: 'auth/setCsrfToken',
-                payload: some(csrfToken)
-            }
-        ]);
     });
 });

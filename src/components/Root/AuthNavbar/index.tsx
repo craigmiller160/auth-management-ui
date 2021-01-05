@@ -42,7 +42,7 @@ const AuthNavbar = () => {
     ];
 
     const doLogout = async () => {
-        await logout();
+        await logout()();
         dispatch(authSlice.actions.setUserData(none));
     };
 
