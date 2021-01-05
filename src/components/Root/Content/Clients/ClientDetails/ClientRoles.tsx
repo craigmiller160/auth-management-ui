@@ -33,6 +33,7 @@ import './ClientRoles.scss';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
+import * as TE from 'fp-ts/es6/TaskEither';
 
 const ROLE_PREFIX = 'ROLE_';
 
@@ -89,7 +90,7 @@ const ClientRoles = (props: Props) => {
         });
     };
 
-    const saveRole = async (value: string) => {
+    const saveRole = (value: string) => {
         const roleName = `${ROLE_PREFIX}${value}`;
         const roleId = state.selectedRoleIndex >= 0 ? state.roles[state.selectedRoleIndex].id : 0;
         const role = {
@@ -105,15 +106,15 @@ const ClientRoles = (props: Props) => {
             action = () => createRole(state.clientId, role);
         }
         pipe(
-            await action(),
-            map(() => {
+            action(),
+            TE.map(() => {
                 setState((draft) => {
                     draft.selectedRoleIndex = -1;
                     draft.showRoleDialog = false;
                 });
                 loadClientRoles();
             })
-        );
+        )();
     };
 
     const cancelRoleDialog = () =>
