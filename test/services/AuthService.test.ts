@@ -17,10 +17,9 @@
  */
 
 import MockAdapter from 'axios-mock-adapter';
-import { Either, isLeft, isRight, Right } from 'fp-ts/es6/Either';
+import { Either, isRight, Right } from 'fp-ts/es6/Either';
 import { MockStore } from 'redux-mock-store';
-import { Option, some } from 'fp-ts/es6/Option';
-import { instance } from '../../src/services/Api';
+import { Option } from 'fp-ts/es6/Option';
 import ajaxApi from '../../src/services/AjaxApi';
 import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import store from '../../src/store';
@@ -35,7 +34,6 @@ jest.mock('../../src/store', () => {
     return theMockStore;
 });
 
-const mockApi = new MockAdapter(instance);
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const mockStore: MockStore<{ auth: { csrfToken: Option<string>; }; }> = store as MockStore;
 
@@ -55,7 +53,7 @@ const csrfToken = 'CSRF';
 describe('AuthService', () => {
     beforeEach(() => {
         mockStore.clearActions();
-        mockApi.reset();
+        mockAjaxApi.reset();
     });
 
     it('logout', async () => {
@@ -76,9 +74,9 @@ describe('AuthService', () => {
     });
 
     it('getAuthUser', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/user')
+        mockAjaxApi.onGet('/auth-manage-ui/api/oauth/user')
             .reply(200, authUser);
-        const result: Either<Error, AuthUser> = await getAuthUser();
+        const result: Either<Error, AuthUser> = await getAuthUser()();
         expect(isRight(result)).toEqual(true);
         expect((result as Right<AuthUser>).right).toEqual(authUser);
     });
