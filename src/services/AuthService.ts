@@ -16,10 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { bimap, Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import api, { isAxiosError } from './Api';
 import ajaxApi from './AjaxApi';
+import { isAxiosError } from '@craigmiller160/ajax-api-fp-ts';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { AxiosResponse } from 'axios';
@@ -43,9 +42,9 @@ export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
         })
     );
 
-export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
+export const getAuthUser = (): TE.TaskEither<Error, AuthUser> =>
     pipe(
-        await api.get<AuthUser>({
+        ajaxApi.get<AuthUser>({
             uri: '/oauth/user',
             errorMsg: 'Error getting authenticated user',
             suppressError: (ex: Error) => {
@@ -54,5 +53,6 @@ export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
                 }
                 return false;
             }
-        })
+        }),
+        TE.map((res: AxiosResponse<AuthUser>) => res.data)
     );
