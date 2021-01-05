@@ -1044,9 +1044,9 @@
 "@craigmiller160/ajax-api-fp-ts@file:.yalc/@craigmiller160/ajax-api-fp-ts":
   version "1.0.0-beta"
   dependencies:
-    "@craigmiller160/ajax-api" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-81bd2f3e-1a72-4d09-9d22-3165ede3de52-1609805871060/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/ajax-api"
-    "@craigmiller160/jest-matchers-common" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-81bd2f3e-1a72-4d09-9d22-3165ede3de52-1609805871060/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/jest-matchers-common"
-    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-81bd2f3e-1a72-4d09-9d22-3165ede3de52-1609805871060/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/react-web-config"
+    "@craigmiller160/ajax-api" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-89f84f0b-9e97-4a84-8258-19c6dd63e1fa-1609806819277/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/ajax-api"
+    "@craigmiller160/jest-matchers-common" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-89f84f0b-9e97-4a84-8258-19c6dd63e1fa-1609806819277/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/jest-matchers-common"
+    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-ajax-api-fp-ts-1.0.0-beta-89f84f0b-9e97-4a84-8258-19c6dd63e1fa-1609806819277/node_modules/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/react-web-config"
 
 "@craigmiller160/ajax-api@file:.yalc/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/ajax-api":
   version "1.1.0-beta"
@@ -1056,12 +1056,12 @@
 "@craigmiller160/jest-matchers-common@file:.yalc/@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/jest-matchers-common":
   version "1.0.0-beta"
   dependencies:
-    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-jest-matchers-common-1.0.0-beta-2777c526-f67f-4553-92c5-200c18b53dd6-1609805871067/node_modules/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
+    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-jest-matchers-common-1.0.0-beta-74469b79-2d30-4cc8-ba26-09cf34d9ab52-1609806819282/node_modules/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
 
 "@craigmiller160/jest-matchers-common@file:.yalc/@craigmiller160/jest-matchers-common":
   version "1.0.0-beta"
   dependencies:
-    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-jest-matchers-common-1.0.0-beta-a0913e93-2a18-4096-b3a9-906f9d51fae4-1609805871434/node_modules/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
+    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-jest-matchers-common-1.0.0-beta-8ee36ee7-6783-46c9-b6f0-77972623bbf9-1609806819659/node_modules/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
 
 "@craigmiller160/react-material-ui-common@^1.1.0":
   version "1.1.0"
