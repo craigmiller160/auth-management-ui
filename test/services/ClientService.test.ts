@@ -114,7 +114,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientListResponse> = await getAllClients();
+        const result: Either<Error, ClientListResponse> = await getAllClients()();
         expect(result).toEqualRight(data);
     });
 

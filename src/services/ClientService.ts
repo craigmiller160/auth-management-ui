@@ -41,20 +41,24 @@ import {
     UpdateClientWrapper
 } from '../types/graphApi';
 import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 
-export const getAllClients = (): Promise<Either<Error, ClientListResponse>> =>
-    api.graphql<ClientListResponse>({
-        payload: `
-            query {
-                clients {
-                    id
-                    name
-                    clientKey
+export const getAllClients = (): TE.TaskEither<Error, ClientListResponse> =>
+    pipe(
+        ajaxApi.graphql<ClientListResponse>({
+            payload: `
+                query {
+                    clients {
+                        id
+                        name
+                        clientKey
+                    }
                 }
-            }
-        `,
-        errorMsg: 'Error getting all userClients'
-    });
+            `,
+            errorMsg: 'Error getting all userClients'
+        }),
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<ClientListResponse>>) => res.data.data)
+    );
 
 export const getFullClientDetails = async (clientId: number): Promise<Either<Error, FullClientDetails>> =>
     pipe(
