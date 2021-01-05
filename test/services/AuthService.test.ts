@@ -25,6 +25,7 @@ import ajaxApi from '../../src/services/AjaxApi';
 import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import store from '../../src/store';
 import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
+import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 jest.mock('../../src/store', () => {
     const createMockStore = jest.requireActual('redux-mock-store').default;
@@ -65,11 +66,10 @@ describe('AuthService', () => {
     });
 
     it('login', async () => {
-        mockApi.onOptions('/auth-manage-ui/api/oauth/authcode/login')
-            .reply(200, '', {});
-        mockApi.onPost('/auth-manage-ui/api/oauth/authcode/login')
+        mockCsrfPreflight(mockAjaxApi, '/auth-manage-ui/api/oauth/authcode/login');
+        mockAjaxApi.onPost('/auth-manage-ui/api/oauth/authcode/login')
             .reply(200, authCodeLogin);
-        const result = await login();
+        const result = await login()();
         expect(isRight(result)).toEqual(true);
         expect((result as Right<AuthCodeLogin>).right).toEqual(authCodeLogin);
         expect(window.location.assign).toHaveBeenCalledWith(authCodeLogin.url);

@@ -50,7 +50,7 @@ const AuthNavbar = () => {
         <Navbar
             isAuth={ isAuth }
             showAuthBtn={ hasChecked }
-            login={ login }
+            login={ () => login()() }
             logout={ doLogout }
             title="OAuth Management"
             items={ items }

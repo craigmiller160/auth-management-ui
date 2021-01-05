@@ -21,22 +21,23 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import api, { isAxiosError } from './Api';
 import ajaxApi from './AjaxApi';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
-import { TaskEither } from 'fp-ts/es6/TaskEither';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { AxiosResponse } from 'axios';
 
-export const logout = (): TaskEither<Error, AxiosResponse<void>> =>
+export const logout = (): TE.TaskEither<Error, AxiosResponse<void>> =>
     ajaxApi.get<void>({
         uri: '/oauth/logout',
         errorMsg: 'Error logging out'
     });
 
-export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
+export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
     pipe(
-        await api.post<void, AuthCodeLogin>({
+        ajaxApi.post<void, AuthCodeLogin>({
             uri: '/oauth/authcode/login',
             errorMsg: 'Error getting login URL'
         }),
-        map((loginData: AuthCodeLogin) => {
+        TE.map((res: AxiosResponse<AuthCodeLogin>) => res.data),
+        TE.map((loginData: AuthCodeLogin) => {
             window.location.assign(loginData.url);
             return loginData;
         })
