@@ -47,9 +47,9 @@ export const createRole = (clientId: number, role: ClientRole): TE.TaskEither<Er
         TE.map((res: AxiosResponse<GraphQLQueryResponse<CreateRoleWrapper>>) => res.data.data.createRole)
     );
 
-export const updateRole = async (clientId: number, roleId: number, role: ClientRole): Promise<Either<Error, Role>> =>
+export const updateRole = (clientId: number, roleId: number, role: ClientRole): TE.TaskEither<Error, Role> =>
     pipe(
-        await api.graphql<UpdateRoleWrapper>({
+        ajaxApi.graphql<UpdateRoleWrapper>({
             payload: `
                 mutation {
                     updateRole(roleId: ${roleId}, role: {
@@ -64,7 +64,7 @@ export const updateRole = async (clientId: number, roleId: number, role: ClientR
             `,
             errorMsg: `Error updating role ${roleId} for client ${clientId}`
         }),
-        map((wrapper: UpdateRoleWrapper) => wrapper.updateRole)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) => res.data.data.updateRole)
     );
 
 export const deleteRole = async (roleId: number): Promise<Either<Error, Role>> =>
