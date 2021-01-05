@@ -152,18 +152,18 @@ const ClientRoles = (props: Props) => {
         return '';
     };
 
-    const doDeleteRole = async () => {
+    const doDeleteRole = () => {
         const selectedRole = state.roles[state.selectedRoleIndex];
         setState((draft) => {
             draft.showDeleteDialog = false;
             draft.selectedRoleIndex = -1;
         });
         pipe(
-            await deleteRole(selectedRole.id),
-            map(() => {
+            deleteRole(selectedRole.id),
+            TE.map(() => {
                 loadClientRoles();
             })
-        );
+        )();
     };
 
     const hideDeleteDialog = () =>
