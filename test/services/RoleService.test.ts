@@ -18,7 +18,6 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
-import { instance } from '../../src/services/Api';
 import ajaxApi from '../../src/services/AjaxApi';
 import { ClientRole } from '../../src/types/client';
 import {
@@ -29,9 +28,8 @@ import {
 } from '../../src/types/graphApi';
 import { createRole, deleteRole, updateRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
-import { mockCsrfPreflight, mockAndValidateGraphQL } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
-const mockApi = new MockAdapter(instance);
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 
 const role: ClientRole = {
@@ -42,7 +40,7 @@ const clientId = 1;
 
 describe('RoleService', () => {
     beforeEach(() => {
-        mockApi.reset();
+        mockAjaxApi.reset();
     });
 
     it('createRole', async () => {
@@ -131,13 +129,13 @@ describe('RoleService', () => {
                 }
             }
         };
-        mockCsrfPreflight(mockApi, '/graphql');
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
         mockAndValidateGraphQL({
-            mockApi,
+            mockApi: mockAjaxApi,
             payload,
             responseData
         });
-        const result: Either<Error, Role> = await deleteRole(role.id);
+        const result: Either<Error, Role> = await deleteRole(role.id)();
         expect(result).toEqualRight({
             ...role,
             clientId

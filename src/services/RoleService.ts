@@ -67,9 +67,9 @@ export const updateRole = (clientId: number, roleId: number, role: ClientRole): 
         TE.map((res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) => res.data.data.updateRole)
     );
 
-export const deleteRole = async (roleId: number): Promise<Either<Error, Role>> =>
+export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
     pipe(
-        await api.graphql<DeleteRoleWrapper>({
+        ajaxApi.graphql<DeleteRoleWrapper>({
             payload: `
                 mutation {
                     deleteRole(roleId: ${roleId}) {
@@ -81,5 +81,5 @@ export const deleteRole = async (roleId: number): Promise<Either<Error, Role>> =
             `,
             errorMsg: `Error deleting role ${roleId}`
         }),
-        map((wrapper: DeleteRoleWrapper) => wrapper.deleteRole)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<DeleteRoleWrapper>>) => res.data.data.deleteRole)
     );
