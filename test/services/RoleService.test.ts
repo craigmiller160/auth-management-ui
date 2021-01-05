@@ -18,6 +18,7 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
+import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import ajaxApi from '../../src/services/AjaxApi';
 import { ClientRole } from '../../src/types/client';
 import {
@@ -28,7 +29,6 @@ import {
 } from '../../src/types/graphApi';
 import { createRole, deleteRole, updateRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
-import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 

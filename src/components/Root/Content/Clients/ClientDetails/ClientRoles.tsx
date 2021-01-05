@@ -25,6 +25,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import { map } from 'fp-ts/es6/Either';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { nanoid } from 'nanoid';
 import List, { Item } from '../../../../ui/List';
 import { ClientRole } from '../../../../../types/client';
@@ -33,7 +34,6 @@ import './ClientRoles.scss';
 import { createRole, deleteRole, updateRole } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
-import * as TE from 'fp-ts/es6/TaskEither';
 
 const ROLE_PREFIX = 'ROLE_';
 

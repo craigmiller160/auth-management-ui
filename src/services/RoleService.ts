@@ -16,21 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import api from './Api';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import ajaxApi from './AjaxApi';
 import { ClientRole } from '../types/client';
 import { Role } from '../types/role';
 import { CreateRoleWrapper, DeleteRoleWrapper, UpdateRoleWrapper } from '../types/graphApi';
-import * as TE from 'fp-ts/es6/TaskEither';
-import { AxiosResponse } from 'axios';
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 
 export const createRole = (clientId: number, role: ClientRole): TE.TaskEither<Error, Role> =>
     pipe(
         ajaxApi.graphql<CreateRoleWrapper>({
-            payload:  `
+            payload: `
                 mutation {
                     createRole(role: {
                         name: "${role.name}",
