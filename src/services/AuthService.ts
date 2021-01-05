@@ -17,11 +17,11 @@
  */
 
 import { pipe } from 'fp-ts/es6/pipeable';
-import ajaxApi from './AjaxApi';
 import { isAxiosError } from '@craigmiller160/ajax-api-fp-ts';
-import { AuthCodeLogin, AuthUser } from '../types/auth';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { AxiosResponse } from 'axios';
+import { AuthCodeLogin, AuthUser } from '../types/auth';
+import ajaxApi from './AjaxApi';
 
 export const logout = (): TE.TaskEither<Error, AxiosResponse<void>> =>
     ajaxApi.get<void>({

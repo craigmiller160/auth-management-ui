@@ -1,19 +1,19 @@
 import { DefaultErrorHandler } from '@craigmiller160/ajax-api-fp-ts/';
-import MessageBuilder from '../utils/MessageBuilder';
-import store from '../store';
 import { showErrorReduxAlert } from '@craigmiller160/react-material-ui-common';
 import { AxiosError, AxiosResponse } from 'axios';
+import { none } from 'fp-ts/es6/Option';
+import MessageBuilder from '../utils/MessageBuilder';
+import store from '../store';
 import { ErrorResponse } from '../types/api';
 import authSlice from '../store/auth/slice';
-import { none } from 'fp-ts/es6/Option';
 
 const isErrorResponse = (data: any): data is ErrorResponse =>
     data.status !== undefined && data.message !== undefined;
 
 const getFullErrorResponseMessage = (errorMsg: string, response: AxiosResponse) => {
+    const { status } = response;
     if (isErrorResponse(response.data)) {
-        const message = response.data.message;
-        const status = response.status;
+        const { message } = response.data;
         return new MessageBuilder(errorMsg)
             .append(`Status: ${status}`)
             .append(`Message: ${message}`)

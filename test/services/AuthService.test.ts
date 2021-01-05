@@ -20,11 +20,11 @@ import MockAdapter from 'axios-mock-adapter';
 import { Either, isRight, Right } from 'fp-ts/es6/Either';
 import { MockStore } from 'redux-mock-store';
 import { Option } from 'fp-ts/es6/Option';
+import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import ajaxApi from '../../src/services/AjaxApi';
 import { getAuthUser, login, logout } from '../../src/services/AuthService';
 import store from '../../src/store';
 import { AuthCodeLogin, AuthUser } from '../../src/types/auth';
-import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 jest.mock('../../src/store', () => {
     const createMockStore = jest.requireActual('redux-mock-store').default;
@@ -47,8 +47,6 @@ const authUser: AuthUser = {
 const authCodeLogin: AuthCodeLogin = {
     url: 'theUrl'
 };
-
-const csrfToken = 'CSRF';
 
 describe('AuthService', () => {
     beforeEach(() => {
