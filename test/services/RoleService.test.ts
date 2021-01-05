@@ -19,6 +19,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
 import { instance } from '../../src/services/Api';
+import ajaxApi from '../../src/services/AjaxApi';
 import { ClientRole } from '../../src/types/client';
 import {
     CreateRoleWrapper,
@@ -28,10 +29,10 @@ import {
 } from '../../src/types/graphApi';
 import { createRole, deleteRole, updateRole } from '../../src/services/RoleService';
 import { Role } from '../../src/types/role';
-import { mockCsrfPreflight } from './mockCsrf';
-import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
+import { mockCsrfPreflight, mockAndValidateGraphQL } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 const mockApi = new MockAdapter(instance);
+const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 
 const role: ClientRole = {
     id: 1,
@@ -65,9 +66,13 @@ describe('RoleService', () => {
                 }
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, Role> = await createRole(clientId, role);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, Role> = await createRole(clientId, role)();
         expect(result).toEqualRight({
             ...role,
             clientId
@@ -95,8 +100,12 @@ describe('RoleService', () => {
                 }
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        mockCsrfPreflight(mockApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi,
+            payload,
+            responseData
+        });
         const result: Either<Error, Role> = await updateRole(clientId, role.id, role);
         expect(result).toEqualRight({
             ...role,
@@ -122,8 +131,12 @@ describe('RoleService', () => {
                 }
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
+        mockCsrfPreflight(mockApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi,
+            payload,
+            responseData
+        });
         const result: Either<Error, Role> = await deleteRole(role.id);
         expect(result).toEqualRight({
             ...role,
