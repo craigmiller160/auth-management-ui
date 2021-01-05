@@ -36,6 +36,7 @@ import {
 import { mockCsrfPreflight } from './mockCsrf';
 import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import { instance } from '../../src/services/Api';
+import ajaxApi from '../../src/services/AjaxApi';
 import {
     addUserToClient,
     createClient, deleteClient, generateGuid,
@@ -46,6 +47,7 @@ import {
 } from '../../src/services/ClientService';
 
 const mockApi = new MockAdapter(instance);
+const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const clientId = 1;
 const userId = 1;
 const client: ClientDetails = {
@@ -86,6 +88,7 @@ const clientUsers = [
 describe('ClientService', () => {
     beforeEach(() => {
         mockApi.reset();
+        mockAjaxApi.reset();
     });
     it('getAllClients', async () => {
         const payload = `
@@ -395,7 +398,7 @@ describe('ClientService', () => {
         };
         mockApi.onGet(`/clients/auth/${clientId}`)
             .reply(200, authDetails);
-        const result: Either<Error, ClientAuthDetails> = await getAuthDetailsForClient(clientId);
+        const result: Either<Error, ClientAuthDetails> = await getAuthDetailsForClient(clientId)();
         expect(result).toEqualRight(authDetails);
     });
 });

@@ -18,7 +18,9 @@
 
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
 import api from './Api';
+import ajaxApi from './AjaxApi';
 import {
     ClientAuthDetails,
     ClientDetails,
@@ -38,6 +40,7 @@ import {
     RemoveUserFromClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
+import { AxiosResponse } from 'axios';
 
 export const getAllClients = (): Promise<Either<Error, ClientListResponse>> =>
     api.graphql<ClientListResponse>({
@@ -269,8 +272,11 @@ export const addUserToClient = async (userId: number, clientId: number): Promise
         map((wrapper: AddUserToClientWrapper) => wrapper.addUserToClient)
     );
 
-export const getAuthDetailsForClient = (clientId: number): Promise<Either<Error, ClientAuthDetails>> =>
-    api.get<ClientAuthDetails>({
-        uri: `/clients/auth/${clientId}`,
-        errorMsg: `Error getting auth details for client ${clientId}`
-    });
+export const getAuthDetailsForClient = (clientId: number): TE.TaskEither<Error, ClientAuthDetails> =>
+    pipe(
+        ajaxApi.get<ClientAuthDetails>({
+            uri: `/clients/auth/${clientId}`,
+            errorMsg: `Error getting auth details for client ${clientId}`
+        }),
+        TE.map((res: AxiosResponse<ClientAuthDetails>) => res.data)
+    );

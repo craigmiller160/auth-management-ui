@@ -24,6 +24,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import LockOpen from '@material-ui/icons/LockOpen';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { nanoid } from 'nanoid';
 import { UserAuthDetails } from '../../../../../types/user';
 import { getAuthDetailsForClient } from '../../../../../services/ClientService';
@@ -51,8 +52,8 @@ const ClientAuths = (props: Props) => {
 
     const loadAuthDetails = useCallback(async () =>
         pipe(
-            await getAuthDetailsForClient(state.clientId),
-            map((clientAuthDetails) => {
+            getAuthDetailsForClient(state.clientId),
+            TE.map((clientAuthDetails) => {
                 setState((draft) => {
                     draft.clientName = clientAuthDetails.clientName;
                     draft.userAuthDetails = clientAuthDetails.userAuthDetails;
