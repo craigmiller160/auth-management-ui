@@ -253,7 +253,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientDetails> = await updateClient(clientId, clientInput);
+        const result: Either<Error, ClientDetails> = await updateClient(clientId, clientInput)();
         expect(result).toEqualRight(data.updateClient);
     });
 
@@ -289,7 +289,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientDetails> = await createClient(clientInput);
+        const result: Either<Error, ClientDetails> = await createClient(clientInput)();
         expect(result).toEqualRight(client);
     });
 

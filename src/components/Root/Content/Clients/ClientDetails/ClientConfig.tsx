@@ -100,10 +100,10 @@ const ClientConfig = (props: Props) => {
         defaultValues: defaultClientForm
     });
 
-    const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
+    const doSubmit = (action: () => TE.TaskEither<Error, ClientDetails>) =>
         pipe(
-            await action(),
-            map((client) => {
+            action(),
+            TE.map((client) => {
                 setState((draft) => {
                     draft.clientId = client.id;
                     draft.redirectUriDirty = false;
@@ -117,8 +117,7 @@ const ClientConfig = (props: Props) => {
                 dispatch(showSuccessReduxAlert(`Successfully saved client ${id}`));
                 history.push(path);
             })
-        );
-    };
+        )();
 
     const onSubmit = (values: ClientForm) => {
         const payload: ClientInput = {
