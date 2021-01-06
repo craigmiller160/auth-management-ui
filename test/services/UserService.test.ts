@@ -326,7 +326,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, Array<UserClient>> = await removeClientFromUser(userId, clientId);
+        const result: Either<Error, Array<UserClient>> = await removeClientFromUser(userId, clientId)();
         expect(result).toEqualRight([ userClient ]);
     });
 
