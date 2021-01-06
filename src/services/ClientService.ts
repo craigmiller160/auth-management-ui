@@ -16,10 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import * as TE from 'fp-ts/es6/TaskEither';
-import api from './Api';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import ajaxApi from './AjaxApi';
 import {
     ClientAuthDetails,
@@ -40,8 +40,6 @@ import {
     RemoveUserFromClientWrapper,
     UpdateClientWrapper
 } from '../types/graphApi';
-import { AxiosResponse } from 'axios';
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 
 export const getAllClients = (): TE.TaskEither<Error, ClientListResponse> =>
     pipe(
@@ -252,7 +250,8 @@ export const removeUserFromClient = (userId: number, clientId: number): TE.TaskE
             `,
             errorMsg: `Error removing user ${userId} from client ${clientId}`
         }),
-        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveUserFromClientWrapper>>) => res.data.data.removeUserFromClient)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveUserFromClientWrapper>>) =>
+            res.data.data.removeUserFromClient)
     );
 
 export const addUserToClient = (userId: number, clientId: number): TE.TaskEither<Error, Array<ClientUser>> =>

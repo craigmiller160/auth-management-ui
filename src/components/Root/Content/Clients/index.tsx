@@ -21,7 +21,6 @@ import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
@@ -29,7 +28,6 @@ import { getAllClients } from '../../../../services/ClientService';
 import './Clients.scss';
 import { ClientListItem, ClientListResponse } from '../../../../types/client';
 import Table, { BodyRow } from '../../../ui/Table';
-import { absurd } from 'fp-ts/es6/function';
 
 interface State {
     clients: Array<ClientListItem>;
@@ -48,7 +46,7 @@ const Clients = () => {
         const action = () =>
             pipe(
                 getAllClients(),
-                TE.fold<Error,ClientListResponse,Array<ClientListItem>>(
+                TE.fold<Error, ClientListResponse, Array<ClientListItem>>(
                     (): T.Task<Array<ClientListItem>> => T.of([]),
                     (data: ClientListResponse): T.Task<Array<ClientListItem>> => T.of(data.clients)
                 ),

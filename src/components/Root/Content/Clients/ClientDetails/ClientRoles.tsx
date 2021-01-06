@@ -22,7 +22,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { map } from 'fp-ts/es6/Either';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import * as TE from 'fp-ts/es6/TaskEither';

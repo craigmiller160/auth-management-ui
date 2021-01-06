@@ -21,7 +21,6 @@ import { Prompt, useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
-import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { nanoid } from 'nanoid';
 import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import Language from '@material-ui/icons/Language';
