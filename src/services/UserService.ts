@@ -161,9 +161,9 @@ export const createUser = (user: UserInput): TE.TaskEither<Error, UserDetails> =
         TE.map((res: AxiosResponse<GraphQLQueryResponse<CreateUserWrapper>>) => res.data.data.createUser)
     );
 
-export const deleteUser = async (userId: number): Promise<Either<Error, UserDetails>> =>
+export const deleteUser = (userId: number): TE.TaskEither<Error, UserDetails> =>
     pipe(
-        await api.graphql<DeleteUserWrapper>({
+        ajaxApi.graphql<DeleteUserWrapper>({
             payload: `
                 mutation {
                     deleteUser(userId: ${userId}) {
@@ -177,7 +177,7 @@ export const deleteUser = async (userId: number): Promise<Either<Error, UserDeta
             `,
             errorMsg: `Error deleting user ${userId}`
         }),
-        map((wrapper: DeleteUserWrapper) => wrapper.deleteUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<DeleteUserWrapper>>) => res.data.data.deleteUser)
     );
 
 export const removeClientFromUser = async (userId: number, clientId: number):

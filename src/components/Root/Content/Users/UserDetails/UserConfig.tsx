@@ -141,16 +141,17 @@ const UserConfig = (props: Props) => {
             draft.showDeleteDialog = show;
         });
 
-    const doDelete = async () => {
-        const result = await deleteUser(parseInt(id, 10));
-        if (isRight(result)) {
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/users');
-            dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
-        }
-    };
+    const doDelete = () =>
+        pipe(
+            deleteUser(parseInt(id, 10)),
+            TE.map(() => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                history.push('/users');
+                dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
+            })
+        )();
 
     return (
         <div className="UserConfig">
