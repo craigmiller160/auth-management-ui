@@ -18,6 +18,7 @@
 
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
 import {
     UserAuthDetailsList,
     UserClient,
@@ -28,6 +29,7 @@ import {
     UserRole
 } from '../types/user';
 import api from './Api';
+import ajaxApi from './AjaxApi';
 import {
     AddClientToUserWrapper,
     AddRoleToUserWrapper,
@@ -39,10 +41,13 @@ import {
     UserClientsWrapper,
     UserDetailsWrapper
 } from '../types/graphApi';
+import { TaskEither } from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 
-export const getAllUsers = async (): Promise<Either<Error, UserList>> =>
+export const getAllUsers = (): TaskEither<Error, UserList> =>
     pipe(
-        await api.graphql<UserList>({
+        ajaxApi.graphql<UserList>({
             payload: `
                 query {
                     users {
@@ -54,7 +59,8 @@ export const getAllUsers = async (): Promise<Either<Error, UserList>> =>
                 }
             `,
             errorMsg: 'Error getting all users'
-        })
+        }),
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<UserList>>) => res.data.data)
     );
 
 export const getUserDetails = async (userId: number): Promise<Either<Error, UserDetails>> =>
