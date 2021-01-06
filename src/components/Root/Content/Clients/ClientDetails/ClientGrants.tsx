@@ -30,9 +30,11 @@ import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../
 import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
 import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
-import { UserDetails } from '../../../../../types/user';
+import { UserDetails, UserList } from '../../../../../types/user';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
+import { Simulate } from 'react-dom/test-utils';
+import load = Simulate.load;
 
 interface Props extends IdMatchProps {}
 
@@ -57,8 +59,7 @@ const ClientGrants = (props: Props) => {
         selectedUser: none
     });
 
-    // TODO how to handle that this is combined with the other function?
-    const loadFullClientDetails = useCallback(() =>
+    const loadFullClientDetails = useCallback((): T.Task<Array<ClientUser>> =>
         pipe(
             getFullClientDetails(state.clientId),
             TE.map((fullClientDetails: FullClientDetails): Array<ClientUser> => {
@@ -70,27 +71,35 @@ const ClientGrants = (props: Props) => {
                 return fullClientDetails.users;
             }),
             TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([]))
-        )(), [ state.clientId, setState ]);
+        ), [ state.clientId, setState ]);
 
-    const loadUsers = useCallback(async (clientUsers: Array<ClientUser>) =>
+    const loadUsers = useCallback((clientUsers: Array<ClientUser>) =>
         pipe(
-            await getAllUsers(),
-            map((list) => list.users),
-            map((users) =>
+            getAllUsers(),
+            TE.map((list: UserList) => list.users),
+            TE.map((users: UserDetails[]) => // TODO combine with above function
                 users.filter((user) => {
                     const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
                     return index === -1;
-                })),
-            map((users) =>
-                setState((draft) => {
+                })
+            ),
+            TE.map((users: UserDetails[]) =>
+                setState((draft) => { // TODO see if this can be moved to the end
                     draft.allUsers = users;
-                }))
-        ), [ setState ]);
+                })
+            )
+        ),
+    [ setState ]);
 
-    const loadAll = useCallback(async () => {
-        const clientUsers = await loadFullClientDetails();
-        await loadUsers(clientUsers);
-    }, [ loadFullClientDetails, loadUsers ]);
+    // TODO this one is an absolute mess, try to figure out how to optimize this if it works
+    const loadAll = useCallback(() =>
+        pipe(
+            loadFullClientDetails(),
+            T.map((clientUsers: Array<ClientUser>) => {
+                loadUsers(clientUsers)()
+            })
+        ),
+    [ loadFullClientDetails, loadUsers ]);
 
     const removeUser = async (userId: number) => {
         await removeUserFromClient(userId, state.clientId)();
