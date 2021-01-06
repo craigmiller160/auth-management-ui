@@ -161,7 +161,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, UserDetails> = await getUserDetails(userId);
+        const result: Either<Error, UserDetails> = await getUserDetails(userId)();
         expect(result).toEqualRight(user);
     });
 

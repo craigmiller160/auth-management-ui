@@ -21,6 +21,8 @@ import { Prompt, useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { Either, getOrElse, map } from 'fp-ts/es6/Either';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { useForm } from 'react-hook-form';
 import { isRight } from 'fp-ts/es6/These';
 import { useDispatch } from 'react-redux';
@@ -108,13 +110,12 @@ const UserConfig = (props: Props) => {
     };
 
     useEffect(() => {
-        const action = async () => {
-            const user = pipe(
-                await getUserDetails(state.userId),
-                getOrElse((): UserDetails => defaultUser)
+        const action = () =>
+            pipe(
+                getUserDetails(state.userId),
+                TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
+                T.map((user) => reset(user))
             );
-            reset(user);
-        };
 
         if (state.userId > 0) {
             action();
