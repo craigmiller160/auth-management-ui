@@ -59,7 +59,7 @@ const ClientAuths = (props: Props) => {
                     draft.userAuthDetails = clientAuthDetails.userAuthDetails;
                 });
             })
-        ), [ state.clientId, setState ]);
+        )(), [ state.clientId, setState ]);
 
     const doRevoke = async (userId: number) =>
         pipe(

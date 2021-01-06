@@ -21,11 +21,13 @@ import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse, map } from 'fp-ts/es6/Either';
 import Grid from '@material-ui/core/Grid';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
-import { ClientRole, ClientUser } from '../../../../../types/client';
+import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
 import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
 import { UserDetails } from '../../../../../types/user';
@@ -55,10 +57,11 @@ const ClientGrants = (props: Props) => {
         selectedUser: none
     });
 
-    const loadFullClientDetails = useCallback(async () =>
+    // TODO how to handle that this is combined with the other function?
+    const loadFullClientDetails = useCallback(() =>
         pipe(
-            await getFullClientDetails(state.clientId),
-            map((fullClientDetails) => {
+            getFullClientDetails(state.clientId),
+            TE.map((fullClientDetails: FullClientDetails): Array<ClientUser> => {
                 setState((draft) => {
                     draft.clientName = fullClientDetails.name;
                     draft.allRoles = fullClientDetails.roles;
@@ -66,8 +69,8 @@ const ClientGrants = (props: Props) => {
                 });
                 return fullClientDetails.users;
             }),
-            getOrElse((): Array<ClientUser> => [])
-        ), [ state.clientId, setState ]);
+            TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([]))
+        )(), [ state.clientId, setState ]);
 
     const loadUsers = useCallback(async (clientUsers: Array<ClientUser>) =>
         pipe(

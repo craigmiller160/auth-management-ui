@@ -45,7 +45,7 @@ const Clients = () => {
 
     useEffect(() => {
         // TODO super duper test and validate this
-        const action = async () => {
+        const action = () =>
             pipe(
                 getAllClients(),
                 TE.fold<Error,ClientListResponse,Array<ClientListItem>>(
@@ -57,8 +57,7 @@ const Clients = () => {
                         clients
                     });
                 })
-            );
-        };
+            )();
 
         action();
     }, []);
