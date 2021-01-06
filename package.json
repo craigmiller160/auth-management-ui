@@ -3,8 +3,7 @@
   "version": "1.7.0-beta",
   "sideEffects": false,
   "dependencies": {
-    "@craigmiller160/ajax-api-fp-ts": "file:.yalc/@craigmiller160/ajax-api-fp-ts",
-    "@craigmiller160/jest-matchers-common": "file:.yalc/@craigmiller160/jest-matchers-common",
+    "@craigmiller160/ajax-api-fp-ts": "^1.0.0",
     "@craigmiller160/react-material-ui-common": "^1.1.0",
     "@craigmiller160/react-protected-route": "^1.2.0",
     "@material-ui/core": "^4.11.0",
@@ -38,7 +37,8 @@
     "es-abstract": "^1.18.0-next.1"
   },
   "devDependencies": {
-    "@craigmiller160/react-web-config": "file:.yalc/@craigmiller160/react-web-config",
+    "@craigmiller160/jest-matchers-common": "^1.0.0",
+    "@craigmiller160/react-web-config": "^2.7.0",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@types/cucumber": "^6.0.1",
     "@types/cypress-cucumber-preprocessor": "^1.14.1",
