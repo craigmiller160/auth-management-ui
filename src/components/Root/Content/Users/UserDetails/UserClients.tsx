@@ -125,16 +125,19 @@ const UserClients = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = async (clientToAdd: SelectOption<number>) => {
+    const addClientSelect = (clientToAdd: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddClientDialog = false;
         });
         const clientId = clientToAdd.value;
-        const clients = pipe(
-            await addClientToUser(userId, clientId),
-            getOrElse((): Array<UserClient> => [])
-        );
-        updateClients(clients);
+        pipe(
+            addClientToUser(userId, clientId),
+            TE.fold(
+                (): T.Task<UserClient[]> => T.of([]),
+                (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients)
+            ),
+            T.map((clients: UserClient[]) => updateClients(clients))
+        )();
     };
 
     const addClientCancel = () =>
