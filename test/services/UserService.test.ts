@@ -413,7 +413,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId);
+        const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId)();
         expect(result).toEqualRight([ role ]);
     });
 

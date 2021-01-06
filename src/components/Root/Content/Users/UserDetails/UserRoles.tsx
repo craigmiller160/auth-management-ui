@@ -114,17 +114,19 @@ const UserRoles = (props: Props) => {
             draft.showAddRoleDialog = false;
         });
 
-    const addRoleOnSelect = async (selectedRole: SelectOption<number>) => {
+    const addRoleOnSelect = (selectedRole: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddRoleDialog = false;
         });
         const roleId = selectedRole.value;
-
-        const userRoles: Array<UserRole> = pipe(
-            await addRoleToUser(userId, clientId, roleId),
-            eGetOrElse((): Array<UserRole> => [])
-        );
-        updateUserRoles(clientId, userRoles);
+        pipe(
+            addRoleToUser(userId, clientId, roleId),
+            TE.fold(
+                (): T.Task<UserRole[]> => T.of([]),
+                (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
+            ),
+            T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
+        )();
     };
 
     const removeOnConfirm = () => {

@@ -124,7 +124,7 @@ const ClientGrants = (props: Props) => {
         pipe(
             state.selectedUser,
             oMap(async (selectedUser) => {
-                await addRoleToUser(selectedUser.id, state.clientId, roleId);
+                await addRoleToUser(selectedUser.id, state.clientId, roleId)();
                 await loadAll();
                 setState((draft) => {
                     pipe(
