@@ -255,16 +255,18 @@ const ClientConfig = (props: Props) => {
             draft.showDeleteDialog = show;
         });
 
-    const doDelete = async () => {
-        const result = await deleteClient(state.clientId);
-        if (isRight(result)) {
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/clients');
-            dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
-        }
-    };
+    const doDelete = () =>
+        pipe(
+            deleteClient(state.clientId),
+            TE.map((client: ClientDetails): ClientDetails => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                history.push('/clients');
+                dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
+                return client;
+            })
+        )();
 
     return (
         <div id="client-config-page" className="ClientConfig">

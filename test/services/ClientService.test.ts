@@ -316,7 +316,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientDetails> = await deleteClient(clientId);
+        const result: Either<Error, ClientDetails> = await deleteClient(clientId)();
         expect(result).toEqualRight(client);
     });
 
