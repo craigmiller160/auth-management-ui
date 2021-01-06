@@ -93,7 +93,7 @@ const ClientGrants = (props: Props) => {
     }, [ loadFullClientDetails, loadUsers ]);
 
     const removeUser = async (userId: number) => {
-        await removeUserFromClient(userId, state.clientId);
+        await removeUserFromClient(userId, state.clientId)();
         pipe(
             state.selectedUser,
             oMap((selectedUser: ClientUser) => {

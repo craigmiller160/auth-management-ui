@@ -351,7 +351,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientUser[]> = await removeUserFromClient(userId, clientId);
+        const result: Either<Error, ClientUser[]> = await removeUserFromClient(userId, clientId)();
         expect(result).toEqualRight(clientUsers);
     });
 
