@@ -152,7 +152,7 @@ const ClientConfig = (props: Props) => {
             )();
 
         const loadNewClient = async () => {
-            const [ key, secret ] = await Promise.all([ generateGuid(), generateGuid() ]);
+            const [ key, secret ] = await Promise.all([ generateGuid()(), generateGuid()() ]);
             if (isRight(key) && isRight(secret)) {
                 reset({
                     ...defaultClientForm,
@@ -177,21 +177,31 @@ const ClientConfig = (props: Props) => {
         }
     }, [ reset, state.clientId, setState ]);
 
-    const generateClientKey = async () => {
-        const guid = pipe(
-            await generateGuid(),
-            getOrElse((): string => '')
-        );
-        setValue('clientKey', guid);
-    };
+    const generateClientKey = () =>
+        pipe(
+            generateGuid(),
+            TE.fold(
+                (ex: Error) => T.of(''),
+                (guid: string) => T.of(guid)
+            ),
+            T.map((guid: string) => {
+                setValue('clientKey', guid);
+                return guid;
+            })
+        )();
 
-    const generateClientSecret = async () => {
-        const guid = pipe(
-            await generateGuid(),
-            getOrElse((): string => '')
-        );
-        setValue('clientSecret', guid);
-    };
+    const generateClientSecret = () =>
+        pipe(
+            generateGuid(),
+            TE.fold(
+                (ex: Error) => T.of(''),
+                (guid: string) => T.of(guid)
+            ),
+            T.map((guid: string) => {
+                setValue('clientSecret', guid);
+                return guid;
+            })
+        )();
 
     const showRedirectUriDialog = (selectedUri?: string) =>
         setState((draft) => {

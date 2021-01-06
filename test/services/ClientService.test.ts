@@ -323,7 +323,7 @@ describe('ClientService', () => {
     it('generateGuid', async () => {
         mockApi.onGet('/clients/guid')
             .reply(200, 'Success');
-        const result: Either<Error, string> = await generateGuid();
+        const result: Either<Error, string> = await generateGuid()();
         expect(result).toEqualRight('Success');
     });
 

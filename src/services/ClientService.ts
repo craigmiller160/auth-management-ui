@@ -223,11 +223,14 @@ export const deleteClient = (clientId: number): TE.TaskEither<Error, ClientDetai
         TE.map((res: AxiosResponse<GraphQLQueryResponse<DeleteClientWrapper>>) => res.data.data.deleteClient)
     );
 
-export const generateGuid = (): Promise<Either<Error, string>> =>
-    api.get<string>({
-        uri: '/clients/guid',
-        errorMsg: 'Error generating GUID'
-    });
+export const generateGuid = (): TE.TaskEither<Error, string> =>
+    pipe(
+        ajaxApi.get<string>({
+            uri: '/clients/guid',
+            errorMsg: 'Error generating GUID'
+        }),
+        TE.map((res: AxiosResponse<string>) => res.data)
+    );
 
 export const removeUserFromClient = async (userId: number, clientId: number):
     Promise<Either<Error, Array<ClientUser>>> =>
