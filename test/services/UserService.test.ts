@@ -18,6 +18,7 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
+import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { instance } from '../../src/services/Api';
 import ajaxApi from '../../src/services/AjaxApi';
 import {
@@ -30,29 +31,31 @@ import {
     UserRole
 } from '../../src/types/user';
 import {
-    AddClientToUserWrapper, AddRoleToUserWrapper,
-    CreateUserWrapper, DeleteUserWrapper,
-    GraphQLQueryResponse, RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
+    AddClientToUserWrapper,
+    AddRoleToUserWrapper,
+    CreateUserWrapper,
+    DeleteUserWrapper,
+    GraphQLQueryResponse,
+    RemoveClientFromUserWrapper,
+    RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
     UserClientsWrapper,
     UserDetailsWrapper
 } from '../../src/types/graphApi';
 import {
+    addClientToUser,
+    addRoleToUser,
     createUser,
+    deleteUser,
+    getAllUserAuthDetails,
     getAllUsers,
     getUserClients,
     getUserDetails,
-    updateUser,
-    deleteUser,
     removeClientFromUser,
-    addClientToUser,
     removeRoleFromUser,
-    addRoleToUser,
-    getAllUserAuthDetails,
-    revokeUserAuthAccess
+    revokeUserAuthAccess,
+    updateUser
 } from '../../src/services/UserService';
-import { mockCsrfPreflight, mockAndValidateGraphQL } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
-import { mockCsrfToken } from '@craigmiller160/ajax-api-fp-ts/.yalc/@craigmiller160/ajax-api/lib/test-utils';
 
 const mockApi = new MockAdapter(instance);
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);

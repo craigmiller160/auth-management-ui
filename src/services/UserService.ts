@@ -19,6 +19,9 @@
 import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import * as TE from 'fp-ts/es6/TaskEither';
+import { TaskEither } from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import {
     UserAuthDetailsList,
     UserClient,
@@ -41,9 +44,6 @@ import {
     UserClientsWrapper,
     UserDetailsWrapper
 } from '../types/graphApi';
-import { TaskEither } from 'fp-ts/es6/TaskEither';
-import { AxiosResponse } from 'axios';
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 
 export const getAllUsers = (): TaskEither<Error, UserList> =>
     pipe(
@@ -273,7 +273,7 @@ export const getAllUserAuthDetails = (userId: number): TE.TaskEither<Error, User
 
 export const revokeUserAuthAccess = (userId: number, clientId: number): TE.TaskEither<Error, void> =>
     pipe(
-        ajaxApi.post<void,void>({
+        ajaxApi.post<void, void>({
             uri: `/users/auth/${userId}/${clientId}/revoke`,
             errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
         }),

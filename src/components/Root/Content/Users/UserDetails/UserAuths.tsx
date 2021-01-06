@@ -63,8 +63,7 @@ const UserAuths = (props: Props) => {
                 T.map((userAuths: UserAuthDetailsList) =>
                     setState((draft) => {
                         draft.userAuths = userAuths;
-                    })
-                )
+                    }))
             )();
 
         action();
@@ -75,8 +74,7 @@ const UserAuths = (props: Props) => {
             revokeUserAuthAccess(state.userId, clientId),
             TE.map(() =>
                 state.userAuths.authDetails
-                    .filter((auth) => auth.clientId !== clientId)
-            ),
+                    .filter((auth) => auth.clientId !== clientId)),
             TE.fold(
                 (): T.Task<UserAuthDetails[]> => T.of(state.userAuths.authDetails),
                 (authDetails: UserAuthDetails[]): T.Task<UserAuthDetails[]> => T.of(authDetails)
@@ -84,8 +82,7 @@ const UserAuths = (props: Props) => {
             T.map((authDetails: UserAuthDetails[]) =>
                 setState((draft) => {
                     draft.userAuths.authDetails = authDetails;
-                })
-            )
+                }))
         )();
     };
 

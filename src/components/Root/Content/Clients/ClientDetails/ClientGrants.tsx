@@ -25,6 +25,7 @@ import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { Simulate } from 'react-dom/test-utils';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
 import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
@@ -33,7 +34,6 @@ import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../s
 import { UserDetails, UserList } from '../../../../../types/user';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
-import { Simulate } from 'react-dom/test-utils';
 import load = Simulate.load;
 
 interface Props extends IdMatchProps {}
@@ -81,13 +81,11 @@ const ClientGrants = (props: Props) => {
                 users.filter((user) => {
                     const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
                     return index === -1;
-                })
-            ),
+                })),
             TE.map((users: UserDetails[]) =>
                 setState((draft) => { // TODO see if this can be moved to the end
                     draft.allUsers = users;
-                })
-            )
+                }))
         ),
     [ setState ]);
 
@@ -96,7 +94,7 @@ const ClientGrants = (props: Props) => {
         pipe(
             loadFullClientDetails(),
             T.map((clientUsers: Array<ClientUser>) => {
-                loadUsers(clientUsers)()
+                loadUsers(clientUsers)();
             })
         ),
     [ loadFullClientDetails, loadUsers ]);

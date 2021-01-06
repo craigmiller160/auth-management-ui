@@ -18,6 +18,7 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
+import { mockCsrfPreflight, mockAndValidateGraphQL } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import {
     AddUserToClientWrapper,
     ClientDetailsWrapper,
@@ -42,7 +43,6 @@ import {
     getClientWithRoles,
     getFullClientDetails, removeUserFromClient, updateClient
 } from '../../src/services/ClientService';
-import { mockCsrfPreflight, mockAndValidateGraphQL } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const clientId = 1;

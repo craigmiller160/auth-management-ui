@@ -63,10 +63,9 @@ const UserGrants = (props: Props) => {
             T.map((user: UserClientsType) =>
                 setState((draft) => {
                     draft.user = user;
-                })
-            )
-        )
-    , [ state.userId, setState ]);
+                }))
+        ),
+     [ state.userId, setState ]);
 
     const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
         const newSelectedClient = pipe(

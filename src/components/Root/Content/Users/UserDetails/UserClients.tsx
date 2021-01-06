@@ -78,8 +78,7 @@ const UserClients = (props: Props) => {
             T.map((items: ClientListItem[]) =>
                 setState((draft) => {
                     draft.allClients = items;
-                })
-            )
+                }))
         )();
 
         action();
