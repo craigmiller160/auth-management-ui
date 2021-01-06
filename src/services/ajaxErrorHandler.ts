@@ -7,8 +7,8 @@ import store from '../store';
 import { ErrorResponse } from '../types/api';
 import authSlice from '../store/auth/slice';
 
-const isErrorResponse = (data: any): data is ErrorResponse =>
-    data.status !== undefined && data.message !== undefined;
+const isErrorResponse = (data?: any): data is ErrorResponse =>
+    data?.status !== undefined && data?.message !== undefined;
 
 const getFullErrorResponseMessage = (errorMsg: string, response: AxiosResponse) => {
     const { status } = response;
