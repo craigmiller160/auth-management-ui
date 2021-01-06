@@ -262,14 +262,20 @@ export const addRoleToUser = (userId: number, clientId: number, roleId: number):
         TE.map((res: AxiosResponse<GraphQLQueryResponse<AddRoleToUserWrapper>>) => res.data.data.addRoleToUser)
     );
 
-export const getAllUserAuthDetails = async (userId: number): Promise<Either<Error, UserAuthDetailsList>> =>
-    api.get<UserAuthDetailsList>({
-        uri: `/users/auth/${userId}`,
-        errorMsg: `Error getting all auth details for user ${userId}`
-    });
+export const getAllUserAuthDetails = (userId: number): TE.TaskEither<Error, UserAuthDetailsList> =>
+    pipe(
+        ajaxApi.get<UserAuthDetailsList>({
+            uri: `/users/auth/${userId}`,
+            errorMsg: `Error getting all auth details for user ${userId}`
+        }),
+        TE.map((res: AxiosResponse<UserAuthDetailsList>) => res.data)
+    );
 
-export const revokeUserAuthAccess = async (userId: number, clientId: number): Promise<Either<Error, void>> =>
-    api.post<void, void>({
-        uri: `/users/auth/${userId}/${clientId}/revoke`,
-        errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
-    });
+export const revokeUserAuthAccess = (userId: number, clientId: number): TE.TaskEither<Error, void> =>
+    pipe(
+        ajaxApi.post<void,void>({
+            uri: `/users/auth/${userId}/${clientId}/revoke`,
+            errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
+        }),
+        TE.map((res: AxiosResponse<void>) => res.data)
+    );

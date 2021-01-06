@@ -420,7 +420,7 @@ describe('UserService', () => {
     it('getAllUserAuthDetails', async () => {
         mockApi.onGet(`/users/auth/${userId}`)
             .reply(200, userAuthDetailsList);
-        const result: Either<Error, UserAuthDetailsList> = await getAllUserAuthDetails(userId);
+        const result: Either<Error, UserAuthDetailsList> = await getAllUserAuthDetails(userId)();
         expect(result).toEqualRight(userAuthDetailsList);
     });
 
@@ -429,7 +429,7 @@ describe('UserService', () => {
             .reply(200);
         // TODO move this one into re-usable function in library
         mockCsrfPreflight(mockAjaxApi, `/users/auth/${userId}/${clientId}/revoke`);
-        const result: Either<Error, void> = await revokeUserAuthAccess(userId, clientId);
+        const result: Either<Error, void> = await revokeUserAuthAccess(userId, clientId)();
         expect(result).toBeRight();
     });
 });
