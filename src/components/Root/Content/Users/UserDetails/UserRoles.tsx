@@ -22,11 +22,13 @@ import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
+import { addRoleToUser, removeRoleFromUser, updateUser } from '../../../../../services/UserService';
 import List, { Item } from '../../../../ui/List';
 import { UserClient, UserRole } from '../../../../../types/user';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
@@ -125,15 +127,18 @@ const UserRoles = (props: Props) => {
         updateUserRoles(clientId, userRoles);
     };
 
-    const removeOnConfirm = async () => {
+    const removeOnConfirm = () => {
         setState((draft) => {
             draft.showRemoveRoleDialog = false;
         });
-        const userRoles: Array<UserRole> = pipe(
-            await removeRoleFromUser(userId, clientId, state.roleIdToRemove),
-            eGetOrElse((): Array<UserRole> => [])
-        );
-        updateUserRoles(clientId, userRoles);
+        pipe(
+            removeRoleFromUser(userId, clientId, state.roleIdToRemove),
+            TE.fold(
+                (): T.Task<UserRole[]> => T.of([]),
+                (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
+            ),
+            T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
+        )();
     };
 
     const removeOnCancel = () =>

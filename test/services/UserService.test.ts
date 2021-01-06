@@ -387,7 +387,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId);
+        const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId)();
         expect(result).toEqualRight([ role ]);
     });
 

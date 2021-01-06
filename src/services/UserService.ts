@@ -230,10 +230,9 @@ export const addClientToUser = (userId: number, clientId: number): TE.TaskEither
         TE.map((res: AxiosResponse<GraphQLQueryResponse<AddClientToUserWrapper>>) => res.data.data.addClientToUser)
     );
 
-export const removeRoleFromUser = async (userId: number, clientId: number, roleId: number):
-    Promise<Either<Error, Array<UserRole>>> =>
+export const removeRoleFromUser = (userId: number, clientId: number, roleId: number): TE.TaskEither<Error, UserRole[]> =>
     pipe(
-        await api.graphql<RemoveRoleFromUserWrapper>({
+        ajaxApi.graphql<RemoveRoleFromUserWrapper>({
             payload: `
                 mutation {
                     removeRoleFromUser(userId: ${userId}, clientId: ${clientId}, roleId: ${roleId}) {
@@ -244,7 +243,7 @@ export const removeRoleFromUser = async (userId: number, clientId: number, roleI
             `,
             errorMsg: `Error removing role ${roleId} from user ${userId}`
         }),
-        map((wrapper: RemoveRoleFromUserWrapper) => wrapper.removeRoleFromUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveRoleFromUserWrapper>>) => res.data.data.removeRoleFromUser)
     );
 
 export const addRoleToUser = async (userId: number, clientId: number, roleId: number):
