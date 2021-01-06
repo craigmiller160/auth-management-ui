@@ -24,7 +24,6 @@ import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
-import { Simulate } from 'react-dom/test-utils';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
 import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
