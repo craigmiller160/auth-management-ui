@@ -82,9 +82,9 @@ export const getUserDetails = (userId: number): TE.TaskEither<Error, UserDetails
         TE.map((res: AxiosResponse<GraphQLQueryResponse<UserDetailsWrapper>>) => res.data.data.user)
     );
 
-export const getUserClients = async (userId: number): Promise<Either<Error, UserClients>> =>
+export const getUserClients = (userId: number): TE.TaskEither<Error, UserClients> =>
     pipe(
-        await api.graphql<UserClientsWrapper>({
+        ajaxApi.graphql<UserClientsWrapper>({
             payload: `
                 query {
                     user(userId: ${userId}) {
@@ -108,7 +108,7 @@ export const getUserClients = async (userId: number): Promise<Either<Error, User
             `,
             errorMsg: `Error getting user clients for ${userId}`
         }),
-        map((wrapper: UserClientsWrapper) => wrapper.user)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<UserClientsWrapper>>) => res.data.data.user)
     );
 
 export const updateUser = async (userId: number, user: UserInput): Promise<Either<Error, UserDetails>> =>

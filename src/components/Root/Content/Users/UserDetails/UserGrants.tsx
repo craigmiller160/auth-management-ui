@@ -20,6 +20,8 @@ import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import { getOrElse } from 'fp-ts/es6/Either';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import Grid from '@material-ui/core/Grid';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { getOrElse as oGetOrElse, map, none, Option, some } from 'fp-ts/es6/Option';
@@ -51,15 +53,20 @@ const UserGrants = (props: Props) => {
         selectedClient: none
     });
 
-    const loadUser = useCallback(async () => {
-        const user = pipe(
-            await getUserClients(state.userId),
-            getOrElse((): UserClientsType => defaultUser)
-        );
-        setState((draft) => {
-            draft.user = user;
-        });
-    }, [ state.userId, setState ]);
+    const loadUser = useCallback(() =>
+        pipe(
+            getUserClients(state.userId),
+            TE.fold(
+                (): T.Task<UserClientsType> => T.of(defaultUser),
+                (user: UserClientsType): T.Task<UserClientsType> => T.of(user)
+            ),
+            T.map((user: UserClientsType) =>
+                setState((draft) => {
+                    draft.user = user;
+                })
+            )
+        )
+    , [ state.userId, setState ]);
 
     const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
         const newSelectedClient = pipe(

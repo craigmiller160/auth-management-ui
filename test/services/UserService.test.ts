@@ -198,7 +198,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, UserClients> = await getUserClients(userId);
+        const result: Either<Error, UserClients> = await getUserClients(userId)();
         expect(result).toEqualRight(userClients);
     });
 
