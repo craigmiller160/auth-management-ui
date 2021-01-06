@@ -61,11 +61,11 @@ const ClientAuths = (props: Props) => {
             })
         )(), [ state.clientId, setState ]);
 
-    const doRevoke = async (userId: number) =>
+    const doRevoke = (userId: number) =>
         pipe(
-            await revokeUserAuthAccess(userId, state.clientId),
-            map(() => loadAuthDetails())
-        );
+            revokeUserAuthAccess(userId, state.clientId),
+            TE.map(() => loadAuthDetails())
+        )();
 
     useEffect(() => {
         loadAuthDetails();
