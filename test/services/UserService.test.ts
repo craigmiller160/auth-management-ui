@@ -231,7 +231,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, UserDetails> = await updateUser(userId, userInput);
+        const result: Either<Error, UserDetails> = await updateUser(userId, userInput)();
         expect(result).toEqualRight(user);
     });
 
@@ -264,7 +264,7 @@ describe('UserService', () => {
             payload,
             responseData
         });
-        const result: Either<Error, UserDetails> = await createUser(userInput);
+        const result: Either<Error, UserDetails> = await createUser(userInput)();
         expect(result).toEqualRight(user);
     });
 

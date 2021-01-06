@@ -111,9 +111,9 @@ export const getUserClients = (userId: number): TE.TaskEither<Error, UserClients
         TE.map((res: AxiosResponse<GraphQLQueryResponse<UserClientsWrapper>>) => res.data.data.user)
     );
 
-export const updateUser = async (userId: number, user: UserInput): Promise<Either<Error, UserDetails>> =>
+export const updateUser = (userId: number, user: UserInput): TE.TaskEither<Error, UserDetails> =>
     pipe(
-        await api.graphql<UpdateUserWrapper>({
+        ajaxApi.graphql<UpdateUserWrapper>({
             payload: `
                 mutation {
                     updateUser(userId: ${userId}, user: {
@@ -133,12 +133,12 @@ export const updateUser = async (userId: number, user: UserInput): Promise<Eithe
             `,
             errorMsg: `Error updating user ${userId}`
         }),
-        map((wrapper: UpdateUserWrapper) => wrapper.updateUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<UpdateUserWrapper>>) => res.data.data.updateUser)
     );
 
-export const createUser = async (user: UserInput): Promise<Either<Error, UserDetails>> =>
+export const createUser = (user: UserInput): TE.TaskEither<Error, UserDetails> =>
     pipe(
-        await api.graphql<CreateUserWrapper>({
+        ajaxApi.graphql<CreateUserWrapper>({
             payload: `
                 mutation {
                     createUser(user: {
@@ -158,7 +158,7 @@ export const createUser = async (user: UserInput): Promise<Either<Error, UserDet
             `,
             errorMsg: 'Error creating user'
         }),
-        map((wrapper: CreateUserWrapper) => wrapper.createUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<CreateUserWrapper>>) => res.data.data.createUser)
     );
 
 export const deleteUser = async (userId: number): Promise<Either<Error, UserDetails>> =>

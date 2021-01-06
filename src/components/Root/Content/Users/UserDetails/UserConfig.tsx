@@ -79,10 +79,10 @@ const UserConfig = (props: Props) => {
     });
     const watchPassword = watch('password', '');
 
-    const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
+    const doSubmit = async (action: () => TE.TaskEither<Error, UserDetails>) =>
         pipe(
-            await action(),
-            map((user) => {
+            action(),
+            TE.map((user) => {
                 setState((draft) => {
                     draft.userId = user.id;
                 });
@@ -96,7 +96,6 @@ const UserConfig = (props: Props) => {
                 history.push(path);
             })
         );
-    };
 
     const onSubmit = (values: UserForm) => {
         const payload: UserInput = {
