@@ -30,6 +30,8 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import TextField from '../../../../ui/Form/TextField';
 import './ClientConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
@@ -132,19 +134,23 @@ const ClientConfig = (props: Props) => {
     };
 
     useEffect(() => {
-        const loadClient = async () => {
-            const client = pipe(
-                await getClientDetails(state.clientId),
-                getOrElse((): ClientDetails => defaultClient)
-            );
-            reset({
-                ...client,
-                clientSecret: SECRET_PLACEHOLDER
-            });
-            setState((draft) => {
-                draft.redirectUris = client.redirectUris;
-            });
-        };
+        const loadClient = () =>
+            pipe(
+                getClientDetails(state.clientId),
+                TE.fold<Error, ClientDetails, ClientDetails>(
+                    (ex: Error): T.Task<ClientDetails> => T.of(defaultClient),
+                    (clientDetails: ClientDetails): T.Task<ClientDetails> => T.of(clientDetails)
+                ),
+                T.map((client: ClientDetails) => {
+                    reset({
+                        ...client,
+                        clientSecret: SECRET_PLACEHOLDER
+                    });
+                    setState((draft) => {
+                        draft.redirectUris = client.redirectUris;
+                    });
+                })
+            )();
 
         const loadNewClient = async () => {
             const [ key, secret ] = await Promise.all([ generateGuid(), generateGuid() ]);
