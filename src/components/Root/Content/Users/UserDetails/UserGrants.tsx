@@ -19,7 +19,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse } from 'fp-ts/es6/Either';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
 import Grid from '@material-ui/core/Grid';

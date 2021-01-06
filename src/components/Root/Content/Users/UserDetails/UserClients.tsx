@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect, useMemo, MouseEvent } from 'react';
+import React, { MouseEvent, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
 import Button from '@material-ui/core/Button';
@@ -25,7 +25,6 @@ import { exists, Option } from 'fp-ts/es6/Option';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';

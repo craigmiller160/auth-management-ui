@@ -19,7 +19,6 @@
 import React, { useEffect } from 'react';
 import './UserAuths.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
 import { useImmer } from 'use-immer';

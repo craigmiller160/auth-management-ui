@@ -18,7 +18,6 @@
 
 import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
-import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
@@ -28,7 +27,7 @@ import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
-import { addRoleToUser, removeRoleFromUser, updateUser } from '../../../../../services/UserService';
+import { addRoleToUser, removeRoleFromUser } from '../../../../../services/UserService';
 import List, { Item } from '../../../../ui/List';
 import { UserClient, UserRole } from '../../../../../types/user';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';

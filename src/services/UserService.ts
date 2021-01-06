@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { TaskEither } from 'fp-ts/es6/TaskEither';
@@ -31,7 +30,6 @@ import {
     UserList,
     UserRole
 } from '../types/user';
-import api from './Api';
 import ajaxApi from './AjaxApi';
 import {
     AddClientToUserWrapper,
@@ -202,7 +200,8 @@ export const removeClientFromUser = (userId: number, clientId: number): TE.TaskE
             `,
             errorMsg: `Error removing client ${clientId} from user ${userId}`
         }),
-        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveClientFromUserWrapper>>) => res.data.data.removeClientFromUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveClientFromUserWrapper>>) =>
+            res.data.data.removeClientFromUser)
     );
 
 export const addClientToUser = (userId: number, clientId: number): TE.TaskEither<Error, UserClient[]> =>
@@ -230,7 +229,8 @@ export const addClientToUser = (userId: number, clientId: number): TE.TaskEither
         TE.map((res: AxiosResponse<GraphQLQueryResponse<AddClientToUserWrapper>>) => res.data.data.addClientToUser)
     );
 
-export const removeRoleFromUser = (userId: number, clientId: number, roleId: number): TE.TaskEither<Error, UserRole[]> =>
+export const removeRoleFromUser = (userId: number, clientId: number, roleId: number):
+    TE.TaskEither<Error, UserRole[]> =>
     pipe(
         ajaxApi.graphql<RemoveRoleFromUserWrapper>({
             payload: `
@@ -243,7 +243,8 @@ export const removeRoleFromUser = (userId: number, clientId: number, roleId: num
             `,
             errorMsg: `Error removing role ${roleId} from user ${userId}`
         }),
-        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveRoleFromUserWrapper>>) => res.data.data.removeRoleFromUser)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<RemoveRoleFromUserWrapper>>) =>
+            res.data.data.removeRoleFromUser)
     );
 
 export const addRoleToUser = (userId: number, clientId: number, roleId: number): TE.TaskEither<Error, UserRole[]> =>
