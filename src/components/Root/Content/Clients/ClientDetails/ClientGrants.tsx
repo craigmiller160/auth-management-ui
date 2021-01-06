@@ -152,7 +152,7 @@ const ClientGrants = (props: Props) => {
         );
 
     const saveAddUser = async (userId: number) => {
-        await addUserToClient(userId, state.clientId);
+        await addUserToClient(userId, state.clientId)();
         await loadAll();
     };
 
