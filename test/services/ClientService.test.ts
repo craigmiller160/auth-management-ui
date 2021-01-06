@@ -217,7 +217,7 @@ describe('ClientService', () => {
         };
         mockCsrfPreflight(mockApi);
         mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, ClientWithRoles> = await getClientWithRoles(clientId);
+        const result: Either<Error, ClientWithRoles> = await getClientWithRoles(clientId)();
         expect(result).toEqualRight(data.client);
     });
 

@@ -59,17 +59,18 @@ const ClientRoles = (props: Props) => {
         clientId: id !== NEW_ID ? parseInt(id, 10) : 0
     });
 
-    const loadClientRoles = useCallback(async () => {
+    // TODO make sure this works
+    const loadClientRoles = useCallback(() => {
         pipe(
-            await getClientWithRoles(state.clientId),
-            map((clientRoles) => {
+            getClientWithRoles(state.clientId),
+            TE.map((clientRoles) => {
                 setState((draft) => {
                     draft.roles = clientRoles.roles;
                     draft.clientName = clientRoles.name;
                     draft.clientId = clientRoles.id;
                 });
             })
-        );
+        )();
     }, [ state.clientId, setState ]);
 
     useEffect(() => {
