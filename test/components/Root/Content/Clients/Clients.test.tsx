@@ -42,8 +42,6 @@ const defaultRouterOptions: RouterOptions = {
     initialEntries: [ '/' ],
     initialIndex: 0
 };
-const TestRouter = createTestRouter(defaultRouterOptions);
-const TestClients = createTestComponent({}, Clients);
 
 const response: GraphQLQueryResponse<ClientListResponse> = {
     data: {
@@ -58,13 +56,12 @@ const response: GraphQLQueryResponse<ClientListResponse> = {
 };
 
 // TODO make this trick re-usable
-// TODO re-write TestRouter to use history
 const doMount = async (history: MemoryHistory): Promise<ReactWrapper> => {
     let component: any;
     await act(async () => {
         component = await mount(
             <Router history={ history }>
-                <TestClients />
+                <Clients />
             </Router>
         )
     });
