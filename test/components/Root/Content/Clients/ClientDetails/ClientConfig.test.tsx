@@ -22,18 +22,25 @@ import ajaxApi from '../../../../../../src/services/AjaxApi';
 import MockAdapter from 'axios-mock-adapter';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { enzymeAsyncMount } from '@craigmiller160/react-test-utils';
-import { Router, withRouter } from 'react-router';
+import { createTestReduxProvider, enzymeAsyncMount } from '@craigmiller160/react-test-utils';
+import { Route, Router, Switch, withRouter } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 
-const ClientConfigWithRouter = withRouter(ClientConfig);
+const [ TestReduxProvider, store ] = createTestReduxProvider({});
 
 const doMount = (history: MemoryHistory) => enzymeAsyncMount(
-    <Router history={ history }>
-        <ClientConfigWithRouter />
-    </Router>
+    <TestReduxProvider>
+        <Router history={ history }>
+            <Switch>
+                <Route
+                    path="/clients/:id"
+                    component={ ClientConfig }
+                />
+            </Switch>
+        </Router>
+    </TestReduxProvider>
 );
 
 describe('ClientConfig', () => {
@@ -45,9 +52,10 @@ describe('ClientConfig', () => {
     });
 
     describe('rendering', () => {
-        it('renders for new client', () => {
+        it('renders for new client', async () => {
             testHistory.push('/clients/new');
-            throw new Error();
+            const component = await doMount(testHistory);
+            console.log(component.debug()); // TODO delete this
         });
 
         it('renders for existing client', () => {
