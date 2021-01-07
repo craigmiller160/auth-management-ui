@@ -22,7 +22,7 @@ import ajaxApi from '../../../../../../src/services/AjaxApi';
 import MockAdapter from 'axios-mock-adapter';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { createTestReduxProvider, enzymeAsyncMount } from '@craigmiller160/react-test-utils';
+import { createTestReduxProvider, enzymeAsyncMount, RenderedItem } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch, withRouter } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 
@@ -43,11 +43,27 @@ const doMount = (history: MemoryHistory) => enzymeAsyncMount(
     </TestReduxProvider>
 );
 
+const createClientNameItem = (value: string): RenderedItem => ({
+    selector: 'TextField#client-name-field',
+    values: {
+        props: {
+            label: 'Client Name',
+            rules: {
+                required: 'Required'
+            }
+        }
+    }
+});
+
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
     beforeEach(() => {
         mockApi.reset();
         mockCsrfPreflight(mockApi, '/graphql');
+        mockApi.onGet('/clients/guid')
+            .replyOnce(200, 'ABCDEFG');
+        mockApi.onGet('/clients/guid')
+            .replyOnce(200, 'HIJKLMNOP');
         testHistory = createMemoryHistory();
     });
 
@@ -58,8 +74,9 @@ describe('ClientConfig', () => {
             console.log(component.debug()); // TODO delete this
         });
 
-        it('renders for existing client', () => {
+        it('renders for existing client', async () => {
             testHistory.push('/clients/1');
+            const component = await doMount(testHistory);
             throw new Error();
         });
     });
