@@ -30,7 +30,8 @@ import {
     createTestRouter,
     RenderedItem,
     renderingValidator,
-    RouterOptions
+    RouterOptions,
+    enzymeAsyncMount
 } from '@craigmiller160/react-test-utils';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { Router } from 'react-router';
@@ -55,20 +56,12 @@ const response: GraphQLQueryResponse<ClientListResponse> = {
     }
 };
 
-// TODO make this trick re-usable
-const doMount = async (history: MemoryHistory): Promise<ReactWrapper> => {
-    let component: any;
-    await act(async () => {
-        component = await mount(
-            <Router history={ history }>
-                <Clients />
-            </Router>
-        )
-    });
-    const wrapper: ReactWrapper = component as ReactWrapper;
-    wrapper.update();
-    return wrapper;
-};
+const doMount = (history: MemoryHistory): Promise<ReactWrapper> =>
+    enzymeAsyncMount(
+        <Router history={ history }>
+            <Clients />
+        </Router>
+    );
 
 const pageHeaderItem: RenderedItem = {
     selector: 'PageHeader',
