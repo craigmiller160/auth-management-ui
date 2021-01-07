@@ -62,8 +62,6 @@ const Clients = () => {
 
     const newClick = () => history.push('/clients/new');
 
-    console.log('Clients', state.clients); // TODO delete this
-
     const body: Array<BodyRow> = useMemo(() =>
         state.clients
             .map((client) => ({
@@ -75,8 +73,6 @@ const Clients = () => {
                 ]
             })),
     [ state.clients, history ]);
-
-    console.log('Body', body); // TODO delete this
 
     return (
         <div id="clients-page" className="Clients">

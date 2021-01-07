@@ -101,11 +101,12 @@ const tableItem: RenderedItem = {
 };
 
 const newClientBtnItem: RenderedItem = {
-    selector: 'Button',
+    selector: 'ForwardRef(Button)',
     values: {
         props: {
-
-        }
+            onClick: expect.any(Function)
+        },
+        text: 'New Client'
     }
 };
 
@@ -121,11 +122,11 @@ describe('Clients', () => {
         it('renders', async () => {
             const component = await doMount();
             component.update();
-            console.log(component.debug());
 
             const items: RenderedItem[] = [
                 pageHeaderItem,
-                tableItem
+                tableItem,
+                newClientBtnItem
             ];
 
             renderingValidator(component, items);
