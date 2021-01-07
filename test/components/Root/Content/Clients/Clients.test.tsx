@@ -17,32 +17,19 @@
  */
 
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import MockAdapter from 'axios-mock-adapter';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
-import { act } from 'react-dom/test-utils';
+import { enzymeAsyncMount, RenderedItem, renderingValidator } from '@craigmiller160/react-test-utils';
+import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import { Router } from 'react-router';
 import ajaxApi from '../../../../../src/services/AjaxApi';
 import Clients from '../../../../../src/components/Root/Content/Clients';
 import { ClientListResponse } from '../../../../../src/types/client';
-import {
-    createTestComponent,
-    createTestRouter,
-    RenderedItem,
-    renderingValidator,
-    RouterOptions,
-    enzymeAsyncMount
-} from '@craigmiller160/react-test-utils';
-import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
-import { Router } from 'react-router';
 import { BodyRow } from '../../../../../src/components/ui/Table';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
-
-const defaultRouterOptions: RouterOptions = {
-    initialEntries: [ '/' ],
-    initialIndex: 0
-};
 
 const response: GraphQLQueryResponse<ClientListResponse> = {
     data: {
@@ -144,5 +131,5 @@ describe('Clients', () => {
             expect(testHistory).toHaveLength(2);
             expect(testHistory.entries[1].pathname).toEqual('/clients/1');
         });
-    })
+    });
 });

@@ -19,7 +19,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { map } from 'fp-ts/es6/Either';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';

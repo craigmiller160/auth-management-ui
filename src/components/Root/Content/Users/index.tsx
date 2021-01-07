@@ -22,7 +22,6 @@ import Grid from '@material-ui/core/Grid';
 import { pipe } from 'fp-ts/es6/pipeable';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
 import Button from '@material-ui/core/Button';
 import Table from '../../../ui/Table';
@@ -53,8 +52,7 @@ const Users = () => {
                 T.map((users: UserDetails[]) =>
                     setState({
                         users
-                    })
-                )
+                    }))
             )();
         };
 
