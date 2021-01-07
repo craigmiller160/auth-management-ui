@@ -24,7 +24,13 @@ import { act } from 'react-dom/test-utils';
 import ajaxApi from '../../../../../src/services/AjaxApi';
 import Clients from '../../../../../src/components/Root/Content/Clients';
 import { ClientListResponse } from '../../../../../src/types/client';
-import { createTestComponent, createTestRouter, RouterOptions } from '@craigmiller160/react-test-utils';
+import {
+    createTestComponent,
+    createTestRouter,
+    RenderedItem,
+    renderingValidator,
+    RouterOptions
+} from '@craigmiller160/react-test-utils';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 
@@ -49,6 +55,19 @@ const doMount = async (): Promise<ReactWrapper> => {
     return component as ReactWrapper;
 };
 
+// TODO simplify values so it can be array or object
+const pageHeaderItem: RenderedItem = {
+    selector: 'PageHeader',
+    values: [
+        {
+            props: {
+                id: 'clients-page-header',
+                title: 'Clients'
+            }
+        }
+    ]
+};
+
 describe('Clients', () => {
     beforeEach(() => {
         mockApi.reset();
@@ -71,6 +90,22 @@ describe('Clients', () => {
                 .reply(200, response);
             const component = await doMount();
             console.log(component.debug());
+
+            const items: RenderedItem[] = [
+                pageHeaderItem
+            ];
+
+            renderingValidator(component, items);
         });
     });
+
+    describe('behavior', () => {
+        it('new client', () => {
+            throw new Error();
+        });
+
+        it('select client', () => {
+            throw new Error();
+        });
+    })
 });
