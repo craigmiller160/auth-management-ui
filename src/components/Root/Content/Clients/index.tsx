@@ -42,22 +42,18 @@ const Clients = () => {
     });
 
     useEffect(() => {
-        // TODO super duper test and validate this
-        const action = () =>
-            pipe(
-                getAllClients(),
-                TE.fold<Error, ClientListResponse, Array<ClientListItem>>(
-                    (): T.Task<Array<ClientListItem>> => T.of([]),
-                    (data: ClientListResponse): T.Task<Array<ClientListItem>> => T.of(data.clients)
-                ),
-                T.map((clients: Array<ClientListItem>) => {
-                    setState({
-                        clients
-                    });
-                })
-            )();
-
-        action();
+        pipe(
+            getAllClients(),
+            TE.fold<Error, ClientListResponse, Array<ClientListItem>>(
+                (): T.Task<Array<ClientListItem>> => T.of([]),
+                (data: ClientListResponse): T.Task<Array<ClientListItem>> => T.of(data.clients)
+            ),
+            T.map((clients: Array<ClientListItem>) => {
+                setState({
+                    clients
+                });
+            })
+        )();
     }, []);
 
     const newClick = () => history.push('/clients/new');
