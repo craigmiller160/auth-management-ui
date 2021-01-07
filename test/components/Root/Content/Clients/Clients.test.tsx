@@ -19,6 +19,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import MockAdapter from 'axios-mock-adapter';
+import { createMemoryHistory } from 'history';
 import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import { act } from 'react-dom/test-utils';
 import ajaxApi from '../../../../../src/services/AjaxApi';
@@ -32,6 +33,7 @@ import {
     RouterOptions
 } from '@craigmiller160/react-test-utils';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import { Router } from 'react-router';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 
@@ -39,6 +41,8 @@ const defaultRouterOptions: RouterOptions = {
     initialEntries: [ '/' ],
     initialIndex: 0
 };
+
+const history = createMemoryHistory();
 
 const TestRouter = createTestRouter(defaultRouterOptions);
 const TestClients = createTestComponent({}, Clients);
@@ -60,12 +64,14 @@ const doMount = async (): Promise<ReactWrapper> => {
     let component: any;
     await act(async () => {
         component = await mount(
-            <TestRouter>
+            <Router history={ history }>
                 <TestClients />
-            </TestRouter>
+            </Router>
         )
     });
-    return component as ReactWrapper;
+    const wrapper: ReactWrapper = component as ReactWrapper;
+    wrapper.update();
+    return wrapper;
 };
 
 const pageHeaderItem: RenderedItem = {
@@ -121,7 +127,6 @@ describe('Clients', () => {
     describe('rendering', () => {
         it('renders', async () => {
             const component = await doMount();
-            component.update();
 
             const items: RenderedItem[] = [
                 pageHeaderItem,
@@ -134,8 +139,11 @@ describe('Clients', () => {
     });
 
     describe('behavior', () => {
-        it('new client', () => {
-            throw new Error();
+        it('new client', async () => {
+            const component = await doMount();
+            component.find('button#new-client-btn').simulate('click');
+            expect(history).toHaveLength(2);
+            expect(history.entries[1].pathname).toEqual('/clients/new');
         });
 
         it('select client', () => {
