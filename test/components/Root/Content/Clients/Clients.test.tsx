@@ -19,7 +19,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import MockAdapter from 'axios-mock-adapter';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, MemoryHistory } from 'history';
 import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import { act } from 'react-dom/test-utils';
 import ajaxApi from '../../../../../src/services/AjaxApi';
@@ -34,6 +34,7 @@ import {
 } from '@craigmiller160/react-test-utils';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { Router } from 'react-router';
+import { BodyRow } from '../../../../../src/components/ui/Table';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 
@@ -41,9 +42,6 @@ const defaultRouterOptions: RouterOptions = {
     initialEntries: [ '/' ],
     initialIndex: 0
 };
-
-const history = createMemoryHistory();
-
 const TestRouter = createTestRouter(defaultRouterOptions);
 const TestClients = createTestComponent({}, Clients);
 
@@ -60,7 +58,8 @@ const response: GraphQLQueryResponse<ClientListResponse> = {
 };
 
 // TODO make this trick re-usable
-const doMount = async (): Promise<ReactWrapper> => {
+// TODO re-write TestRouter to use history
+const doMount = async (history: MemoryHistory): Promise<ReactWrapper> => {
     let component: any;
     await act(async () => {
         component = await mount(
@@ -117,7 +116,9 @@ const newClientBtnItem: RenderedItem = {
 };
 
 describe('Clients', () => {
+    let testHistory: MemoryHistory;
     beforeEach(() => {
+        testHistory = createMemoryHistory();
         mockApi.reset();
         mockCsrfPreflight(mockApi, '/graphql');
         mockApi.onPost('/graphql')
@@ -126,7 +127,7 @@ describe('Clients', () => {
 
     describe('rendering', () => {
         it('renders', async () => {
-            const component = await doMount();
+            const component = await doMount(testHistory);
 
             const items: RenderedItem[] = [
                 pageHeaderItem,
@@ -140,14 +141,18 @@ describe('Clients', () => {
 
     describe('behavior', () => {
         it('new client', async () => {
-            const component = await doMount();
+            const component = await doMount(testHistory);
             component.find('button#new-client-btn').simulate('click');
-            expect(history).toHaveLength(2);
-            expect(history.entries[1].pathname).toEqual('/clients/new');
+            expect(testHistory).toHaveLength(2);
+            expect(testHistory.entries[1].pathname).toEqual('/clients/new');
         });
 
-        it('select client', () => {
-            throw new Error();
+        it('select client', async () => {
+            const component = await doMount(testHistory);
+            const body = ((component.find('Table').props() as any).body as BodyRow[]);
+            body[0].click();
+            expect(testHistory).toHaveLength(2);
+            expect(testHistory.entries[1].pathname).toEqual('/clients/1');
         });
     })
 });
