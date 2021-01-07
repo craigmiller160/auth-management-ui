@@ -1088,6 +1088,14 @@
     react-router "^5.2.0"
     react-router-dom "^5.2.0"
 
+"@craigmiller160/react-test-utils@^2.0.0":
+  version "2.0.0"
+  resolved "http://craigpc:30000/@craigmiller160%2freact-test-utils/-/react-test-utils-2.0.0.tgz#e443d10c9b2423d1a0145228a8ec5b07f3d1e709"
+  integrity sha512-vO/crUm5qPU8eCQNI+5r7GqdD2AhxAzzXxA6a4tgzVDtGd2WQTk15SZ7zYSUZzsIY4S5cTBFrPRpP3P6gVv7RQ==
+  dependencies:
+    redux-mock-store "^1.5.4"
+    trace-error "^1.0.3"
+
 "@craigmiller160/react-web-config@^2.7.0":
   version "2.7.0"
   resolved "http://craigpc:30000/@craigmiller160%2freact-web-config/-/react-web-config-2.7.0.tgz#a6815a60905db46683d40d067b896d83d04c6c83"
@@ -3889,6 +3897,11 @@ core-js-pure@^3.0.0:
   version "3.8.1"
   resolved "http://craigpc:30000/core-js-pure/-/core-js-pure-3.8.1.tgz#23f84048f366fdfcf52d3fd1c68fec349177d119"
   integrity sha512-Se+LaxqXlVXGvmexKGPvnUIYC1jwXu1H6Pkyb3uBM5d8/NELMYCHs/4/roD7721NxrTLyv7e5nXd5/QLBO+10g==
+
+core-js@3:
+  version "3.8.2"
+  resolved "http://craigpc:30000/core-js/-/core-js-3.8.2.tgz#0a1fd6709246da9ca8eff5bb0cbd15fba9ac7044"
+  integrity sha512-FfApuSRgrR6G5s58casCBd9M2k+4ikuu4wbW6pJyYU7bd9zvFc9qf7vr5xmrZOhT9nn+8uwlH1oRR9jTnFoA3A==
 
 core-js@^2.4.0:
   version "2.6.12"
@@ -11937,6 +11950,14 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
+trace-error@^1.0.3:
+  version "1.0.3"
+  resolved "http://craigpc:30000/trace-error/-/trace-error-1.0.3.tgz#66b0b6892950fd478b2a12b9fc0b4cb63c8127e8"
+  integrity sha512-bA+HEtqNhk4dPGYsS3yfguEI4EhS/qojoPZh4Td7Wl6wPINYATPCan6wSwf2Y0IHcTVU6SS8InlX2Fg20g57zw==
+  dependencies:
+    core-js "3"
+    weakmap "0.0.6"
+
 ts-jest@^26.4.3:
   version "26.4.4"
   resolved "http://craigpc:30000/ts-jest/-/ts-jest-26.4.4.tgz#61f13fb21ab400853c532270e52cc0ed7e502c49"
@@ -12417,6 +12438,11 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   integrity sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA==
   dependencies:
     minimalistic-assert "^1.0.0"
+
+weakmap@0.0.6:
+  version "0.0.6"
+  resolved "http://craigpc:30000/weakmap/-/weakmap-0.0.6.tgz#0c4fbde02e3b371f9222013fc6632a5c45419b29"
+  integrity sha1-DE+94C47Nx+SIgE/xmMqXEVBmyk=
 
 webidl-conversions@^5.0.0:
   version "5.0.0"
