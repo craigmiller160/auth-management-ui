@@ -1088,10 +1088,8 @@
     react-router "^5.2.0"
     react-router-dom "^5.2.0"
 
-"@craigmiller160/react-test-utils@^2.0.0":
-  version "2.0.0"
-  resolved "http://craigpc:30000/@craigmiller160%2freact-test-utils/-/react-test-utils-2.0.0.tgz#e443d10c9b2423d1a0145228a8ec5b07f3d1e709"
-  integrity sha512-vO/crUm5qPU8eCQNI+5r7GqdD2AhxAzzXxA6a4tgzVDtGd2WQTk15SZ7zYSUZzsIY4S5cTBFrPRpP3P6gVv7RQ==
+"@craigmiller160/react-test-utils@file:.yalc/@craigmiller160/react-test-utils":
+  version "2.1.0-beta"
   dependencies:
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
