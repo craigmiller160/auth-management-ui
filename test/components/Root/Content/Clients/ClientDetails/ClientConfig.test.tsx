@@ -42,15 +42,16 @@ describe('ClientConfig', () => {
         mockApi.reset();
         mockCsrfPreflight(mockApi, '/graphql');
         testHistory = createMemoryHistory();
-        testHistory.push('/clients/1'); // TODO customize this each test
     });
 
     describe('rendering', () => {
         it('renders for new client', () => {
+            testHistory.push('/clients/new');
             throw new Error();
         });
 
         it('renders for existing client', () => {
+            testHistory.push('/clients/1');
             throw new Error();
         });
     });
