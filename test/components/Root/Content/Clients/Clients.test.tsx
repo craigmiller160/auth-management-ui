@@ -31,6 +31,7 @@ import {
     renderingValidator,
     RouterOptions
 } from '@craigmiller160/react-test-utils';
+import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 
@@ -41,6 +42,18 @@ const defaultRouterOptions: RouterOptions = {
 
 const TestRouter = createTestRouter(defaultRouterOptions);
 const TestClients = createTestComponent({}, Clients);
+
+const response: GraphQLQueryResponse<ClientListResponse> = {
+    data: {
+        clients: [
+            {
+                id: 1,
+                name: 'Client',
+                clientKey: 'Key'
+            }
+        ]
+    }
+};
 
 // TODO make this trick re-usable
 const doMount = async (): Promise<ReactWrapper> => {
@@ -55,44 +68,64 @@ const doMount = async (): Promise<ReactWrapper> => {
     return component as ReactWrapper;
 };
 
-// TODO simplify values so it can be array or object
 const pageHeaderItem: RenderedItem = {
     selector: 'PageHeader',
-    values: [
-        {
-            props: {
-                id: 'clients-page-header',
-                title: 'Clients'
-            }
+    values: {
+        props: {
+            id: 'clients-page-header',
+            title: 'Clients'
         }
-    ]
+    }
+};
+
+const tableItem: RenderedItem = {
+    selector: 'Table',
+    values: {
+        props: {
+            id: 'clients-table',
+            header: [
+                'Name',
+                'Key'
+            ],
+            body: [
+                expect.objectContaining({
+                    click: expect.any(Function),
+                    items: [
+                        'Client',
+                        'Key'
+                    ]
+                })
+            ]
+        }
+    }
+};
+
+const newClientBtnItem: RenderedItem = {
+    selector: 'Button',
+    values: {
+        props: {
+
+        }
+    }
 };
 
 describe('Clients', () => {
     beforeEach(() => {
         mockApi.reset();
+        mockCsrfPreflight(mockApi, '/graphql');
+        mockApi.onPost('/graphql')
+            .reply(200, response);
     });
 
     describe('rendering', () => {
         it('renders', async () => {
-            const response: GraphQLQueryResponse<ClientListResponse> = {
-                data: {
-                    clients: [
-                        {
-                            id: 1,
-                            name: 'Client',
-                            clientKey: 'key'
-                        }
-                    ]
-                }
-            };
-            mockApi.onPost('/graphql')
-                .reply(200, response);
             const component = await doMount();
+            component.update();
             console.log(component.debug());
 
             const items: RenderedItem[] = [
-                pageHeaderItem
+                pageHeaderItem,
+                tableItem
             ];
 
             renderingValidator(component, items);

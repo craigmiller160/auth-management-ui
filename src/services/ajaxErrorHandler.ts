@@ -32,6 +32,7 @@ const getFullErrorMessage = (errorMsg: string, error: Error) =>
 
 // TODO write tests
 const ajaxErrorHandler: DefaultErrorHandler = (status: number, error: Error, requestMessage?: string): void => {
+    console.error(error); // TODO do I keep this?
     if (status > 0 && (error as AxiosError).response) {
         const response: AxiosResponse = (error as AxiosError).response!!;
         const fullMessage = getFullErrorResponseMessage(requestMessage ?? '', response);
