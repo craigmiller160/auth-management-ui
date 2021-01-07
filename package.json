@@ -41,6 +41,8 @@
     "@craigmiller160/react-test-utils": "file:.yalc/@craigmiller160/react-test-utils",
     "@craigmiller160/react-web-config": "^2.7.0",
     "@relmify/jest-fp-ts": "^1.1.1",
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.3",
     "@types/cucumber": "^6.0.1",
     "@types/cypress-cucumber-preprocessor": "^1.14.1",
     "@types/node": "^14.11.8",

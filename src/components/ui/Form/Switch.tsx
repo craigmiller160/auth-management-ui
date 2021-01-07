@@ -21,6 +21,7 @@ import { Control, Controller } from 'react-hook-form';
 import { FieldName } from 'react-hook-form/dist/types/form';
 import MuiSwitch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { nanoid } from 'nanoid';
 
 interface Props<T> {
     id?: string;
