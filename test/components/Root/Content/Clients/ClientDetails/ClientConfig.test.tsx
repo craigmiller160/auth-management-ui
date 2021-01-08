@@ -222,12 +222,24 @@ describe('ClientConfig', () => {
             throw new Error();
         });
 
-        it('generate client key', () => {
-            throw new Error();
+        it('generate client key', async () => {
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            const generate = screen.getAllByText('Generate')[0];
+            await waitFor(() => userEvent.click(generate));
+            expect(screen.getByLabelText('Client Key'))
+                .toHaveValue(firstGuid);
         });
 
-        it('generate client secret', () => {
-            throw new Error();
+        it('generate client secret', async () => {
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            const generate = screen.getAllByText('Generate')[1];
+            await waitFor(() => userEvent.click(generate));
+            expect(screen.getByLabelText('Client Secret'))
+                .toHaveValue(firstGuid);
         });
     });
 });
