@@ -22,10 +22,13 @@ import '@testing-library/jest-dom/extend-expect';
 import MockAdapter from 'axios-mock-adapter';
 import ajaxApi from '../../../../../../src/services/AjaxApi';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
+import { ClientDetails } from '../../../../../../src/types/client';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
+import { ClientDetailsWrapper } from '../../../../../../src/types/graphApi';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 const [ TestReduxProvider, store ] = createTestReduxProvider({});
@@ -33,6 +36,47 @@ const [ TestReduxProvider, store ] = createTestReduxProvider({});
 const firstGuid = 'ABCDEFG';
 const secondGuid = 'HIJKLMNOP';
 const stars = '**********';
+
+const doRender = (history: MemoryHistory) => waitFor(() => render(
+    <TestReduxProvider>
+        <Router history={ history }>
+            <Switch>
+                <Route
+                    path="/clients/:id"
+                    component={ ClientConfig }
+                />
+            </Switch>
+        </Router>
+    </TestReduxProvider>
+));
+
+const existingClient: ClientDetails = {
+    id: 1,
+    name: 'Client',
+    clientKey: 'Key',
+    enabled: true,
+    accessTokenTimeoutSecs: 100,
+    refreshTokenTimeoutSecs: 200,
+    authCodeTimeoutSecs: 300,
+    redirectUris: [
+        'https://www.google.com'
+    ]
+};
+
+const getClientDetailsPayload = `
+                query {
+                    client(clientId: 1) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        enabled
+                        redirectUris
+                    }
+                }
+            `;
 
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
@@ -43,24 +87,22 @@ describe('ClientConfig', () => {
             .replyOnce(200, firstGuid);
         mockApi.onGet('/clients/guid')
             .replyOnce(200, secondGuid);
+        mockAndValidateGraphQL<ClientDetailsWrapper>({
+            mockApi,
+            payload: getClientDetailsPayload,
+            responseData: {
+                data: {
+                    client: existingClient
+                }
+            }
+        });
         testHistory = createMemoryHistory();
     });
 
     describe('rendering',  () => {
         it('renders for new client', async () => {
             testHistory.push('/clients/new');
-            await waitFor(() => render(
-                <TestReduxProvider>
-                    <Router history={ testHistory }>
-                        <Switch>
-                            <Route
-                                path="/clients/:id"
-                                component={ ClientConfig }
-                            />
-                        </Switch>
-                    </Router>
-                </TestReduxProvider>
-            ));
+            await doRender(testHistory);
 
             expect(screen.getByLabelText('Client Name'))
                 .toHaveValue('New Client');
@@ -87,8 +129,36 @@ describe('ClientConfig', () => {
                 .not.toBeInTheDocument();
         });
 
-        it('renders for existing client', () => {
-            throw new Error();
+        it('renders for existing client', async () => {
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            expect(screen.getByLabelText('Client Name'))
+                .toHaveValue('Client');
+            expect(screen.getByLabelText('Client Key'))
+                .toHaveValue('Key');
+            expect(screen.getByLabelText('Client Secret'))
+                .toHaveValue(stars);
+            expect(screen.getAllByText('Generate'))
+                .toHaveLength(2);
+            expect(screen.getByLabelText('Enabled'))
+                .toBeChecked();
+            expect(screen.getByLabelText('Access Token Timeout (Secs)'))
+                .toHaveValue(100);
+            expect(screen.getByLabelText('Refresh Token Timeout (Secs)'))
+                .toHaveValue(200);
+            expect(screen.getByLabelText('Auth Code Timeout (Secs)'))
+                .toHaveValue(300);
+
+            expect(screen.getByText('https://www.google.com'))
+                .toBeInTheDocument();
+
+            expect(screen.getByText('Add Redirect URI'))
+                .toBeInTheDocument();
+            expect(screen.getByText('Save'))
+                .toBeInTheDocument();
+            expect(screen.queryByText('Delete'))
+                .toBeInTheDocument();
         });
     });
 

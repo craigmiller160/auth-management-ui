@@ -243,7 +243,7 @@ const ClientConfig = (props: Props) => {
             draft.showRedirectUriDialog = false;
         });
 
-    const saveRedirectUri = (value: string) => {
+    const saveRedirectUri = (value: string) =>
         setState((draft) => {
             if (draft.selectedRedirectUri) {
                 const index = draft.redirectUris
@@ -257,7 +257,6 @@ const ClientConfig = (props: Props) => {
             draft.showRedirectUriDialog = false;
             draft.redirectUriDirty = true;
         });
-    };
 
     const toggleDeleteDialog = (show: boolean) =>
         setState((draft) => {
