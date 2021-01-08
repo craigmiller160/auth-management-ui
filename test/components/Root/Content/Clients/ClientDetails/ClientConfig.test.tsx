@@ -19,6 +19,7 @@
 import React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 import MockAdapter from 'axios-mock-adapter';
 import ajaxApi from '../../../../../../src/services/AjaxApi';
 import { createMemoryHistory, MemoryHistory } from 'history';
@@ -27,7 +28,6 @@ import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import { ClientDetailsWrapper } from '../../../../../../src/types/graphApi';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
@@ -163,7 +163,41 @@ describe('ClientConfig', () => {
     });
 
     describe('behavior', () => {
-        it('fills out and saves form', () => {
+        it('fills out editable fields', async () => {
+            testHistory.push('/clients/new');
+            await doRender(testHistory);
+
+            const clientName = screen.getByLabelText('Client Name');
+            userEvent.clear(clientName);
+            userEvent.type(clientName, 'Another Client');
+            expect(clientName)
+                .toHaveValue('Another Client');
+
+            const accessToken = screen.getByLabelText('Access Token Timeout (Secs)');
+            userEvent.clear(accessToken);
+            userEvent.type(accessToken, '1');
+            expect(accessToken)
+                .toHaveValue(1);
+
+            const refreshToken = screen.getByLabelText('Refresh Token Timeout (Secs)');
+            userEvent.clear(refreshToken);
+            userEvent.type(refreshToken, '2');
+            expect(refreshToken)
+                .toHaveValue(2);
+
+            const authCode = screen.getByLabelText('Auth Code Timeout (Secs)');
+            userEvent.clear(authCode);
+            userEvent.type(authCode, '3');
+            expect(authCode)
+                .toHaveValue(3);
+
+            const enabled = screen.getByLabelText('Enabled');
+            userEvent.click(enabled);
+            expect(enabled)
+                .not.toBeChecked();
+        });
+
+        it('saves client', () => {
             throw new Error();
         });
 
