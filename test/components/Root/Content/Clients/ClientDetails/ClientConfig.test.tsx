@@ -88,6 +88,16 @@ const mockGetClient = () =>
             }
         }
     });
+const mockSaveClient = () =>
+    mockAndValidateGraphQL<ClientDetailsWrapper>({
+        mockApi,
+        payload: '',
+        responseData: {
+            data: {
+                client: existingClient
+            }
+        }
+    });
 
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
@@ -200,11 +210,16 @@ describe('ClientConfig', () => {
                 .not.toBeChecked();
         });
 
-        it('saves client', async () => {
+        it('save new client', async () => {
             testHistory.push('/clients/1');
             await doRender(testHistory);
 
             await waitFor(() => userEvent.click(screen.getByText('Save')));
+            throw new Error();
+        });
+
+        it('save existing client', async () => {
+            throw new Error();
         });
 
         it('deletes client', () => {
