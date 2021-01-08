@@ -85,18 +85,36 @@ describe('ClientConfig', () => {
                 .toBeInTheDocument();
             expect(screen.queryByText('Delete'))
                 .not.toBeInTheDocument();
+        });
 
-            // TODO move this to one of the behavior tests
+        it('renders for existing client', () => {
+            throw new Error();
+        });
+    });
+
+    describe('behavior', () => {
+        it('fills out and saves form', () => {
+            throw new Error();
+        });
+
+        it('deletes client', () => {
+            throw new Error();
+        });
+
+        it('adds redirect uri', () => {
             expect(screen.queryByText("Redirect URI"))
                 .not.toBeInTheDocument();
             fireEvent.click(screen.getByText("Add Redirect URI"));
             expect(screen.getByText("Redirect URI"))
                 .toBeInTheDocument();
+            throw new Error();
         });
-    });
 
-    describe('behavior', () => {
-        it('fills out form', () => {
+        it('edits redirect uri', () => {
+            throw new Error();
+        });
+
+        it('deletes redirect uri', () => {
             throw new Error();
         });
     });
