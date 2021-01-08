@@ -17,43 +17,22 @@
  */
 
 import React from 'react';
-import { ReactWrapper } from 'enzyme';
-import ajaxApi from '../../../../../../src/services/AjaxApi';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import MockAdapter from 'axios-mock-adapter';
-import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import ajaxApi from '../../../../../../src/services/AjaxApi';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { createTestReduxProvider, enzymeAsyncMount, RenderedItem } from '@craigmiller160/react-test-utils';
-import { Route, Router, Switch, withRouter } from 'react-router';
+import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
+import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
+import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
-
 const [ TestReduxProvider, store ] = createTestReduxProvider({});
 
-const doMount = (history: MemoryHistory) => enzymeAsyncMount(
-    <TestReduxProvider>
-        <Router history={ history }>
-            <Switch>
-                <Route
-                    path="/clients/:id"
-                    component={ ClientConfig }
-                />
-            </Switch>
-        </Router>
-    </TestReduxProvider>
-);
-
-const createClientNameItem = (value: string): RenderedItem => ({
-    selector: 'TextField#client-name-field',
-    values: {
-        props: {
-            label: 'Client Name',
-            rules: {
-                required: 'Required'
-            }
-        }
-    }
-});
+const firstGuid = 'ABCDEFG';
+const secondGuid = 'HIJKLMNOP';
+const stars = '**********';
 
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
@@ -61,76 +40,89 @@ describe('ClientConfig', () => {
         mockApi.reset();
         mockCsrfPreflight(mockApi, '/graphql');
         mockApi.onGet('/clients/guid')
-            .replyOnce(200, 'ABCDEFG');
+            .replyOnce(200, firstGuid);
         mockApi.onGet('/clients/guid')
-            .replyOnce(200, 'HIJKLMNOP');
+            .replyOnce(200, secondGuid);
         testHistory = createMemoryHistory();
     });
 
-    describe('rendering', () => {
+    describe('rendering',  () => {
         it('renders for new client', async () => {
             testHistory.push('/clients/new');
-            const component = await doMount(testHistory);
-            console.log(component.debug()); // TODO delete this
+            await waitFor(() => render(
+                <TestReduxProvider>
+                    <Router history={ testHistory }>
+                        <Switch>
+                            <Route
+                                path="/clients/:id"
+                                component={ ClientConfig }
+                            />
+                        </Switch>
+                    </Router>
+                </TestReduxProvider>
+            ));
+
+            expect(screen.getByLabelText('Client Name'))
+                .toHaveValue('New Client');
+            expect(screen.getByLabelText('Client Key'))
+                .toHaveValue(firstGuid);
+            expect(screen.getByLabelText('Client Secret'))
+                .toHaveValue(secondGuid);
+            expect(screen.getAllByText('Generate'))
+                .toHaveLength(2);
+            expect(screen.getByLabelText('Enabled'))
+                .toBeChecked();
+            expect(screen.getByLabelText('Access Token Timeout (Secs)'))
+                .toHaveValue(300);
+            expect(screen.getByLabelText('Refresh Token Timeout (Secs)'))
+                .toHaveValue(3600);
+            expect(screen.getByLabelText('Auth Code Timeout (Secs)'))
+                .toHaveValue(60);
+
+            expect(screen.getByText('Add Redirect URI'))
+                .toBeInTheDocument();
+            expect(screen.getByText('Save'))
+                .toBeInTheDocument();
+            expect(screen.queryByText('Delete'))
+                .not.toBeInTheDocument();
         });
 
-        it('renders for existing client', async () => {
-            testHistory.push('/clients/1');
-            const component = await doMount(testHistory);
+        it('renders for existing client', () => {
             throw new Error();
         });
     });
 
     describe('behavior', () => {
-        it('generateClientKey', () => {
+        it('fills out and saves form', () => {
             throw new Error();
         });
 
-        it('generateClientSecret', () => {
+        it('deletes client', () => {
             throw new Error();
         });
 
-        it('successfully leave page', () => {
+        it('adds redirect uri', () => {
+            expect(screen.queryByText("Redirect URI"))
+                .not.toBeInTheDocument();
+            fireEvent.click(screen.getByText("Add Redirect URI"));
+            expect(screen.getByText("Redirect URI"))
+                .toBeInTheDocument();
             throw new Error();
         });
 
-        it('stop leaving page', () => {
+        it('edits redirect uri', () => {
             throw new Error();
         });
 
-        it('add redirect uri', () => {
+        it('deletes redirect uri', () => {
             throw new Error();
         });
 
-        it('edit redirect uri', () => {
+        it('generate client key', () => {
             throw new Error();
         });
 
-        it('save client', () => {
-            throw new Error();
-        });
-
-        it('execute delete client', () => {
-            throw new Error();
-        });
-
-        it('cancel redirect uri', () => {
-            throw new Error();
-        });
-
-        it('save redirect uri', () => {
-            throw new Error();
-        });
-
-        it('delete redirect uri', () => {
-            throw new Error();
-        });
-
-        it('show delete dialog', () => {
-            throw new Error();
-        });
-
-        it('hide delete dialog', () => {
+        it('generate client secret', () => {
             throw new Error();
         });
     });
