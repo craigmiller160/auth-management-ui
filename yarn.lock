@@ -1041,17 +1041,17 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@craigmiller160/ajax-api-fp-ts@^1.0.0":
-  version "1.0.0"
-  resolved "http://craigpc:30000/@craigmiller160%2fajax-api-fp-ts/-/ajax-api-fp-ts-1.0.0.tgz#ce2e26a8f7ef6b73beee29f5b078440f610f83ef"
-  integrity sha512-TPlrIuZw9fdcL2iqAapB5AbGbbXOQ7NzrzUryZp8q1Tx0XgQjzm0W5O5bZ50nKyjh1PcM13IAQiryG+ySxPAUQ==
+"@craigmiller160/ajax-api-fp-ts@^1.0.1":
+  version "1.0.1"
+  resolved "http://craigpc:30000/@craigmiller160%2fajax-api-fp-ts/-/ajax-api-fp-ts-1.0.1.tgz#9f87d87675a974fcf7dd6b52341bab20a4ce277f"
+  integrity sha512-xFyOGeZOj8XZ9ZzAR/MUY2bRPSLJX6+B4BRuQyJrSSH8n8g+BYI9B/CaHd6DYMzJlr7VRASb6c6sImKJ0AJTAw==
   dependencies:
-    "@craigmiller160/ajax-api" "^1.1.0"
+    "@craigmiller160/ajax-api" "^1.1.1"
 
-"@craigmiller160/ajax-api@^1.1.0":
-  version "1.1.0"
-  resolved "http://craigpc:30000/@craigmiller160%2fajax-api/-/ajax-api-1.1.0.tgz#4cf81305fe59000c6b02fc17d6903851b7845b9b"
-  integrity sha512-hDPTiy2Ux/LLVYgpbCPjXtHMlSrFUmmxYwdg67vYYKBt3mUcX9NfpItTdAc/DpTqOaBuYtKOnWi1Dkx2hRx8FA==
+"@craigmiller160/ajax-api@^1.1.1":
+  version "1.1.1"
+  resolved "http://craigpc:30000/@craigmiller160%2fajax-api/-/ajax-api-1.1.1.tgz#997e84cacf5ca0d06c9ce99e7506d77050844133"
+  integrity sha512-lT+Y2Ucc7juj/bNMxdvhOyg2asd4u1f7M5LNy1ioSoGTSEXnwYG3QDmPI1c1ZIgNBwL8ZgeyQ4+5RHRZ6O64OQ==
   dependencies:
     axios "^0.21.1"
 
