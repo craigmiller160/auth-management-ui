@@ -89,14 +89,19 @@ const getClientDetailsPayload = `
             `;
 
 const mockGetClient = () =>
-    (getClientDetails as jest.Mock).mockImplementation(() => TE.right(existingClient));
+    (getClientDetails as jest.Mock).mockImplementation(() => TE.right({
+        ...existingClient,
+        redirectUris: [
+            ...existingClient.redirectUris
+        ]
+    }));
 
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
     beforeEach(() => {
         jest.resetAllMocks();
-        (generateGuid as jest.Mock).mockReturnValueOnce(TE.right(firstGuid));
-        (generateGuid as jest.Mock).mockReturnValueOnce(TE.right(secondGuid));
+        (generateGuid as jest.Mock).mockImplementationOnce(() => TE.right(firstGuid));
+        (generateGuid as jest.Mock).mockImplementationOnce(() => TE.right(secondGuid));
         testHistory = createMemoryHistory();
     });
 
@@ -166,6 +171,7 @@ describe('ClientConfig', () => {
 
     describe('behavior', () => {
         it('fills out editable fields', async () => {
+            // TODO figure out act warning here
             testHistory.push('/clients/new');
             await doRender(testHistory);
 
@@ -204,7 +210,7 @@ describe('ClientConfig', () => {
             testHistory.push('/clients/new');
             await doRender(testHistory);
 
-            await waitFor(() => userEvent.click(screen.getByText('Save')));
+            // await waitFor(() => userEvent.click(screen.getByText('Save')));
             throw new Error();
         });
 
@@ -217,11 +223,11 @@ describe('ClientConfig', () => {
         });
 
         it('adds redirect uri', () => {
-            expect(screen.queryByText("Redirect URI"))
-                .not.toBeInTheDocument();
-            fireEvent.click(screen.getByText("Add Redirect URI"));
-            expect(screen.getByText("Redirect URI"))
-                .toBeInTheDocument();
+            // expect(screen.queryByText("Redirect URI"))
+            //     .not.toBeInTheDocument();
+            // fireEvent.click(screen.getByText("Add Redirect URI"));
+            // expect(screen.getByText("Redirect URI"))
+            //     .toBeInTheDocument();
             throw new Error();
         });
 
@@ -237,6 +243,7 @@ describe('ClientConfig', () => {
             mockGetClient();
             testHistory.push('/clients/1');
             await doRender(testHistory);
+            screen.debug(); // TODO delete this
 
             const generate = screen.getAllByText('Generate')[0];
             await waitFor(() => userEvent.click(generate));
