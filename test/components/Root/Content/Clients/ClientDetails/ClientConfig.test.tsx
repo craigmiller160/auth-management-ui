@@ -28,7 +28,7 @@ import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
-import { ClientDetailsWrapper } from '../../../../../../src/types/graphApi';
+import { ClientDetailsWrapper, CreateClientWrapper } from '../../../../../../src/types/graphApi';
 
 const mockApi = new MockAdapter(ajaxApi.instance);
 const [ TestReduxProvider, store ] = createTestReduxProvider({});
@@ -88,13 +88,35 @@ const mockGetClient = () =>
             }
         }
     });
-const mockSaveClient = () =>
-    mockAndValidateGraphQL<ClientDetailsWrapper>({
+const mockCreateClient = () =>
+    mockAndValidateGraphQL<CreateClientWrapper>({
         mockApi,
-        payload: '',
+        payload: `
+                mutation {
+                    createClient(client: {
+                        name: "New Client",
+                        clientKey: "${firstGuid}",
+                        clientSecret: "${secondGuid}",
+                        enabled: true,
+                        accessTokenTimeoutSecs: 300,
+                        refreshTokenTimeoutSecs: 3600,
+                        authCodeTimeoutSecs: 60,
+                        redirectUris: []
+                    }) {
+                        id
+                        name
+                        clientKey
+                        accessTokenTimeoutSecs
+                        enabled
+                        refreshTokenTimeoutSecs
+                        authCodeTimeoutSecs
+                        redirectUris
+                    }
+                }
+            `,
         responseData: {
             data: {
-                client: existingClient
+                createClient: existingClient
             }
         }
     });
@@ -211,7 +233,8 @@ describe('ClientConfig', () => {
         });
 
         it('save new client', async () => {
-            testHistory.push('/clients/1');
+            mockCreateClient();
+            testHistory.push('/clients/new');
             await doRender(testHistory);
 
             await waitFor(() => userEvent.click(screen.getByText('Save')));
