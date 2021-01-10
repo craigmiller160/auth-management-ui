@@ -176,7 +176,7 @@ const ClientConfig = (props: Props) => {
         }
     }, [ reset, state.clientId, setState ]);
 
-    const generateClientKey = () =>
+    const generateClientKey = (): Promise<string> =>
         pipe(
             generateGuid(),
             TE.fold(
@@ -189,7 +189,7 @@ const ClientConfig = (props: Props) => {
             })
         )();
 
-    const generateClientSecret = () =>
+    const generateClientSecret = (): Promise<string> =>
         pipe(
             generateGuid(),
             TE.fold(

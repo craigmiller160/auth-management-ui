@@ -29,8 +29,18 @@ import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
 import { ClientDetailsWrapper, CreateClientWrapper } from '../../../../../../src/types/graphApi';
+import { generateGuid, getClientDetails } from '../../../../../../src/services/ClientService';
+import * as TE from 'fp-ts/es6/TaskEither';
 
-const mockApi = new MockAdapter(ajaxApi.instance);
+jest.mock('../../../../../../src/services/ClientService', () => ({
+    createClient: jest.fn(),
+    deleteClient: jest.fn(),
+    generateGuid: jest.fn(),
+    getClientDetails: jest.fn(),
+    updateClient: jest.fn()
+}));
+
+const mockApi = new MockAdapter(ajaxApi.instance); // TODO delete this
 const [ TestReduxProvider, store ] = createTestReduxProvider({});
 
 const firstGuid = 'ABCDEFG';
@@ -79,57 +89,14 @@ const getClientDetailsPayload = `
             `;
 
 const mockGetClient = () =>
-    mockAndValidateGraphQL<ClientDetailsWrapper>({
-        mockApi,
-        payload: getClientDetailsPayload,
-        responseData: {
-            data: {
-                client: existingClient
-            }
-        }
-    });
-const mockCreateClient = () =>
-    mockAndValidateGraphQL<CreateClientWrapper>({
-        mockApi,
-        payload: `
-                mutation {
-                    createClient(client: {
-                        name: "New Client",
-                        clientKey: "${firstGuid}",
-                        clientSecret: "${secondGuid}",
-                        enabled: true,
-                        accessTokenTimeoutSecs: 300,
-                        refreshTokenTimeoutSecs: 3600,
-                        authCodeTimeoutSecs: 60,
-                        redirectUris: []
-                    }) {
-                        id
-                        name
-                        clientKey
-                        accessTokenTimeoutSecs
-                        enabled
-                        refreshTokenTimeoutSecs
-                        authCodeTimeoutSecs
-                        redirectUris
-                    }
-                }
-            `,
-        responseData: {
-            data: {
-                createClient: existingClient
-            }
-        }
-    });
+    (getClientDetails as jest.Mock).mockImplementation(() => TE.right(existingClient));
 
 describe('ClientConfig', () => {
     let testHistory: MemoryHistory;
     beforeEach(() => {
-        mockApi.reset();
-        mockCsrfPreflight(mockApi, '/graphql');
-        mockApi.onGet('/clients/guid')
-            .replyOnce(200, firstGuid);
-        mockApi.onGet('/clients/guid')
-            .replyOnce(200, secondGuid);
+        jest.resetAllMocks();
+        (generateGuid as jest.Mock).mockReturnValueOnce(TE.right(firstGuid));
+        (generateGuid as jest.Mock).mockReturnValueOnce(TE.right(secondGuid));
         testHistory = createMemoryHistory();
     });
 
@@ -233,7 +200,7 @@ describe('ClientConfig', () => {
         });
 
         it('save new client', async () => {
-            mockCreateClient();
+            // mockCreateClient();
             testHistory.push('/clients/new');
             await doRender(testHistory);
 
@@ -267,6 +234,7 @@ describe('ClientConfig', () => {
         });
 
         it('generate client key', async () => {
+            mockGetClient();
             testHistory.push('/clients/1');
             await doRender(testHistory);
 
@@ -277,6 +245,7 @@ describe('ClientConfig', () => {
         });
 
         it('generate client secret', async () => {
+            mockGetClient();
             testHistory.push('/clients/1');
             await doRender(testHistory);
 
