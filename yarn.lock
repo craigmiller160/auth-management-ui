@@ -1044,7 +1044,7 @@
 "@craigmiller160/jest-matchers-common@file:.yalc/@craigmiller160/jest-matchers-common":
   version "1.0.0-beta"
   dependencies:
-    "@craigmiller160/react-web-config" "file:../../../.cache/yarn/v6/npm-@craigmiller160-jest-matchers-common-1.0.0-beta-48e53db7-0cea-4932-bb85-754e15a8c3ef-1609630158498/node_modules/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
+    "@craigmiller160/react-web-config" "file:.yalc/@craigmiller160/jest-matchers-common/.yalc/@craigmiller160/react-web-config"
 
 "@craigmiller160/react-material-ui-common@^1.1.0":
   version "1.1.0"
@@ -6493,9 +6493,9 @@ ignore@^5.1.4:
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
 
 immer@^8.0.0:
-  version "8.0.0"
-  resolved "http://craigpc:30000/immer/-/immer-8.0.0.tgz#08763549ba9dd7d5e2eb4bec504a8315bd9440c2"
-  integrity sha512-jm87NNBAIG4fHwouilCHIecFXp5rMGkiFrAuhVO685UnMAlOneEAnOyzPt8OnP47TC11q/E7vpzZe0WvwepFTg==
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
+  integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
 
 import-cwd@^2.0.0:
   version "2.1.0"
