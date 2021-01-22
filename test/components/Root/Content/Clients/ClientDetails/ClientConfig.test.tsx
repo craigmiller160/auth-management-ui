@@ -29,7 +29,8 @@ import {
     createClient,
     generateGuid,
     getClientDetails,
-    updateClient
+    updateClient,
+    deleteClient
 } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 
@@ -41,7 +42,7 @@ jest.mock('../../../../../../src/services/ClientService', () => ({
     updateClient: jest.fn()
 }));
 
-const [ TestReduxProvider, store ] = createTestReduxProvider({});
+const [ TestReduxProvider, storeHandler ] = createTestReduxProvider({});
 
 const firstGuid = 'ABCDEFG';
 const secondGuid = 'HIJKLMNOP';
@@ -210,11 +211,17 @@ describe('ClientConfig', () => {
             });
 
             expect(testHistory.location.pathname).toEqual('/clients/1');
+            expect(storeHandler.store?.getActions()).toEqual([
+                {
+                    type: 'alert/showSuccessAlert',
+                    payload: 'Successfully saved client new'
+                }
+            ]);
         });
 
         it('save existing client', async () => {
             mockGetClient();
-            (updateClient as jest.Mock).mockImplementation(() => TE.of(existingClient));
+            (updateClient as jest.Mock).mockImplementation(() => TE.right(existingClient));
             testHistory.push('/clients/1');
             await doRender(testHistory);
 
@@ -225,11 +232,39 @@ describe('ClientConfig', () => {
                 id: undefined,
                 clientSecret: ''
             });
+            expect(testHistory.location.pathname).toEqual('/clients/1');
+            expect(storeHandler.store?.getActions()).toEqual([
+                {
+                    type: 'alert/showSuccessAlert',
+                    payload: 'Successfully saved client 1'
+                }
+            ]);
         });
 
-        it('deletes client', () => {
-            throw new Error();
+        it('deletes client', async () => {
+            mockGetClient();
+            (deleteClient as jest.Mock).mockImplementation(() => TE.right(existingClient));
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Delete')));
+
+            expect(screen.getByText('Delete Client')).toBeInTheDocument();
+            expect(screen.getByText('Are you sure you want to delete this client?')).toBeInTheDocument();
+            await waitFor(() => userEvent.click(screen.getByText('Confirm')));
+
+            expect(testHistory.location.pathname).toEqual('/clients');
+            expect(storeHandler.store?.getActions()).toEqual([
+                {
+                    type: 'alert/showSuccessAlert',
+                    payload: 'Successfully deleted client 1'
+                }
+            ]);
         });
+
+        it('cancels deleting client', () => {
+            throw new Error();
+        })
 
         it('adds redirect uri', () => {
             // expect(screen.queryByText("Redirect URI"))
@@ -237,6 +272,10 @@ describe('ClientConfig', () => {
             // fireEvent.click(screen.getByText("Add Redirect URI"));
             // expect(screen.getByText("Redirect URI"))
             //     .toBeInTheDocument();
+            throw new Error();
+        });
+
+        it('cancels adding redirect uri', () => {
             throw new Error();
         });
 
