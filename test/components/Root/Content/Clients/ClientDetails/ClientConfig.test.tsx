@@ -253,6 +253,7 @@ describe('ClientConfig', () => {
             expect(screen.getByText('Are you sure you want to delete this client?')).toBeInTheDocument();
             await waitFor(() => userEvent.click(screen.getByText('Confirm')));
 
+            expect(deleteClient).toHaveBeenCalledWith(1);
             expect(testHistory.location.pathname).toEqual('/clients');
             expect(storeHandler.store?.getActions()).toEqual([
                 {
@@ -262,8 +263,17 @@ describe('ClientConfig', () => {
             ]);
         });
 
-        it('cancels deleting client', () => {
-            throw new Error();
+        it('cancels deleting client', async () => {
+            mockGetClient();
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Delete')));
+
+            expect(screen.getByText('Delete Client')).toBeInTheDocument();
+            expect(screen.getByText('Are you sure you want to delete this client?')).toBeInTheDocument();
+            await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+            await waitFor(() => expect(screen.queryByText('Delete Client')).not.toBeInTheDocument());
         })
 
         it('adds redirect uri', () => {
@@ -291,7 +301,6 @@ describe('ClientConfig', () => {
             mockGetClient();
             testHistory.push('/clients/1');
             await doRender(testHistory);
-            screen.debug(); // TODO delete this
 
             const generate = screen.getAllByText('Generate')[0];
             await waitFor(() => userEvent.click(generate));
