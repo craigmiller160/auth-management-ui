@@ -144,8 +144,10 @@ const ClientConfig = (props: Props) => {
                         ...client,
                         clientSecret: SECRET_PLACEHOLDER
                     });
+                    const redirectUris = client.redirectUris.slice()
+                        .sort((uri1, uri2) => uri1.localeCompare(uri2));
                     setState((draft) => {
-                        draft.redirectUris = client.redirectUris;
+                        draft.redirectUris = redirectUris;
                     });
                 })
             )();
@@ -214,10 +216,7 @@ const ClientConfig = (props: Props) => {
             draft.redirectUriDirty = true;
         });
 
-    const redirectUris = state.redirectUris.slice()
-        .sort((uri1, uri2) => uri1.localeCompare(uri2));
-
-    const redirectUriItems: Array<Item> = redirectUris
+    const redirectUriItems: Array<Item> = state.redirectUris
         .map((uri, index) => ({
             uuid: nanoid(),
             avatar: () => <Language />,

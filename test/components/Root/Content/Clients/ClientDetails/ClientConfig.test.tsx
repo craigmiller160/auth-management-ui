@@ -314,8 +314,8 @@ describe('ClientConfig', () => {
             testHistory.push('/clients/1');
             await doRender(testHistory);
 
-            const results = screen.getAllByText('Edit');
-            await waitFor(() => userEvent.click(results[1]));
+            const editBtns = screen.getAllByText('Edit');
+            await waitFor(() => userEvent.click(editBtns[1]));
 
             expect(screen.getByText('Redirect URI')).toBeInTheDocument();
             const uriInput = screen.getByLabelText('URI');
@@ -326,10 +326,19 @@ describe('ClientConfig', () => {
             userEvent.click(screen.getByText('Add'));
 
             await waitFor(() => expect(screen.getByText(newUri)).toBeInTheDocument());
+
+            // TODO validate alphabetical order... if possible
         });
 
-        it('deletes redirect uri', () => {
-            throw new Error();
+        it('removes redirect uri', async () => {
+            mockGetClient();
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            const removeBtns = screen.getAllByText('Remove');
+            userEvent.click(removeBtns[1]);
+
+            await waitFor(() => expect(screen.queryByText('https://www.google.com')).not.toBeInTheDocument());
         });
 
         it('generate client key', async () => {
