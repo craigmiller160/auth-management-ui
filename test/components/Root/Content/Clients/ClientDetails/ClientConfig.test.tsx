@@ -17,19 +17,15 @@
  */
 
 import React from 'react';
-import { render, waitFor, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import MockAdapter from 'axios-mock-adapter';
-import ajaxApi from '../../../../../../src/services/AjaxApi';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
-import { ClientDetailsWrapper, CreateClientWrapper } from '../../../../../../src/types/graphApi';
-import { generateGuid, getClientDetails } from '../../../../../../src/services/ClientService';
+import { createClient, generateGuid, getClientDetails } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
@@ -190,11 +186,25 @@ describe('ClientConfig', () => {
         });
 
         it('save new client', async () => {
-            // mockCreateClient();
-            // testHistory.push('/clients/new');
-            // await doRender(testHistory);
-            //
-            // await waitFor(() => userEvent.click(screen.getByText('Save')));
+            mockGetClient();
+            (createClient as jest.Mock).mockImplementation(() => TE.of(existingClient));
+            testHistory.push('/clients/new');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Save')));
+
+            expect(createClient).toHaveBeenCalledWith({
+                name: 'New Client',
+                clientKey: firstGuid,
+                clientSecret: secondGuid,
+                enabled: true,
+                accessTokenTimeoutSecs: 300,
+                refreshTokenTimeoutSecs: 3600,
+                authCodeTimeoutSecs: 60,
+                redirectUris: []
+            });
+
+            expect(testHistory.location.pathname).toEqual('/clients/1');
         });
 
         it('save existing client', async () => {
