@@ -74,6 +74,8 @@ const existingClient: ClientDetails = {
     ]
 };
 
+const newUri = 'https://new-uri.com';
+
 const mockGetClient = () =>
     (getClientDetails as jest.Mock).mockImplementation(() => TE.right({
         ...existingClient,
@@ -276,13 +278,18 @@ describe('ClientConfig', () => {
             await waitFor(() => expect(screen.queryByText('Delete Client')).not.toBeInTheDocument());
         })
 
-        it('adds redirect uri', () => {
-            // expect(screen.queryByText("Redirect URI"))
-            //     .not.toBeInTheDocument();
-            // fireEvent.click(screen.getByText("Add Redirect URI"));
-            // expect(screen.getByText("Redirect URI"))
-            //     .toBeInTheDocument();
-            throw new Error();
+        it('adds redirect uri', async () => {
+            testHistory.push('/clients/new');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Add Redirect URI')));
+
+            expect(screen.getByText('Redirect URI')).toBeInTheDocument();
+            const uriInput = screen.getByLabelText('URI');
+            userEvent.type(uriInput, newUri);
+            await waitFor(() => userEvent.click(screen.getByText('Save')));
+
+            expect(screen.getByText(newUri)).toBeInTheDocument();
         });
 
         it('cancels adding redirect uri', () => {

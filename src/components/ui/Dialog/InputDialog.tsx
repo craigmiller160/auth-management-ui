@@ -81,9 +81,11 @@ const InputDialog = (props: Props) => {
         prefixClasses.push('error');
     }
 
+    const actualId = id ?? 'input-dialog';
+
     return (
         <BaseDialog
-            id={ id }
+            id={ actualId }
             open={ open }
             title={ title }
             actions={ actions }
@@ -95,6 +97,7 @@ const InputDialog = (props: Props) => {
                     <span className={ prefixClasses.join(' ') }>{ prefix }</span>
                 }
                 <TextField
+                    id={ `${actualId}-input` }
                     className="Field"
                     name="value"
                     control={ control }
