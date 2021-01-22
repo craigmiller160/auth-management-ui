@@ -488,6 +488,7 @@ const ClientConfig = (props: Props) => {
                 onSave={ saveRedirectUri }
                 label="URI"
                 initialValue={ state.selectedRedirectUri }
+                successBtnLabel="Add"
             />
             <ConfirmDialog
                 id="delete-client-dialog"

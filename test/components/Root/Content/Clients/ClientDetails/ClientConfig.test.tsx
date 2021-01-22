@@ -287,7 +287,8 @@ describe('ClientConfig', () => {
             expect(screen.getByText('Redirect URI')).toBeInTheDocument();
             const uriInput = screen.getByLabelText('URI');
             userEvent.type(uriInput, newUri);
-            await waitFor(() => userEvent.click(screen.getByText('Save')));
+
+            await waitFor(() => userEvent.click(screen.getByText('Add')));
 
             expect(screen.getByText(newUri)).toBeInTheDocument();
         });

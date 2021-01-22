@@ -36,6 +36,7 @@ interface Props {
     initialValue?: string;
     transform?: (value: string) => any;
     prefix?: string;
+    successBtnLabel?: string;
 }
 
 const InputDialog = (props: Props) => {
@@ -48,7 +49,8 @@ const InputDialog = (props: Props) => {
         label,
         initialValue = '',
         transform,
-        prefix
+        prefix,
+        successBtnLabel
     } = props;
 
     const { control, handleSubmit, errors, reset } = useForm<InputForm>({
@@ -72,7 +74,7 @@ const InputDialog = (props: Props) => {
     };
 
     const actions: Array<DialogAction> = [
-        { label: 'Save', onClick: handleSubmit(onSubmit) },
+        { label: successBtnLabel ?? 'Save', onClick: handleSubmit(onSubmit) },
         { label: 'Cancel', onClick: onCancel }
     ];
 
