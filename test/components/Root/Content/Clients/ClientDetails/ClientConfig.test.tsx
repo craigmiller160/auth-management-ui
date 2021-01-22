@@ -70,7 +70,8 @@ const existingClient: ClientDetails = {
     refreshTokenTimeoutSecs: 200,
     authCodeTimeoutSecs: 300,
     redirectUris: [
-        'https://www.google.com'
+        'https://www.google.com',
+        'https://www.facebook.com'
     ]
 };
 
@@ -148,6 +149,9 @@ describe('ClientConfig', () => {
             expect(screen.getByText('https://www.google.com'))
                 .toBeInTheDocument();
 
+            expect(screen.getByText('https://www.facebook.com'))
+                .toBeInTheDocument();
+
             expect(screen.getByText('Add Redirect URI'))
                 .toBeInTheDocument();
             expect(screen.getByText('Save'))
@@ -159,7 +163,6 @@ describe('ClientConfig', () => {
 
     describe('behavior', () => {
         it('fills out editable fields', async () => {
-            // TODO figure out act warning here
             testHistory.push('/clients/new');
             await doRender(testHistory);
 
