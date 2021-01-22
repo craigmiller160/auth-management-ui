@@ -25,7 +25,12 @@ import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
-import { createClient, generateGuid, getClientDetails } from '../../../../../../src/services/ClientService';
+import {
+    createClient,
+    generateGuid,
+    getClientDetails,
+    updateClient
+} from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
@@ -208,7 +213,18 @@ describe('ClientConfig', () => {
         });
 
         it('save existing client', async () => {
-            throw new Error();
+            mockGetClient();
+            (updateClient as jest.Mock).mockImplementation(() => TE.of(existingClient));
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Save')));
+
+            expect(updateClient).toHaveBeenCalledWith(1, {
+                ...existingClient,
+                id: undefined,
+                clientSecret: ''
+            });
         });
 
         it('deletes client', () => {
