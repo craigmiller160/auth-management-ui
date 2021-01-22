@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@craigmiller160/jest-matchers-common": "^1.0.0",
-    "@craigmiller160/react-test-utils": "file:.yalc/@craigmiller160/react-test-utils",
+    "@craigmiller160/react-test-utils": "^2.1.0",
     "@craigmiller160/react-web-config": "^2.7.0",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.8",

@@ -23,6 +23,7 @@ import userEvent from '@testing-library/user-event';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { Route, Router, Switch } from 'react-router';
+import * as TE from 'fp-ts/es6/TaskEither';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import { ClientDetails } from '../../../../../../src/types/client';
 import {
@@ -32,7 +33,6 @@ import {
     updateClient,
     deleteClient
 } from '../../../../../../src/services/ClientService';
-import * as TE from 'fp-ts/es6/TaskEither';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
     createClient: jest.fn(),
@@ -94,7 +94,7 @@ describe('ClientConfig', () => {
         testHistory = createMemoryHistory();
     });
 
-    describe('rendering',  () => {
+    describe('rendering', () => {
         it('renders for new client', async () => {
             testHistory.push('/clients/new');
             await doRender(testHistory);
@@ -279,7 +279,7 @@ describe('ClientConfig', () => {
             expect(screen.getByText('Are you sure you want to delete this client?')).toBeInTheDocument();
             await waitFor(() => userEvent.click(screen.getByText('Cancel')));
             await waitFor(() => expect(screen.queryByText('Delete Client')).not.toBeInTheDocument());
-        })
+        });
 
         it('adds redirect uri', async () => {
             testHistory.push('/clients/new');
