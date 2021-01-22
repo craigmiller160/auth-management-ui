@@ -309,8 +309,23 @@ describe('ClientConfig', () => {
             await waitFor(() => expect(screen.queryByText('Redirect URI')).not.toBeInTheDocument());
         });
 
-        it('edits redirect uri', () => {
-            throw new Error();
+        it('edits redirect uri', async () => {
+            mockGetClient();
+            testHistory.push('/clients/1');
+            await doRender(testHistory);
+
+            const results = screen.getAllByText('Edit');
+            await waitFor(() => userEvent.click(results[1]));
+
+            expect(screen.getByText('Redirect URI')).toBeInTheDocument();
+            const uriInput = screen.getByLabelText('URI');
+            expect(uriInput).toHaveValue('https://www.google.com');
+
+            userEvent.clear(uriInput);
+            userEvent.type(uriInput, newUri);
+            userEvent.click(screen.getByText('Add'));
+
+            await waitFor(() => expect(screen.getByText(newUri)).toBeInTheDocument());
         });
 
         it('deletes redirect uri', () => {
