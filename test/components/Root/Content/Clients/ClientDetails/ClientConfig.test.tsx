@@ -75,7 +75,7 @@ const existingClient: ClientDetails = {
     ]
 };
 
-const newUri = 'https://new-uri.com';
+const newUri = 'https://abc-new-uri.com';
 
 const mockGetClient = () =>
     (getClientDetails as jest.Mock).mockImplementation(() => TE.right({
@@ -325,9 +325,11 @@ describe('ClientConfig', () => {
             userEvent.type(uriInput, newUri);
             userEvent.click(screen.getByText('Add'));
 
-            await waitFor(() => expect(screen.getByText(newUri)).toBeInTheDocument());
-
-            // TODO validate alphabetical order... if possible
+            await waitFor(() => {
+                const listItem = screen.getByTestId('redirect-uris-list-item-0');
+                const text = listItem.querySelector('#redirect-uris-list-item-0-text-primary');
+                expect(text?.textContent).toEqual(newUri);
+            });
         });
 
         it('removes redirect uri', async () => {
