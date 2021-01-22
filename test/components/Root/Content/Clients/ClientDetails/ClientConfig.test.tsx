@@ -234,6 +234,8 @@ describe('ClientConfig', () => {
 
             expect(updateClient).toHaveBeenCalledWith(1, {
                 ...existingClient,
+                redirectUris: existingClient.redirectUris.slice()
+                    .sort((uri1, uri2) => uri1.localeCompare(uri2)),
                 id: undefined,
                 clientSecret: ''
             });
