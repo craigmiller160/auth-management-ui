@@ -293,8 +293,17 @@ describe('ClientConfig', () => {
             expect(screen.getByText(newUri)).toBeInTheDocument();
         });
 
-        it('cancels adding redirect uri', () => {
-            throw new Error();
+        it('cancels adding redirect uri', async () => {
+            testHistory.push('/clients/new');
+            await doRender(testHistory);
+
+            await waitFor(() => userEvent.click(screen.getByText('Add Redirect URI')));
+
+            expect(screen.getByText('Redirect URI')).toBeInTheDocument();
+
+            await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+
+            await waitFor(() => expect(screen.queryByText('Redirect URI')).not.toBeInTheDocument());
         });
 
         it('edits redirect uri', () => {
