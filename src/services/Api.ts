@@ -26,6 +26,8 @@ import MessageBuilder from '../utils/MessageBuilder';
 import { ErrorResponse } from '../types/api';
 import { GraphQLQueryResponse } from '../types/graphApi';
 
+// TODO should be able to delete this whole file at the end
+
 export const instance: AxiosInstance = axios.create({
     baseURL: '/auth-manage-ui/api',
     withCredentials: true

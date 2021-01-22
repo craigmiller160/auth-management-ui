@@ -19,11 +19,11 @@
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { map } from 'fp-ts/es6/Either';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import LockOpen from '@material-ui/icons/LockOpen';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { nanoid } from 'nanoid';
 import { UserAuthDetails } from '../../../../../types/user';
 import { getAuthDetailsForClient } from '../../../../../services/ClientService';
@@ -51,20 +51,20 @@ const ClientAuths = (props: Props) => {
 
     const loadAuthDetails = useCallback(async () =>
         pipe(
-            await getAuthDetailsForClient(state.clientId),
-            map((clientAuthDetails) => {
+            getAuthDetailsForClient(state.clientId),
+            TE.map((clientAuthDetails) => {
                 setState((draft) => {
                     draft.clientName = clientAuthDetails.clientName;
                     draft.userAuthDetails = clientAuthDetails.userAuthDetails;
                 });
             })
-        ), [ state.clientId, setState ]);
+        )(), [ state.clientId, setState ]);
 
-    const doRevoke = async (userId: number) =>
+    const doRevoke = (userId: number) =>
         pipe(
-            await revokeUserAuthAccess(userId, state.clientId),
-            map(() => loadAuthDetails())
-        );
+            revokeUserAuthAccess(userId, state.clientId),
+            TE.map(() => loadAuthDetails())
+        )();
 
     useEffect(() => {
         loadAuthDetails();

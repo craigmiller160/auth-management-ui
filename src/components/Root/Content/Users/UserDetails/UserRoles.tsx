@@ -18,10 +18,11 @@
 
 import React from 'react';
 import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
-import { getOrElse as eGetOrElse } from 'fp-ts/es6/Either';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { useImmer } from 'use-immer';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
@@ -112,28 +113,33 @@ const UserRoles = (props: Props) => {
             draft.showAddRoleDialog = false;
         });
 
-    const addRoleOnSelect = async (selectedRole: SelectOption<number>) => {
+    const addRoleOnSelect = (selectedRole: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddRoleDialog = false;
         });
         const roleId = selectedRole.value;
-
-        const userRoles: Array<UserRole> = pipe(
-            await addRoleToUser(userId, clientId, roleId),
-            eGetOrElse((): Array<UserRole> => [])
-        );
-        updateUserRoles(clientId, userRoles);
+        pipe(
+            addRoleToUser(userId, clientId, roleId),
+            TE.fold(
+                (): T.Task<UserRole[]> => T.of([]),
+                (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
+            ),
+            T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
+        )();
     };
 
-    const removeOnConfirm = async () => {
+    const removeOnConfirm = () => {
         setState((draft) => {
             draft.showRemoveRoleDialog = false;
         });
-        const userRoles: Array<UserRole> = pipe(
-            await removeRoleFromUser(userId, clientId, state.roleIdToRemove),
-            eGetOrElse((): Array<UserRole> => [])
-        );
-        updateUserRoles(clientId, userRoles);
+        pipe(
+            removeRoleFromUser(userId, clientId, state.roleIdToRemove),
+            TE.fold(
+                (): T.Task<UserRole[]> => T.of([]),
+                (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
+            ),
+            T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
+        )();
     };
 
     const removeOnCancel = () =>

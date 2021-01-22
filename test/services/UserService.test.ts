@@ -18,7 +18,9 @@
 
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
+import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { instance } from '../../src/services/Api';
+import ajaxApi from '../../src/services/AjaxApi';
 import {
     UserAuthDetailsList,
     UserClient,
@@ -29,31 +31,34 @@ import {
     UserRole
 } from '../../src/types/user';
 import {
-    AddClientToUserWrapper, AddRoleToUserWrapper,
-    CreateUserWrapper, DeleteUserWrapper,
-    GraphQLQueryResponse, RemoveClientFromUserWrapper, RemoveRoleFromUserWrapper,
+    AddClientToUserWrapper,
+    AddRoleToUserWrapper,
+    CreateUserWrapper,
+    DeleteUserWrapper,
+    GraphQLQueryResponse,
+    RemoveClientFromUserWrapper,
+    RemoveRoleFromUserWrapper,
     UpdateUserWrapper,
     UserClientsWrapper,
     UserDetailsWrapper
 } from '../../src/types/graphApi';
-import { mockCsrfPreflight } from './mockCsrf';
-import { mockAndValidateGraphQL } from './mockAndValidateGraphQL';
 import {
+    addClientToUser,
+    addRoleToUser,
     createUser,
+    deleteUser,
+    getAllUserAuthDetails,
     getAllUsers,
     getUserClients,
     getUserDetails,
-    updateUser,
-    deleteUser,
     removeClientFromUser,
-    addClientToUser,
     removeRoleFromUser,
-    addRoleToUser,
-    getAllUserAuthDetails,
-    revokeUserAuthAccess
+    revokeUserAuthAccess,
+    updateUser
 } from '../../src/services/UserService';
 
 const mockApi = new MockAdapter(instance);
+const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const clientId = 1;
 const userId = 1;
 const user: UserDetails = {
@@ -104,6 +109,7 @@ const userAuthDetailsList: UserAuthDetailsList = {
 describe('UserService', () => {
     beforeEach(() => {
         mockApi.reset();
+        mockAjaxApi.reset();
     });
 
     it('getAllUsers', async () => {
@@ -125,9 +131,13 @@ describe('UserService', () => {
         const responseData: GraphQLQueryResponse<UserList> = {
             data
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserList> = await getAllUsers();
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserList> = await getAllUsers()();
         expect(result).toEqualRight(data);
     });
 
@@ -148,9 +158,13 @@ describe('UserService', () => {
                 user
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserDetails> = await getUserDetails(userId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserDetails> = await getUserDetails(userId)();
         expect(result).toEqualRight(user);
     });
 
@@ -181,9 +195,13 @@ describe('UserService', () => {
                 user: userClients
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserClients> = await getUserClients(userId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserClients> = await getUserClients(userId)();
         expect(result).toEqualRight(userClients);
     });
 
@@ -210,9 +228,13 @@ describe('UserService', () => {
                 updateUser: user
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserDetails> = await updateUser(userId, userInput);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserDetails> = await updateUser(userId, userInput)();
         expect(result).toEqualRight(user);
     });
 
@@ -239,9 +261,13 @@ describe('UserService', () => {
                 createUser: user
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserDetails> = await createUser(userInput);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserDetails> = await createUser(userInput)();
         expect(result).toEqualRight(user);
     });
 
@@ -262,9 +288,13 @@ describe('UserService', () => {
                 deleteUser: user
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, UserDetails> = await deleteUser(userId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, UserDetails> = await deleteUser(userId)();
         expect(result).toEqualRight(user);
     });
 
@@ -293,9 +323,13 @@ describe('UserService', () => {
                 ]
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, Array<UserClient>> = await removeClientFromUser(userId, clientId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, Array<UserClient>> = await removeClientFromUser(userId, clientId)();
         expect(result).toEqualRight([ userClient ]);
     });
 
@@ -324,9 +358,13 @@ describe('UserService', () => {
                 ]
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, Array<UserClient>> = await addClientToUser(userId, clientId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, Array<UserClient>> = await addClientToUser(userId, clientId)();
         expect(result).toEqualRight([ userClient ]);
     });
 
@@ -346,9 +384,13 @@ describe('UserService', () => {
                 ]
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, Array<UserRole>> = await removeRoleFromUser(userId, clientId, roleId)();
         expect(result).toEqualRight([ role ]);
     });
 
@@ -368,35 +410,28 @@ describe('UserService', () => {
                 ]
             }
         };
-        mockCsrfPreflight(mockApi);
-        mockAndValidateGraphQL(mockApi, '/graphql', payload, responseData);
-        const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId);
+        mockCsrfPreflight(mockAjaxApi, '/graphql');
+        mockAndValidateGraphQL({
+            mockApi: mockAjaxApi,
+            payload,
+            responseData
+        });
+        const result: Either<Error, Array<UserRole>> = await addRoleToUser(userId, clientId, roleId)();
         expect(result).toEqualRight([ role ]);
     });
 
     it('getAllUserAuthDetails', async () => {
-        mockApi.onGet(`/users/auth/${userId}`)
+        mockAjaxApi.onGet(`/users/auth/${userId}`)
             .reply(200, userAuthDetailsList);
-        const result: Either<Error, UserAuthDetailsList> = await getAllUserAuthDetails(userId);
+        const result: Either<Error, UserAuthDetailsList> = await getAllUserAuthDetails(userId)();
         expect(result).toEqualRight(userAuthDetailsList);
     });
 
     it('revokeUserAuthAccess', async () => {
-        mockApi.onPost(`/users/auth/${userId}/${clientId}/revoke`)
+        mockAjaxApi.onPost(`/users/auth/${userId}/${clientId}/revoke`)
             .reply(200);
-        // TODO move this one into re-usable function in library
-        mockApi.onOptions(`/users/auth/${userId}/${clientId}/revoke`)
-            .reply((config) => {
-                expect(config.headers['x-csrf-token']).toEqual('fetch');
-                return [
-                    200,
-                    null,
-                    {
-                        'x-csrf-token': 'ABCDEFG'
-                    }
-                ];
-            });
-        const result: Either<Error, void> = await revokeUserAuthAccess(userId, clientId);
+        mockCsrfPreflight(mockAjaxApi, `/users/auth/${userId}/${clientId}/revoke`);
+        const result: Either<Error, void> = await revokeUserAuthAccess(userId, clientId)();
         expect(result).toBeRight();
     });
 });

@@ -21,8 +21,9 @@ import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { getAllClients } from '../../../../services/ClientService';
 import './Clients.scss';
 import { ClientListItem, ClientListResponse } from '../../../../types/client';
@@ -41,18 +42,18 @@ const Clients = () => {
     });
 
     useEffect(() => {
-        const action = async () => {
-            const clients = pipe(
-                await getAllClients(),
-                map((list: ClientListResponse) => list.clients),
-                getOrElse((): Array<ClientListItem> => ([]))
-            );
-            setState({
-                clients
-            });
-        };
-
-        action();
+        pipe(
+            getAllClients(),
+            TE.fold<Error, ClientListResponse, Array<ClientListItem>>(
+                (): T.Task<Array<ClientListItem>> => T.of([]),
+                (data: ClientListResponse): T.Task<Array<ClientListItem>> => T.of(data.clients)
+            ),
+            T.map((clients: Array<ClientListItem>) => {
+                setState({
+                    clients
+                });
+            })
+        )();
     }, []);
 
     const newClick = () => history.push('/clients/new');

@@ -22,9 +22,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AssignIcon from '@material-ui/icons/AssignmentInd';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { map } from 'fp-ts/es6/Either';
 import Button from '@material-ui/core/Button';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { nanoid } from 'nanoid';
 import List, { Item } from '../../../../ui/List';
 import { ClientRole } from '../../../../../types/client';
@@ -58,17 +58,18 @@ const ClientRoles = (props: Props) => {
         clientId: id !== NEW_ID ? parseInt(id, 10) : 0
     });
 
-    const loadClientRoles = useCallback(async () => {
+    // TODO make sure this works
+    const loadClientRoles = useCallback(() => {
         pipe(
-            await getClientWithRoles(state.clientId),
-            map((clientRoles) => {
+            getClientWithRoles(state.clientId),
+            TE.map((clientRoles) => {
                 setState((draft) => {
                     draft.roles = clientRoles.roles;
                     draft.clientName = clientRoles.name;
                     draft.clientId = clientRoles.id;
                 });
             })
-        );
+        )();
     }, [ state.clientId, setState ]);
 
     useEffect(() => {
@@ -89,7 +90,7 @@ const ClientRoles = (props: Props) => {
         });
     };
 
-    const saveRole = async (value: string) => {
+    const saveRole = (value: string) => {
         const roleName = `${ROLE_PREFIX}${value}`;
         const roleId = state.selectedRoleIndex >= 0 ? state.roles[state.selectedRoleIndex].id : 0;
         const role = {
@@ -105,15 +106,15 @@ const ClientRoles = (props: Props) => {
             action = () => createRole(state.clientId, role);
         }
         pipe(
-            await action(),
-            map(() => {
+            action(),
+            TE.map(() => {
                 setState((draft) => {
                     draft.selectedRoleIndex = -1;
                     draft.showRoleDialog = false;
                 });
                 loadClientRoles();
             })
-        );
+        )();
     };
 
     const cancelRoleDialog = () =>
@@ -151,18 +152,18 @@ const ClientRoles = (props: Props) => {
         return '';
     };
 
-    const doDeleteRole = async () => {
+    const doDeleteRole = () => {
         const selectedRole = state.roles[state.selectedRoleIndex];
         setState((draft) => {
             draft.showDeleteDialog = false;
             draft.selectedRoleIndex = -1;
         });
         pipe(
-            await deleteRole(selectedRole.id),
-            map(() => {
+            deleteRole(selectedRole.id),
+            TE.map(() => {
                 loadClientRoles();
             })
-        );
+        )();
     };
 
     const hideDeleteDialog = () =>

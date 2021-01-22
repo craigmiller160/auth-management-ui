@@ -19,16 +19,17 @@
 import React, { useCallback, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import Grid from '@material-ui/core/Grid';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { fromNullable, getOrElse as oGetOrElse, map as oMap, none, Option, some } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { addUserToClient, getFullClientDetails, removeUserFromClient } from '../../../../../services/ClientService';
-import { ClientRole, ClientUser } from '../../../../../types/client';
+import { ClientRole, ClientUser, FullClientDetails } from '../../../../../types/client';
 import './ClientGrants.scss';
 import { addRoleToUser, getAllUsers, removeRoleFromUser } from '../../../../../services/UserService';
-import { UserDetails } from '../../../../../types/user';
+import { UserDetails, UserList } from '../../../../../types/user';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
 
@@ -55,10 +56,10 @@ const ClientGrants = (props: Props) => {
         selectedUser: none
     });
 
-    const loadFullClientDetails = useCallback(async () =>
+    const loadFullClientDetails = useCallback((): T.Task<Array<ClientUser>> =>
         pipe(
-            await getFullClientDetails(state.clientId),
-            map((fullClientDetails) => {
+            getFullClientDetails(state.clientId),
+            TE.map((fullClientDetails: FullClientDetails): Array<ClientUser> => {
                 setState((draft) => {
                     draft.clientName = fullClientDetails.name;
                     draft.allRoles = fullClientDetails.roles;
@@ -66,31 +67,37 @@ const ClientGrants = (props: Props) => {
                 });
                 return fullClientDetails.users;
             }),
-            getOrElse((): Array<ClientUser> => [])
+            TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([]))
         ), [ state.clientId, setState ]);
 
-    const loadUsers = useCallback(async (clientUsers: Array<ClientUser>) =>
+    const loadUsers = useCallback((clientUsers: Array<ClientUser>) =>
         pipe(
-            await getAllUsers(),
-            map((list) => list.users),
-            map((users) =>
+            getAllUsers(),
+            TE.map((list: UserList) => list.users),
+            TE.map((users: UserDetails[]) => // TODO combine with above function
                 users.filter((user) => {
                     const index = clientUsers.findIndex((cUser) => cUser.id === user.id);
                     return index === -1;
                 })),
-            map((users) =>
-                setState((draft) => {
+            TE.map((users: UserDetails[]) =>
+                setState((draft) => { // TODO see if this can be moved to the end
                     draft.allUsers = users;
                 }))
-        ), [ setState ]);
+        ),
+    [ setState ]);
 
-    const loadAll = useCallback(async () => {
-        const clientUsers = await loadFullClientDetails();
-        await loadUsers(clientUsers);
-    }, [ loadFullClientDetails, loadUsers ]);
+    // TODO this one is an absolute mess, try to figure out how to optimize this if it works
+    const loadAll = useCallback(() =>
+        pipe(
+            loadFullClientDetails(),
+            T.map((clientUsers: Array<ClientUser>) => {
+                loadUsers(clientUsers)();
+            })
+        ),
+    [ loadFullClientDetails, loadUsers ]);
 
     const removeUser = async (userId: number) => {
-        await removeUserFromClient(userId, state.clientId);
+        await removeUserFromClient(userId, state.clientId)();
         pipe(
             state.selectedUser,
             oMap((selectedUser: ClientUser) => {
@@ -112,7 +119,7 @@ const ClientGrants = (props: Props) => {
         pipe(
             state.selectedUser,
             oMap(async (selectedUser) => {
-                await addRoleToUser(selectedUser.id, state.clientId, roleId);
+                await addRoleToUser(selectedUser.id, state.clientId, roleId)();
                 await loadAll();
                 setState((draft) => {
                     pipe(
@@ -132,7 +139,7 @@ const ClientGrants = (props: Props) => {
         pipe(
             state.selectedUser,
             oMap(async (selectedUser) => {
-                await removeRoleFromUser(selectedUser.id, state.clientId, roleId);
+                await removeRoleFromUser(selectedUser.id, state.clientId, roleId)();
                 await loadAll();
                 setState((draft) => {
                     pipe(
@@ -149,7 +156,7 @@ const ClientGrants = (props: Props) => {
         );
 
     const saveAddUser = async (userId: number) => {
-        await addUserToClient(userId, state.clientId);
+        await addUserToClient(userId, state.clientId)();
         await loadAll();
     };
 
