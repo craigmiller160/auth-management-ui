@@ -293,7 +293,9 @@ describe('ClientConfig', () => {
             const uriInput = screen.getByLabelText('URI');
             userEvent.type(uriInput, newUri);
 
-            await waitFor(() => userEvent.click(screen.getByText('Add')));
+            const saveBtn = screen.getAllByText('Save')[1];
+
+            await waitFor(() => userEvent.click(saveBtn));
 
             expect(screen.getByText(newUri)).toBeInTheDocument();
         });
@@ -325,7 +327,10 @@ describe('ClientConfig', () => {
 
             userEvent.clear(uriInput);
             userEvent.type(uriInput, newUri);
-            userEvent.click(screen.getByText('Add'));
+
+            const saveBtn = screen.getAllByText('Save')[1];
+
+            userEvent.click(saveBtn);
 
             await waitFor(() => {
                 const listItem = screen.getByTestId('redirect-uris-list-item-0');
