@@ -336,6 +336,10 @@ describe('ClientConfig', () => {
                 const listItem = screen.getByTestId('redirect-uris-list-item-0');
                 const text = listItem.querySelector('#redirect-uris-list-item-0-text-primary');
                 expect(text?.textContent).toEqual(newUri);
+
+                const otherListItem = screen.getByTestId('redirect-uris-list-item-1');
+                const otherText = otherListItem.querySelector('#redirect-uris-list-item-1-text-primary');
+                expect(otherText?.textContent).toEqual('https://www.facebook.com');
             });
         });
 

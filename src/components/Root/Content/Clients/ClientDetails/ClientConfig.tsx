@@ -248,7 +248,7 @@ const ClientConfig = (props: Props) => {
                 const index = draft.redirectUris
                     .findIndex((uri) => uri === draft.selectedRedirectUri);
                 if (index >= 0) {
-                    draft.redirectUris.splice(0, 1);
+                    draft.redirectUris.splice(index, 1);
                 }
             }
             draft.redirectUris.push(value);
