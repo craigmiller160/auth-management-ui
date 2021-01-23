@@ -18,6 +18,7 @@
 
 import '@relmify/jest-fp-ts';
 import '@craigmiller160/jest-matchers-common';
+import '@testing-library/jest-dom/extend-expect';
 
 beforeEach(() => {
     // @ts-ignore

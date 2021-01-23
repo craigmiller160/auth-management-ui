@@ -18,7 +18,6 @@
 
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
