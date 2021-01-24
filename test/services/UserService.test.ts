@@ -19,7 +19,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
 import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
-import { instance } from '../../src/services/Api';
 import ajaxApi from '../../src/services/AjaxApi';
 import {
     UserAuthDetailsList,
@@ -57,7 +56,6 @@ import {
     updateUser
 } from '../../src/services/UserService';
 
-const mockApi = new MockAdapter(instance);
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
 const clientId = 1;
 const userId = 1;
@@ -108,7 +106,6 @@ const userAuthDetailsList: UserAuthDetailsList = {
 
 describe('UserService', () => {
     beforeEach(() => {
-        mockApi.reset();
         mockAjaxApi.reset();
     });
 
