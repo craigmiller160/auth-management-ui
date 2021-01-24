@@ -1086,8 +1086,10 @@
   resolved "http://craigpc:30000/@craigmiller160%2fjest-matchers-common/-/jest-matchers-common-1.0.0.tgz#d59d4a3721c7798a3bc5ed576f643f53dd5c6f53"
   integrity sha512-hnxc3QIb7LZbQ9R2N5cQ/nXBItOJNXymSrYUX61iv+U+dNy9NdH+Zf2Jg3wVY0TgbAM7wPgDHN8Mtt8fWoyytw==
 
-"@craigmiller160/react-hook-form-material-ui@file:.yalc/@craigmiller160/react-hook-form-material-ui":
+"@craigmiller160/react-hook-form-material-ui@^1.0.1":
   version "1.0.1"
+  resolved "http://craigpc:30000/@craigmiller160%2freact-hook-form-material-ui/-/react-hook-form-material-ui-1.0.1.tgz#320bd3da8515c0c6361a4b437c5c27b4c282cf54"
+  integrity sha512-yUKsKbRgmqmYzK3zRLjyT/8S4ZlCDvz3HJs8DVoolyfueO0xTk/X5l0tFhNuYWfCuaTSjKE+X2UeMxGKF97kKg==
   dependencies:
     "@material-ui/core" "^4.11.3"
     "@material-ui/lab" "^4.0.0-alpha.57"
