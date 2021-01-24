@@ -1086,15 +1086,13 @@
   resolved "http://craigpc:30000/@craigmiller160%2fjest-matchers-common/-/jest-matchers-common-1.0.0.tgz#d59d4a3721c7798a3bc5ed576f643f53dd5c6f53"
   integrity sha512-hnxc3QIb7LZbQ9R2N5cQ/nXBItOJNXymSrYUX61iv+U+dNy9NdH+Zf2Jg3wVY0TgbAM7wPgDHN8Mtt8fWoyytw==
 
-"@craigmiller160/react-hook-form-material-ui@^1.0.0":
-  version "1.0.0"
-  resolved "http://craigpc:30000/@craigmiller160%2freact-hook-form-material-ui/-/react-hook-form-material-ui-1.0.0.tgz#b12ebd3ff13b9b4423f1250784de0aad6fa78f2d"
-  integrity sha512-uyHHdW4Ezewya6jODXTsteAKrfA58QPb9yyiIzSd5veALWOYM6k4bs21IKb7ltWKHy2HaBFiwcJ+wAd1S/o5hA==
+"@craigmiller160/react-hook-form-material-ui@file:.yalc/@craigmiller160/react-hook-form-material-ui":
+  version "1.0.1"
   dependencies:
     "@material-ui/core" "^4.11.3"
     "@material-ui/lab" "^4.0.0-alpha.57"
-    react "^16.14.0"
-    react-hook-form "6.0.7"
+    react "^17.0.1"
+    react-hook-form "^6.14.2"
 
 "@craigmiller160/react-material-ui-common@^1.1.0":
   version "1.1.0"
@@ -10474,10 +10472,10 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-hook-form@6.0.7:
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.0.7.tgz#65dc9b110787fef83b4c5fd5ca451bd25ea38207"
-  integrity sha512-9CmZbZLzJlMNda0ot/icEFeCq+MaZlK+j3mjxgLv4Kf2wf1E6hCmSmjHoaDyPIqYCuDUSFO+Lcf+lscBm2tdXg==
+react-hook-form@^6.14.2:
+  version "6.14.2"
+  resolved "http://craigpc:30000/react-hook-form/-/react-hook-form-6.14.2.tgz#60ab0b5367b220a3d96aa0b17bd0f13f9d8c326a"
+  integrity sha512-GgDUuT3Yfhl1BOcMl862uAFbCixSomtm3CVlQQ1qVu9Tq5BN2uUIRUIXP8l2Gy99eLUrBqU9x4E7N+si9cnvaw==
 
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
