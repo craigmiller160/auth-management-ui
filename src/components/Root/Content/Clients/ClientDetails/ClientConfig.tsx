@@ -31,9 +31,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import * as TE from 'fp-ts/es6/TaskEither';
 import * as T from 'fp-ts/es6/Task';
-import TextField from '../../../../ui/Form/TextField';
+import { TextField, Switch } from '@craigmiller160/react-hook-form-material-ui';
 import './ClientConfig.scss';
-import Switch from '../../../../ui/Form/Switch';
 import { greaterThanZero } from '../../../../../utils/validations';
 import List, { Item } from '../../../../ui/List';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
@@ -371,7 +370,6 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="refresh-token-time-field"
@@ -387,7 +385,6 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                         <TextField
                             id="auth-code-time-field"
@@ -403,7 +400,6 @@ const ClientConfig = (props: Props) => {
                                     greaterThanZero
                                 }
                             } }
-                            transform={ (value: string) => (value ? parseInt(value, 10) : '') }
                         />
                     </Grid>
                 </Grid>
