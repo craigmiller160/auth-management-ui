@@ -1086,10 +1086,13 @@
   resolved "http://craigpc:30000/@craigmiller160%2fjest-matchers-common/-/jest-matchers-common-1.0.0.tgz#d59d4a3721c7798a3bc5ed576f643f53dd5c6f53"
   integrity sha512-hnxc3QIb7LZbQ9R2N5cQ/nXBItOJNXymSrYUX61iv+U+dNy9NdH+Zf2Jg3wVY0TgbAM7wPgDHN8Mtt8fWoyytw==
 
-"@craigmiller160/react-hook-form-material-ui@file:.yalc/@craigmiller160/react-hook-form-material-ui":
-  version "1.0.0-beta"
+"@craigmiller160/react-hook-form-material-ui@^1.0.0":
+  version "1.0.0"
+  resolved "http://craigpc:30000/@craigmiller160%2freact-hook-form-material-ui/-/react-hook-form-material-ui-1.0.0.tgz#b12ebd3ff13b9b4423f1250784de0aad6fa78f2d"
+  integrity sha512-uyHHdW4Ezewya6jODXTsteAKrfA58QPb9yyiIzSd5veALWOYM6k4bs21IKb7ltWKHy2HaBFiwcJ+wAd1S/o5hA==
   dependencies:
     "@material-ui/core" "^4.11.3"
+    "@material-ui/lab" "^4.0.0-alpha.57"
     react "^16.14.0"
     react-hook-form "6.0.7"
 
@@ -1530,6 +1533,17 @@
     clsx "^1.0.4"
     prop-types "^15.7.2"
     react-is "^16.8.0"
+
+"@material-ui/lab@^4.0.0-alpha.57":
+  version "4.0.0-alpha.57"
+  resolved "http://craigpc:30000/@material-ui%2flab/-/lab-4.0.0-alpha.57.tgz#e8961bcf6449e8a8dabe84f2700daacfcafbf83a"
+  integrity sha512-qo/IuIQOmEKtzmRD2E4Aa6DB4A87kmY6h0uYhjUmrrgmEAgbbw9etXpWPVXuRK6AGIQCjFzV6WO2i21m1R4FCw==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@material-ui/utils" "^4.11.2"
+    clsx "^1.0.4"
+    prop-types "^15.7.2"
+    react-is "^16.8.0 || ^17.0.0"
 
 "@material-ui/styles@^4.10.0":
   version "4.10.0"
