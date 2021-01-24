@@ -26,7 +26,7 @@ export interface GraphQLError {
 
 export interface GraphQLQueryResponse<T> {
     data: T;
-    errors: Array<GraphQLError>;
+    errors?: Array<GraphQLError>;
 }
 
 export interface OldClientDetailsWrapper {

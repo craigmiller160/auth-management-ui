@@ -16,16 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
-import api from './Api';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
+import ajaxApi from './AjaxApi';
 import { ClientRole } from '../types/client';
 import { Role } from '../types/role';
 import { CreateRoleWrapper, DeleteRoleWrapper, UpdateRoleWrapper } from '../types/graphApi';
 
-export const createRole = async (clientId: number, role: ClientRole): Promise<Either<Error, Role>> =>
+export const createRole = (clientId: number, role: ClientRole): TE.TaskEither<Error, Role> =>
     pipe(
-        await api.graphql<CreateRoleWrapper>({
+        ajaxApi.graphql<CreateRoleWrapper>({
             payload: `
                 mutation {
                     createRole(role: {
@@ -40,12 +42,12 @@ export const createRole = async (clientId: number, role: ClientRole): Promise<Ei
             `,
             errorMsg: `Error creating role for client ${clientId}`
         }),
-        map((wrapper: CreateRoleWrapper) => wrapper.createRole)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<CreateRoleWrapper>>) => res.data.data.createRole)
     );
 
-export const updateRole = async (clientId: number, roleId: number, role: ClientRole): Promise<Either<Error, Role>> =>
+export const updateRole = (clientId: number, roleId: number, role: ClientRole): TE.TaskEither<Error, Role> =>
     pipe(
-        await api.graphql<UpdateRoleWrapper>({
+        ajaxApi.graphql<UpdateRoleWrapper>({
             payload: `
                 mutation {
                     updateRole(roleId: ${roleId}, role: {
@@ -60,12 +62,12 @@ export const updateRole = async (clientId: number, roleId: number, role: ClientR
             `,
             errorMsg: `Error updating role ${roleId} for client ${clientId}`
         }),
-        map((wrapper: UpdateRoleWrapper) => wrapper.updateRole)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) => res.data.data.updateRole)
     );
 
-export const deleteRole = async (roleId: number): Promise<Either<Error, Role>> =>
+export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
     pipe(
-        await api.graphql<DeleteRoleWrapper>({
+        ajaxApi.graphql<DeleteRoleWrapper>({
             payload: `
                 mutation {
                     deleteRole(roleId: ${roleId}) {
@@ -77,5 +79,5 @@ export const deleteRole = async (roleId: number): Promise<Either<Error, Role>> =
             `,
             errorMsg: `Error deleting role ${roleId}`
         }),
-        map((wrapper: DeleteRoleWrapper) => wrapper.deleteRole)
+        TE.map((res: AxiosResponse<GraphQLQueryResponse<DeleteRoleWrapper>>) => res.data.data.deleteRole)
     );

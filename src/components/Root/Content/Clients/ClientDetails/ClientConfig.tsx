@@ -21,7 +21,6 @@ import { Prompt, useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useImmer } from 'use-immer';
 import { useForm } from 'react-hook-form';
-import { Either, getOrElse, map } from 'fp-ts/es6/Either';
 import { nanoid } from 'nanoid';
 import { ConfirmDialog, showSuccessReduxAlert } from '@craigmiller160/react-material-ui-common';
 import Language from '@material-ui/icons/Language';
@@ -30,6 +29,8 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import TextField from '../../../../ui/Form/TextField';
 import './ClientConfig.scss';
 import Switch from '../../../../ui/Form/Switch';
@@ -98,10 +99,10 @@ const ClientConfig = (props: Props) => {
         defaultValues: defaultClientForm
     });
 
-    const doSubmit = async (action: () => Promise<Either<Error, ClientDetails>>) => {
+    const doSubmit = (action: () => TE.TaskEither<Error, ClientDetails>) =>
         pipe(
-            await action(),
-            map((client) => {
+            action(),
+            TE.map((client) => {
                 setState((draft) => {
                     draft.clientId = client.id;
                     draft.redirectUriDirty = false;
@@ -115,8 +116,7 @@ const ClientConfig = (props: Props) => {
                 dispatch(showSuccessReduxAlert(`Successfully saved client ${id}`));
                 history.push(path);
             })
-        );
-    };
+        )();
 
     const onSubmit = (values: ClientForm) => {
         const payload: ClientInput = {
@@ -132,22 +132,28 @@ const ClientConfig = (props: Props) => {
     };
 
     useEffect(() => {
-        const loadClient = async () => {
-            const client = pipe(
-                await getClientDetails(state.clientId),
-                getOrElse((): ClientDetails => defaultClient)
-            );
-            reset({
-                ...client,
-                clientSecret: SECRET_PLACEHOLDER
-            });
-            setState((draft) => {
-                draft.redirectUris = client.redirectUris;
-            });
-        };
+        const loadClient = () =>
+            pipe(
+                getClientDetails(state.clientId),
+                TE.fold<Error, ClientDetails, ClientDetails>(
+                    (ex: Error): T.Task<ClientDetails> => T.of(defaultClient),
+                    (clientDetails: ClientDetails): T.Task<ClientDetails> => T.of(clientDetails)
+                ),
+                T.map((client: ClientDetails) => {
+                    reset({
+                        ...client,
+                        clientSecret: SECRET_PLACEHOLDER
+                    });
+                    const redirectUris = client.redirectUris.slice()
+                        .sort((uri1, uri2) => uri1.localeCompare(uri2));
+                    setState((draft) => {
+                        draft.redirectUris = redirectUris;
+                    });
+                })
+            )();
 
         const loadNewClient = async () => {
-            const [ key, secret ] = await Promise.all([ generateGuid(), generateGuid() ]);
+            const [ key, secret ] = await Promise.all([ generateGuid()(), generateGuid()() ]);
             if (isRight(key) && isRight(secret)) {
                 reset({
                     ...defaultClientForm,
@@ -172,21 +178,31 @@ const ClientConfig = (props: Props) => {
         }
     }, [ reset, state.clientId, setState ]);
 
-    const generateClientKey = async () => {
-        const guid = pipe(
-            await generateGuid(),
-            getOrElse((): string => '')
-        );
-        setValue('clientKey', guid);
-    };
+    const generateClientKey = (): Promise<string> =>
+        pipe(
+            generateGuid(),
+            TE.fold(
+                (ex: Error) => T.of(''),
+                (guid: string) => T.of(guid)
+            ),
+            T.map((guid: string) => {
+                setValue('clientKey', guid);
+                return guid;
+            })
+        )();
 
-    const generateClientSecret = async () => {
-        const guid = pipe(
-            await generateGuid(),
-            getOrElse((): string => '')
-        );
-        setValue('clientSecret', guid);
-    };
+    const generateClientSecret = (): Promise<string> =>
+        pipe(
+            generateGuid(),
+            TE.fold(
+                (ex: Error) => T.of(''),
+                (guid: string) => T.of(guid)
+            ),
+            T.map((guid: string) => {
+                setValue('clientSecret', guid);
+                return guid;
+            })
+        )();
 
     const showRedirectUriDialog = (selectedUri?: string) =>
         setState((draft) => {
@@ -200,10 +216,7 @@ const ClientConfig = (props: Props) => {
             draft.redirectUriDirty = true;
         });
 
-    const redirectUris = state.redirectUris.slice()
-        .sort((uri1, uri2) => uri1.localeCompare(uri2));
-
-    const redirectUriItems: Array<Item> = redirectUris
+    const redirectUriItems: Array<Item> = state.redirectUris
         .map((uri, index) => ({
             uuid: nanoid(),
             avatar: () => <Language />,
@@ -229,13 +242,13 @@ const ClientConfig = (props: Props) => {
             draft.showRedirectUriDialog = false;
         });
 
-    const saveRedirectUri = (value: string) => {
+    const saveRedirectUri = (value: string) =>
         setState((draft) => {
             if (draft.selectedRedirectUri) {
                 const index = draft.redirectUris
                     .findIndex((uri) => uri === draft.selectedRedirectUri);
                 if (index >= 0) {
-                    draft.redirectUris.splice(0, 1);
+                    draft.redirectUris.splice(index, 1);
                 }
             }
             draft.redirectUris.push(value);
@@ -243,23 +256,24 @@ const ClientConfig = (props: Props) => {
             draft.showRedirectUriDialog = false;
             draft.redirectUriDirty = true;
         });
-    };
 
     const toggleDeleteDialog = (show: boolean) =>
         setState((draft) => {
             draft.showDeleteDialog = show;
         });
 
-    const doDelete = async () => {
-        const result = await deleteClient(state.clientId);
-        if (isRight(result)) {
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/clients');
-            dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
-        }
-    };
+    const doDelete = () =>
+        pipe(
+            deleteClient(state.clientId),
+            TE.map((client: ClientDetails): ClientDetails => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                history.push('/clients');
+                dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
+                return client;
+            })
+        )();
 
     return (
         <div id="client-config-page" className="ClientConfig">

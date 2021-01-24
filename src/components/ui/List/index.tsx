@@ -83,18 +83,21 @@ const List = (props: Props) => {
     return (
         <MuiList id={ id }>
             {
-                items.map((item) => {
+                items.map((item, index) => {
                     const Avatar = item.avatar ?? null;
                     const className = [ classes.ListItem ];
                     if (item.active) {
                         className.push('active');
                     }
 
-                    const primaryTextId = id ? `${id}-text-primary` : '';
-                    const secondaryTextId = id ? `${id}-text-secondary` : '';
+                    const itemId = id ? `${id}-item-${index}` : '';
+
+                    const primaryTextId = itemId ? `${itemId}-text-primary` : '';
+                    const secondaryTextId = itemId ? `${itemId}-text-secondary` : '';
 
                     return (
                         <ListItem
+                            data-testid={ itemId }
                             key={ item.uuid }
                             className={ className.join(' ') }
                             onClick={ item.click }

@@ -16,42 +16,36 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { bimap, Either, map } from 'fp-ts/es6/Either';
 import { pipe } from 'fp-ts/es6/pipeable';
+import { isAxiosError } from '@craigmiller160/ajax-api-fp-ts';
+import * as TE from 'fp-ts/es6/TaskEither';
 import { AxiosResponse } from 'axios';
-import { fromNullable } from 'fp-ts/es6/Option';
-import api, { isAxiosError } from './Api';
 import { AuthCodeLogin, AuthUser } from '../types/auth';
-import store from '../store';
-import authSlice from '../store/auth/slice';
+import ajaxApi from './AjaxApi';
 
-export const logout = (): Promise<Either<Error, void>> =>
-    api.get<void>({
+export const logout = (): TE.TaskEither<Error, AxiosResponse<void>> =>
+    ajaxApi.get<void>({
         uri: '/oauth/logout',
         errorMsg: 'Error logging out'
     });
 
-export const login = async (): Promise<Either<Error, AuthCodeLogin>> =>
+export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
     pipe(
-        await api.post<void, AuthCodeLogin>({
+        ajaxApi.post<void, AuthCodeLogin>({
             uri: '/oauth/authcode/login',
             errorMsg: 'Error getting login URL'
         }),
-        map((loginData: AuthCodeLogin) => {
+        TE.map((res: AxiosResponse<AuthCodeLogin>) => res.data),
+        TE.map((loginData: AuthCodeLogin) => {
             window.location.assign(loginData.url);
             return loginData;
         })
     );
 
-export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
+export const getAuthUser = (): TE.TaskEither<Error, AuthUser> =>
     pipe(
-        await api.getRaw<AuthUser>({
+        ajaxApi.get<AuthUser>({
             uri: '/oauth/user',
-            config: {
-                headers: {
-                    'x-csrf-token': 'fetch'
-                }
-            },
             errorMsg: 'Error getting authenticated user',
             suppressError: (ex: Error) => {
                 if (isAxiosError(ex)) {
@@ -60,17 +54,5 @@ export const getAuthUser = async (): Promise<Either<Error, AuthUser>> =>
                 return false;
             }
         }),
-        bimap((error: Error) => {
-            if (isAxiosError(error)) {
-                const csrfToken = error.response?.headers?.['x-csrf-token'];
-                const csrfTokenOption = fromNullable(csrfToken);
-                store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
-            }
-            return error;
-        }, (res: AxiosResponse<AuthUser>) => {
-            const csrfToken = res.headers['x-csrf-token'];
-            const csrfTokenOption = fromNullable(csrfToken);
-            store.dispatch(authSlice.actions.setCsrfToken(csrfTokenOption));
-            return res.data;
-        })
+        TE.map((res: AxiosResponse<AuthUser>) => res.data)
     );

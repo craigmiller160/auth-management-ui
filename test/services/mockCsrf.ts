@@ -16,19 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@relmify/jest-fp-ts';
-import '@craigmiller160/jest-matchers-common';
-import '@testing-library/jest-dom/extend-expect';
+// TODO move this to ajax-api library... do it in VideoManagerClient first
+import MockAdapter from 'axios-mock-adapter';
 
-beforeEach(() => {
-    // @ts-ignore
-    delete window.location;
-    // @ts-ignore
-    window.location = {
-        assign: jest.fn(),
-        pathname: '/',
-        search: '',
-        hash: '',
-        href: ''
-    };
-});
+export const mockCsrfPreflight = (mockApi: MockAdapter) =>
+    mockApi.onOptions('/graphql')
+        .reply((config) => {
+            expect(config.headers['x-csrf-token']).toEqual('fetch');
+            return [
+                200,
+                null,
+                {
+                    'x-csrf-token': 'ABCDEFG'
+                }
+            ];
+        });

@@ -20,7 +20,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
 import Button from '@material-ui/core/Button';
 import Table from '../../../ui/Table';
@@ -41,15 +42,18 @@ const Users = () => {
     });
 
     useEffect(() => {
-        const action = async () => {
-            const users = pipe(
-                await getAllUsers(),
-                map((list: UserList) => list.users),
-                getOrElse((): Array<UserDetails> => ([]))
-            );
-            setState({
-                users
-            });
+        const action = () => {
+            pipe(
+                getAllUsers(),
+                TE.fold(
+                    (): T.Task<UserDetails[]> => T.of([]),
+                    (list: UserList): T.Task<UserDetails[]> => T.of(list.users)
+                ),
+                T.map((users: UserDetails[]) =>
+                    setState({
+                        users
+                    }))
+            )();
         };
 
         action();

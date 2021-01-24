@@ -20,9 +20,9 @@ import React, { useEffect } from 'react';
 import { Prompt, useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { Either, getOrElse, map } from 'fp-ts/es6/Either';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { useForm } from 'react-hook-form';
-import { isRight } from 'fp-ts/es6/These';
 import { useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -77,10 +77,10 @@ const UserConfig = (props: Props) => {
     });
     const watchPassword = watch('password', '');
 
-    const doSubmit = async (action: () => Promise<Either<Error, UserDetails>>) => {
+    const doSubmit = async (action: () => TE.TaskEither<Error, UserDetails>) =>
         pipe(
-            await action(),
-            map((user) => {
+            action(),
+            TE.map((user) => {
                 setState((draft) => {
                     draft.userId = user.id;
                 });
@@ -94,7 +94,6 @@ const UserConfig = (props: Props) => {
                 history.push(path);
             })
         );
-    };
 
     const onSubmit = (values: UserForm) => {
         const payload: UserInput = {
@@ -108,13 +107,12 @@ const UserConfig = (props: Props) => {
     };
 
     useEffect(() => {
-        const action = async () => {
-            const user = pipe(
-                await getUserDetails(state.userId),
-                getOrElse((): UserDetails => defaultUser)
+        const action = () =>
+            pipe(
+                getUserDetails(state.userId),
+                TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
+                T.map((user) => reset(user))
             );
-            reset(user);
-        };
 
         if (state.userId > 0) {
             action();
@@ -141,16 +139,17 @@ const UserConfig = (props: Props) => {
             draft.showDeleteDialog = show;
         });
 
-    const doDelete = async () => {
-        const result = await deleteUser(parseInt(id, 10));
-        if (isRight(result)) {
-            setState((draft) => {
-                draft.allowNavigationOverride = true;
-            });
-            history.push('/users');
-            dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
-        }
-    };
+    const doDelete = () =>
+        pipe(
+            deleteUser(parseInt(id, 10)),
+            TE.map(() => {
+                setState((draft) => {
+                    draft.allowNavigationOverride = true;
+                });
+                history.push('/users');
+                dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
+            })
+        )();
 
     return (
         <div className="UserConfig">

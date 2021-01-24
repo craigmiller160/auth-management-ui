@@ -16,14 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect, useMemo, MouseEvent } from 'react';
+import React, { MouseEvent, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import { useImmer } from 'use-immer';
 import Button from '@material-ui/core/Button';
 import Business from '@material-ui/icons/Business';
 import { exists, Option } from 'fp-ts/es6/Option';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
 import { ConfirmDialog, SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
@@ -67,17 +68,17 @@ const UserClients = (props: Props) => {
     });
 
     useEffect(() => {
-        const action = async () => {
-            const clients = pipe(
-                await getAllClients(),
-                map((res: ClientListResponse) => res.clients),
-                getOrElse((): Array<ClientListItem> => [])
-            );
-
-            setState((draft) => {
-                draft.allClients = clients;
-            });
-        };
+        const action = () => pipe(
+            getAllClients(),
+            TE.fold(
+                (): T.Task<ClientListItem[]> => T.of([]),
+                (res: ClientListResponse): T.Task<ClientListItem[]> => T.of(res.clients)
+            ),
+            T.map((items: ClientListItem[]) =>
+                setState((draft) => {
+                    draft.allClients = items;
+                }))
+        )();
 
         action();
     }, [ setState ]);
@@ -122,16 +123,19 @@ const UserClients = (props: Props) => {
             draft.showAddClientDialog = true;
         });
 
-    const addClientSelect = async (clientToAdd: SelectOption<number>) => {
+    const addClientSelect = (clientToAdd: SelectOption<number>) => {
         setState((draft) => {
             draft.showAddClientDialog = false;
         });
         const clientId = clientToAdd.value;
-        const clients = pipe(
-            await addClientToUser(userId, clientId),
-            getOrElse((): Array<UserClient> => [])
-        );
-        updateClients(clients);
+        pipe(
+            addClientToUser(userId, clientId),
+            TE.fold(
+                (): T.Task<UserClient[]> => T.of([]),
+                (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients)
+            ),
+            T.map((clients: UserClient[]) => updateClients(clients))
+        )();
     };
 
     const addClientCancel = () =>
@@ -154,15 +158,18 @@ const UserClients = (props: Props) => {
             draft.showRemoveClientDialog = false;
         });
 
-    const removeClientOnConfirm = async () => {
+    const removeClientOnConfirm = () => {
         setState((draft) => {
             draft.showRemoveClientDialog = false;
         });
-        const clients = pipe(
-            await removeClientFromUser(userId, state.clientIdToRemove),
-            getOrElse((): Array<UserClient> => [])
-        );
-        updateClients(clients);
+        pipe(
+            removeClientFromUser(userId, state.clientIdToRemove),
+            TE.fold(
+                (): T.Task<UserClient[]> => T.of([]),
+                (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients)
+            ),
+            T.map((clients: UserClient[]) => updateClients(clients))
+        )();
     };
 
     return (

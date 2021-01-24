@@ -19,7 +19,8 @@
 import React, { useEffect } from 'react';
 import './UserAuths.scss';
 import { pipe } from 'fp-ts/es6/pipeable';
-import { getOrElse, map } from 'fp-ts/es6/Either';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import { useImmer } from 'use-immer';
 import LockOpen from '@material-ui/icons/LockOpen';
 import Typography from '@material-ui/core/Typography';
@@ -51,30 +52,37 @@ const UserAuths = (props: Props) => {
     });
 
     useEffect(() => {
-        const action = async () => {
-            const userAuths = pipe(
-                await getAllUserAuthDetails(state.userId),
-                getOrElse((): UserAuthDetailsList => defaultUserAuths)
-            );
-            setState((draft) => {
-                draft.userAuths = userAuths;
-            });
-        };
+        const action = () =>
+            pipe(
+                getAllUserAuthDetails(state.userId),
+                TE.fold(
+                    (): T.Task<UserAuthDetailsList> => T.of(defaultUserAuths),
+                    (userAuths: UserAuthDetailsList) => T.of(userAuths)
+                ),
+                T.map((userAuths: UserAuthDetailsList) =>
+                    setState((draft) => {
+                        draft.userAuths = userAuths;
+                    }))
+            )();
 
         action();
     }, [ setState, state.userId ]);
 
-    const doRevoke = async (clientId: number) => {
-        const authDetails = pipe(
-            await revokeUserAuthAccess(state.userId, clientId),
-            map(() =>
+    const doRevoke = (clientId: number) => {
+        pipe(
+            revokeUserAuthAccess(state.userId, clientId),
+            TE.map(() =>
                 state.userAuths.authDetails
                     .filter((auth) => auth.clientId !== clientId)),
-            getOrElse((): Array<UserAuthDetails> => state.userAuths.authDetails)
-        );
-        setState((draft) => {
-            draft.userAuths.authDetails = authDetails;
-        });
+            TE.fold(
+                (): T.Task<UserAuthDetails[]> => T.of(state.userAuths.authDetails),
+                (authDetails: UserAuthDetails[]): T.Task<UserAuthDetails[]> => T.of(authDetails)
+            ),
+            T.map((authDetails: UserAuthDetails[]) =>
+                setState((draft) => {
+                    draft.userAuths.authDetails = authDetails;
+                }))
+        )();
     };
 
     const items: Array<Item> = state.userAuths.authDetails
