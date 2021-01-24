@@ -19,8 +19,6 @@
 import '@relmify/jest-fp-ts';
 import '@craigmiller160/jest-matchers-common';
 import '@testing-library/jest-dom/extend-expect';
-import { configure } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 beforeEach(() => {
     // @ts-ignore
@@ -34,5 +32,3 @@ beforeEach(() => {
         href: ''
     };
 });
-
-configure({ adapter: new Adapter() });

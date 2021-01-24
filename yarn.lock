@@ -1132,10 +1132,10 @@
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
 
-"@craigmiller160/react-web-config@^2.7.2":
-  version "2.7.2"
-  resolved "http://craigpc:30000/@craigmiller160%2freact-web-config/-/react-web-config-2.7.2.tgz#845db5781614a3de6fa349f74a0ee05c62150b69"
-  integrity sha512-rpDf7t9y5QrHVBT7U90rCH6B64g7yEYSK3DXIhjdmgUOlWsNlBn12R78CH+6ZqDG4lc4IWfTIyvJNj3luP/qrw==
+"@craigmiller160/react-web-config@^2.8.0":
+  version "2.8.0"
+  resolved "http://craigpc:30000/@craigmiller160%2freact-web-config/-/react-web-config-2.8.0.tgz#22589bb5880bc96d303836786f3c2a93ba636d73"
+  integrity sha512-moj1XXu4+Irpp+J/EyCHAw12OOo6kISL6yrB9RmAC29lpQIUIz3JpPA2lLfdWOjzVm5K21ICAs4OYmxkrgtTHw==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/plugin-proposal-class-properties" "^7.12.1"
@@ -1149,6 +1149,7 @@
     "@types/jest" "^26.0.15"
     "@typescript-eslint/eslint-plugin" "^4.6.1"
     "@typescript-eslint/parser" "^4.6.1"
+    "@wojtekmaj/enzyme-adapter-react-17" "^0.4.1"
     archiver "^5.0.2"
     babel-eslint "^10.1.0"
     babel-jest "^26.6.3"
