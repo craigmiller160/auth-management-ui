@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Validate, ValidationRule, ValidationValueMessage } from 'react-hook-form/dist/types/form';
+import { Validate, ValidationRule, ValidationValueMessage } from 'react-hook-form/dist/types/validator';
 import { ReactText } from 'react';
 
 export interface FieldRules {
