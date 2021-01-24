@@ -22,14 +22,14 @@ module.exports = {
     title: 'OAuth Management',
     devServerPort: 3000,
     devServerHttps: true,
-    publicPath: '/auth-manage-ui',
+    publicPath: '/auth-management',
     devServerProxy: {
         '/auth-manage-ui/api': {
             target: 'https://localhost:7004',
             changeOrigin: true,
             secure: false,
             pathRewrite: {
-                '^/auth-manage-ui/api': ''
+                '^/auth-management/api': ''
             },
             logLevel: 'debug'
         },
@@ -38,7 +38,7 @@ module.exports = {
             changeOrigin: true,
             secure: false,
             pathRewrite: {
-                '^/auth-manage-ui/oauth2': ''
+                '^/auth-management/oauth2': ''
             },
             logLevel: 'debug'
         }
