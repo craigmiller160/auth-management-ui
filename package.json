@@ -1,6 +1,6 @@
 {
   "name": "auth-management-ui",
-  "version": "1.7.0",
+  "version": "1.8.0-beta",
   "sideEffects": false,
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.1",
