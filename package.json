@@ -4,6 +4,7 @@
   "sideEffects": false,
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.1",
+    "@craigmiller160/react-hook-form-material-ui": "file:.yalc/@craigmiller160/react-hook-form-material-ui",
     "@craigmiller160/react-material-ui-common": "^1.1.0",
     "@craigmiller160/react-protected-route": "^1.2.0",
     "@material-ui/core": "^4.11.0",
@@ -40,7 +41,7 @@
   "devDependencies": {
     "@craigmiller160/jest-matchers-common": "^1.0.0",
     "@craigmiller160/react-test-utils": "^2.1.0",
-    "@craigmiller160/react-web-config": "^2.7.1",
+    "@craigmiller160/react-web-config": "file:.yalc/@craigmiller160/react-web-config",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
