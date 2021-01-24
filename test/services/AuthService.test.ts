@@ -56,16 +56,16 @@ describe('AuthService', () => {
     });
 
     it('logout', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/logout')
+        mockApi.onGet('/auth-management/api/oauth/logout')
             .reply(200);
         const result = await logout();
         expect(isRight(result)).toEqual(true);
     });
 
     it('login', async () => {
-        mockApi.onOptions('/auth-manage-ui/api/oauth/authcode/login')
+        mockApi.onOptions('/auth-management/api/oauth/authcode/login')
             .reply(200, '', {});
-        mockApi.onPost('/auth-manage-ui/api/oauth/authcode/login')
+        mockApi.onPost('/auth-management/api/oauth/authcode/login')
             .reply(200, authCodeLogin);
         const result = await login();
         expect(isRight(result)).toEqual(true);
@@ -74,7 +74,7 @@ describe('AuthService', () => {
     });
 
     it('getAuthUser', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/user')
+        mockApi.onGet('/auth-management/api/oauth/user')
             .reply((config) => {
                 expect(config.headers['x-csrf-token']).toEqual('fetch');
                 return [
@@ -97,7 +97,7 @@ describe('AuthService', () => {
     });
 
     it('getAuthUser set CSRF on failure', async () => {
-        mockApi.onGet('/auth-manage-ui/api/oauth/user')
+        mockApi.onGet('/auth-management/api/oauth/user')
             .reply((config) => {
                 expect(config.headers['x-csrf-token']).toEqual('fetch');
                 return [
