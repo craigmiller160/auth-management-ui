@@ -1,4 +1,4 @@
-FROM craigmiller160-nginx-base:1.1.0
+FROM craigmiller160.ddns.net:30004/nginx-base:1.1.0
 
 RUN apt-get update && apt-get install unzip
 
