@@ -1,6 +1,6 @@
 {
   "name": "auth-management-ui",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "sideEffects": false,
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack && web-config-scripts prepDeploy",
+    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "web-config-scripts lint",
