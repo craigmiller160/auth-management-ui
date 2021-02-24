@@ -1,7 +1,14 @@
 {
-  "name": "auth-management-ui",
+  "name": "@craigmiller160/auth-management-ui",
   "version": "1.8.0-beta",
   "sideEffects": false,
+  "files": [
+    "build"
+  ],
+  "publishConfig": {
+    "registry": "https://craigmiller160.ddns.net:30003/repository/npm-private/"
+  },
+  "author": "craigmiller160",
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
@@ -26,7 +33,7 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack && web-config-scripts prepDeploy",
+    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "web-config-scripts lint",
