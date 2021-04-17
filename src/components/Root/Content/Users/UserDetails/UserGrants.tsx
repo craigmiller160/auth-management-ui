@@ -16,35 +16,35 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useCallback, useEffect } from 'react'
-import { useImmer } from 'use-immer'
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
-import Grid from '@material-ui/core/Grid'
-import { SectionHeader } from '@craigmiller160/react-material-ui-common'
+import React, { useCallback, useEffect } from 'react';
+import { useImmer } from 'use-immer';
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
+import Grid from '@material-ui/core/Grid';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import {
   getOrElse as oGetOrElse,
   map,
   none,
   Option,
   some,
-} from 'fp-ts/es6/Option'
-import { getUserClients } from '../../../../../services/UserService'
+} from 'fp-ts/es6/Option';
+import { getUserClients } from '../../../../../services/UserService';
 import {
   UserClient,
   UserClients as UserClientsType,
   UserRole,
-} from '../../../../../types/user'
-import './UserGrants.scss'
-import UserClients from './UserClients'
-import UserRoles from './UserRoles'
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage'
+} from '../../../../../types/user';
+import './UserGrants.scss';
+import UserClients from './UserClients';
+import UserRoles from './UserRoles';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 
 interface State {
-  userId: number
-  user: UserClientsType
-  selectedClient: Option<UserClient>
+  userId: number;
+  user: UserClientsType;
+  selectedClient: Option<UserClient>;
 }
 interface Props extends IdMatchProps {}
 
@@ -52,15 +52,15 @@ const defaultUser: UserClientsType = {
   id: 0,
   email: '',
   clients: [],
-}
+};
 
 const UserGrants = (props: Props) => {
-  const { id } = props.match.params
+  const { id } = props.match.params;
   const [ state, setState ] = useImmer<State>({
     userId: id !== NEW_ID ? parseInt(id, 10) : 0,
     user: defaultUser,
     selectedClient: none,
-  })
+  });
 
   const loadUser = useCallback(
     () =>
@@ -72,12 +72,12 @@ const UserGrants = (props: Props) => {
         ),
         T.map((user: UserClientsType) =>
           setState((draft) => {
-            draft.user = user
+            draft.user = user;
           }),
         ),
       ),
     [ state.userId, setState ],
-  )
+  );
 
   const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
     const newSelectedClient = pipe(
@@ -88,30 +88,30 @@ const UserGrants = (props: Props) => {
           userRoles,
         }),
       ),
-    )
+    );
 
     setState((draft) => {
-      draft.selectedClient = newSelectedClient
+      draft.selectedClient = newSelectedClient;
       const clientIndex = draft.user.clients.findIndex(
         (client) => client.id === clientId,
-      )
+      );
       if (clientIndex > 0) {
         draft.user.clients[clientIndex] = pipe(
           newSelectedClient,
           oGetOrElse((): UserClient => draft.user.clients[clientIndex]),
-        )
+        );
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    loadUser()
-  }, [ loadUser ])
+    loadUser();
+  }, [ loadUser ]);
 
   const selectClient = (client: UserClient) =>
     setState((draft) => {
-      draft.selectedClient = some(client)
-    })
+      draft.selectedClient = some(client);
+    });
 
   return (
     <div className="UserGrants">
@@ -136,7 +136,7 @@ const UserGrants = (props: Props) => {
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default UserGrants
+export default UserGrants;

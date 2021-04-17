@@ -16,22 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { Control, Controller } from 'react-hook-form'
-import { FieldName } from 'react-hook-form/dist/types/form'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import MuiCheckbox from '@material-ui/core/Checkbox'
+import React from 'react';
+import { Control, Controller } from 'react-hook-form';
+import { FieldName } from 'react-hook-form/dist/types/form';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import MuiCheckbox from '@material-ui/core/Checkbox';
 
 interface Props<T> {
-  id?: string
-  name: keyof T
-  control: Control<T>
-  label: string
-  color?: 'primary' | 'secondary' | 'default'
+  id?: string;
+  name: keyof T;
+  control: Control<T>;
+  label: string;
+  color?: 'primary' | 'secondary' | 'default';
 }
 
 const Checkbox = <T extends object>(props: Props<T>) => {
-  const { id, name, control, color, label } = props
+  const { id, name, control, color, label } = props;
 
   return (
     <Controller
@@ -52,7 +52,7 @@ const Checkbox = <T extends object>(props: Props<T>) => {
         />
       )}
     />
-  )
-}
+  );
+};
 
-export default Checkbox
+export default Checkbox;

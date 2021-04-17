@@ -19,42 +19,42 @@
 // TODO make separate library
 
 type AnyPropName = {
-  [name: string]: any
-}
+  [name: string]: any;
+};
 
 export type AnyPropString = {
-  [name: string]: string
-}
+  [name: string]: string;
+};
 
 export type AnyPropNumber = {
-  [name: string]: number
-}
+  [name: string]: number;
+};
 
 export type AnyPropBoolean = {
-  [name: string]: boolean
-}
+  [name: string]: boolean;
+};
 
 export class PropertyTypeError extends Error {
   constructor(message: string) {
-    super(message)
-    this.name = 'PropertyTypeError'
+    super(message);
+    this.name = 'PropertyTypeError';
   }
 }
 
 export const objectHasProperty = (
   obj: object,
   name: string,
-): obj is AnyPropName => Object.prototype.hasOwnProperty.call(obj, name)
+): obj is AnyPropName => Object.prototype.hasOwnProperty.call(obj, name);
 
 export const isStringProperty = (
   obj: object,
   name: string,
 ): obj is AnyPropString => {
   if (objectHasProperty(obj, name)) {
-    return typeof obj[name] === 'string'
+    return typeof obj[name] === 'string';
   }
-  return false
-}
+  return false;
+};
 
 export const assignStringProperty = (
   obj: object,
@@ -62,21 +62,21 @@ export const assignStringProperty = (
   value: string,
 ): boolean => {
   if (isStringProperty(obj, name)) {
-    obj[name] = value // eslint-disable-line no-param-reassign
-    return true
+    obj[name] = value; // eslint-disable-line no-param-reassign
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 export const isNumberProperty = (
   obj: object,
   name: string,
 ): obj is AnyPropNumber => {
   if (objectHasProperty(obj, name)) {
-    return typeof obj[name] === 'number'
+    return typeof obj[name] === 'number';
   }
-  return false
-}
+  return false;
+};
 
 export const assignNumberProperty = (
   obj: object,
@@ -84,21 +84,21 @@ export const assignNumberProperty = (
   value: number,
 ): boolean => {
   if (isNumberProperty(obj, name)) {
-    obj[name] = value // eslint-disable-line no-param-reassign
-    return true
+    obj[name] = value; // eslint-disable-line no-param-reassign
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 export const isBooleanProperty = (
   obj: object,
   name: string,
 ): obj is AnyPropBoolean => {
   if (objectHasProperty(obj, name)) {
-    return typeof obj[name] === 'boolean'
+    return typeof obj[name] === 'boolean';
   }
-  return false
-}
+  return false;
+};
 
 export const assignBooleanProperty = (
   obj: object,
@@ -106,11 +106,11 @@ export const assignBooleanProperty = (
   value: boolean,
 ): boolean => {
   if (isBooleanProperty(obj, name)) {
-    obj[name] = value // eslint-disable-line no-param-reassign
-    return true
+    obj[name] = value; // eslint-disable-line no-param-reassign
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 export const assignProperty = (
   obj: object,
@@ -119,12 +119,12 @@ export const assignProperty = (
 ): boolean => {
   switch (typeof value) {
     case 'string':
-      return assignStringProperty(obj, name, value)
+      return assignStringProperty(obj, name, value);
     case 'number':
-      return assignNumberProperty(obj, name, value)
+      return assignNumberProperty(obj, name, value);
     case 'boolean':
-      return assignBooleanProperty(obj, name, value)
+      return assignBooleanProperty(obj, name, value);
     default:
-      throw new PropertyTypeError(`Unsupported value type: ${typeof value}`)
+      throw new PropertyTypeError(`Unsupported value type: ${typeof value}`);
   }
-}
+};

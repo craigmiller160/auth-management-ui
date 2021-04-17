@@ -16,13 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react';
 
-export type SupportedHandledChangeTypes = string | boolean | number
+export type SupportedHandledChangeTypes = string | boolean | number;
 
 export interface HandledChangeEvent {
-  name: string
-  value: SupportedHandledChangeTypes
+  name: string;
+  value: SupportedHandledChangeTypes;
 }
 
 const handleCheckbox = (
@@ -31,20 +31,20 @@ const handleCheckbox = (
   handler({
     name: changeEvent.target.name,
     value: changeEvent.target.checked,
-  })
-}
+  });
+};
 
 const handleNumberField = (
   handler: (handledEvent: HandledChangeEvent) => void,
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
   const value = changeEvent.target.value ?
     parseInt(changeEvent.target.value, 10) :
-    0
+    0;
   handler({
     name: changeEvent.target.name,
     value,
-  })
-}
+  });
+};
 
 const handleTextField = (
   handler: (handledEvent: HandledChangeEvent) => void,
@@ -52,8 +52,8 @@ const handleTextField = (
   handler({
     name: changeEvent.target.name,
     value: changeEvent.target.value,
-  })
-}
+  });
+};
 
 export const createChangeHandler = (
   handler: (event: HandledChangeEvent) => void,
@@ -61,4 +61,4 @@ export const createChangeHandler = (
   handleCheckbox: handleCheckbox(handler),
   handleNumberField: handleNumberField(handler),
   handleTextField: handleTextField(handler),
-})
+});

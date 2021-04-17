@@ -16,63 +16,63 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { UserAuthDetails } from './user'
+import { UserAuthDetails } from './user';
 
 export interface ClientListItem {
-  id: number
-  name: string
-  clientKey: string
+  id: number;
+  name: string;
+  clientKey: string;
 }
 
 export interface ClientListResponse {
-  clients: Array<ClientListItem>
+  clients: Array<ClientListItem>;
 }
 
 export interface ClientRole {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface ClientUser {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  enabled: boolean
-  roles: Array<ClientRole>
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  enabled: boolean;
+  roles: Array<ClientRole>;
 }
 
 interface BaseClient {
-  name: string
-  clientKey: string
-  enabled: boolean
-  accessTokenTimeoutSecs: number
-  refreshTokenTimeoutSecs: number
-  authCodeTimeoutSecs: number
-  redirectUris: Array<string>
+  name: string;
+  clientKey: string;
+  enabled: boolean;
+  accessTokenTimeoutSecs: number;
+  refreshTokenTimeoutSecs: number;
+  authCodeTimeoutSecs: number;
+  redirectUris: Array<string>;
 }
 
 export interface ClientDetails extends BaseClient {
-  id: number
+  id: number;
 }
 
 export interface FullClientDetails extends ClientDetails {
-  id: number
-  roles: Array<ClientRole>
-  users: Array<ClientUser>
+  id: number;
+  roles: Array<ClientRole>;
+  users: Array<ClientUser>;
 }
 
 export interface ClientInput extends BaseClient {
-  clientSecret: string
+  clientSecret: string;
 }
 
 export interface ClientWithRoles {
-  id: number
-  name: string
-  roles: Array<ClientRole>
+  id: number;
+  name: string;
+  roles: Array<ClientRole>;
 }
 
 export interface ClientAuthDetails {
-  clientName: string
-  userAuthDetails: Array<UserAuthDetails>
+  clientName: string;
+  userAuthDetails: Array<UserAuthDetails>;
 }

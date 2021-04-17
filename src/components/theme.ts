@@ -16,9 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { createMuiTheme } from '@material-ui/core/styles'
-import orange from '@material-ui/core/colors/orange'
-import yellow from '@material-ui/core/colors/yellow'
+import { createMuiTheme } from '@material-ui/core/styles';
+import orange from '@material-ui/core/colors/orange';
+import yellow from '@material-ui/core/colors/yellow';
 
 const theme = createMuiTheme({
   palette: {
@@ -29,6 +29,6 @@ const theme = createMuiTheme({
       main: yellow[500],
     },
   },
-})
+});
 
-export default theme
+export default theme;

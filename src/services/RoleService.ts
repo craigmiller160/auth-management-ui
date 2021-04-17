@@ -16,18 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import { AxiosResponse } from 'axios'
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts'
-import ajaxApi from './AjaxApi'
-import { ClientRole } from '../types/client'
-import { Role } from '../types/role'
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
+import ajaxApi from './AjaxApi';
+import { ClientRole } from '../types/client';
+import { Role } from '../types/role';
 import {
   CreateRoleWrapper,
   DeleteRoleWrapper,
   UpdateRoleWrapper,
-} from '../types/graphApi'
+} from '../types/graphApi';
 
 export const createRole = (
   clientId: number,
@@ -53,7 +53,7 @@ export const createRole = (
       (res: AxiosResponse<GraphQLQueryResponse<CreateRoleWrapper>>) =>
         res.data.data.createRole,
     ),
-  )
+  );
 
 export const updateRole = (
   clientId: number,
@@ -80,7 +80,7 @@ export const updateRole = (
       (res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) =>
         res.data.data.updateRole,
     ),
-  )
+  );
 
 export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
   pipe(
@@ -100,4 +100,4 @@ export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
       (res: AxiosResponse<GraphQLQueryResponse<DeleteRoleWrapper>>) =>
         res.data.data.deleteRole,
     ),
-  )
+  );

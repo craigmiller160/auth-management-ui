@@ -16,12 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useCallback, useEffect } from 'react'
-import { useImmer } from 'use-immer'
-import { pipe } from 'fp-ts/es6/pipeable'
-import Grid from '@material-ui/core/Grid'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
+import React, { useCallback, useEffect } from 'react';
+import { useImmer } from 'use-immer';
+import { pipe } from 'fp-ts/es6/pipeable';
+import Grid from '@material-ui/core/Grid';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
 import {
   fromNullable,
   getOrElse as oGetOrElse,
@@ -29,42 +29,42 @@ import {
   none,
   Option,
   some,
-} from 'fp-ts/es6/Option'
-import { SectionHeader } from '@craigmiller160/react-material-ui-common'
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage'
+} from 'fp-ts/es6/Option';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import {
   addUserToClient,
   getFullClientDetails,
   removeUserFromClient,
-} from '../../../../../services/ClientService'
+} from '../../../../../services/ClientService';
 import {
   ClientRole,
   ClientUser,
   FullClientDetails,
-} from '../../../../../types/client'
-import './ClientGrants.scss'
+} from '../../../../../types/client';
+import './ClientGrants.scss';
 import {
   addRoleToUser,
   getAllUsers,
   removeRoleFromUser,
-} from '../../../../../services/UserService'
-import { UserDetails, UserList } from '../../../../../types/user'
-import ClientGrantUsers from './ClientGrantUsers'
-import ClientGrantRoles from './ClientGrantRoles'
+} from '../../../../../services/UserService';
+import { UserDetails, UserList } from '../../../../../types/user';
+import ClientGrantUsers from './ClientGrantUsers';
+import ClientGrantRoles from './ClientGrantRoles';
 
 interface Props extends IdMatchProps {}
 
 interface State {
-  clientId: number
-  clientName: string
-  allRoles: Array<ClientRole>
-  clientUsers: Array<ClientUser>
-  allUsers: Array<UserDetails>
-  selectedUser: Option<ClientUser>
+  clientId: number;
+  clientName: string;
+  allRoles: Array<ClientRole>;
+  clientUsers: Array<ClientUser>;
+  allUsers: Array<UserDetails>;
+  selectedUser: Option<ClientUser>;
 }
 
 const ClientGrants = (props: Props) => {
-  const { id } = props.match.params
+  const { id } = props.match.params;
 
   const [ state, setState ] = useImmer<State>({
     clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
@@ -73,7 +73,7 @@ const ClientGrants = (props: Props) => {
     clientUsers: [],
     allUsers: [],
     selectedUser: none,
-  })
+  });
 
   const loadFullClientDetails = useCallback(
     (): T.Task<Array<ClientUser>> =>
@@ -82,17 +82,17 @@ const ClientGrants = (props: Props) => {
         TE.map(
           (fullClientDetails: FullClientDetails): Array<ClientUser> => {
             setState((draft) => {
-              draft.clientName = fullClientDetails.name
-              draft.allRoles = fullClientDetails.roles
-              draft.clientUsers = fullClientDetails.users
-            })
-            return fullClientDetails.users
+              draft.clientName = fullClientDetails.name;
+              draft.allRoles = fullClientDetails.roles;
+              draft.clientUsers = fullClientDetails.users;
+            });
+            return fullClientDetails.users;
           },
         ),
         TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([])),
       ),
     [ state.clientId, setState ],
-  )
+  );
 
   const loadUsers = useCallback(
     (clientUsers: Array<ClientUser>) =>
@@ -103,19 +103,21 @@ const ClientGrants = (props: Props) => {
           users: UserDetails[], // TODO combine with above function
         ) =>
           users.filter((user) => {
-            const index = clientUsers.findIndex((cUser) => cUser.id === user.id)
-            return index === -1
+            const index = clientUsers.findIndex(
+              (cUser) => cUser.id === user.id,
+            );
+            return index === -1;
           }),
         ),
         TE.map((users: UserDetails[]) =>
           setState((draft) => {
             // TODO see if this can be moved to the end
-            draft.allUsers = users
+            draft.allUsers = users;
           }),
         ),
       ),
     [ setState ],
-  )
+  );
 
   // TODO this one is an absolute mess, try to figure out how to optimize this if it works
   const loadAll = useCallback(
@@ -123,37 +125,37 @@ const ClientGrants = (props: Props) => {
       pipe(
         loadFullClientDetails(),
         T.map((clientUsers: Array<ClientUser>) => {
-          loadUsers(clientUsers)()
+          loadUsers(clientUsers)();
         }),
       ),
     [ loadFullClientDetails, loadUsers ],
-  )
+  );
 
   const removeUser = async (userId: number) => {
-    await removeUserFromClient(userId, state.clientId)()
+    await removeUserFromClient(userId, state.clientId)();
     pipe(
       state.selectedUser,
       oMap((selectedUser: ClientUser) => {
         if (selectedUser.id === userId) {
           setState((draft) => {
-            draft.selectedUser = none
-          })
+            draft.selectedUser = none;
+          });
         }
       }),
-    )
-    await loadAll()
-  }
+    );
+    await loadAll();
+  };
 
   useEffect(() => {
-    loadAll()
-  }, [ loadAll ])
+    loadAll();
+  }, [ loadAll ]);
 
   const saveAddRole = (roleId: number) =>
     pipe(
       state.selectedUser,
       oMap(async (selectedUser) => {
-        await addRoleToUser(selectedUser.id, state.clientId, roleId)()
-        await loadAll()
+        await addRoleToUser(selectedUser.id, state.clientId, roleId)();
+        await loadAll();
         setState((draft) => {
           pipe(
             draft.selectedUser,
@@ -162,19 +164,19 @@ const ClientGrants = (props: Props) => {
                 draft.clientUsers.find(
                   (user) => user.id === oldSelectedUser.id,
                 ),
-              )
+              );
             }),
-          )
-        })
+          );
+        });
       }),
-    )
+    );
 
   const removeRole = (roleId: number) =>
     pipe(
       state.selectedUser,
       oMap(async (selectedUser) => {
-        await removeRoleFromUser(selectedUser.id, state.clientId, roleId)()
-        await loadAll()
+        await removeRoleFromUser(selectedUser.id, state.clientId, roleId)();
+        await loadAll();
         setState((draft) => {
           pipe(
             draft.selectedUser,
@@ -183,22 +185,22 @@ const ClientGrants = (props: Props) => {
                 draft.clientUsers.find(
                   (user) => user.id === oldSelectedUser.id,
                 ),
-              )
+              );
             }),
-          )
-        })
+          );
+        });
       }),
-    )
+    );
 
   const saveAddUser = async (userId: number) => {
-    await addUserToClient(userId, state.clientId)()
-    await loadAll()
-  }
+    await addUserToClient(userId, state.clientId)();
+    await loadAll();
+  };
 
   const selectUser = (user: ClientUser) =>
     setState((draft) => {
-      draft.selectedUser = some(user)
-    })
+      draft.selectedUser = some(user);
+    });
 
   return (
     <div id="client-grants-page" className="ClientGrants">
@@ -236,7 +238,7 @@ const ClientGrants = (props: Props) => {
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default ClientGrants
+export default ClientGrants;

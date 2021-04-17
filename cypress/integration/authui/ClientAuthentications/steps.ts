@@ -16,40 +16,40 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { After, Before, Then, When } from 'cypress-cucumber-preprocessor/steps'
-import { TableDefinition } from 'cucumber'
-import { testClient } from '../../../data/client'
-import { testUser } from '../../../data/user'
+import { After, Before, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { TableDefinition } from 'cucumber';
+import { testClient } from '../../../data/client';
+import { testUser } from '../../../data/user';
 
 const cleanup = () => {
-  cy.task('deleteUser', 'test@gmail.com')
-  cy.task('deleteClient', 'Test Client')
-}
+  cy.task('deleteUser', 'test@gmail.com');
+  cy.task('deleteClient', 'Test Client');
+};
 
 Before(() => {
-  cleanup()
+  cleanup();
   cy.task('insertClient', testClient).then((clientId: number) =>
     cy.task('insertUser', { user: testUser, clientId }),
-  )
-})
+  );
+});
 
 After(() => {
-  cleanup()
-})
+  cleanup();
+});
 
 Then('the authentications page is displayed', (data: TableDefinition) => {
-  const userEmails = data.rows().map((row) => row[0])
+  const userEmails = data.rows().map((row) => row[0]);
 
   cy.clientAuthsPage((clientAuthsPage) => {
-    clientAuthsPage.validatePage(userEmails)
-  })
-})
+    clientAuthsPage.validatePage(userEmails);
+  });
+});
 
 When(
   'I click the revoke button for authentication {int}',
   (authIndex: number) => {
     cy.clientAuthsPage((clientAuthsPage) => {
-      clientAuthsPage.clickRevokeAuthBtn(authIndex)
-    })
+      clientAuthsPage.clickRevokeAuthBtn(authIndex);
+    });
   },
-)
+);

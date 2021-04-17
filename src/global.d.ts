@@ -16,5 +16,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@relmify/jest-fp-ts'
-import '@craigmiller160/jest-matchers-common/lib/global'
+import '@relmify/jest-fp-ts';
+import '@craigmiller160/jest-matchers-common/lib/global';

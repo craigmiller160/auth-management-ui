@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool } from 'pg'
-import { CypressEnv } from '../../types/cypress'
+import { Pool } from 'pg';
+import { CypressEnv } from '../../types/cypress';
 
 export const createPool = (env: CypressEnv): Pool =>
   new Pool({
@@ -26,4 +26,4 @@ export const createPool = (env: CypressEnv): Pool =>
     host: env.postgresHost,
     port: env.postgresPort,
     database: env.postgresDatabase,
-  })
+  });

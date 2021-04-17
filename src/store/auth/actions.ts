@@ -16,14 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Dispatch } from 'redux'
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as O from 'fp-ts/es6/Option'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as E from 'fp-ts/es6/Either'
-import authSlice from './slice'
-import { getAuthUser } from '../../services/AuthService'
-import { AuthUser } from '../../types/auth'
+import { Dispatch } from 'redux';
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as O from 'fp-ts/es6/Option';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as E from 'fp-ts/es6/Either';
+import authSlice from './slice';
+import { getAuthUser } from '../../services/AuthService';
+import { AuthUser } from '../../types/auth';
 
 export const loadAuthUser = () => (
   dispatch: Dispatch,
@@ -31,11 +31,11 @@ export const loadAuthUser = () => (
   pipe(
     getAuthUser(),
     TE.map((authUser: AuthUser) => {
-      dispatch(authSlice.actions.setUserData(O.some(authUser)))
-      return authUser
+      dispatch(authSlice.actions.setUserData(O.some(authUser)));
+      return authUser;
     }),
     TE.mapLeft((ex: Error) => {
-      dispatch(authSlice.actions.setUserData(O.none))
-      return ex
+      dispatch(authSlice.actions.setUserData(O.none));
+      return ex;
     }),
-  )()
+  )();

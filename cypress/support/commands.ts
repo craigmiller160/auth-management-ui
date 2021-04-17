@@ -24,30 +24,30 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import loginPage from './commands/pages/loginPage'
-import navbarPage from './commands/pages/navbarPage'
-import doLogin from './commands/doLogin'
-import homePage from './commands/pages/homePage'
-import clientsPage from './commands/pages/client/clientsPage'
-import clientDetailsPage from './commands/pages/client/clientDetailsPage'
-import clientConfigPage from './commands/pages/client/clientConfigPage'
-import alertPage from './commands/pages/alertPage'
-import clientConfigDeleteDialog from './commands/pages/client/clientConfigDeleteDialog'
-import clientConfigRedirectUris from './commands/pages/client/clientConfigRedirectUris'
-import clientAuthsPage from './commands/pages/client/clientAuthsPage'
-import clientRolesPage from './commands/pages/client/clientRolesPage'
-import clientGrantsPage from './commands/pages/client/clientGrantsPage'
+import loginPage from './commands/pages/loginPage';
+import navbarPage from './commands/pages/navbarPage';
+import doLogin from './commands/doLogin';
+import homePage from './commands/pages/homePage';
+import clientsPage from './commands/pages/client/clientsPage';
+import clientDetailsPage from './commands/pages/client/clientDetailsPage';
+import clientConfigPage from './commands/pages/client/clientConfigPage';
+import alertPage from './commands/pages/alertPage';
+import clientConfigDeleteDialog from './commands/pages/client/clientConfigDeleteDialog';
+import clientConfigRedirectUris from './commands/pages/client/clientConfigRedirectUris';
+import clientAuthsPage from './commands/pages/client/clientAuthsPage';
+import clientRolesPage from './commands/pages/client/clientRolesPage';
+import clientGrantsPage from './commands/pages/client/clientGrantsPage';
 
-Cypress.Commands.add('loginPage', loginPage)
-Cypress.Commands.add('navbarPage', navbarPage)
-Cypress.Commands.add('doLogin', doLogin)
-Cypress.Commands.add('homePage', homePage)
-Cypress.Commands.add('clientsPage', clientsPage)
-Cypress.Commands.add('clientDetailsPage', clientDetailsPage)
-Cypress.Commands.add('clientConfigPage', clientConfigPage)
-Cypress.Commands.add('clientConfigDeleteDialog', clientConfigDeleteDialog)
-Cypress.Commands.add('clientConfigRedirectUris', clientConfigRedirectUris)
-Cypress.Commands.add('clientAuthsPage', clientAuthsPage)
-Cypress.Commands.add('clientRolesPage', clientRolesPage)
-Cypress.Commands.add('clientGrantsPage', clientGrantsPage)
-Cypress.Commands.add('alertPage', alertPage)
+Cypress.Commands.add('loginPage', loginPage);
+Cypress.Commands.add('navbarPage', navbarPage);
+Cypress.Commands.add('doLogin', doLogin);
+Cypress.Commands.add('homePage', homePage);
+Cypress.Commands.add('clientsPage', clientsPage);
+Cypress.Commands.add('clientDetailsPage', clientDetailsPage);
+Cypress.Commands.add('clientConfigPage', clientConfigPage);
+Cypress.Commands.add('clientConfigDeleteDialog', clientConfigDeleteDialog);
+Cypress.Commands.add('clientConfigRedirectUris', clientConfigRedirectUris);
+Cypress.Commands.add('clientAuthsPage', clientAuthsPage);
+Cypress.Commands.add('clientRolesPage', clientRolesPage);
+Cypress.Commands.add('clientGrantsPage', clientGrantsPage);
+Cypress.Commands.add('alertPage', alertPage);

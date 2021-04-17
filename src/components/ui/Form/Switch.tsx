@@ -16,25 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { Control, Controller } from 'react-hook-form'
-import { FieldName } from 'react-hook-form/dist/types/form'
-import MuiSwitch from '@material-ui/core/Switch'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import React from 'react';
+import { Control, Controller } from 'react-hook-form';
+import { FieldName } from 'react-hook-form/dist/types/form';
+import MuiSwitch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 interface Props<T> {
-  id?: string
-  name: keyof T
-  control: Control<T>
-  label: string
-  color?: 'primary' | 'secondary' | 'default'
-  className?: string
+  id?: string;
+  name: keyof T;
+  control: Control<T>;
+  label: string;
+  color?: 'primary' | 'secondary' | 'default';
+  className?: string;
 }
 
 const Switch = <T extends object>(props: Props<T>) => {
-  const { id, className, name, control, color, label } = props
+  const { id, className, name, control, color, label } = props;
 
-  const labelClassName = `${className ?? ''} switch-label`
+  const labelClassName = `${className ?? ''} switch-label`;
 
   return (
     <Controller
@@ -59,7 +59,7 @@ const Switch = <T extends object>(props: Props<T>) => {
         />
       )}
     />
-  )
-}
+  );
+};
 
-export default Switch
+export default Switch;

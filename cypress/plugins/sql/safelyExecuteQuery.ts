@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Pool, QueryResult } from 'pg'
+import { Pool, QueryResult } from 'pg';
 
 export const safelyExecuteQuery = <R>(
   pool: Pool,
@@ -29,18 +29,18 @@ export const safelyExecuteQuery = <R>(
       client
         .query<R>(sql, params)
         .then((result) => {
-          client.release()
-          return result
+          client.release();
+          return result;
         })
         .catch((ex) => {
-          client.release()
-          console.log(`Error executing query: ${sql}`) // eslint-disable-line no-console
-          console.log(ex) // eslint-disable-line no-console
-          return null
+          client.release();
+          console.log(`Error executing query: ${sql}`); // eslint-disable-line no-console
+          console.log(ex); // eslint-disable-line no-console
+          return null;
         }),
     )
     .catch((ex) => {
-      console.log('Error connecting to Postgres') // eslint-disable-line no-console
-      console.log(ex) // eslint-disable-line no-console
-      return null
-    })
+      console.log('Error connecting to Postgres'); // eslint-disable-line no-console
+      console.log(ex); // eslint-disable-line no-console
+      return null;
+    });

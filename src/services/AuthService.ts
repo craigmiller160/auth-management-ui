@@ -16,18 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { pipe } from 'fp-ts/es6/pipeable'
-import { isAxiosError } from '@craigmiller160/ajax-api-fp-ts'
-import * as TE from 'fp-ts/es6/TaskEither'
-import { AxiosResponse } from 'axios'
-import { AuthCodeLogin, AuthUser } from '../types/auth'
-import ajaxApi from './AjaxApi'
+import { pipe } from 'fp-ts/es6/pipeable';
+import { isAxiosError } from '@craigmiller160/ajax-api-fp-ts';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { AuthCodeLogin, AuthUser } from '../types/auth';
+import ajaxApi from './AjaxApi';
 
 export const logout = (): TE.TaskEither<Error, AxiosResponse<void>> =>
   ajaxApi.get<void>({
     uri: '/oauth/logout',
     errorMsg: 'Error logging out',
-  })
+  });
 
 export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
   pipe(
@@ -37,10 +37,10 @@ export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
     }),
     TE.map((res: AxiosResponse<AuthCodeLogin>) => res.data),
     TE.map((loginData: AuthCodeLogin) => {
-      window.location.assign(loginData.url)
-      return loginData
+      window.location.assign(loginData.url);
+      return loginData;
     }),
-  )
+  );
 
 export const getAuthUser = (): TE.TaskEither<Error, AuthUser> =>
   pipe(
@@ -49,10 +49,10 @@ export const getAuthUser = (): TE.TaskEither<Error, AuthUser> =>
       errorMsg: 'Error getting authenticated user',
       suppressError: (ex: Error) => {
         if (isAxiosError(ex)) {
-          return ex.response?.status === 401
+          return ex.response?.status === 401;
         }
-        return false
+        return false;
       },
     }),
     TE.map((res: AxiosResponse<AuthUser>) => res.data),
-  )
+  );

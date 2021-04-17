@@ -16,46 +16,46 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useCallback, useEffect } from 'react'
-import { useImmer } from 'use-immer'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import AssignIcon from '@material-ui/icons/AssignmentInd'
-import { pipe } from 'fp-ts/es6/pipeable'
-import Button from '@material-ui/core/Button'
+import React, { useCallback, useEffect } from 'react';
+import { useImmer } from 'use-immer';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import AssignIcon from '@material-ui/icons/AssignmentInd';
+import { pipe } from 'fp-ts/es6/pipeable';
+import Button from '@material-ui/core/Button';
 import {
   ConfirmDialog,
   SectionHeader,
-} from '@craigmiller160/react-material-ui-common'
-import * as TE from 'fp-ts/es6/TaskEither'
-import { nanoid } from 'nanoid'
-import List, { Item } from '../../../../ui/List'
-import { ClientRole } from '../../../../../types/client'
-import { getClientWithRoles } from '../../../../../services/ClientService'
-import './ClientRoles.scss'
+} from '@craigmiller160/react-material-ui-common';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { nanoid } from 'nanoid';
+import List, { Item } from '../../../../ui/List';
+import { ClientRole } from '../../../../../types/client';
+import { getClientWithRoles } from '../../../../../services/ClientService';
+import './ClientRoles.scss';
 import {
   createRole,
   deleteRole,
   updateRole,
-} from '../../../../../services/RoleService'
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage'
-import InputDialog from '../../../../ui/Dialog/InputDialog'
+} from '../../../../../services/RoleService';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import InputDialog from '../../../../ui/Dialog/InputDialog';
 
-const ROLE_PREFIX = 'ROLE_'
+const ROLE_PREFIX = 'ROLE_';
 
 interface Props extends IdMatchProps {}
 
 interface State {
-  showRoleDialog: boolean
-  selectedRoleIndex: number
-  showDeleteDialog: boolean
-  clientName: string
-  roles: Array<ClientRole>
-  clientId: number
+  showRoleDialog: boolean;
+  selectedRoleIndex: number;
+  showDeleteDialog: boolean;
+  clientName: string;
+  roles: Array<ClientRole>;
+  clientId: number;
 }
 
 const ClientRoles = (props: Props) => {
-  const { id } = props.match.params
+  const { id } = props.match.params;
   const [ state, setState ] = useImmer<State>({
     showRoleDialog: false,
     showDeleteDialog: false,
@@ -63,7 +63,7 @@ const ClientRoles = (props: Props) => {
     clientName: '',
     roles: [],
     clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
-  })
+  });
 
   // TODO make sure this works
   const loadClientRoles = useCallback(() => {
@@ -71,65 +71,67 @@ const ClientRoles = (props: Props) => {
       getClientWithRoles(state.clientId),
       TE.map((clientRoles) => {
         setState((draft) => {
-          draft.roles = clientRoles.roles
-          draft.clientName = clientRoles.name
-          draft.clientId = clientRoles.id
-        })
+          draft.roles = clientRoles.roles;
+          draft.clientName = clientRoles.name;
+          draft.clientId = clientRoles.id;
+        });
       }),
-    )()
-  }, [ state.clientId, setState ])
+    )();
+  }, [ state.clientId, setState ]);
 
   useEffect(() => {
-    loadClientRoles()
-  }, [ loadClientRoles ])
+    loadClientRoles();
+  }, [ loadClientRoles ]);
 
   const selectRole = (index: number) => {
     setState((draft) => {
-      draft.selectedRoleIndex = index
-      draft.showRoleDialog = true
-    })
-  }
+      draft.selectedRoleIndex = index;
+      draft.showRoleDialog = true;
+    });
+  };
 
   const checkDelete = (index: number) => {
     setState((draft) => {
-      draft.showDeleteDialog = true
-      draft.selectedRoleIndex = index
-    })
-  }
+      draft.showDeleteDialog = true;
+      draft.selectedRoleIndex = index;
+    });
+  };
 
   const saveRole = (value: string) => {
-    const roleName = `${ROLE_PREFIX}${value}`
+    const roleName = `${ROLE_PREFIX}${value}`;
     const roleId =
-      state.selectedRoleIndex >= 0 ? state.roles[state.selectedRoleIndex].id : 0
+      state.selectedRoleIndex >= 0 ?
+        state.roles[state.selectedRoleIndex].id :
+        0;
     const role = {
       id: roleId,
       clientId: state.clientId,
       name: roleName,
-    }
+    };
 
-    let action
+    let action;
     if (state.selectedRoleIndex >= 0) {
-      action = () => updateRole(state.clientId, role.id, role)
+      action = () => updateRole(state.clientId, role.id, role);
     } else {
-      action = () => createRole(state.clientId, role)
+      action = () => createRole(state.clientId, role);
     }
     pipe(
       action(),
       TE.map(() => {
         setState((draft) => {
-          draft.selectedRoleIndex = -1
-          draft.showRoleDialog = false
-        })
-        loadClientRoles()
+          draft.selectedRoleIndex = -1;
+          draft.showRoleDialog = false;
+        });
+        loadClientRoles();
       }),
-    )()
-  }
+    )();
+  };
 
   const cancelRoleDialog = () =>
     setState((draft) => {
-      draft.showRoleDialog = false
-      draft.selectedRoleIndex = -1
-    })
+      draft.showRoleDialog = false;
+      draft.selectedRoleIndex = -1;
+    });
 
   const items: Array<Item> = state.roles.map((role, index) => ({
     uuid: nanoid(),
@@ -149,34 +151,34 @@ const ClientRoles = (props: Props) => {
         click: () => checkDelete(index),
       },
     ],
-  }))
+  }));
 
   const getSelectedRole = () => {
     if (state.selectedRoleIndex >= 0) {
-      return state.roles[state.selectedRoleIndex].name.replace(ROLE_PREFIX, '')
+      return state.roles[state.selectedRoleIndex].name.replace(ROLE_PREFIX, '');
     }
 
-    return ''
-  }
+    return '';
+  };
 
   const doDeleteRole = () => {
-    const selectedRole = state.roles[state.selectedRoleIndex]
+    const selectedRole = state.roles[state.selectedRoleIndex];
     setState((draft) => {
-      draft.showDeleteDialog = false
-      draft.selectedRoleIndex = -1
-    })
+      draft.showDeleteDialog = false;
+      draft.selectedRoleIndex = -1;
+    });
     pipe(
       deleteRole(selectedRole.id),
       TE.map(() => {
-        loadClientRoles()
+        loadClientRoles();
       }),
-    )()
-  }
+    )();
+  };
 
   const hideDeleteDialog = () =>
     setState((draft) => {
-      draft.showDeleteDialog = false
-    })
+      draft.showDeleteDialog = false;
+    });
 
   return (
     <div id="client-roles-page" className="ClientRoles">
@@ -228,7 +230,7 @@ const ClientRoles = (props: Props) => {
         onCancel={hideDeleteDialog}
       />
     </div>
-  )
-}
+  );
+};
 
-export default ClientRoles
+export default ClientRoles;

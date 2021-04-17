@@ -16,63 +16,63 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
-import { useImmer } from 'use-immer'
+import React from 'react';
+import { exists, getOrElse, isNone, map, Option } from 'fp-ts/es6/Option';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
+import { useImmer } from 'use-immer';
 import {
   ConfirmDialog,
   SectionHeader,
-} from '@craigmiller160/react-material-ui-common'
-import { nanoid } from 'nanoid'
-import { SelectOption } from '../../../../ui/Form/Autocomplete'
+} from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import {
   addRoleToUser,
   removeRoleFromUser,
-} from '../../../../../services/UserService'
-import List, { Item } from '../../../../ui/List'
-import { UserClient, UserRole } from '../../../../../types/user'
-import SelectDialog from '../../../../ui/Dialog/SelectDialog'
+} from '../../../../../services/UserService';
+import List, { Item } from '../../../../ui/List';
+import { UserClient, UserRole } from '../../../../../types/user';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
-  selectedClient: Option<UserClient>
-  userId: number
-  updateUserRoles: (clientId: number, userRoles: Array<UserRole>) => void
+  selectedClient: Option<UserClient>;
+  userId: number;
+  updateUserRoles: (clientId: number, userRoles: Array<UserRole>) => void;
 }
 
 interface State {
-  showAddRoleDialog: boolean
-  showRemoveRoleDialog: boolean
-  roleIdToRemove: number
+  showAddRoleDialog: boolean;
+  showRemoveRoleDialog: boolean;
+  roleIdToRemove: number;
 }
 
 const UserRoles = (props: Props) => {
-  const { selectedClient, userId, updateUserRoles } = props
+  const { selectedClient, userId, updateUserRoles } = props;
   const [ state, setState ] = useImmer<State>({
     showAddRoleDialog: false,
     showRemoveRoleDialog: false,
     roleIdToRemove: 0,
-  })
+  });
 
   const clientId = pipe(
     selectedClient,
     map((client: UserClient) => client.id),
     getOrElse(() => 0),
-  )
+  );
 
   if (isNone(selectedClient)) {
-    return <div />
+    return <div />;
   }
 
   const removeRoleClick = (roleId: number) =>
     setState((draft) => {
-      draft.roleIdToRemove = roleId
-      draft.showRemoveRoleDialog = true
-    })
+      draft.roleIdToRemove = roleId;
+      draft.showRemoveRoleDialog = true;
+    });
 
   const roleItems: Array<Item> = pipe(
     selectedClient,
@@ -90,7 +90,7 @@ const UserRoles = (props: Props) => {
         click: () => removeRoleClick(role.id),
       },
     ],
-  }))
+  }));
 
   const roleOptions: Array<SelectOption<number>> = pipe(
     selectedClient,
@@ -103,23 +103,23 @@ const UserRoles = (props: Props) => {
   ).map((role: UserRole) => ({
     label: role.name,
     value: role.id,
-  }))
+  }));
 
   const addRoleClick = () =>
     setState((draft) => {
-      draft.showAddRoleDialog = true
-    })
+      draft.showAddRoleDialog = true;
+    });
 
   const addRoleOnCancel = () =>
     setState((draft) => {
-      draft.showAddRoleDialog = false
-    })
+      draft.showAddRoleDialog = false;
+    });
 
   const addRoleOnSelect = (selectedRole: SelectOption<number>) => {
     setState((draft) => {
-      draft.showAddRoleDialog = false
-    })
-    const roleId = selectedRole.value
+      draft.showAddRoleDialog = false;
+    });
+    const roleId = selectedRole.value;
     pipe(
       addRoleToUser(userId, clientId, roleId),
       TE.fold(
@@ -127,13 +127,13 @@ const UserRoles = (props: Props) => {
         (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles),
       ),
       T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles)),
-    )()
-  }
+    )();
+  };
 
   const removeOnConfirm = () => {
     setState((draft) => {
-      draft.showRemoveRoleDialog = false
-    })
+      draft.showRemoveRoleDialog = false;
+    });
     pipe(
       removeRoleFromUser(userId, clientId, state.roleIdToRemove),
       TE.fold(
@@ -141,13 +141,13 @@ const UserRoles = (props: Props) => {
         (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles),
       ),
       T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles)),
-    )()
-  }
+    )();
+  };
 
   const removeOnCancel = () =>
     setState((draft) => {
-      draft.showRemoveRoleDialog = false
-    })
+      draft.showRemoveRoleDialog = false;
+    });
 
   return (
     <>
@@ -181,7 +181,7 @@ const UserRoles = (props: Props) => {
         onCancel={removeOnCancel}
       />
     </>
-  )
-}
+  );
+};
 
-export default UserRoles
+export default UserRoles;

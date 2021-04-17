@@ -16,52 +16,52 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { useImmer } from 'use-immer'
-import AssignIcon from '@material-ui/icons/AssignmentInd'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import { ConfirmDialog } from '@craigmiller160/react-material-ui-common'
-import { nanoid } from 'nanoid'
-import List, { Item } from '../../../../ui/List'
-import { SelectOption } from '../../../../ui/Form/Autocomplete'
-import { ClientRole, ClientUser } from '../../../../../types/client'
-import SelectDialog from '../../../../ui/Dialog/SelectDialog'
+import React from 'react';
+import { useImmer } from 'use-immer';
+import AssignIcon from '@material-ui/icons/AssignmentInd';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { ConfirmDialog } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import List, { Item } from '../../../../ui/List';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
+import { ClientRole, ClientUser } from '../../../../../types/client';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
-  selectedUser: ClientUser
-  removeRole: (roleId: number) => void
-  saveAddRole: (roleId: number) => void
-  allRoles: Array<ClientRole>
+  selectedUser: ClientUser;
+  removeRole: (roleId: number) => void;
+  saveAddRole: (roleId: number) => void;
+  allRoles: Array<ClientRole>;
 }
 
 interface State {
-  showRoleDialog: boolean
-  showRemoveDialog: boolean
-  roleToRemoveId: number
+  showRoleDialog: boolean;
+  showRemoveDialog: boolean;
+  roleToRemoveId: number;
 }
 
 const ClientGrantRoles = (props: Props) => {
-  const { selectedUser, removeRole, saveAddRole, allRoles } = props
+  const { selectedUser, removeRole, saveAddRole, allRoles } = props;
 
   const [ state, setState ] = useImmer<State>({
     showRoleDialog: false,
     showRemoveDialog: false,
     roleToRemoveId: 0,
-  })
+  });
 
   const doSaveAddRole = (selected: SelectOption<number>) => {
     setState((draft) => {
-      draft.showRoleDialog = false
-    })
-    saveAddRole(selected.value)
-  }
+      draft.showRoleDialog = false;
+    });
+    saveAddRole(selected.value);
+  };
 
   const showRemoveDialog = (roleId: number) =>
     setState((draft) => {
-      draft.roleToRemoveId = roleId
-      draft.showRemoveDialog = true
-    })
+      draft.roleToRemoveId = roleId;
+      draft.showRemoveDialog = true;
+    });
 
   const roleItems: Array<Item> = selectedUser.roles.map((role) => ({
     uuid: nanoid(),
@@ -76,26 +76,26 @@ const ClientGrantRoles = (props: Props) => {
         click: () => showRemoveDialog(role.id),
       },
     ],
-  }))
+  }));
 
   const roleOptions: Array<SelectOption<number>> = allRoles
     .filter((role) => {
       const index = selectedUser.roles.findIndex(
         (uRole) => uRole.id === role.id,
-      )
-      return index === -1
+      );
+      return index === -1;
     })
     .map((role) => ({
       value: role.id,
       label: role.name,
-    }))
+    }));
 
   const doRemoveRole = () => {
     setState((draft) => {
-      draft.showRemoveDialog = false
-    })
-    removeRole(state.roleToRemoveId)
-  }
+      draft.showRemoveDialog = false;
+    });
+    removeRole(state.roleToRemoveId);
+  };
 
   return (
     <>
@@ -117,7 +117,7 @@ const ClientGrantRoles = (props: Props) => {
         color="primary"
         onClick={() =>
           setState((draft) => {
-            draft.showRoleDialog = true
+            draft.showRoleDialog = true;
           })
         }
         disabled={roleOptions.length === 0}
@@ -132,7 +132,7 @@ const ClientGrantRoles = (props: Props) => {
         onSelect={doSaveAddRole}
         onCancel={() =>
           setState((draft) => {
-            draft.showRoleDialog = false
+            draft.showRoleDialog = false;
           })
         }
         options={roleOptions}
@@ -145,12 +145,12 @@ const ClientGrantRoles = (props: Props) => {
         onConfirm={doRemoveRole}
         onCancel={() =>
           setState((draft) => {
-            draft.showRemoveDialog = false
+            draft.showRemoveDialog = false;
           })
         }
       />
     </>
-  )
-}
+  );
+};
 
-export default ClientGrantRoles
+export default ClientGrantRoles;

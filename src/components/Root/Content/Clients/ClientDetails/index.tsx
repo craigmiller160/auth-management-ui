@@ -16,33 +16,33 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { useRouteMatch } from 'react-router'
+import React from 'react';
+import { useRouteMatch } from 'react-router';
 import {
   PageHeader,
   TabConfig,
   Tabs,
-} from '@craigmiller160/react-material-ui-common'
-import ClientConfig from './ClientConfig'
-import ClientRoles from './ClientRoles'
-import ClientGrants from './ClientGrants'
-import ClientAuths from './ClientAuths'
-import './ClientDetails.scss'
-import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage'
+} from '@craigmiller160/react-material-ui-common';
+import ClientConfig from './ClientConfig';
+import ClientRoles from './ClientRoles';
+import ClientGrants from './ClientGrants';
+import ClientAuths from './ClientAuths';
+import './ClientDetails.scss';
+import { IdMatchParams, NEW_ID } from '../../../../../types/detailsPage';
 
-const PATH_CONFIG = '/config'
-const PATH_ROLES = '/roles'
-const PATH_GRANTS = '/grants'
-const PATH_AUTHS = '/auths'
+const PATH_CONFIG = '/config';
+const PATH_ROLES = '/roles';
+const PATH_GRANTS = '/grants';
+const PATH_AUTHS = '/auths';
 
-const LABEL_CONFIG = 'Config'
-const LABEL_ROLES = 'Roles'
-const LABEL_GRANTS = 'Grants'
-const LABEL_AUTHS = 'Authentications'
+const LABEL_CONFIG = 'Config';
+const LABEL_ROLES = 'Roles';
+const LABEL_GRANTS = 'Grants';
+const LABEL_AUTHS = 'Authentications';
 
 const ClientDetails = () => {
-  const match = useRouteMatch<IdMatchParams>()
-  const { id } = match.params
+  const match = useRouteMatch<IdMatchParams>();
+  const { id } = match.params;
 
   const tabs: Array<TabConfig> = [
     {
@@ -51,26 +51,26 @@ const ClientDetails = () => {
       path: PATH_CONFIG,
       component: ClientConfig,
     },
-  ]
+  ];
   if (id !== NEW_ID) {
     tabs.push({
       id: 'client-roles-tab',
       label: LABEL_ROLES,
       path: PATH_ROLES,
       component: ClientRoles,
-    })
+    });
     tabs.push({
       id: 'client-grants-tab',
       label: LABEL_GRANTS,
       path: PATH_GRANTS,
       component: ClientGrants,
-    })
+    });
     tabs.push({
       id: 'client-auths-tab',
       label: LABEL_AUTHS,
       path: PATH_AUTHS,
       component: ClientAuths,
-    })
+    });
   }
 
   return (
@@ -78,7 +78,7 @@ const ClientDetails = () => {
       <PageHeader id="client-details-page-header" title="Client Details" />
       <Tabs id="client-details-tabs" tabs={tabs} />
     </div>
-  )
-}
+  );
+};
 
-export default ClientDetails
+export default ClientDetails;

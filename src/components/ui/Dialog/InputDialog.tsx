@@ -16,30 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { MouseEvent, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { MouseEvent, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   BaseDialog,
   DialogAction,
-} from '@craigmiller160/react-material-ui-common'
-import TextField from '../Form/TextField'
-import './InputDialog.scss'
+} from '@craigmiller160/react-material-ui-common';
+import TextField from '../Form/TextField';
+import './InputDialog.scss';
 
 interface InputForm {
-  value: string
+  value: string;
 }
 
 interface Props {
-  id?: string
-  open: boolean
-  title: string
-  onCancel: (event: MouseEvent<HTMLButtonElement>) => void
-  onSave: (value: string) => void
-  label: string
-  initialValue?: string
-  transform?: (value: string) => any
-  prefix?: string
-  successBtnLabel?: string
+  id?: string;
+  open: boolean;
+  title: string;
+  onCancel: (event: MouseEvent<HTMLButtonElement>) => void;
+  onSave: (value: string) => void;
+  label: string;
+  initialValue?: string;
+  transform?: (value: string) => any;
+  prefix?: string;
+  successBtnLabel?: string;
 }
 
 const InputDialog = (props: Props) => {
@@ -54,7 +54,7 @@ const InputDialog = (props: Props) => {
     transform,
     prefix,
     successBtnLabel,
-  } = props
+  } = props;
 
   const { control, handleSubmit, errors, reset } = useForm<InputForm>({
     mode: 'onBlur',
@@ -62,31 +62,31 @@ const InputDialog = (props: Props) => {
     defaultValues: {
       value: initialValue,
     },
-  })
+  });
 
   useEffect(() => {
     reset({
       value: initialValue,
-    })
-  }, [ open, initialValue, reset ])
+    });
+  }, [ open, initialValue, reset ]);
 
   const onSubmit = (values: InputForm) => {
     if (values.value) {
-      onSave(values.value)
+      onSave(values.value);
     }
-  }
+  };
 
   const actions: Array<DialogAction> = [
     { label: successBtnLabel ?? 'Save', onClick: handleSubmit(onSubmit) },
     { label: 'Cancel', onClick: onCancel },
-  ]
+  ];
 
-  const prefixClasses = [ 'prefix' ]
+  const prefixClasses = [ 'prefix' ];
   if (errors.value) {
-    prefixClasses.push('error')
+    prefixClasses.push('error');
   }
 
-  const actualId = id ?? 'input-dialog'
+  const actualId = id ?? 'input-dialog';
 
   return (
     <BaseDialog
@@ -110,7 +110,7 @@ const InputDialog = (props: Props) => {
         />
       </div>
     </BaseDialog>
-  )
-}
+  );
+};
 
-export default InputDialog
+export default InputDialog;

@@ -16,34 +16,34 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import createPage from './createPage'
+import createPage from './createPage';
 
-const SELECT_NAVBAR_BRAND = '#oauth2-login-page a.navbar-brand strong'
-const SELECT_USERNAME_LABEL = '#oauth2-login-page label[for="username"]'
-const SELECT_USERNAME_FIELD = '#oauth2-login-page input#username'
-const SELECT_PASSWORD_LABEL = '#oauth2-login-page label[for="password"]'
-const SELECT_PASSWORD_FIELD = '#oauth2-login-page input#password'
-const SELECT_SUBMIT_BTN = '#oauth2-login-page #submitBtn'
+const SELECT_NAVBAR_BRAND = '#oauth2-login-page a.navbar-brand strong';
+const SELECT_USERNAME_LABEL = '#oauth2-login-page label[for="username"]';
+const SELECT_USERNAME_FIELD = '#oauth2-login-page input#username';
+const SELECT_PASSWORD_LABEL = '#oauth2-login-page label[for="password"]';
+const SELECT_PASSWORD_FIELD = '#oauth2-login-page input#password';
+const SELECT_SUBMIT_BTN = '#oauth2-login-page #submitBtn';
 
 const login = (username: string, password: string) => {
-  cy.get(SELECT_USERNAME_FIELD).type(username)
-  cy.get(SELECT_PASSWORD_FIELD).type(password)
-  cy.get(SELECT_SUBMIT_BTN).click()
-}
+  cy.get(SELECT_USERNAME_FIELD).type(username);
+  cy.get(SELECT_PASSWORD_FIELD).type(password);
+  cy.get(SELECT_SUBMIT_BTN).click();
+};
 
 const validatePage = () => {
-  cy.get(SELECT_NAVBAR_BRAND).should('have.text', 'OAuth2 Login')
-  cy.get(SELECT_USERNAME_LABEL).should('have.text', 'Username')
-  cy.get(SELECT_USERNAME_FIELD).should('be.visible')
-  cy.get(SELECT_PASSWORD_LABEL).should('have.text', 'Password')
-  cy.get(SELECT_PASSWORD_FIELD).should('be.visible')
-  cy.get(SELECT_SUBMIT_BTN).should('have.text', 'Login')
-}
+  cy.get(SELECT_NAVBAR_BRAND).should('have.text', 'OAuth2 Login');
+  cy.get(SELECT_USERNAME_LABEL).should('have.text', 'Username');
+  cy.get(SELECT_USERNAME_FIELD).should('be.visible');
+  cy.get(SELECT_PASSWORD_LABEL).should('have.text', 'Password');
+  cy.get(SELECT_PASSWORD_FIELD).should('be.visible');
+  cy.get(SELECT_SUBMIT_BTN).should('have.text', 'Login');
+};
 
 const loginPage = {
   login,
   validatePage,
-}
+};
 
-export type LoginPage = typeof loginPage
-export default createPage(loginPage)
+export type LoginPage = typeof loginPage;
+export default createPage(loginPage);

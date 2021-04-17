@@ -16,44 +16,47 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { MouseEvent, useEffect, useMemo } from 'react'
-import { useHistory } from 'react-router'
-import { useImmer } from 'use-immer'
-import Button from '@material-ui/core/Button'
-import Business from '@material-ui/icons/Business'
-import { exists, Option } from 'fp-ts/es6/Option'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
-import { pipe } from 'fp-ts/es6/pipeable'
+import React, { MouseEvent, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router';
+import { useImmer } from 'use-immer';
+import Button from '@material-ui/core/Button';
+import Business from '@material-ui/icons/Business';
+import { exists, Option } from 'fp-ts/es6/Option';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
+import { pipe } from 'fp-ts/es6/pipeable';
 import {
   ConfirmDialog,
   SectionHeader,
-} from '@craigmiller160/react-material-ui-common'
-import { nanoid } from 'nanoid'
-import { SelectOption } from '../../../../ui/Form/Autocomplete'
+} from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import {
   addClientToUser,
   removeClientFromUser,
-} from '../../../../../services/UserService'
-import { getAllClients } from '../../../../../services/ClientService'
-import List, { Item } from '../../../../ui/List'
-import { UserClient } from '../../../../../types/user'
-import { ClientListItem, ClientListResponse } from '../../../../../types/client'
-import SelectDialog from '../../../../ui/Dialog/SelectDialog'
+} from '../../../../../services/UserService';
+import { getAllClients } from '../../../../../services/ClientService';
+import List, { Item } from '../../../../ui/List';
+import { UserClient } from '../../../../../types/user';
+import {
+  ClientListItem,
+  ClientListResponse,
+} from '../../../../../types/client';
+import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
-  userClients: Array<UserClient>
-  userId: number
-  updateClients: (clients: Array<UserClient>) => void
-  selectedClient: Option<UserClient>
-  selectClient: (client: UserClient) => void
+  userClients: Array<UserClient>;
+  userId: number;
+  updateClients: (clients: Array<UserClient>) => void;
+  selectedClient: Option<UserClient>;
+  selectClient: (client: UserClient) => void;
 }
 
 interface State {
-  allClients: Array<ClientListItem>
-  showAddClientDialog: boolean
-  showRemoveClientDialog: boolean
-  clientIdToRemove: number
+  allClients: Array<ClientListItem>;
+  showAddClientDialog: boolean;
+  showRemoveClientDialog: boolean;
+  clientIdToRemove: number;
 }
 
 const UserClients = (props: Props) => {
@@ -63,15 +66,15 @@ const UserClients = (props: Props) => {
     updateClients,
     selectedClient,
     selectClient,
-  } = props
+  } = props;
 
-  const history = useHistory()
+  const history = useHistory();
   const [ state, setState ] = useImmer<State>({
     allClients: [],
     showAddClientDialog: false,
     showRemoveClientDialog: false,
     clientIdToRemove: 0,
-  })
+  });
 
   useEffect(() => {
     const action = () =>
@@ -84,22 +87,22 @@ const UserClients = (props: Props) => {
         ),
         T.map((items: ClientListItem[]) =>
           setState((draft) => {
-            draft.allClients = items
+            draft.allClients = items;
           }),
         ),
-      )()
+      )();
 
-    action()
-  }, [ setState ])
+    action();
+  }, [ setState ]);
 
-  const goToClient = (clientId: number) => history.push(`/clients/${clientId}`)
+  const goToClient = (clientId: number) => history.push(`/clients/${clientId}`);
 
   const removeClientClick = (clientId: number) => {
     setState((draft) => {
-      draft.clientIdToRemove = clientId
-      draft.showRemoveClientDialog = true
-    })
-  }
+      draft.clientIdToRemove = clientId;
+      draft.showRemoveClientDialog = true;
+    });
+  };
 
   const clientItems: Array<Item> = userClients.map((client) => ({
     uuid: nanoid(),
@@ -118,26 +121,26 @@ const UserClients = (props: Props) => {
         uuid: nanoid(),
         text: 'Remove',
         click: (event: MouseEvent) => {
-          event.stopPropagation()
-          removeClientClick(client.id)
+          event.stopPropagation();
+          removeClientClick(client.id);
         },
       },
     ],
     active: exists((selected: UserClient) => selected.id === client.id)(
       selectedClient,
     ),
-  }))
+  }));
 
   const addClientClick = () =>
     setState((draft) => {
-      draft.showAddClientDialog = true
-    })
+      draft.showAddClientDialog = true;
+    });
 
   const addClientSelect = (clientToAdd: SelectOption<number>) => {
     setState((draft) => {
-      draft.showAddClientDialog = false
-    })
-    const clientId = clientToAdd.value
+      draft.showAddClientDialog = false;
+    });
+    const clientId = clientToAdd.value;
     pipe(
       addClientToUser(userId, clientId),
       TE.fold(
@@ -145,13 +148,13 @@ const UserClients = (props: Props) => {
         (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients),
       ),
       T.map((clients: UserClient[]) => updateClients(clients)),
-    )()
-  }
+    )();
+  };
 
   const addClientCancel = () =>
     setState((draft) => {
-      draft.showAddClientDialog = false
-    })
+      draft.showAddClientDialog = false;
+    });
 
   const clientOptions = useMemo(
     () =>
@@ -166,17 +169,17 @@ const UserClients = (props: Props) => {
           value: client.id,
         })),
     [ state.allClients, userClients ],
-  )
+  );
 
   const removeClientOnCancel = () =>
     setState((draft) => {
-      draft.showRemoveClientDialog = false
-    })
+      draft.showRemoveClientDialog = false;
+    });
 
   const removeClientOnConfirm = () => {
     setState((draft) => {
-      draft.showRemoveClientDialog = false
-    })
+      draft.showRemoveClientDialog = false;
+    });
     pipe(
       removeClientFromUser(userId, state.clientIdToRemove),
       TE.fold(
@@ -184,8 +187,8 @@ const UserClients = (props: Props) => {
         (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients),
       ),
       T.map((clients: UserClient[]) => updateClients(clients)),
-    )()
-  }
+    )();
+  };
 
   return (
     <>
@@ -210,7 +213,7 @@ const UserClients = (props: Props) => {
         onCancel={removeClientOnCancel}
       />
     </>
-  )
-}
+  );
+};
 
-export default UserClients
+export default UserClients;

@@ -16,39 +16,39 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { ElementType, MouseEvent } from 'react'
-import MuiList from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import theme from '../../theme'
+import React, { ElementType, MouseEvent } from 'react';
+import MuiList from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import theme from '../../theme';
 
 export interface ItemSecondaryAction {
-  uuid: string
-  text: string
-  click: (event: MouseEvent) => void
+  uuid: string;
+  text: string;
+  click: (event: MouseEvent) => void;
 }
 
 export interface Item {
-  uuid: string
-  click?: (event: MouseEvent) => void
-  avatar?: ElementType
+  uuid: string;
+  click?: (event: MouseEvent) => void;
+  avatar?: ElementType;
   text: {
-    primary: string
-    secondary?: string
-  }
-  secondaryActions?: Array<ItemSecondaryAction>
-  active?: boolean
+    primary: string;
+    secondary?: string;
+  };
+  secondaryActions?: Array<ItemSecondaryAction>;
+  active?: boolean;
 }
 
 interface Props {
-  id?: string
-  items: Array<Item>
-  columnLayout?: boolean
+  id?: string;
+  items: Array<Item>;
+  columnLayout?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -67,28 +67,28 @@ const useStyles = makeStyles({
       color: theme.palette.secondary.main,
     },
   },
-})
+});
 
 const List = (props: Props) => {
-  const classes = useStyles()
-  const { id, items, columnLayout = false } = props
+  const classes = useStyles();
+  const { id, items, columnLayout = false } = props;
 
-  const isNotPhone = useMediaQuery(theme.breakpoints.up('md'))
-  const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column'
+  const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
+  const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
 
   return (
     <MuiList id={id}>
       {items.map((item, index) => {
-        const Avatar = item.avatar ?? null
-        const className = [ classes.ListItem ]
+        const Avatar = item.avatar ?? null;
+        const className = [ classes.ListItem ];
         if (item.active) {
-          className.push('active')
+          className.push('active');
         }
 
-        const itemId = id ? `${id}-item-${index}` : ''
+        const itemId = id ? `${id}-item-${index}` : '';
 
-        const primaryTextId = itemId ? `${itemId}-text-primary` : ''
-        const secondaryTextId = itemId ? `${itemId}-text-secondary` : ''
+        const primaryTextId = itemId ? `${itemId}-text-primary` : '';
+        const secondaryTextId = itemId ? `${itemId}-text-secondary` : '';
 
         return (
           <ListItem
@@ -129,10 +129,10 @@ const List = (props: Props) => {
               )}
             </Grid>
           </ListItem>
-        )
+        );
       })}
     </MuiList>
-  )
-}
+  );
+};
 
-export default List
+export default List;

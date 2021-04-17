@@ -16,43 +16,46 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react'
-import './UserAuths.scss'
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
-import { useImmer } from 'use-immer'
-import LockOpen from '@material-ui/icons/LockOpen'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import { SectionHeader } from '@craigmiller160/react-material-ui-common'
-import { nanoid } from 'nanoid'
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage'
-import { formatApiDateTime } from '../../../../../utils/date'
-import List, { Item } from '../../../../ui/List'
-import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user'
+import React, { useEffect } from 'react';
+import './UserAuths.scss';
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
+import { useImmer } from 'use-immer';
+import LockOpen from '@material-ui/icons/LockOpen';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { SectionHeader } from '@craigmiller160/react-material-ui-common';
+import { nanoid } from 'nanoid';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
+import { formatApiDateTime } from '../../../../../utils/date';
+import List, { Item } from '../../../../ui/List';
+import {
+  UserAuthDetails,
+  UserAuthDetailsList,
+} from '../../../../../types/user';
 import {
   getAllUserAuthDetails,
   revokeUserAuthAccess,
-} from '../../../../../services/UserService'
+} from '../../../../../services/UserService';
 
 interface State {
-  userId: number
-  userAuths: UserAuthDetailsList
+  userId: number;
+  userAuths: UserAuthDetailsList;
 }
 interface Props extends IdMatchProps {}
 
 const defaultUserAuths: UserAuthDetailsList = {
   email: '',
   authDetails: [],
-}
+};
 
 const UserAuths = (props: Props) => {
-  const { id } = props.match.params
+  const { id } = props.match.params;
   const [ state, setState ] = useImmer<State>({
     userId: id !== NEW_ID ? parseInt(id, 10) : 0,
     userAuths: defaultUserAuths,
-  })
+  });
 
   useEffect(() => {
     const action = () =>
@@ -64,13 +67,13 @@ const UserAuths = (props: Props) => {
         ),
         T.map((userAuths: UserAuthDetailsList) =>
           setState((draft) => {
-            draft.userAuths = userAuths
+            draft.userAuths = userAuths;
           }),
         ),
-      )()
+      )();
 
-    action()
-  }, [ setState, state.userId ])
+    action();
+  }, [ setState, state.userId ]);
 
   const doRevoke = (clientId: number) => {
     pipe(
@@ -87,11 +90,11 @@ const UserAuths = (props: Props) => {
       ),
       T.map((authDetails: UserAuthDetails[]) =>
         setState((draft) => {
-          draft.userAuths.authDetails = authDetails
+          draft.userAuths.authDetails = authDetails;
         }),
       ),
-    )()
-  }
+    )();
+  };
 
   const items: Array<Item> = state.userAuths.authDetails.map((auth) => ({
     uuid: nanoid(),
@@ -109,7 +112,7 @@ const UserAuths = (props: Props) => {
         click: () => doRevoke(auth.clientId),
       },
     ],
-  }))
+  }));
 
   return (
     <div className="UserAuths">
@@ -127,7 +130,7 @@ const UserAuths = (props: Props) => {
         </Grid>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserAuths
+export default UserAuths;

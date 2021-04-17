@@ -21,8 +21,8 @@ export default class MessageBuilder {
 
   append(part?: string): MessageBuilder {
     if (part) {
-      return new MessageBuilder(`${this.message} ${part}`)
+      return new MessageBuilder(`${this.message} ${part}`);
     }
-    return new MessageBuilder(this.message)
+    return new MessageBuilder(this.message);
   }
 }

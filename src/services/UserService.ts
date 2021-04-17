@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import { TaskEither } from 'fp-ts/es6/TaskEither'
-import { AxiosResponse } from 'axios'
-import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts'
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import { TaskEither } from 'fp-ts/es6/TaskEither';
+import { AxiosResponse } from 'axios';
+import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import {
   UserAuthDetailsList,
   UserClient,
@@ -29,8 +29,8 @@ import {
   UserInput,
   UserList,
   UserRole,
-} from '../types/user'
-import ajaxApi from './AjaxApi'
+} from '../types/user';
+import ajaxApi from './AjaxApi';
 import {
   AddClientToUserWrapper,
   AddRoleToUserWrapper,
@@ -41,7 +41,7 @@ import {
   UpdateUserWrapper,
   UserClientsWrapper,
   UserDetailsWrapper,
-} from '../types/graphApi'
+} from '../types/graphApi';
 
 export const getAllUsers = (): TaskEither<Error, UserList> =>
   pipe(
@@ -61,7 +61,7 @@ export const getAllUsers = (): TaskEither<Error, UserList> =>
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<UserList>>) => res.data.data,
     ),
-  )
+  );
 
 export const getUserDetails = (
   userId: number,
@@ -85,7 +85,7 @@ export const getUserDetails = (
       (res: AxiosResponse<GraphQLQueryResponse<UserDetailsWrapper>>) =>
         res.data.data.user,
     ),
-  )
+  );
 
 export const getUserClients = (
   userId: number,
@@ -119,7 +119,7 @@ export const getUserClients = (
       (res: AxiosResponse<GraphQLQueryResponse<UserClientsWrapper>>) =>
         res.data.data.user,
     ),
-  )
+  );
 
 export const updateUser = (
   userId: number,
@@ -150,7 +150,7 @@ export const updateUser = (
       (res: AxiosResponse<GraphQLQueryResponse<UpdateUserWrapper>>) =>
         res.data.data.updateUser,
     ),
-  )
+  );
 
 export const createUser = (
   user: UserInput,
@@ -180,7 +180,7 @@ export const createUser = (
       (res: AxiosResponse<GraphQLQueryResponse<CreateUserWrapper>>) =>
         res.data.data.createUser,
     ),
-  )
+  );
 
 export const deleteUser = (userId: number): TE.TaskEither<Error, UserDetails> =>
   pipe(
@@ -202,7 +202,7 @@ export const deleteUser = (userId: number): TE.TaskEither<Error, UserDetails> =>
       (res: AxiosResponse<GraphQLQueryResponse<DeleteUserWrapper>>) =>
         res.data.data.deleteUser,
     ),
-  )
+  );
 
 export const removeClientFromUser = (
   userId: number,
@@ -233,7 +233,7 @@ export const removeClientFromUser = (
       (res: AxiosResponse<GraphQLQueryResponse<RemoveClientFromUserWrapper>>) =>
         res.data.data.removeClientFromUser,
     ),
-  )
+  );
 
 export const addClientToUser = (
   userId: number,
@@ -264,7 +264,7 @@ export const addClientToUser = (
       (res: AxiosResponse<GraphQLQueryResponse<AddClientToUserWrapper>>) =>
         res.data.data.addClientToUser,
     ),
-  )
+  );
 
 export const removeRoleFromUser = (
   userId: number,
@@ -287,7 +287,7 @@ export const removeRoleFromUser = (
       (res: AxiosResponse<GraphQLQueryResponse<RemoveRoleFromUserWrapper>>) =>
         res.data.data.removeRoleFromUser,
     ),
-  )
+  );
 
 export const addRoleToUser = (
   userId: number,
@@ -310,7 +310,7 @@ export const addRoleToUser = (
       (res: AxiosResponse<GraphQLQueryResponse<AddRoleToUserWrapper>>) =>
         res.data.data.addRoleToUser,
     ),
-  )
+  );
 
 export const getAllUserAuthDetails = (
   userId: number,
@@ -321,7 +321,7 @@ export const getAllUserAuthDetails = (
       errorMsg: `Error getting all auth details for user ${userId}`,
     }),
     TE.map((res: AxiosResponse<UserAuthDetailsList>) => res.data),
-  )
+  );
 
 export const revokeUserAuthAccess = (
   userId: number,
@@ -333,4 +333,4 @@ export const revokeUserAuthAccess = (
       errorMsg: `Error revoking access for user ${userId} for client ${clientId}`,
     }),
     TE.map((res: AxiosResponse<void>) => res.data),
-  )
+  );

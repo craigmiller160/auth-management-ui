@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import MockAdapter from 'axios-mock-adapter'
-import { GraphQLQueryResponse } from '../../src/types/graphApi'
+import MockAdapter from 'axios-mock-adapter';
+import { GraphQLQueryResponse } from '../../src/types/graphApi';
 
 // TODO move to ajax-api library test-utils
 export const mockAndValidateGraphQL = <R>(
@@ -27,6 +27,6 @@ export const mockAndValidateGraphQL = <R>(
   responseData: GraphQLQueryResponse<R>,
 ) =>
   mockApi.onPost(uri).reply((config) => {
-    expect(config.data).stringsEqualIgnoreWhitespace(payload)
-    return [ 200, responseData ]
-  })
+    expect(config.data).stringsEqualIgnoreWhitespace(payload);
+    return [ 200, responseData ];
+  });

@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InsertClient } from '../plugins/sql/insertClient'
+import { InsertClient } from '../plugins/sql/insertClient';
 
 export const testClient: InsertClient = {
   name: 'Test Client',
@@ -29,4 +29,4 @@ export const testClient: InsertClient = {
   authCodeTimeout: 30,
   redirectUris: [ 'https://localhost:123/authcode' ],
   roles: [ 'ROLE_READ' ],
-}
+};

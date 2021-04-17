@@ -16,43 +16,43 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react'
-import { Prompt, useHistory } from 'react-router'
-import { useImmer } from 'use-immer'
-import { pipe } from 'fp-ts/es6/pipeable'
-import * as TE from 'fp-ts/es6/TaskEither'
-import * as T from 'fp-ts/es6/Task'
-import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import React, { useEffect } from 'react';
+import { Prompt, useHistory } from 'react-router';
+import { useImmer } from 'use-immer';
+import { pipe } from 'fp-ts/es6/pipeable';
+import * as TE from 'fp-ts/es6/TaskEither';
+import * as T from 'fp-ts/es6/Task';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import {
   ConfirmDialog,
   showSuccessReduxAlert,
-} from '@craigmiller160/react-material-ui-common'
-import TextField from '../../../../ui/Form/TextField'
-import { email } from '../../../../../utils/validations'
-import './UserConfig.scss'
-import Switch from '../../../../ui/Form/Switch'
-import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage'
+} from '@craigmiller160/react-material-ui-common';
+import TextField from '../../../../ui/Form/TextField';
+import { email } from '../../../../../utils/validations';
+import './UserConfig.scss';
+import Switch from '../../../../ui/Form/Switch';
+import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import {
   createUser,
   deleteUser,
   getUserDetails,
   updateUser,
-} from '../../../../../services/UserService'
-import { UserDetails, UserInput } from '../../../../../types/user'
+} from '../../../../../services/UserService';
+import { UserDetails, UserInput } from '../../../../../types/user';
 
 interface State {
-  allowNavigationOverride: boolean
-  showDeleteDialog: boolean
-  userId: number
+  allowNavigationOverride: boolean;
+  showDeleteDialog: boolean;
+  userId: number;
 }
 
 interface Props extends IdMatchProps {}
 
 interface UserForm extends UserInput {
-  confirmPassword: string
+  confirmPassword: string;
 }
 
 const defaultUser: UserDetails = {
@@ -61,23 +61,23 @@ const defaultUser: UserDetails = {
   firstName: '',
   lastName: '',
   enabled: true,
-}
+};
 
 const defaultForm: UserForm = {
   ...defaultUser,
   password: '',
   confirmPassword: '',
-}
+};
 
 const UserConfig = (props: Props) => {
-  const { id } = props.match.params
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const { id } = props.match.params;
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [ state, setState ] = useImmer<State>({
     allowNavigationOverride: false,
     showDeleteDialog: false,
     userId: id !== NEW_ID ? parseInt(id, 10) : 0,
-  })
+  });
   const {
     control,
     handleSubmit,
@@ -90,37 +90,37 @@ const UserConfig = (props: Props) => {
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: defaultForm,
-  })
-  const watchPassword = watch('password', '')
+  });
+  const watchPassword = watch('password', '');
 
   const doSubmit = async (action: () => TE.TaskEither<Error, UserDetails>) =>
     pipe(
       action(),
       TE.map((user) => {
         setState((draft) => {
-          draft.userId = user.id
-        })
+          draft.userId = user.id;
+        });
         reset({
           ...user,
           password: '',
           confirmPassword: '',
-        })
-        const path = props.match.path.replace(':id', `${user.id}`)
-        dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`))
-        history.push(path)
+        });
+        const path = props.match.path.replace(':id', `${user.id}`);
+        dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`));
+        history.push(path);
       }),
-    )
+    );
 
   const onSubmit = (values: UserForm) => {
     const payload: UserInput = {
       ...values,
-    }
+    };
     if (state.userId === 0) {
-      doSubmit(() => createUser(payload))
+      doSubmit(() => createUser(payload));
     } else {
-      doSubmit(() => updateUser(parseInt(id, 10), payload))
+      doSubmit(() => updateUser(parseInt(id, 10), payload));
     }
-  }
+  };
 
   useEffect(() => {
     const action = () =>
@@ -128,44 +128,44 @@ const UserConfig = (props: Props) => {
         getUserDetails(state.userId),
         TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
         T.map((user) => reset(user)),
-      )
+      );
 
     if (state.userId > 0) {
-      action()
+      action();
     } else {
-      reset(defaultUser)
+      reset(defaultUser);
     }
-  }, [ state.userId, reset ])
+  }, [ state.userId, reset ]);
 
   const confirmPasswordValidator = (value: string) => {
-    const { password } = getValues()
+    const { password } = getValues();
     if (!password) {
-      return true
+      return true;
     }
     if (!value) {
-      return 'Required'
+      return 'Required';
     }
-    return password === value || 'Passwords must match'
-  }
+    return password === value || 'Passwords must match';
+  };
 
-  const passwordRules = state.userId === 0 ? { required: 'Required' } : {}
+  const passwordRules = state.userId === 0 ? { required: 'Required' } : {};
 
   const toggleDeleteDialog = (show: boolean) =>
     setState((draft) => {
-      draft.showDeleteDialog = show
-    })
+      draft.showDeleteDialog = show;
+    });
 
   const doDelete = () =>
     pipe(
       deleteUser(parseInt(id, 10)),
       TE.map(() => {
         setState((draft) => {
-          draft.allowNavigationOverride = true
-        })
-        history.push('/users')
-        dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`))
+          draft.allowNavigationOverride = true;
+        });
+        history.push('/users');
+        dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
       }),
-    )()
+    )();
 
   return (
     <div className="UserConfig">
@@ -271,7 +271,7 @@ const UserConfig = (props: Props) => {
         onCancel={() => toggleDeleteDialog(false)}
       />
     </div>
-  )
-}
+  );
+};
 
-export default UserConfig
+export default UserConfig;

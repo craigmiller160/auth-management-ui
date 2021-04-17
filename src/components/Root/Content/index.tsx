@@ -16,31 +16,31 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import Container from '@material-ui/core/Container'
-import { Redirect, Route, Switch } from 'react-router'
-import ProtectedRoute, { Rule } from '@craigmiller160/react-protected-route'
-import { useSelector } from 'react-redux'
-import { ReduxAlert } from '@craigmiller160/react-material-ui-common'
-import Clients from './Clients'
-import { isAuthorized } from '../../../store/auth/selectors'
-import Home from './Home'
-import Users from './Users'
-import ClientDetails from './Clients/ClientDetails'
-import './Content.scss'
-import UserDetails from './Users/UserDetails'
+import React from 'react';
+import Container from '@material-ui/core/Container';
+import { Redirect, Route, Switch } from 'react-router';
+import ProtectedRoute, { Rule } from '@craigmiller160/react-protected-route';
+import { useSelector } from 'react-redux';
+import { ReduxAlert } from '@craigmiller160/react-material-ui-common';
+import Clients from './Clients';
+import { isAuthorized } from '../../../store/auth/selectors';
+import Home from './Home';
+import Users from './Users';
+import ClientDetails from './Clients/ClientDetails';
+import './Content.scss';
+import UserDetails from './Users/UserDetails';
 
 interface RuleProps {
-  isAuth: boolean
+  isAuth: boolean;
 }
 
 const Content = () => {
-  const isAuth = useSelector(isAuthorized)
+  const isAuth = useSelector(isAuthorized);
 
   const isAuthRule: Rule<RuleProps> = {
     allow: (ruleProps?: RuleProps) => ruleProps?.isAuth ?? false,
     redirect: '/',
-  }
+  };
 
   return (
     <Container className="Content">
@@ -84,7 +84,7 @@ const Content = () => {
         <Redirect to="/" />
       </Switch>
     </Container>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

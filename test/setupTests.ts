@@ -16,13 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@relmify/jest-fp-ts'
-import '@craigmiller160/jest-matchers-common'
-import '@testing-library/jest-dom/extend-expect'
+import '@relmify/jest-fp-ts';
+import '@craigmiller160/jest-matchers-common';
+import '@testing-library/jest-dom/extend-expect';
 
 beforeEach(() => {
   // @ts-ignore
-  delete window.location
+  delete window.location;
   // @ts-ignore
   window.location = {
     assign: jest.fn(),
@@ -30,5 +30,5 @@ beforeEach(() => {
     search: '',
     hash: '',
     href: '',
-  }
-})
+  };
+});

@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InsertUser } from '../plugins/sql/insertUser'
+import { InsertUser } from '../plugins/sql/insertUser';
 
 export const testUser: InsertUser = {
   email: 'test@gmail.com',
@@ -24,7 +24,7 @@ export const testUser: InsertUser = {
   lastName: 'User',
   password: 'password',
   enabled: true,
-}
+};
 
 export const testUser2: InsertUser = {
   email: 'test2@gmail.com',
@@ -32,4 +32,4 @@ export const testUser2: InsertUser = {
   lastName: 'User',
   password: 'password',
   enabled: true,
-}
+};

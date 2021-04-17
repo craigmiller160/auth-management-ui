@@ -16,13 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react'
-import { PageHeader } from '@craigmiller160/react-material-ui-common'
+import React from 'react';
+import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
 const Home = () => (
   <div id="home-page">
     <PageHeader title="Welcome to OAuth Management" />
   </div>
-)
+);
 
-export default Home
+export default Home;
