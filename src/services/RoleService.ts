@@ -24,18 +24,18 @@ import ajaxApi from './AjaxApi';
 import { ClientRole } from '../types/client';
 import { Role } from '../types/role';
 import {
-  CreateRoleWrapper,
-  DeleteRoleWrapper,
-  UpdateRoleWrapper
+	CreateRoleWrapper,
+	DeleteRoleWrapper,
+	UpdateRoleWrapper
 } from '../types/graphApi';
 
 export const createRole = (
-  clientId: number,
-  role: ClientRole
+	clientId: number,
+	role: ClientRole
 ): TE.TaskEither<Error, Role> =>
-  pipe(
-    ajaxApi.graphql<CreateRoleWrapper>({
-      payload: `
+	pipe(
+		ajaxApi.graphql<CreateRoleWrapper>({
+			payload: `
                 mutation {
                     createRole(role: {
                         name: "${role.name}",
@@ -47,22 +47,22 @@ export const createRole = (
                     }
                 }
             `,
-      errorMsg: `Error creating role for client ${clientId}`
-    }),
-    TE.map(
-      (res: AxiosResponse<GraphQLQueryResponse<CreateRoleWrapper>>) =>
-        res.data.data.createRole
-    )
-  );
+			errorMsg: `Error creating role for client ${clientId}`
+		}),
+		TE.map(
+			(res: AxiosResponse<GraphQLQueryResponse<CreateRoleWrapper>>) =>
+				res.data.data.createRole
+		)
+	);
 
 export const updateRole = (
-  clientId: number,
-  roleId: number,
-  role: ClientRole
+	clientId: number,
+	roleId: number,
+	role: ClientRole
 ): TE.TaskEither<Error, Role> =>
-  pipe(
-    ajaxApi.graphql<UpdateRoleWrapper>({
-      payload: `
+	pipe(
+		ajaxApi.graphql<UpdateRoleWrapper>({
+			payload: `
                 mutation {
                     updateRole(roleId: ${roleId}, role: {
                         name: "${role.name}",
@@ -74,18 +74,18 @@ export const updateRole = (
                     }
                 }
             `,
-      errorMsg: `Error updating role ${roleId} for client ${clientId}`
-    }),
-    TE.map(
-      (res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) =>
-        res.data.data.updateRole
-    )
-  );
+			errorMsg: `Error updating role ${roleId} for client ${clientId}`
+		}),
+		TE.map(
+			(res: AxiosResponse<GraphQLQueryResponse<UpdateRoleWrapper>>) =>
+				res.data.data.updateRole
+		)
+	);
 
 export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
-  pipe(
-    ajaxApi.graphql<DeleteRoleWrapper>({
-      payload: `
+	pipe(
+		ajaxApi.graphql<DeleteRoleWrapper>({
+			payload: `
                 mutation {
                     deleteRole(roleId: ${roleId}) {
                         id
@@ -94,10 +94,10 @@ export const deleteRole = (roleId: number): TE.TaskEither<Error, Role> =>
                     }
                 }
             `,
-      errorMsg: `Error deleting role ${roleId}`
-    }),
-    TE.map(
-      (res: AxiosResponse<GraphQLQueryResponse<DeleteRoleWrapper>>) =>
-        res.data.data.deleteRole
-    )
-  );
+			errorMsg: `Error deleting role ${roleId}`
+		}),
+		TE.map(
+			(res: AxiosResponse<GraphQLQueryResponse<DeleteRoleWrapper>>) =>
+				res.data.data.deleteRole
+		)
+	);

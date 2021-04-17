@@ -21,14 +21,14 @@ import '@craigmiller160/jest-matchers-common';
 import '@testing-library/jest-dom/extend-expect';
 
 beforeEach(() => {
-  // @ts-ignore
-  delete window.location;
-  // @ts-ignore
-  window.location = {
-    assign: jest.fn(),
-    pathname: '/',
-    search: '',
-    hash: '',
-    href: ''
-  };
+	// @ts-ignore
+	delete window.location;
+	// @ts-ignore
+	window.location = {
+		assign: jest.fn(),
+		pathname: '/',
+		search: '',
+		hash: '',
+		href: ''
+	};
 });

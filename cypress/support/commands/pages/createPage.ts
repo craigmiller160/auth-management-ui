@@ -17,5 +17,5 @@
  */
 
 export default <T>(pageObj: T) => (pageFn: (page: T) => void) => {
-  pageFn(pageObj);
+	pageFn(pageObj);
 };

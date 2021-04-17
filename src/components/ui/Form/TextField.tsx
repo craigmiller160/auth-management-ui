@@ -23,62 +23,62 @@ import { FieldName } from 'react-hook-form/dist/types/form';
 import { FieldRules } from '../../../types/form';
 
 interface Props<T> {
-  id?: string;
-  name: keyof T;
-  control: Control<T>;
-  label: string;
-  className?: string;
-  error?: FieldError;
-  rules?: FieldRules;
-  type?: 'text' | 'number' | 'password';
-  disabled?: boolean;
-  transform?: (value: string) => any;
-  placeholder?: string;
+	id?: string;
+	name: keyof T;
+	control: Control<T>;
+	label: string;
+	className?: string;
+	error?: FieldError;
+	rules?: FieldRules;
+	type?: 'text' | 'number' | 'password';
+	disabled?: boolean;
+	transform?: (value: string) => any;
+	placeholder?: string;
 }
 
 const TextField = <T extends object>(props: Props<T>) => {
-  const {
-    id,
-    name,
-    control,
-    className,
-    label,
-    error,
-    rules,
-    type,
-    disabled,
-    transform,
-    placeholder
-  } = props;
+	const {
+		id,
+		name,
+		control,
+		className,
+		label,
+		error,
+		rules,
+		type,
+		disabled,
+		transform,
+		placeholder
+	} = props;
 
-  return (
-    <Controller
-      control={control}
-      name={name as FieldName<T>}
-      rules={rules}
-      render={({ onChange, onBlur, value }) => (
-        <MuiTextField
-          id={id}
-          type={type}
-          className={className}
-          label={label}
-          placeholder={placeholder}
-          onChange={(event) => {
-            if (transform) {
-              onChange(transform(event.target.value));
-            } else {
-              onChange(event.target.value);
-            }
-          }}
-          onBlur={onBlur}
-          value={value}
-          error={!!error}
-          helperText={error?.message ?? ''}
-          disabled={disabled}
-        />
-      )}
-    />
-  );
+	return (
+		<Controller
+			control={control}
+			name={name as FieldName<T>}
+			rules={rules}
+			render={({ onChange, onBlur, value }) => (
+				<MuiTextField
+					id={id}
+					type={type}
+					className={className}
+					label={label}
+					placeholder={placeholder}
+					onChange={(event) => {
+						if (transform) {
+							onChange(transform(event.target.value));
+						} else {
+							onChange(event.target.value);
+						}
+					}}
+					onBlur={onBlur}
+					value={value}
+					error={!!error}
+					helperText={error?.message ?? ''}
+					disabled={disabled}
+				/>
+			)}
+		/>
+	);
 };
 
 export default TextField;

@@ -34,48 +34,48 @@ const SELECT_CLIENT_AUTHS_TAB = '#client-details-page #client-auths-tab';
 const ACTIVE_TAB_CLASS = 'Mui-selected';
 
 const validatePageCommon = (newClient: boolean = false) => {
-  cy.get(SELECT_PAGE_HEADER).should('have.text', 'Client Details');
-  cy.get(SELECT_TABS).should('exist');
-  cy.get(SELECT_CLIENT_CONFIG_TAB).should('have.text', 'Config');
+	cy.get(SELECT_PAGE_HEADER).should('have.text', 'Client Details');
+	cy.get(SELECT_TABS).should('exist');
+	cy.get(SELECT_CLIENT_CONFIG_TAB).should('have.text', 'Config');
 
-  if (newClient) {
-    cy.get(SELECT_CLIENT_ROLES_TAB).should('not.exist');
-    cy.get(SELECT_CLIENT_GRANTS_TAB).should('not.exist');
-    cy.get(SELECT_CLIENT_AUTHS_TAB).should('not.exist');
-  } else {
-    cy.get(SELECT_CLIENT_ROLES_TAB).should('have.text', 'Roles');
-    cy.get(SELECT_CLIENT_GRANTS_TAB).should('have.text', 'Grants');
-    cy.get(SELECT_CLIENT_AUTHS_TAB).should('have.text', 'Authentications');
-  }
+	if (newClient) {
+		cy.get(SELECT_CLIENT_ROLES_TAB).should('not.exist');
+		cy.get(SELECT_CLIENT_GRANTS_TAB).should('not.exist');
+		cy.get(SELECT_CLIENT_AUTHS_TAB).should('not.exist');
+	} else {
+		cy.get(SELECT_CLIENT_ROLES_TAB).should('have.text', 'Roles');
+		cy.get(SELECT_CLIENT_GRANTS_TAB).should('have.text', 'Grants');
+		cy.get(SELECT_CLIENT_AUTHS_TAB).should('have.text', 'Authentications');
+	}
 };
 
 const getTabForIndex = (tabIndex: number) => {
-  switch (tabIndex) {
-    case TAB_INDEX_CONFIG:
-      return SELECT_CLIENT_CONFIG_TAB;
-    case TAB_INDEX_ROLES:
-      return SELECT_CLIENT_ROLES_TAB;
-    case TAB_INDEX_GRANTS:
-      return SELECT_CLIENT_GRANTS_TAB;
-    case TAB_INDEX_AUTHS:
-      return SELECT_CLIENT_AUTHS_TAB;
-    default:
-      throw new Error(`Invalid tab index: ${tabIndex}`);
-  }
+	switch (tabIndex) {
+		case TAB_INDEX_CONFIG:
+			return SELECT_CLIENT_CONFIG_TAB;
+		case TAB_INDEX_ROLES:
+			return SELECT_CLIENT_ROLES_TAB;
+		case TAB_INDEX_GRANTS:
+			return SELECT_CLIENT_GRANTS_TAB;
+		case TAB_INDEX_AUTHS:
+			return SELECT_CLIENT_AUTHS_TAB;
+		default:
+			throw new Error(`Invalid tab index: ${tabIndex}`);
+	}
 };
 
 const isTabSelected = (tabIndex: number) => {
-  cy.get(getTabForIndex(tabIndex)).should('have.class', ACTIVE_TAB_CLASS);
+	cy.get(getTabForIndex(tabIndex)).should('have.class', ACTIVE_TAB_CLASS);
 };
 
 const clickTab = (tabIndex: number) => {
-  cy.get(getTabForIndex(tabIndex)).click();
+	cy.get(getTabForIndex(tabIndex)).click();
 };
 
 const clientDetailsPage = {
-  validatePageCommon,
-  isTabSelected,
-  clickTab
+	validatePageCommon,
+	isTabSelected,
+	clickTab
 };
 
 export type ClientDetailsPage = typeof clientDetailsPage;

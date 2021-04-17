@@ -27,22 +27,22 @@ type OnFn = (name: string, value: object) => void;
  * @type {Cypress.PluginConfig}
  */
 export default (on: OnFn, config: CypressConfig) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-  const pool = createPool(config.env);
+	// `on` is used to hook into various events Cypress emits
+	// `config` is the resolved Cypress config
+	const pool = createPool(config.env);
 
-  on(
-    'file:preprocessor',
-    cucumber({
-      typescript: require.resolve('typescript')
-    })
-  );
+	on(
+		'file:preprocessor',
+		cucumber({
+			typescript: require.resolve('typescript')
+		})
+	);
 
-  on('task', {
-    deleteClient: deleteClient(pool),
-    insertClient: insertClient(pool),
-    insertUser: insertUser(pool),
-    deleteUser: deleteUser(pool),
-    insertRole: insertRole(pool)
-  });
+	on('task', {
+		deleteClient: deleteClient(pool),
+		insertClient: insertClient(pool),
+		insertUser: insertUser(pool),
+		deleteUser: deleteUser(pool),
+		insertRole: insertRole(pool)
+	});
 };

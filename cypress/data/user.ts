@@ -19,17 +19,17 @@
 import { InsertUser } from '../plugins/sql/insertUser';
 
 export const testUser: InsertUser = {
-  email: 'test@gmail.com',
-  firstName: 'Test',
-  lastName: 'User',
-  password: 'password',
-  enabled: true
+	email: 'test@gmail.com',
+	firstName: 'Test',
+	lastName: 'User',
+	password: 'password',
+	enabled: true
 };
 
 export const testUser2: InsertUser = {
-  email: 'test2@gmail.com',
-  firstName: 'Test2',
-  lastName: 'User',
-  password: 'password',
-  enabled: true
+	email: 'test2@gmail.com',
+	firstName: 'Test2',
+	lastName: 'User',
+	password: 'password',
+	enabled: true
 };

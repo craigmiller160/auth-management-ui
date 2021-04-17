@@ -17,9 +17,9 @@
  */
 
 import {
-  displayFormatApiDateTime,
-  formatApiDateTime,
-  parseApiDateTime
+	displayFormatApiDateTime,
+	formatApiDateTime,
+	parseApiDateTime
 } from '../../src/utils/date';
 
 const dateTimeString = '2020-12-11T19:34:08.785314Z';
@@ -27,25 +27,25 @@ const formattedDateTimeString = '2020-12-11 02:34:08 PM';
 const expectedDate = new Date('2020-12-11T19:34:08.785314Z');
 
 describe('date functions', () => {
-  it('parseApiDateTime', () => {
-    const date = parseApiDateTime(dateTimeString);
-    expect(date.getTime()).toEqual(expectedDate.getTime());
-  });
+	it('parseApiDateTime', () => {
+		const date = parseApiDateTime(dateTimeString);
+		expect(date.getTime()).toEqual(expectedDate.getTime());
+	});
 
-  it('displayFormatApiDateTime', () => {
-    // This test depends on being run in Eastern Time
-    const result = displayFormatApiDateTime(dateTimeString);
-    expect(result).toEqual(formattedDateTimeString);
-  });
+	it('displayFormatApiDateTime', () => {
+		// This test depends on being run in Eastern Time
+		const result = displayFormatApiDateTime(dateTimeString);
+		expect(result).toEqual(formattedDateTimeString);
+	});
 
-  it('formatApiDateTime', () => {
-    // This test depends on being run in Eastern Time
-    const result = formatApiDateTime(dateTimeString);
-    expect(result).toEqual(formattedDateTimeString);
-  });
+	it('formatApiDateTime', () => {
+		// This test depends on being run in Eastern Time
+		const result = formatApiDateTime(dateTimeString);
+		expect(result).toEqual(formattedDateTimeString);
+	});
 
-  it('formatApiDateTime null value', () => {
-    const result = formatApiDateTime(null);
-    expect(result).toEqual('');
-  });
+	it('formatApiDateTime null value', () => {
+		const result = formatApiDateTime(null);
+		expect(result).toEqual('');
+	});
 });

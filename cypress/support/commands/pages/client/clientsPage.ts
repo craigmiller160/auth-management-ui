@@ -25,42 +25,42 @@ const SELECT_NEW_CLIENT_BTN = '#clients-page #new-client-btn';
 const tableHeader = [ 'Name', 'Key' ];
 
 const validatePage = () => {
-  cy.get(SELECT_PAGE_HEADER).should('have.text', 'Clients');
-  cy.get(SELECT_CLIENTS_TABLE).should('exist');
-  cy.get(SELECT_CLIENTS_TABLE)
-    .find('th.MuiTableCell-head')
-    .should('have.length', 2)
-    .each(($child, index) => {
-      expect($child.text()).to.equal(tableHeader[index]);
-    });
-  cy.get(SELECT_NEW_CLIENT_BTN).should('have.text', 'New Client');
+	cy.get(SELECT_PAGE_HEADER).should('have.text', 'Clients');
+	cy.get(SELECT_CLIENTS_TABLE).should('exist');
+	cy.get(SELECT_CLIENTS_TABLE)
+		.find('th.MuiTableCell-head')
+		.should('have.length', 2)
+		.each(($child, index) => {
+			expect($child.text()).to.equal(tableHeader[index]);
+		});
+	cy.get(SELECT_NEW_CLIENT_BTN).should('have.text', 'New Client');
 
-  cy.get(SELECT_CLIENTS_TABLE)
-    .find('tbody tr')
-    .should('have.length.greaterThan', 0);
+	cy.get(SELECT_CLIENTS_TABLE)
+		.find('tbody tr')
+		.should('have.length.greaterThan', 0);
 };
 
 const clickNewClientBtn = () => {
-  cy.get(SELECT_NEW_CLIENT_BTN).click();
+	cy.get(SELECT_NEW_CLIENT_BTN).click();
 };
 
 const clientRecordExists = (clientName: string, shouldExist: boolean) => {
-  cy.get(SELECT_CLIENTS_TABLE)
-    .find(`#${clientName.replace(' ', '-')}-row`)
-    .should(`${!shouldExist ? 'not.' : ''}exist`);
+	cy.get(SELECT_CLIENTS_TABLE)
+		.find(`#${clientName.replace(' ', '-')}-row`)
+		.should(`${!shouldExist ? 'not.' : ''}exist`);
 };
 
 const clickClientRow = (clientName: string) => {
-  cy.get(SELECT_CLIENTS_TABLE)
-    .find(`#${clientName.replace(' ', '-')}-row`)
-    .click();
+	cy.get(SELECT_CLIENTS_TABLE)
+		.find(`#${clientName.replace(' ', '-')}-row`)
+		.click();
 };
 
 const clientsPage = {
-  validatePage,
-  clickNewClientBtn,
-  clientRecordExists,
-  clickClientRow
+	validatePage,
+	clickNewClientBtn,
+	clientRecordExists,
+	clickClientRow
 };
 
 export type ClientsPage = typeof clientsPage;

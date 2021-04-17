@@ -28,111 +28,117 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import theme from '../../theme';
 
 export interface ItemSecondaryAction {
-  uuid: string;
-  text: string;
-  click: (event: MouseEvent) => void;
+	uuid: string;
+	text: string;
+	click: (event: MouseEvent) => void;
 }
 
 export interface Item {
-  uuid: string;
-  click?: (event: MouseEvent) => void;
-  avatar?: ElementType;
-  text: {
-    primary: string;
-    secondary?: string;
-  };
-  secondaryActions?: Array<ItemSecondaryAction>;
-  active?: boolean;
+	uuid: string;
+	click?: (event: MouseEvent) => void;
+	avatar?: ElementType;
+	text: {
+		primary: string;
+		secondary?: string;
+	};
+	secondaryActions?: Array<ItemSecondaryAction>;
+	active?: boolean;
 }
 
 interface Props {
-  id?: string;
-  items: Array<Item>;
-  columnLayout?: boolean;
+	id?: string;
+	items: Array<Item>;
+	columnLayout?: boolean;
 }
 
 const useStyles = makeStyles({
-  ListItem: {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.light
-    },
-    '&.active': {
-      backgroundColor: theme.palette.secondary.light
-    }
-  },
-  Button: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.secondary.main
-    }
-  }
+	ListItem: {
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: theme.palette.secondary.light
+		},
+		'&.active': {
+			backgroundColor: theme.palette.secondary.light
+		}
+	},
+	Button: {
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+			color: theme.palette.secondary.main
+		}
+	}
 });
 
 const List = (props: Props) => {
-  const classes = useStyles();
-  const { id, items, columnLayout = false } = props;
+	const classes = useStyles();
+	const { id, items, columnLayout = false } = props;
 
-  const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
-  const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
+	const isNotPhone = useMediaQuery(theme.breakpoints.up('md'));
+	const listItemDirection = isNotPhone && !columnLayout ? 'row' : 'column';
 
-  return (
-    <MuiList id={id}>
-      {items.map((item, index) => {
-        const Avatar = item.avatar ?? null;
-        const className = [ classes.ListItem ];
-        if (item.active) {
-          className.push('active');
-        }
+	return (
+		<MuiList id={id}>
+			{items.map((item, index) => {
+				const Avatar = item.avatar ?? null;
+				const className = [ classes.ListItem ];
+				if (item.active) {
+					className.push('active');
+				}
 
-        const itemId = id ? `${id}-item-${index}` : '';
+				const itemId = id ? `${id}-item-${index}` : '';
 
-        const primaryTextId = itemId ? `${itemId}-text-primary` : '';
-        const secondaryTextId = itemId ? `${itemId}-text-secondary` : '';
+				const primaryTextId = itemId ? `${itemId}-text-primary` : '';
+				const secondaryTextId = itemId ?
+					`${itemId}-text-secondary` :
+					'';
 
-        return (
-          <ListItem
-            data-testid={itemId}
-            key={item.uuid}
-            className={className.join(' ')}
-            onClick={item.click}
-          >
-            {Avatar && (
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-            )}
-            <Grid container direction={listItemDirection} justify="flex-start">
-              <ListItemText
-                primary={item.text.primary}
-                primaryTypographyProps={{
-                  id: primaryTextId
-                }}
-                secondary={item.text.secondary}
-                secondaryTypographyProps={{
-                  id: secondaryTextId
-                }}
-              />
-              {item.secondaryActions && (
-                <Grid item>
-                  {item.secondaryActions?.map((action) => (
-                    <Button
-                      className={classes.Button}
-                      key={action.uuid}
-                      color="primary"
-                      onClick={action.click}
-                    >
-                      {action.text}
-                    </Button>
-                  ))}
-                </Grid>
-              )}
-            </Grid>
-          </ListItem>
-        );
-      })}
-    </MuiList>
-  );
+				return (
+					<ListItem
+						data-testid={itemId}
+						key={item.uuid}
+						className={className.join(' ')}
+						onClick={item.click}
+					>
+						{Avatar && (
+							<ListItemAvatar>
+								<Avatar />
+							</ListItemAvatar>
+						)}
+						<Grid
+							container
+							direction={listItemDirection}
+							justify="flex-start"
+						>
+							<ListItemText
+								primary={item.text.primary}
+								primaryTypographyProps={{
+									id: primaryTextId
+								}}
+								secondary={item.text.secondary}
+								secondaryTypographyProps={{
+									id: secondaryTextId
+								}}
+							/>
+							{item.secondaryActions && (
+								<Grid item>
+									{item.secondaryActions?.map((action) => (
+										<Button
+											className={classes.Button}
+											key={action.uuid}
+											color="primary"
+											onClick={action.click}
+										>
+											{action.text}
+										</Button>
+									))}
+								</Grid>
+							)}
+						</Grid>
+					</ListItem>
+				);
+			})}
+		</MuiList>
+	);
 };
 
 export default List;

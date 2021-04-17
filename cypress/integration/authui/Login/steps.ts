@@ -21,51 +21,51 @@
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 const onHomePageNotAuthenticated = () => {
-  cy.navbarPage((navbarPage) => {
-    navbarPage.validateLoggedOut();
-  }).homePage((homePage) => {
-    homePage.validatePage();
-  });
+	cy.navbarPage((navbarPage) => {
+		navbarPage.validateLoggedOut();
+	}).homePage((homePage) => {
+		homePage.validatePage();
+	});
 };
 
 Given(
-  'I am on the home page, but not authenticated',
-  onHomePageNotAuthenticated
+	'I am on the home page, but not authenticated',
+	onHomePageNotAuthenticated
 );
 
 When('I click the login button', () => {
-  cy.navbarPage((navbarPage) => {
-    navbarPage.clickAuthBtn();
-  });
+	cy.navbarPage((navbarPage) => {
+		navbarPage.clickAuthBtn();
+	});
 });
 
 Then('I am redirected to the login page', () => {
-  cy.loginPage((loginPage) => {
-    loginPage.validatePage();
-  });
+	cy.loginPage((loginPage) => {
+		loginPage.validatePage();
+	});
 });
 
 When('I login', () => {
-  cy.loginPage((loginPage) => {
-    loginPage.login(Cypress.env('username'), Cypress.env('password'));
-  });
+	cy.loginPage((loginPage) => {
+		loginPage.login(Cypress.env('username'), Cypress.env('password'));
+	});
 });
 
 Then('I am redirected to the home page, and fully authenticated', () => {
-  cy.navbarPage((navbarPage) => {
-    navbarPage.validateLoggedIn();
-  }).homePage((homePage) => {
-    homePage.validatePage();
-  });
+	cy.navbarPage((navbarPage) => {
+		navbarPage.validateLoggedIn();
+	}).homePage((homePage) => {
+		homePage.validatePage();
+	});
 });
 
 When('I click the logout button', () => {
-  cy.navbarPage((navbarPage) => {
-    navbarPage.clickAuthBtn();
-  });
+	cy.navbarPage((navbarPage) => {
+		navbarPage.clickAuthBtn();
+	});
 });
 
 Then(
-  'I am on the home page, but not authenticated',
-  onHomePageNotAuthenticated
+	'I am on the home page, but not authenticated',
+	onHomePageNotAuthenticated
 );

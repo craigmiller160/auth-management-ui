@@ -21,14 +21,14 @@ import createPage from './createPage';
 const SELECT_PAGE_MESSAGE = '#home-page h3';
 
 const validatePage = () => {
-  cy.get(SELECT_PAGE_MESSAGE).should(
-    'have.text',
-    'Welcome to OAuth Management'
-  );
+	cy.get(SELECT_PAGE_MESSAGE).should(
+		'have.text',
+		'Welcome to OAuth Management'
+	);
 };
 
 const homePage = {
-  validatePage
+	validatePage
 };
 
 export type HomePage = typeof homePage;

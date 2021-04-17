@@ -20,10 +20,10 @@ import { Pool } from 'pg';
 import { CypressEnv } from '../../types/cypress';
 
 export const createPool = (env: CypressEnv): Pool =>
-  new Pool({
-    user: env.postgresUser,
-    password: env.postgresPassword,
-    host: env.postgresHost,
-    port: env.postgresPort,
-    database: env.postgresDatabase
-  });
+	new Pool({
+		user: env.postgresUser,
+		password: env.postgresPassword,
+		host: env.postgresHost,
+		port: env.postgresPort,
+		database: env.postgresDatabase
+	});

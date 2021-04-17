@@ -26,16 +26,16 @@ import { getAuthUser } from '../../services/AuthService';
 import { AuthUser } from '../../types/auth';
 
 export const loadAuthUser = () => (
-  dispatch: Dispatch
+	dispatch: Dispatch
 ): Promise<E.Either<Error, AuthUser>> =>
-  pipe(
-    getAuthUser(),
-    TE.map((authUser: AuthUser) => {
-      dispatch(authSlice.actions.setUserData(O.some(authUser)));
-      return authUser;
-    }),
-    TE.mapLeft((ex: Error) => {
-      dispatch(authSlice.actions.setUserData(O.none));
-      return ex;
-    })
-  )();
+	pipe(
+		getAuthUser(),
+		TE.map((authUser: AuthUser) => {
+			dispatch(authSlice.actions.setUserData(O.some(authUser)));
+			return authUser;
+		}),
+		TE.mapLeft((ex: Error) => {
+			dispatch(authSlice.actions.setUserData(O.none));
+			return ex;
+		})
+	)();

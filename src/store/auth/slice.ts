@@ -21,37 +21,37 @@ import { none, Option } from 'fp-ts/es6/Option';
 import { AuthUser } from '../../types/auth';
 
 interface StateType {
-  csrfToken: Option<string>;
-  userData: Option<AuthUser>;
-  hasChecked: boolean;
+	csrfToken: Option<string>;
+	userData: Option<AuthUser>;
+	hasChecked: boolean;
 }
 
 export const initialState: StateType = {
-  csrfToken: none,
-  userData: none,
-  hasChecked: false
+	csrfToken: none,
+	userData: none,
+	hasChecked: false
 };
 
 const setUserData = (
-  draft: StateType,
-  action: PayloadAction<Option<AuthUser>>
+	draft: StateType,
+	action: PayloadAction<Option<AuthUser>>
 ) => {
-  draft.userData = action.payload;
-  draft.hasChecked = true;
+	draft.userData = action.payload;
+	draft.hasChecked = true;
 };
 
 const setCsrfToken = (
-  draft: StateType,
-  action: PayloadAction<Option<string>>
+	draft: StateType,
+	action: PayloadAction<Option<string>>
 ) => {
-  draft.csrfToken = action.payload;
+	draft.csrfToken = action.payload;
 };
 
 export default createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    setUserData,
-    setCsrfToken
-  }
+	name: 'auth',
+	initialState,
+	reducers: {
+		setUserData,
+		setCsrfToken
+	}
 });

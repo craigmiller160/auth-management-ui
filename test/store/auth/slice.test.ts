@@ -18,39 +18,39 @@
 
 import { some } from 'fp-ts/es6/Option';
 import authSlice, {
-  initialState as authInitState
+	initialState as authInitState
 } from '../../../src/store/auth/slice';
 import { AuthUser } from '../../../src/types/auth';
 
 describe('auth slice', () => {
-  it('setUserData', () => {
-    const authUser: AuthUser = {
-      username: 'user',
-      firstName: 'first',
-      lastName: 'last',
-      roles: []
-    };
+	it('setUserData', () => {
+		const authUser: AuthUser = {
+			username: 'user',
+			firstName: 'first',
+			lastName: 'last',
+			roles: []
+		};
 
-    const result = authSlice.reducer(
-      authInitState,
-      authSlice.actions.setUserData(some(authUser))
-    );
-    expect(result).toEqual({
-      ...authInitState,
-      userData: some(authUser),
-      hasChecked: true
-    });
-  });
+		const result = authSlice.reducer(
+			authInitState,
+			authSlice.actions.setUserData(some(authUser))
+		);
+		expect(result).toEqual({
+			...authInitState,
+			userData: some(authUser),
+			hasChecked: true
+		});
+	});
 
-  it('setCsrfToken', () => {
-    const csrfToken = 'csrfToken';
-    const result = authSlice.reducer(
-      authInitState,
-      authSlice.actions.setCsrfToken(some(csrfToken))
-    );
-    expect(result).toEqual({
-      ...authInitState,
-      csrfToken: some(csrfToken)
-    });
-  });
+	it('setCsrfToken', () => {
+		const csrfToken = 'csrfToken';
+		const result = authSlice.reducer(
+			authInitState,
+			authSlice.actions.setCsrfToken(some(csrfToken))
+		);
+		expect(result).toEqual({
+			...authInitState,
+			csrfToken: some(csrfToken)
+		});
+	});
 });

@@ -17,21 +17,21 @@
  */
 
 export default () => {
-  cy.homePage((homePage) => {
-    homePage.validatePage();
-  })
-    .navbarPage((navbarPage) => {
-      navbarPage.validateLoggedOut();
-      navbarPage.clickAuthBtn();
-    })
-    .loginPage((loginPage) => {
-      loginPage.validatePage();
-      loginPage.login(Cypress.env('username'), Cypress.env('password'));
-    })
-    .navbarPage((navbarPage) => {
-      navbarPage.validateLoggedIn();
-    })
-    .homePage((homePage) => {
-      homePage.validatePage();
-    });
+	cy.homePage((homePage) => {
+		homePage.validatePage();
+	})
+		.navbarPage((navbarPage) => {
+			navbarPage.validateLoggedOut();
+			navbarPage.clickAuthBtn();
+		})
+		.loginPage((loginPage) => {
+			loginPage.validatePage();
+			loginPage.login(Cypress.env('username'), Cypress.env('password'));
+		})
+		.navbarPage((navbarPage) => {
+			navbarPage.validateLoggedIn();
+		})
+		.homePage((homePage) => {
+			homePage.validatePage();
+		});
 };

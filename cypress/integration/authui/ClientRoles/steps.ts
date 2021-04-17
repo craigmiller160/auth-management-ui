@@ -21,102 +21,102 @@ import { TableDefinition } from 'cucumber';
 import { testClient } from '../../../data/client';
 
 const cleanup = () => {
-  cy.task('deleteClient', 'Test Client');
+	cy.task('deleteClient', 'Test Client');
 };
 
 Before(() => {
-  cleanup();
-  cy.task('insertClient', testClient);
+	cleanup();
+	cy.task('insertClient', testClient);
 });
 
 After(() => {
-  cleanup();
+	cleanup();
 });
 
 Then('the roles page is displayed', (data: TableDefinition) => {
-  const roles = data.rows().map((row) => row[0]);
-  cy.clientRolesPage((clientRolesPage) => {
-    clientRolesPage.validatePage(roles);
-  });
+	const roles = data.rows().map((row) => row[0]);
+	cy.clientRolesPage((clientRolesPage) => {
+		clientRolesPage.validatePage(roles);
+	});
 });
 
 When('I click on the add role button', () => {
-  cy.clientRolesPage((clientRolesPage) => {
-    clientRolesPage.clickAddRoleButton();
-  });
+	cy.clientRolesPage((clientRolesPage) => {
+		clientRolesPage.clickAddRoleButton();
+	});
 });
 
 Then(
-  'the role dialog is visible with {string} in the text field',
-  (fieldText: string) => {
-    cy.clientRolesPage((clientRolesPage) => {
-      clientRolesPage.validateRoleDialog(fieldText);
-    });
-  }
+	'the role dialog is visible with {string} in the text field',
+	(fieldText: string) => {
+		cy.clientRolesPage((clientRolesPage) => {
+			clientRolesPage.validateRoleDialog(fieldText);
+		});
+	}
 );
 
 When('I enter {string} into the text field', (text: string) => {
-  cy.clientRolesPage((clientRolesPage) => {
-    clientRolesPage.typeRoleInDialog(text);
-  });
+	cy.clientRolesPage((clientRolesPage) => {
+		clientRolesPage.typeRoleInDialog(text);
+	});
 });
 
 When(
-  'I click the {string} button in the roles dialog',
-  (buttonType: string) => {
-    cy.clientRolesPage((clientRolesPage) => {
-      switch (buttonType) {
-        case 'save':
-          clientRolesPage.clickRoleDialogSaveBtn();
-          break;
-        case 'cancel':
-          clientRolesPage.clickRoleDialogCancelBtn();
-          break;
-        default:
-          throw new Error(`Invalid button type: ${buttonType}`);
-      }
-    });
-  }
+	'I click the {string} button in the roles dialog',
+	(buttonType: string) => {
+		cy.clientRolesPage((clientRolesPage) => {
+			switch (buttonType) {
+				case 'save':
+					clientRolesPage.clickRoleDialogSaveBtn();
+					break;
+				case 'cancel':
+					clientRolesPage.clickRoleDialogCancelBtn();
+					break;
+				default:
+					throw new Error(`Invalid button type: ${buttonType}`);
+			}
+		});
+	}
 );
 
 When(
-  'I click on the {string} button for role {int}',
-  (buttonType: string, roleIndex: number) => {
-    cy.clientRolesPage((clientRolesPage) => {
-      switch (buttonType) {
-        case 'edit':
-          clientRolesPage.clickEditRoleBtn(roleIndex);
-          break;
-        case 'delete':
-          clientRolesPage.clickDeleteRoleBtn(roleIndex);
-          break;
-        default:
-          throw new Error(`Invalid button type: ${buttonType}`);
-      }
-    });
-  }
+	'I click on the {string} button for role {int}',
+	(buttonType: string, roleIndex: number) => {
+		cy.clientRolesPage((clientRolesPage) => {
+			switch (buttonType) {
+				case 'edit':
+					clientRolesPage.clickEditRoleBtn(roleIndex);
+					break;
+				case 'delete':
+					clientRolesPage.clickDeleteRoleBtn(roleIndex);
+					break;
+				default:
+					throw new Error(`Invalid button type: ${buttonType}`);
+			}
+		});
+	}
 );
 
 Then('the role delete dialog is visible', () => {
-  cy.clientRolesPage((clientRolesPage) => {
-    clientRolesPage.validateDeleteRoleDialog();
-  });
+	cy.clientRolesPage((clientRolesPage) => {
+		clientRolesPage.validateDeleteRoleDialog();
+	});
 });
 
 When(
-  'I click the {string} button in the role delete dialog',
-  (buttonType: string) => {
-    cy.clientRolesPage((clientRolesPage) => {
-      switch (buttonType) {
-        case 'confirm':
-          clientRolesPage.clickDeleteConfirmBtn();
-          break;
-        case 'cancel':
-          clientRolesPage.clickDeleteCancelBtn();
-          break;
-        default:
-          throw new Error(`Invalid button type: ${buttonType}`);
-      }
-    });
-  }
+	'I click the {string} button in the role delete dialog',
+	(buttonType: string) => {
+		cy.clientRolesPage((clientRolesPage) => {
+			switch (buttonType) {
+				case 'confirm':
+					clientRolesPage.clickDeleteConfirmBtn();
+					break;
+				case 'cancel':
+					clientRolesPage.clickDeleteCancelBtn();
+					break;
+				default:
+					throw new Error(`Invalid button type: ${buttonType}`);
+			}
+		});
+	}
 );

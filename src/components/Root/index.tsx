@@ -24,18 +24,18 @@ import { RootState } from '../../store';
 import AuthNavbar from './AuthNavbar';
 
 const Root = () => {
-  const dispatch = useDispatch();
-  const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
-  useEffect(() => {
-    dispatch(loadAuthUser());
-  }, [ dispatch ]);
+	const dispatch = useDispatch();
+	const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
+	useEffect(() => {
+		dispatch(loadAuthUser());
+	}, [ dispatch ]);
 
-  return (
-    <div>
-      <AuthNavbar />
-      {hasChecked && <Content />}
-    </div>
-  );
+	return (
+		<div>
+			<AuthNavbar />
+			{hasChecked && <Content />}
+		</div>
+	);
 };
 
 export default Root;
