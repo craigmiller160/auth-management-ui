@@ -73,15 +73,15 @@ const validateClientConfigCommon = (newClient: boolean = false) => {
   cy.get(SELECT_ENABLED_LABEL).should('have.text', 'Enabled');
   cy.get(SELECT_ACCESS_TIME_LABEL).should(
     'have.text',
-    'Access Token Timeout (Secs)',
+    'Access Token Timeout (Secs)'
   );
   cy.get(SELECT_REFRESH_TIME_LABEL).should(
     'have.text',
-    'Refresh Token Timeout (Secs)',
+    'Refresh Token Timeout (Secs)'
   );
   cy.get(SELECT_CODE_TIME_LABEL).should(
     'have.text',
-    'Auth Code Timeout (Secs)',
+    'Auth Code Timeout (Secs)'
   );
   cy.get(SELECT_REDIRECT_URIS_LABEL).should('have.text', 'Redirect URIs');
 
@@ -119,17 +119,17 @@ const validateClientConfigValues = (values: ClientConfigValues) => {
 
   cy.get(SELECT_ACCESS_TIME_FIELD).should(
     'have.value',
-    values.accessTokenTimeout,
+    values.accessTokenTimeout
   );
   cy.get(SELECT_REFRESH_TIME_FIELD).should(
     'have.value',
-    values.refreshTokenTimeout,
+    values.refreshTokenTimeout
   );
   cy.get(SELECT_CODE_TIME_FIELD).should('have.value', values.authCodeTimeout);
 
   cy.get(SELECT_ENABLED_FIELD).should(
     'have.class',
-    values.enabled ? 'switch-true' : 'switch-false',
+    values.enabled ? 'switch-true' : 'switch-false'
   );
 };
 
@@ -144,7 +144,7 @@ const clickDeleteBtn = () => {
 const generateFieldValue = (genFieldName: string) => {
   if (CLIENT_KEY === genFieldName) {
     cy.get(SELECT_CLIENT_KEY_FIELD).then(($keyField) =>
-      cy.wrap($keyField.val()).as(CLIENT_KEY),
+      cy.wrap($keyField.val()).as(CLIENT_KEY)
     );
     cy.get(SELECT_GEN_CLIENT_KEY_BTN).click();
     cy.wait(1000);
@@ -153,7 +153,7 @@ const generateFieldValue = (genFieldName: string) => {
     });
   } else if (CLIENT_SECRET === genFieldName) {
     cy.get(SELECT_CLIENT_SECRET_FIELD).then(($keyField) =>
-      cy.wrap($keyField.val()).as(CLIENT_SECRET),
+      cy.wrap($keyField.val()).as(CLIENT_SECRET)
     );
     cy.get(SELECT_GEN_CLIENT_SECRET_BTN).click();
     cy.get(SELECT_CLIENT_SECRET_FIELD).then(($keyField) => {
@@ -183,7 +183,7 @@ const clientConfigPage = {
   getClientKeyField,
   getClientSecretField,
   generateFieldValue,
-  setConfigValues,
+  setConfigValues
 };
 
 export type ClientConfigPage = typeof clientConfigPage;

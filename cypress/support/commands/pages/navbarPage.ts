@@ -58,7 +58,7 @@ const navbarPage = {
   validateLoggedIn,
   clickAuthBtn,
   clickUsers,
-  clickClients,
+  clickClients
 };
 
 export type NavbarPage = typeof navbarPage;

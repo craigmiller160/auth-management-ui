@@ -28,25 +28,25 @@ import {
   map as oMap,
   none,
   Option,
-  some,
+  some
 } from 'fp-ts/es6/Option';
 import { SectionHeader } from '@craigmiller160/react-material-ui-common';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import {
   addUserToClient,
   getFullClientDetails,
-  removeUserFromClient,
+  removeUserFromClient
 } from '../../../../../services/ClientService';
 import {
   ClientRole,
   ClientUser,
-  FullClientDetails,
+  FullClientDetails
 } from '../../../../../types/client';
 import './ClientGrants.scss';
 import {
   addRoleToUser,
   getAllUsers,
-  removeRoleFromUser,
+  removeRoleFromUser
 } from '../../../../../services/UserService';
 import { UserDetails, UserList } from '../../../../../types/user';
 import ClientGrantUsers from './ClientGrantUsers';
@@ -72,7 +72,7 @@ const ClientGrants = (props: Props) => {
     allRoles: [],
     clientUsers: [],
     allUsers: [],
-    selectedUser: none,
+    selectedUser: none
   });
 
   const loadFullClientDetails = useCallback(
@@ -87,11 +87,11 @@ const ClientGrants = (props: Props) => {
               draft.clientUsers = fullClientDetails.users;
             });
             return fullClientDetails.users;
-          },
+          }
         ),
-        TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([])),
+        TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([]))
       ),
-    [ state.clientId, setState ],
+    [ state.clientId, setState ]
   );
 
   const loadUsers = useCallback(
@@ -100,23 +100,23 @@ const ClientGrants = (props: Props) => {
         getAllUsers(),
         TE.map((list: UserList) => list.users),
         TE.map((
-          users: UserDetails[], // TODO combine with above function
+          users: UserDetails[] // TODO combine with above function
         ) =>
           users.filter((user) => {
             const index = clientUsers.findIndex(
-              (cUser) => cUser.id === user.id,
+              (cUser) => cUser.id === user.id
             );
             return index === -1;
-          }),
+          })
         ),
         TE.map((users: UserDetails[]) =>
           setState((draft) => {
             // TODO see if this can be moved to the end
             draft.allUsers = users;
-          }),
-        ),
+          })
+        )
       ),
-    [ setState ],
+    [ setState ]
   );
 
   // TODO this one is an absolute mess, try to figure out how to optimize this if it works
@@ -126,9 +126,9 @@ const ClientGrants = (props: Props) => {
         loadFullClientDetails(),
         T.map((clientUsers: Array<ClientUser>) => {
           loadUsers(clientUsers)();
-        }),
+        })
       ),
-    [ loadFullClientDetails, loadUsers ],
+    [ loadFullClientDetails, loadUsers ]
   );
 
   const removeUser = async (userId: number) => {
@@ -141,7 +141,7 @@ const ClientGrants = (props: Props) => {
             draft.selectedUser = none;
           });
         }
-      }),
+      })
     );
     await loadAll();
   };
@@ -161,14 +161,12 @@ const ClientGrants = (props: Props) => {
             draft.selectedUser,
             oMap((oldSelectedUser) => {
               draft.selectedUser = fromNullable(
-                draft.clientUsers.find(
-                  (user) => user.id === oldSelectedUser.id,
-                ),
+                draft.clientUsers.find((user) => user.id === oldSelectedUser.id)
               );
-            }),
+            })
           );
         });
-      }),
+      })
     );
 
   const removeRole = (roleId: number) =>
@@ -182,14 +180,12 @@ const ClientGrants = (props: Props) => {
             draft.selectedUser,
             oMap((oldSelectedUser) => {
               draft.selectedUser = fromNullable(
-                draft.clientUsers.find(
-                  (user) => user.id === oldSelectedUser.id,
-                ),
+                draft.clientUsers.find((user) => user.id === oldSelectedUser.id)
               );
-            }),
+            })
           );
         });
-      }),
+      })
     );
 
   const saveAddUser = async (userId: number) => {
@@ -233,7 +229,7 @@ const ClientGrants = (props: Props) => {
                 allRoles={state.allRoles}
               />
             )),
-            oGetOrElse(() => <div />),
+            oGetOrElse(() => <div />)
           )}
         </Grid>
       </Grid>

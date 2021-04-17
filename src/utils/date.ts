@@ -22,7 +22,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import {
   fromNullable,
   getOrElse as oGetOrElse,
-  map as oMap,
+  map as oMap
 } from 'fp-ts/es6/Option';
 
 export const API_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSX";
@@ -40,5 +40,5 @@ export const formatApiDateTime = (date: string | null): string =>
   pipe(
     fromNullable(date),
     oMap((value: string): string => displayFormatApiDateTime(value)),
-    oGetOrElse((): string => ''),
+    oGetOrElse((): string => '')
   );

@@ -28,5 +28,5 @@ export const testClient: InsertClient = {
   refreshTokenTimeout: 20,
   authCodeTimeout: 30,
   redirectUris: [ 'https://localhost:123/authcode' ],
-  roles: [ 'ROLE_READ' ],
+  roles: [ 'ROLE_READ' ]
 };

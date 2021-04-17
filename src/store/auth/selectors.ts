@@ -26,5 +26,5 @@ const userDataSelector = (state: RootState): Option<AuthUser> =>
 
 export const isAuthorized = createSelector(
   userDataSelector,
-  (userData: Option<AuthUser>) => isSome(userData),
+  (userData: Option<AuthUser>) => isSome(userData)
 );

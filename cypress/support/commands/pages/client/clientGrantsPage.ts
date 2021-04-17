@@ -179,7 +179,7 @@ const clientGrantsPage = {
   clickUserDialogCancelBtn,
   clickUserGoBtn,
   clickUserRemoveBtn,
-  clickRoleRemoveBtn,
+  clickRoleRemoveBtn
 };
 
 export type ClientGrantsPage = typeof clientGrantsPage;

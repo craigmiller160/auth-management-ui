@@ -30,7 +30,7 @@ const onHomePageNotAuthenticated = () => {
 
 Given(
   'I am on the home page, but not authenticated',
-  onHomePageNotAuthenticated,
+  onHomePageNotAuthenticated
 );
 
 When('I click the login button', () => {
@@ -67,5 +67,5 @@ When('I click the logout button', () => {
 
 Then(
   'I am on the home page, but not authenticated',
-  onHomePageNotAuthenticated,
+  onHomePageNotAuthenticated
 );

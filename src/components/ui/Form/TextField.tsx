@@ -48,7 +48,7 @@ const TextField = <T extends object>(props: Props<T>) => {
     type,
     disabled,
     transform,
-    placeholder,
+    placeholder
   } = props;
 
   return (

@@ -127,7 +127,7 @@ const clientRolesPage = {
   clickDeleteRoleBtn,
   validateDeleteRoleDialog,
   clickDeleteConfirmBtn,
-  clickDeleteCancelBtn,
+  clickDeleteCancelBtn
 };
 
 export type ClientRolesPage = typeof clientRolesPage;

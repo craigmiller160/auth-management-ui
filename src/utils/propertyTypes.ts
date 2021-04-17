@@ -43,12 +43,12 @@ export class PropertyTypeError extends Error {
 
 export const objectHasProperty = (
   obj: object,
-  name: string,
+  name: string
 ): obj is AnyPropName => Object.prototype.hasOwnProperty.call(obj, name);
 
 export const isStringProperty = (
   obj: object,
-  name: string,
+  name: string
 ): obj is AnyPropString => {
   if (objectHasProperty(obj, name)) {
     return typeof obj[name] === 'string';
@@ -59,7 +59,7 @@ export const isStringProperty = (
 export const assignStringProperty = (
   obj: object,
   name: string,
-  value: string,
+  value: string
 ): boolean => {
   if (isStringProperty(obj, name)) {
     obj[name] = value; // eslint-disable-line no-param-reassign
@@ -70,7 +70,7 @@ export const assignStringProperty = (
 
 export const isNumberProperty = (
   obj: object,
-  name: string,
+  name: string
 ): obj is AnyPropNumber => {
   if (objectHasProperty(obj, name)) {
     return typeof obj[name] === 'number';
@@ -81,7 +81,7 @@ export const isNumberProperty = (
 export const assignNumberProperty = (
   obj: object,
   name: string,
-  value: number,
+  value: number
 ): boolean => {
   if (isNumberProperty(obj, name)) {
     obj[name] = value; // eslint-disable-line no-param-reassign
@@ -92,7 +92,7 @@ export const assignNumberProperty = (
 
 export const isBooleanProperty = (
   obj: object,
-  name: string,
+  name: string
 ): obj is AnyPropBoolean => {
   if (objectHasProperty(obj, name)) {
     return typeof obj[name] === 'boolean';
@@ -103,7 +103,7 @@ export const isBooleanProperty = (
 export const assignBooleanProperty = (
   obj: object,
   name: string,
-  value: boolean,
+  value: boolean
 ): boolean => {
   if (isBooleanProperty(obj, name)) {
     obj[name] = value; // eslint-disable-line no-param-reassign
@@ -115,7 +115,7 @@ export const assignBooleanProperty = (
 export const assignProperty = (
   obj: object,
   name: string,
-  value: any,
+  value: any
 ): boolean => {
   switch (typeof value) {
     case 'string':

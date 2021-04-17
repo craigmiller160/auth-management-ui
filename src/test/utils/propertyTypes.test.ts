@@ -24,7 +24,7 @@ import {
   isBooleanProperty,
   isNumberProperty,
   isStringProperty,
-  PropertyTypeError,
+  PropertyTypeError
 } from '../../utils/propertyTypes';
 
 interface TestObject {
@@ -40,7 +40,7 @@ describe('isPropertyType', () => {
     obj = {
       one: 'hello',
       two: 2,
-      three: false,
+      three: false
     };
   });
 

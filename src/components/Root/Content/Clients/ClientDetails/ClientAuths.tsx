@@ -46,7 +46,7 @@ const ClientAuths = (props: Props) => {
   const [ state, setState ] = useImmer<State>({
     clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
     clientName: '',
-    userAuthDetails: [],
+    userAuthDetails: []
   });
 
   const loadAuthDetails = useCallback(
@@ -58,15 +58,15 @@ const ClientAuths = (props: Props) => {
             draft.clientName = clientAuthDetails.clientName;
             draft.userAuthDetails = clientAuthDetails.userAuthDetails;
           });
-        }),
+        })
       )(),
-    [ state.clientId, setState ],
+    [ state.clientId, setState ]
   );
 
   const doRevoke = (userId: number) =>
     pipe(
       revokeUserAuthAccess(userId, state.clientId),
-      TE.map(() => loadAuthDetails()),
+      TE.map(() => loadAuthDetails())
     )();
 
   useEffect(() => {
@@ -79,16 +79,16 @@ const ClientAuths = (props: Props) => {
     text: {
       primary: `User: ${auth.userEmail}`,
       secondary: `Last Authenticated: ${formatApiDateTime(
-        auth.lastAuthenticated,
-      )}`,
+        auth.lastAuthenticated
+      )}`
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Revoke',
-        click: () => doRevoke(auth.userId),
-      },
-    ],
+        click: () => doRevoke(auth.userId)
+      }
+    ]
   }));
 
   return (

@@ -62,7 +62,7 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
     user.firstName,
     user.lastName,
     user.password,
-    user.enabled,
+    user.enabled
   ];
 
   await safelyExecuteQuery<any>(pool, INSERT_USER_SQL, insertUserParams);
@@ -70,7 +70,7 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
   const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
     pool,
     SELECT_USER_ID,
-    [ user.email ],
+    [ user.email ]
   );
 
   const userId = result.rows[0].id;
@@ -78,26 +78,26 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
   if (userId && clientId) {
     await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [
       userId,
-      clientId,
+      clientId
     ]);
     await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, [
       '1',
       'ABCDEFG',
       clientId,
-      userId,
+      userId
     ]);
 
     const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(
       pool,
       SELECT_ROLES_SQL,
-      [ clientId ],
+      [ clientId ]
     );
     const rolePromises = roleResult.rows.map((role) =>
       safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [
         userId,
         clientId,
-        role.id,
-      ]),
+        role.id
+      ])
     );
     await Promise.all(rolePromises);
   }

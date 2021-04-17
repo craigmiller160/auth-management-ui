@@ -21,7 +21,7 @@ import { useRouteMatch } from 'react-router';
 import {
   PageHeader,
   TabConfig,
-  Tabs,
+  Tabs
 } from '@craigmiller160/react-material-ui-common';
 import ClientConfig from './ClientConfig';
 import ClientRoles from './ClientRoles';
@@ -49,27 +49,27 @@ const ClientDetails = () => {
       id: 'client-config-tab',
       label: LABEL_CONFIG,
       path: PATH_CONFIG,
-      component: ClientConfig,
-    },
+      component: ClientConfig
+    }
   ];
   if (id !== NEW_ID) {
     tabs.push({
       id: 'client-roles-tab',
       label: LABEL_ROLES,
       path: PATH_ROLES,
-      component: ClientRoles,
+      component: ClientRoles
     });
     tabs.push({
       id: 'client-grants-tab',
       label: LABEL_GRANTS,
       path: PATH_GRANTS,
-      component: ClientGrants,
+      component: ClientGrants
     });
     tabs.push({
       id: 'client-auths-tab',
       label: LABEL_AUTHS,
       path: PATH_AUTHS,
-      component: ClientAuths,
+      component: ClientAuths
     });
   }
 

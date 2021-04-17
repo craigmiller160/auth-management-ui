@@ -25,5 +25,5 @@ export const createPool = (env: CypressEnv): Pool =>
     password: env.postgresPassword,
     host: env.postgresHost,
     port: env.postgresPort,
-    database: env.postgresDatabase,
+    database: env.postgresDatabase
   });

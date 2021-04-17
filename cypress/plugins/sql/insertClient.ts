@@ -46,7 +46,7 @@ const INSERT_ROLE_SQL =
 /* eslint-enable max-len */
 
 export const insertClient = (pool: Pool) => async (
-  client: InsertClient,
+  client: InsertClient
 ): Promise<number> => {
   const insertClientParams = [
     client.name,
@@ -55,24 +55,24 @@ export const insertClient = (pool: Pool) => async (
     client.enabled,
     client.accessTokenTimeout,
     client.refreshTokenTimeout,
-    client.authCodeTimeout,
+    client.authCodeTimeout
   ];
   await safelyExecuteQuery<any>(pool, INSERT_CLIENT_SQL, insertClientParams);
 
   const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
     pool,
     SELECT_CLIENT_ID,
-    [ client.name ],
+    [ client.name ]
   );
   const clientId = result.rows[0].id;
 
   const uriPromises = client.redirectUris.map((uri) =>
-    safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [ clientId, uri ]),
+    safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [ clientId, uri ])
   );
   await Promise.all(uriPromises);
 
   const rolePromises = client.roles.map((role) =>
-    safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, [ role, clientId ]),
+    safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, [ role, clientId ])
   );
   await Promise.all(rolePromises);
 

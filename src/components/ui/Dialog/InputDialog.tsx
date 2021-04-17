@@ -20,7 +20,7 @@ import React, { MouseEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   BaseDialog,
-  DialogAction,
+  DialogAction
 } from '@craigmiller160/react-material-ui-common';
 import TextField from '../Form/TextField';
 import './InputDialog.scss';
@@ -53,20 +53,20 @@ const InputDialog = (props: Props) => {
     initialValue = '',
     transform,
     prefix,
-    successBtnLabel,
+    successBtnLabel
   } = props;
 
   const { control, handleSubmit, errors, reset } = useForm<InputForm>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
-      value: initialValue,
-    },
+      value: initialValue
+    }
   });
 
   useEffect(() => {
     reset({
-      value: initialValue,
+      value: initialValue
     });
   }, [ open, initialValue, reset ]);
 
@@ -78,7 +78,7 @@ const InputDialog = (props: Props) => {
 
   const actions: Array<DialogAction> = [
     { label: successBtnLabel ?? 'Save', onClick: handleSubmit(onSubmit) },
-    { label: 'Cancel', onClick: onCancel },
+    { label: 'Cancel', onClick: onCancel }
   ];
 
   const prefixClasses = [ 'prefix' ];

@@ -12,7 +12,7 @@ const isErrorResponse = (data?: any): data is ErrorResponse =>
 
 const getFullErrorResponseMessage = (
   errorMsg: string,
-  response: AxiosResponse,
+  response: AxiosResponse
 ) => {
   const { status } = response;
   if (isErrorResponse(response.data)) {
@@ -33,14 +33,14 @@ const getFullErrorMessage = (errorMsg: string, error: Error) =>
 const ajaxErrorHandler: DefaultErrorHandler = (
   status: number,
   error: Error,
-  requestMessage?: string,
+  requestMessage?: string
 ): void => {
   // TODO add a check for dev/test env and if so, log the error
   if (status > 0 && (error as AxiosError).response) {
     const response: AxiosResponse = (error as AxiosError).response!!;
     const fullMessage = getFullErrorResponseMessage(
       requestMessage ?? '',
-      response,
+      response
     );
     store.dispatch(showErrorReduxAlert(fullMessage));
 

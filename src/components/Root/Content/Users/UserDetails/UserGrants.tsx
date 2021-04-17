@@ -28,13 +28,13 @@ import {
   map,
   none,
   Option,
-  some,
+  some
 } from 'fp-ts/es6/Option';
 import { getUserClients } from '../../../../../services/UserService';
 import {
   UserClient,
   UserClients as UserClientsType,
-  UserRole,
+  UserRole
 } from '../../../../../types/user';
 import './UserGrants.scss';
 import UserClients from './UserClients';
@@ -51,7 +51,7 @@ interface Props extends IdMatchProps {}
 const defaultUser: UserClientsType = {
   id: 0,
   email: '',
-  clients: [],
+  clients: []
 };
 
 const UserGrants = (props: Props) => {
@@ -59,7 +59,7 @@ const UserGrants = (props: Props) => {
   const [ state, setState ] = useImmer<State>({
     userId: id !== NEW_ID ? parseInt(id, 10) : 0,
     user: defaultUser,
-    selectedClient: none,
+    selectedClient: none
   });
 
   const loadUser = useCallback(
@@ -68,15 +68,15 @@ const UserGrants = (props: Props) => {
         getUserClients(state.userId),
         TE.fold(
           (): T.Task<UserClientsType> => T.of(defaultUser),
-          (user: UserClientsType): T.Task<UserClientsType> => T.of(user),
+          (user: UserClientsType): T.Task<UserClientsType> => T.of(user)
         ),
         T.map((user: UserClientsType) =>
           setState((draft) => {
             draft.user = user;
-          }),
-        ),
+          })
+        )
       ),
-    [ state.userId, setState ],
+    [ state.userId, setState ]
   );
 
   const updateUserRoles = (clientId: number, userRoles: Array<UserRole>) => {
@@ -85,20 +85,20 @@ const UserGrants = (props: Props) => {
       map(
         (client: UserClient): UserClient => ({
           ...client,
-          userRoles,
-        }),
-      ),
+          userRoles
+        })
+      )
     );
 
     setState((draft) => {
       draft.selectedClient = newSelectedClient;
       const clientIndex = draft.user.clients.findIndex(
-        (client) => client.id === clientId,
+        (client) => client.id === clientId
       );
       if (clientIndex > 0) {
         draft.user.clients[clientIndex] = pipe(
           newSelectedClient,
-          oGetOrElse((): UserClient => draft.user.clients[clientIndex]),
+          oGetOrElse((): UserClient => draft.user.clients[clientIndex])
         );
       }
     });

@@ -24,7 +24,7 @@ import { GraphQLQueryResponse } from '@craigmiller160/ajax-api-fp-ts';
 import {
   enzymeAsyncMount,
   RenderedItem,
-  renderingValidator,
+  renderingValidator
 } from '@craigmiller160/react-test-utils';
 import { mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import { Router } from 'react-router';
@@ -41,17 +41,17 @@ const response: GraphQLQueryResponse<ClientListResponse> = {
       {
         id: 1,
         name: 'Client',
-        clientKey: 'Key',
-      },
-    ],
-  },
+        clientKey: 'Key'
+      }
+    ]
+  }
 };
 
 const doMount = (history: MemoryHistory): Promise<ReactWrapper> =>
   enzymeAsyncMount(
     <Router history={history}>
       <Clients />
-    </Router>,
+    </Router>
   );
 
 const pageHeaderItem: RenderedItem = {
@@ -59,9 +59,9 @@ const pageHeaderItem: RenderedItem = {
   values: {
     props: {
       id: 'clients-page-header',
-      title: 'Clients',
-    },
-  },
+      title: 'Clients'
+    }
+  }
 };
 
 const tableItem: RenderedItem = {
@@ -73,21 +73,21 @@ const tableItem: RenderedItem = {
       body: [
         expect.objectContaining({
           click: expect.any(Function),
-          items: [ 'Client', 'Key' ],
-        }),
-      ],
-    },
-  },
+          items: [ 'Client', 'Key' ]
+        })
+      ]
+    }
+  }
 };
 
 const newClientBtnItem: RenderedItem = {
   selector: 'ForwardRef(Button)',
   values: {
     props: {
-      onClick: expect.any(Function),
+      onClick: expect.any(Function)
     },
-    text: 'New Client',
-  },
+    text: 'New Client'
+  }
 };
 
 describe('Clients', () => {
@@ -106,7 +106,7 @@ describe('Clients', () => {
       const items: RenderedItem[] = [
         pageHeaderItem,
         tableItem,
-        newClientBtnItem,
+        newClientBtnItem
       ];
 
       renderingValidator(component, items);

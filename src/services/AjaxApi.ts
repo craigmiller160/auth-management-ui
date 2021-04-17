@@ -4,5 +4,5 @@ import ajaxErrorHandler from './ajaxErrorHandler';
 export default createApi({
   baseURL: '/auth-management/api',
   useCsrf: true,
-  defaultErrorHandler: ajaxErrorHandler,
+  defaultErrorHandler: ajaxErrorHandler
 });

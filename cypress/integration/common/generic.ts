@@ -42,5 +42,5 @@ Then(
       alertPage.closeAlert();
       alertPage.isVisible(false);
     });
-  },
+  }
 );

@@ -23,7 +23,7 @@ import {
   Then,
   When,
   After,
-  Before,
+  Before
 } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
 import { TAB_INDEX_CONFIG } from '../../../support/commands/pages/client/clientDetailsPage';
@@ -60,7 +60,7 @@ Then(
     cy.clientDetailsPage((clientDetailsPage) => {
       clientDetailsPage.validatePageCommon(isNewClient(clientType));
     });
-  },
+  }
 );
 
 const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
@@ -78,7 +78,7 @@ const createClientKeyValidator = (row: Array<string>): ClientConfigValues => ({
     } else {
       expect('').not.to.equal(value);
     }
-  },
+  }
 });
 
 And(
@@ -97,7 +97,7 @@ And(
         .getClientKeyField()
         .then(($key) => cy.wrap($key.val()).as(CLIENT_KEY));
     });
-  },
+  }
 );
 
 When('I click the save button', () => {
@@ -118,7 +118,7 @@ And(
         throw new Error(`Invalid action: ${action}`);
       }
     });
-  },
+  }
 );
 
 And(
@@ -128,7 +128,7 @@ And(
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
       clientConfigRedirectUris.validateRedirectList(uris);
     });
-  },
+  }
 );
 
 Then('I generate a new client {string}', (genFieldName: string) => {
@@ -180,7 +180,7 @@ Then(
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
       clientConfigRedirectUris.validateRedirectDialog(true, uriText);
     });
-  },
+  }
 );
 
 When(
@@ -189,7 +189,7 @@ When(
     cy.clientConfigRedirectUris((clientConfigRedirectUris) => {
       clientConfigRedirectUris.typeUriInDialog(uriText);
     });
-  },
+  }
 );
 
 And(
@@ -204,7 +204,7 @@ And(
         throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 When(
@@ -219,7 +219,7 @@ When(
         throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 Then('the redirect uri dialog disappears', () => {

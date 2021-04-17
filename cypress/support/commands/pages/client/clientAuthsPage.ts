@@ -58,7 +58,7 @@ const clickRevokeAuthBtn = (authIndex: number) => {
 
 const clientAuthsPage = {
   validatePage,
-  clickRevokeAuthBtn,
+  clickRevokeAuthBtn
 };
 
 export type ClientAuthsPage = typeof clientAuthsPage;

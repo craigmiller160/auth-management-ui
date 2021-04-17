@@ -25,7 +25,7 @@ import { pipe } from 'fp-ts/es6/pipeable';
 import Button from '@material-ui/core/Button';
 import {
   ConfirmDialog,
-  SectionHeader,
+  SectionHeader
 } from '@craigmiller160/react-material-ui-common';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { nanoid } from 'nanoid';
@@ -36,7 +36,7 @@ import './ClientRoles.scss';
 import {
   createRole,
   deleteRole,
-  updateRole,
+  updateRole
 } from '../../../../../services/RoleService';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import InputDialog from '../../../../ui/Dialog/InputDialog';
@@ -62,7 +62,7 @@ const ClientRoles = (props: Props) => {
     selectedRoleIndex: -1,
     clientName: '',
     roles: [],
-    clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
+    clientId: id !== NEW_ID ? parseInt(id, 10) : 0
   });
 
   // TODO make sure this works
@@ -75,7 +75,7 @@ const ClientRoles = (props: Props) => {
           draft.clientName = clientRoles.name;
           draft.clientId = clientRoles.id;
         });
-      }),
+      })
     )();
   }, [ state.clientId, setState ]);
 
@@ -106,7 +106,7 @@ const ClientRoles = (props: Props) => {
     const role = {
       id: roleId,
       clientId: state.clientId,
-      name: roleName,
+      name: roleName
     };
 
     let action;
@@ -123,7 +123,7 @@ const ClientRoles = (props: Props) => {
           draft.showRoleDialog = false;
         });
         loadClientRoles();
-      }),
+      })
     )();
   };
 
@@ -137,20 +137,20 @@ const ClientRoles = (props: Props) => {
     uuid: nanoid(),
     avatar: () => <AssignIcon />,
     text: {
-      primary: role.name,
+      primary: role.name
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Edit',
-        click: () => selectRole(index),
+        click: () => selectRole(index)
       },
       {
         uuid: nanoid(),
         text: 'Delete',
-        click: () => checkDelete(index),
-      },
-    ],
+        click: () => checkDelete(index)
+      }
+    ]
   }));
 
   const getSelectedRole = () => {
@@ -171,7 +171,7 @@ const ClientRoles = (props: Props) => {
       deleteRole(selectedRole.id),
       TE.map(() => {
         loadClientRoles();
-      }),
+      })
     )();
   };
 

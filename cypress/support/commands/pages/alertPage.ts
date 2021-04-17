@@ -32,7 +32,7 @@ const ALERT_ERROR_CLASS = 'MuiAlert-standardError';
 const isVisible = (visible: boolean) => {
   cy.get(SELECT_COLLAPSE).should(
     `${!visible ? 'not.' : ''}have.class`,
-    COLLAPSE_VISIBLE_CLASS,
+    COLLAPSE_VISIBLE_CLASS
   );
 };
 
@@ -70,7 +70,7 @@ const alertPage = {
   isError,
   messageEquals,
   closeAlert,
-  messageContains,
+  messageContains
 };
 
 export type AlertPage = typeof alertPage;

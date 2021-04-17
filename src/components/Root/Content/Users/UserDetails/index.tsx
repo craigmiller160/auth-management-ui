@@ -21,7 +21,7 @@ import { useRouteMatch } from 'react-router';
 import {
   PageHeader,
   TabConfig,
-  Tabs,
+  Tabs
 } from '@craigmiller160/react-material-ui-common';
 import UserConfig from './UserConfig';
 import UserGrants from './UserGrants';
@@ -45,19 +45,19 @@ const UserDetails = () => {
     {
       label: LABEL_CONFIG,
       path: PATH_CONFIG,
-      component: UserConfig,
-    },
+      component: UserConfig
+    }
   ];
   if (id !== NEW_ID) {
     tabs.push({
       label: LABEL_GRANTS,
       path: PATH_GRANTS,
-      component: UserGrants,
+      component: UserGrants
     });
     tabs.push({
       label: LABEL_AUTHS,
       path: PATH_AUTHS,
-      component: UserAuths,
+      component: UserAuths
     });
   }
 

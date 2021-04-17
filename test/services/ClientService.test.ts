@@ -20,7 +20,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { Either } from 'fp-ts/es6/Either';
 import {
   mockCsrfPreflight,
-  mockAndValidateGraphQL,
+  mockAndValidateGraphQL
 } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
 import {
   AddUserToClientWrapper,
@@ -31,7 +31,7 @@ import {
   GraphQLQueryResponse,
   OldClientDetailsWrapper,
   RemoveUserFromClientWrapper,
-  UpdateClientWrapper,
+  UpdateClientWrapper
 } from '../../src/types/graphApi';
 import {
   ClientAuthDetails,
@@ -40,7 +40,7 @@ import {
   ClientListResponse,
   ClientUser,
   ClientWithRoles,
-  FullClientDetails,
+  FullClientDetails
 } from '../../src/types/client';
 import ajaxApi from '../../src/services/AjaxApi';
 import {
@@ -54,7 +54,7 @@ import {
   getClientWithRoles,
   getFullClientDetails,
   removeUserFromClient,
-  updateClient,
+  updateClient
 } from '../../src/services/ClientService';
 
 const mockAjaxApi = new MockAdapter(ajaxApi.instance);
@@ -68,16 +68,16 @@ const client: ClientDetails = {
   accessTokenTimeoutSecs: 1,
   refreshTokenTimeoutSecs: 2,
   authCodeTimeoutSecs: 3,
-  redirectUris: [],
+  redirectUris: []
 };
 const fullClient: FullClientDetails = {
   ...client,
   roles: [],
-  users: [],
+  users: []
 };
 const clientInput: ClientInput = {
   ...client,
-  clientSecret: 'ABCDEFG',
+  clientSecret: 'ABCDEFG'
 };
 const clientUsers = [
   {
@@ -89,10 +89,10 @@ const clientUsers = [
     roles: [
       {
         id: 1,
-        name: 'Role',
-      },
-    ],
-  },
+        name: 'Role'
+      }
+    ]
+  }
 ];
 
 describe('ClientService', () => {
@@ -114,18 +114,18 @@ describe('ClientService', () => {
         {
           id: 1,
           name: 'Client',
-          clientKey: 'Key',
-        },
-      ],
+          clientKey: 'Key'
+        }
+      ]
     };
     const responseData: GraphQLQueryResponse<ClientListResponse> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientListResponse> = await getAllClients()();
     expect(result).toEqualRight(data);
@@ -162,19 +162,19 @@ describe('ClientService', () => {
                 }
             `;
     const data: OldClientDetailsWrapper = {
-      client: fullClient,
+      client: fullClient
     };
     const responseData: GraphQLQueryResponse<OldClientDetailsWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, FullClientDetails> = await getFullClientDetails(
-      clientId,
+      clientId
     )();
     expect(result).toEqualRight(fullClient);
   });
@@ -195,19 +195,19 @@ describe('ClientService', () => {
                 }
             `;
     const data: ClientDetailsWrapper = {
-      client,
+      client
     };
     const responseData: GraphQLQueryResponse<ClientDetailsWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientDetails> = await getClientDetails(
-      clientId,
+      clientId
     )();
     expect(result).toEqualRight(client);
   });
@@ -232,22 +232,22 @@ describe('ClientService', () => {
         roles: [
           {
             id: 1,
-            name: 'Role',
-          },
-        ],
-      },
+            name: 'Role'
+          }
+        ]
+      }
     };
     const responseData: GraphQLQueryResponse<ClientRolesWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientWithRoles> = await getClientWithRoles(
-      clientId,
+      clientId
     )();
     expect(result).toEqualRight(data.client);
   });
@@ -283,20 +283,20 @@ describe('ClientService', () => {
                 }
             `;
     const data: UpdateClientWrapper = {
-      updateClient: client,
+      updateClient: client
     };
     const responseData: GraphQLQueryResponse<UpdateClientWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientDetails> = await updateClient(
       clientId,
-      clientInput,
+      clientInput
     )();
     expect(result).toEqualRight(data.updateClient);
   });
@@ -332,19 +332,19 @@ describe('ClientService', () => {
                 }
             `;
     const data: CreateClientWrapper = {
-      createClient: client,
+      createClient: client
     };
     const responseData: GraphQLQueryResponse<CreateClientWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientDetails> = await createClient(
-      clientInput,
+      clientInput
     )();
     expect(result).toEqualRight(client);
   });
@@ -365,16 +365,16 @@ describe('ClientService', () => {
                 }
             `;
     const data: DeleteClientWrapper = {
-      deleteClient: client,
+      deleteClient: client
     };
     const responseData: GraphQLQueryResponse<DeleteClientWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientDetails> = await deleteClient(clientId)();
     expect(result).toEqualRight(client);
@@ -403,20 +403,20 @@ describe('ClientService', () => {
                 }
             `;
     const data: RemoveUserFromClientWrapper = {
-      removeUserFromClient: clientUsers,
+      removeUserFromClient: clientUsers
     };
     const responseData: GraphQLQueryResponse<RemoveUserFromClientWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientUser[]> = await removeUserFromClient(
       userId,
-      clientId,
+      clientId
     )();
     expect(result).toEqualRight(clientUsers);
   });
@@ -438,20 +438,20 @@ describe('ClientService', () => {
                 }
             `;
     const data: AddUserToClientWrapper = {
-      addUserToClient: clientUsers,
+      addUserToClient: clientUsers
     };
     const responseData: GraphQLQueryResponse<AddUserToClientWrapper> = {
-      data,
+      data
     };
     mockCsrfPreflight(mockAjaxApi, '/graphql');
     mockAndValidateGraphQL({
       mockApi: mockAjaxApi,
       payload,
-      responseData,
+      responseData
     });
     const result: Either<Error, ClientUser[]> = await addUserToClient(
       userId,
-      clientId,
+      clientId
     )();
     expect(result).toEqualRight(clientUsers);
   });
@@ -465,9 +465,9 @@ describe('ClientService', () => {
           clientName: 'Client',
           userId,
           userEmail: 'user@gmail.com',
-          lastAuthenticated: null,
-        },
-      ],
+          lastAuthenticated: null
+        }
+      ]
     };
     mockAjaxApi.onGet(`/clients/auth/${clientId}`).reply(200, authDetails);
     const result: Either<

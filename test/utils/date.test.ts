@@ -19,7 +19,7 @@
 import {
   displayFormatApiDateTime,
   formatApiDateTime,
-  parseApiDateTime,
+  parseApiDateTime
 } from '../../src/utils/date';
 
 const dateTimeString = '2020-12-11T19:34:08.785314Z';

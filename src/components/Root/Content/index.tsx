@@ -39,7 +39,7 @@ const Content = () => {
 
   const isAuthRule: Rule<RuleProps> = {
     allow: (ruleProps?: RuleProps) => ruleProps?.isAuth ?? false,
-    redirect: '/',
+    redirect: '/'
   };
 
   return (
@@ -51,7 +51,7 @@ const Content = () => {
           exact
           component={Clients}
           ruleProps={{
-            isAuth,
+            isAuth
           }}
           rules={[ isAuthRule ]}
         />
@@ -59,7 +59,7 @@ const Content = () => {
           path="/clients/:id"
           component={ClientDetails}
           ruleProps={{
-            isAuth,
+            isAuth
           }}
           rules={[ isAuthRule ]}
         />
@@ -68,7 +68,7 @@ const Content = () => {
           component={Users}
           exact
           ruleProps={{
-            isAuth,
+            isAuth
           }}
           rules={[ isAuthRule ]}
         />
@@ -76,7 +76,7 @@ const Content = () => {
           path="/users/:id"
           component={UserDetails}
           ruleProps={{
-            isAuth,
+            isAuth
           }}
           rules={[ isAuthRule ]}
         />

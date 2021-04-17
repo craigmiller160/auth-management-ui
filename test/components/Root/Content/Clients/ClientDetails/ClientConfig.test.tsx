@@ -30,7 +30,7 @@ import {
   generateGuid,
   getClientDetails,
   updateClient,
-  deleteClient,
+  deleteClient
 } from '../../../../../../src/services/ClientService';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
@@ -38,7 +38,7 @@ jest.mock('../../../../../../src/services/ClientService', () => ({
   deleteClient: jest.fn(),
   generateGuid: jest.fn(),
   getClientDetails: jest.fn(),
-  updateClient: jest.fn(),
+  updateClient: jest.fn()
 }));
 
 const [ TestReduxProvider, storeHandler ] = createTestReduxProvider({});
@@ -56,8 +56,8 @@ const doRender = (history: MemoryHistory) =>
             <Route path="/clients/:id" component={ClientConfig} />
           </Switch>
         </Router>
-      </TestReduxProvider>,
-    ),
+      </TestReduxProvider>
+    )
   );
 
 const existingClient: ClientDetails = {
@@ -68,7 +68,7 @@ const existingClient: ClientDetails = {
   accessTokenTimeoutSecs: 100,
   refreshTokenTimeoutSecs: 200,
   authCodeTimeoutSecs: 300,
-  redirectUris: [ 'https://www.google.com', 'https://www.facebook.com' ],
+  redirectUris: [ 'https://www.google.com', 'https://www.facebook.com' ]
 };
 
 const newUri = 'https://abc-new-uri.com';
@@ -77,8 +77,8 @@ const mockGetClient = () =>
   (getClientDetails as jest.Mock).mockImplementation(() =>
     TE.right({
       ...existingClient,
-      redirectUris: [ ...existingClient.redirectUris ],
-    }),
+      redirectUris: [ ...existingClient.redirectUris ]
+    })
   );
 
 describe('ClientConfig', () => {
@@ -86,10 +86,10 @@ describe('ClientConfig', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     (generateGuid as jest.Mock).mockImplementationOnce(() =>
-      TE.right(firstGuid),
+      TE.right(firstGuid)
     );
     (generateGuid as jest.Mock).mockImplementationOnce(() =>
-      TE.right(secondGuid),
+      TE.right(secondGuid)
     );
     testHistory = createMemoryHistory();
   });
@@ -105,10 +105,10 @@ describe('ClientConfig', () => {
       expect(screen.getAllByText('Generate')).toHaveLength(2);
       expect(screen.getByLabelText('Enabled')).toBeChecked();
       expect(screen.getByLabelText('Access Token Timeout (Secs)')).toHaveValue(
-        300,
+        300
       );
       expect(screen.getByLabelText('Refresh Token Timeout (Secs)')).toHaveValue(
-        3600,
+        3600
       );
       expect(screen.getByLabelText('Auth Code Timeout (Secs)')).toHaveValue(60);
 
@@ -128,13 +128,13 @@ describe('ClientConfig', () => {
       expect(screen.getAllByText('Generate')).toHaveLength(2);
       expect(screen.getByLabelText('Enabled')).toBeChecked();
       expect(screen.getByLabelText('Access Token Timeout (Secs)')).toHaveValue(
-        100,
+        100
       );
       expect(screen.getByLabelText('Refresh Token Timeout (Secs)')).toHaveValue(
-        200,
+        200
       );
       expect(screen.getByLabelText('Auth Code Timeout (Secs)')).toHaveValue(
-        300,
+        300
       );
 
       expect(screen.getByText('https://www.google.com')).toBeInTheDocument();
@@ -163,7 +163,7 @@ describe('ClientConfig', () => {
       expect(accessToken).toHaveValue(1);
 
       const refreshToken = screen.getByLabelText(
-        'Refresh Token Timeout (Secs)',
+        'Refresh Token Timeout (Secs)'
       );
       userEvent.clear(refreshToken);
       userEvent.type(refreshToken, '2');
@@ -182,7 +182,7 @@ describe('ClientConfig', () => {
     it('save new client', async () => {
       mockGetClient();
       (createClient as jest.Mock).mockImplementation(() =>
-        TE.of(existingClient),
+        TE.of(existingClient)
       );
       testHistory.push('/clients/new');
       await doRender(testHistory);
@@ -197,22 +197,22 @@ describe('ClientConfig', () => {
         accessTokenTimeoutSecs: 300,
         refreshTokenTimeoutSecs: 3600,
         authCodeTimeoutSecs: 60,
-        redirectUris: [],
+        redirectUris: []
       });
 
       expect(testHistory.location.pathname).toEqual('/clients/1');
       expect(storeHandler.store?.getActions()).toEqual([
         {
           type: 'alert/showSuccessAlert',
-          payload: 'Successfully saved client new',
-        },
+          payload: 'Successfully saved client new'
+        }
       ]);
     });
 
     it('save existing client', async () => {
       mockGetClient();
       (updateClient as jest.Mock).mockImplementation(() =>
-        TE.right(existingClient),
+        TE.right(existingClient)
       );
       testHistory.push('/clients/1');
       await doRender(testHistory);
@@ -225,21 +225,21 @@ describe('ClientConfig', () => {
           .slice()
           .sort((uri1, uri2) => uri1.localeCompare(uri2)),
         id: undefined,
-        clientSecret: '',
+        clientSecret: ''
       });
       expect(testHistory.location.pathname).toEqual('/clients/1');
       expect(storeHandler.store?.getActions()).toEqual([
         {
           type: 'alert/showSuccessAlert',
-          payload: 'Successfully saved client 1',
-        },
+          payload: 'Successfully saved client 1'
+        }
       ]);
     });
 
     it('deletes client', async () => {
       mockGetClient();
       (deleteClient as jest.Mock).mockImplementation(() =>
-        TE.right(existingClient),
+        TE.right(existingClient)
       );
       testHistory.push('/clients/1');
       await doRender(testHistory);
@@ -248,7 +248,7 @@ describe('ClientConfig', () => {
 
       expect(screen.getByText('Delete Client')).toBeInTheDocument();
       expect(
-        screen.getByText('Are you sure you want to delete this client?'),
+        screen.getByText('Are you sure you want to delete this client?')
       ).toBeInTheDocument();
       await waitFor(() => userEvent.click(screen.getByText('Confirm')));
 
@@ -257,8 +257,8 @@ describe('ClientConfig', () => {
       expect(storeHandler.store?.getActions()).toEqual([
         {
           type: 'alert/showSuccessAlert',
-          payload: 'Successfully deleted client 1',
-        },
+          payload: 'Successfully deleted client 1'
+        }
       ]);
     });
 
@@ -271,11 +271,11 @@ describe('ClientConfig', () => {
 
       expect(screen.getByText('Delete Client')).toBeInTheDocument();
       expect(
-        screen.getByText('Are you sure you want to delete this client?'),
+        screen.getByText('Are you sure you want to delete this client?')
       ).toBeInTheDocument();
       await waitFor(() => userEvent.click(screen.getByText('Cancel')));
       await waitFor(() =>
-        expect(screen.queryByText('Delete Client')).not.toBeInTheDocument(),
+        expect(screen.queryByText('Delete Client')).not.toBeInTheDocument()
       );
     });
 
@@ -284,7 +284,7 @@ describe('ClientConfig', () => {
       await doRender(testHistory);
 
       await waitFor(() =>
-        userEvent.click(screen.getByText('Add Redirect URI')),
+        userEvent.click(screen.getByText('Add Redirect URI'))
       );
 
       expect(screen.getByText('Redirect URI')).toBeInTheDocument();
@@ -303,7 +303,7 @@ describe('ClientConfig', () => {
       await doRender(testHistory);
 
       await waitFor(() =>
-        userEvent.click(screen.getByText('Add Redirect URI')),
+        userEvent.click(screen.getByText('Add Redirect URI'))
       );
 
       expect(screen.getByText('Redirect URI')).toBeInTheDocument();
@@ -311,7 +311,7 @@ describe('ClientConfig', () => {
       await waitFor(() => userEvent.click(screen.getByText('Cancel')));
 
       await waitFor(() =>
-        expect(screen.queryByText('Redirect URI')).not.toBeInTheDocument(),
+        expect(screen.queryByText('Redirect URI')).not.toBeInTheDocument()
       );
     });
 
@@ -337,13 +337,13 @@ describe('ClientConfig', () => {
       await waitFor(() => {
         const listItem = screen.getByTestId('redirect-uris-list-item-0');
         const text = listItem.querySelector(
-          '#redirect-uris-list-item-0-text-primary',
+          '#redirect-uris-list-item-0-text-primary'
         );
         expect(text?.textContent).toEqual(newUri);
 
         const otherListItem = screen.getByTestId('redirect-uris-list-item-1');
         const otherText = otherListItem.querySelector(
-          '#redirect-uris-list-item-1-text-primary',
+          '#redirect-uris-list-item-1-text-primary'
         );
         expect(otherText?.textContent).toEqual('https://www.facebook.com');
       });
@@ -359,8 +359,8 @@ describe('ClientConfig', () => {
 
       await waitFor(() =>
         expect(
-          screen.queryByText('https://www.google.com'),
-        ).not.toBeInTheDocument(),
+          screen.queryByText('https://www.google.com')
+        ).not.toBeInTheDocument()
       );
     });
 

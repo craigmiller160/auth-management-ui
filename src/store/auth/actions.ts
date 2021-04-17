@@ -26,7 +26,7 @@ import { getAuthUser } from '../../services/AuthService';
 import { AuthUser } from '../../types/auth';
 
 export const loadAuthUser = () => (
-  dispatch: Dispatch,
+  dispatch: Dispatch
 ): Promise<E.Either<Error, AuthUser>> =>
   pipe(
     getAuthUser(),
@@ -37,5 +37,5 @@ export const loadAuthUser = () => (
     TE.mapLeft((ex: Error) => {
       dispatch(authSlice.actions.setUserData(O.none));
       return ex;
-    }),
+    })
   )();

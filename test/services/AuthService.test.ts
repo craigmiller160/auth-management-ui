@@ -44,11 +44,11 @@ const authUser: AuthUser = {
   username: 'user',
   firstName: 'first',
   lastName: 'last',
-  roles: [],
+  roles: []
 };
 
 const authCodeLogin: AuthCodeLogin = {
-  url: 'theUrl',
+  url: 'theUrl'
 };
 
 describe('AuthService', () => {

@@ -39,17 +39,17 @@ export const deleteClient = (pool: Pool) => async (clientName: string) => {
   const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
     pool,
     SELECT_CLIENT_ID_SQL,
-    [ clientName ],
+    [ clientName ]
   );
   if (result.rows?.[0]?.id) {
     const clientId = result.rows[0].id;
 
     await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [ clientId ]);
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_REDIRECT_URIS_SQL, [
-      clientId,
+      clientId
     ]);
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [
-      clientId,
+      clientId
     ]);
     await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [ clientId ]);
     await safelyExecuteQuery<any>(pool, DELETE_ROLES_SQL, [ clientId ]);

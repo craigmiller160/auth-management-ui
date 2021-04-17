@@ -20,7 +20,7 @@ import React, { MouseEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   BaseDialog,
-  DialogAction,
+  DialogAction
 } from '@craigmiller160/react-material-ui-common';
 import Autocomplete, { SelectOption } from '../Form/Autocomplete';
 import './SelectDialog.scss';
@@ -40,7 +40,7 @@ interface Props<T> {
 }
 
 const defaultForm: SelectForm<any> = {
-  value: null,
+  value: null
 };
 
 const SelectDialog = <T extends any>(props: Props<T>) => {
@@ -49,7 +49,7 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
   const { control, handleSubmit, errors, reset } = useForm<SelectForm<T>>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: defaultForm,
+    defaultValues: defaultForm
   });
 
   const onSubmit = (values: SelectForm<T>) => {
@@ -61,7 +61,7 @@ const SelectDialog = <T extends any>(props: Props<T>) => {
 
   const actions: Array<DialogAction> = [
     { label: 'Select', onClick: handleSubmit(onSubmit) },
-    { label: 'Cancel', onClick: onCancel },
+    { label: 'Cancel', onClick: onCancel }
   ];
 
   return (

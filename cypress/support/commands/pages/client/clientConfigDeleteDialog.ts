@@ -31,7 +31,7 @@ const validateDeleteDialog = (showDialog: boolean) => {
     cy.get(SELECT_DELETE_DIALOG_TITLE).should('have.text', 'Delete Client');
     cy.get(SELECT_DELETE_DIALOG_BODY).should(
       'have.text',
-      'Are you sure you want to delete this client?',
+      'Are you sure you want to delete this client?'
     );
 
     cy.get(SELECT_DELETE_DIALOG_CONFIRM).should('have.text', 'Confirm');
@@ -52,7 +52,7 @@ const clickDeleteCancel = () => {
 const clientConfigDeleteDialog = {
   validateDeleteDialog,
   clickDeleteConfirm,
-  clickDeleteCancel,
+  clickDeleteCancel
 };
 
 export type ClientConfigDeleteDialog = typeof clientConfigDeleteDialog;

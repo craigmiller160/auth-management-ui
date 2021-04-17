@@ -28,7 +28,7 @@ import {
   ClientListResponse,
   ClientUser,
   ClientWithRoles,
-  FullClientDetails,
+  FullClientDetails
 } from '../types/client';
 import {
   AddUserToClientWrapper,
@@ -38,7 +38,7 @@ import {
   DeleteClientWrapper,
   OldClientDetailsWrapper,
   RemoveUserFromClientWrapper,
-  UpdateClientWrapper,
+  UpdateClientWrapper
 } from '../types/graphApi';
 
 export const getAllClients = (): TE.TaskEither<Error, ClientListResponse> =>
@@ -53,16 +53,16 @@ export const getAllClients = (): TE.TaskEither<Error, ClientListResponse> =>
                     }
                 }
             `,
-      errorMsg: 'Error getting all userClients',
+      errorMsg: 'Error getting all userClients'
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<ClientListResponse>>) =>
-        res.data.data,
-    ),
+        res.data.data
+    )
   );
 
 export const getFullClientDetails = (
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, FullClientDetails> =>
   pipe(
     ajaxApi.graphql<OldClientDetailsWrapper>({
@@ -95,16 +95,16 @@ export const getFullClientDetails = (
                     }
                 }
             `,
-      errorMsg: `Error getting client ${clientId}`,
+      errorMsg: `Error getting client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<OldClientDetailsWrapper>>) =>
-        res.data.data.client,
-    ),
+        res.data.data.client
+    )
   );
 
 export const getClientDetails = (
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, ClientDetails> =>
   pipe(
     ajaxApi.graphql<ClientDetailsWrapper>({
@@ -122,16 +122,16 @@ export const getClientDetails = (
                     }
                 }
             `,
-      errorMsg: `Error getting client ${clientId}`,
+      errorMsg: `Error getting client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<ClientDetailsWrapper>>) =>
-        res.data.data.client,
-    ),
+        res.data.data.client
+    )
   );
 
 export const getClientWithRoles = (
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, ClientWithRoles> =>
   pipe(
     ajaxApi.graphql<ClientRolesWrapper>({
@@ -147,17 +147,17 @@ export const getClientWithRoles = (
                     }
                 }
             `,
-      errorMsg: `Error getting roles for client ${clientId}`,
+      errorMsg: `Error getting roles for client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<ClientRolesWrapper>>) =>
-        res.data.data.client,
-    ),
+        res.data.data.client
+    )
   );
 
 export const updateClient = (
   clientId: number,
-  clientInput: ClientInput,
+  clientInput: ClientInput
 ): TE.TaskEither<Error, ClientDetails> =>
   pipe(
     ajaxApi.graphql<UpdateClientWrapper>({
@@ -190,16 +190,16 @@ export const updateClient = (
                     }
                 }
             `,
-      errorMsg: `Error updating client ${clientId}`,
+      errorMsg: `Error updating client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<UpdateClientWrapper>>) =>
-        res.data.data.updateClient,
-    ),
+        res.data.data.updateClient
+    )
   );
 
 export const createClient = (
-  clientInput: ClientInput,
+  clientInput: ClientInput
 ): TE.TaskEither<Error, ClientDetails> =>
   pipe(
     ajaxApi.graphql<CreateClientWrapper>({
@@ -232,16 +232,16 @@ export const createClient = (
                     }
                 }
             `,
-      errorMsg: 'Error creating client',
+      errorMsg: 'Error creating client'
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<CreateClientWrapper>>) =>
-        res.data.data.createClient,
-    ),
+        res.data.data.createClient
+    )
   );
 
 export const deleteClient = (
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, ClientDetails> =>
   pipe(
     ajaxApi.graphql<DeleteClientWrapper>({
@@ -259,26 +259,26 @@ export const deleteClient = (
                     }
                 }
             `,
-      errorMsg: `Error deleting client ${clientId}`,
+      errorMsg: `Error deleting client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<DeleteClientWrapper>>) =>
-        res.data.data.deleteClient,
-    ),
+        res.data.data.deleteClient
+    )
   );
 
 export const generateGuid = (): TE.TaskEither<Error, string> =>
   pipe(
     ajaxApi.get<string>({
       uri: '/clients/guid',
-      errorMsg: 'Error generating GUID',
+      errorMsg: 'Error generating GUID'
     }),
-    TE.map((res: AxiosResponse<string>) => res.data),
+    TE.map((res: AxiosResponse<string>) => res.data)
   );
 
 export const removeUserFromClient = (
   userId: number,
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, Array<ClientUser>> =>
   pipe(
     ajaxApi.graphql<RemoveUserFromClientWrapper>({
@@ -297,17 +297,17 @@ export const removeUserFromClient = (
                     }
                 }
             `,
-      errorMsg: `Error removing user ${userId} from client ${clientId}`,
+      errorMsg: `Error removing user ${userId} from client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<RemoveUserFromClientWrapper>>) =>
-        res.data.data.removeUserFromClient,
-    ),
+        res.data.data.removeUserFromClient
+    )
   );
 
 export const addUserToClient = (
   userId: number,
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, Array<ClientUser>> =>
   pipe(
     ajaxApi.graphql<AddUserToClientWrapper>({
@@ -326,21 +326,21 @@ export const addUserToClient = (
                     }
                 }
             `,
-      errorMsg: `Error adding user ${userId} to client ${clientId}`,
+      errorMsg: `Error adding user ${userId} to client ${clientId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<AddUserToClientWrapper>>) =>
-        res.data.data.addUserToClient,
-    ),
+        res.data.data.addUserToClient
+    )
   );
 
 export const getAuthDetailsForClient = (
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, ClientAuthDetails> =>
   pipe(
     ajaxApi.get<ClientAuthDetails>({
       uri: `/clients/auth/${clientId}`,
-      errorMsg: `Error getting auth details for client ${clientId}`,
+      errorMsg: `Error getting auth details for client ${clientId}`
     }),
-    TE.map((res: AxiosResponse<ClientAuthDetails>) => res.data),
+    TE.map((res: AxiosResponse<ClientAuthDetails>) => res.data)
   );

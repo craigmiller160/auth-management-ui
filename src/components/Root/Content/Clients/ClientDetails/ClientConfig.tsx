@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import {
   ConfirmDialog,
-  showSuccessReduxAlert,
+  showSuccessReduxAlert
 } from '@craigmiller160/react-material-ui-common';
 import Language from '@material-ui/icons/Language';
 import { isRight } from 'fp-ts/es6/These';
@@ -47,7 +47,7 @@ import {
   deleteClient,
   generateGuid,
   getClientDetails,
-  updateClient,
+  updateClient
 } from '../../../../../services/ClientService';
 
 const SECRET_PLACEHOLDER = '**********';
@@ -72,7 +72,7 @@ const defaultClient: ClientDetails = {
   refreshTokenTimeoutSecs: 0,
   accessTokenTimeoutSecs: 0,
   authCodeTimeoutSecs: 0,
-  redirectUris: [],
+  redirectUris: []
 };
 
 interface ClientForm extends ClientDetails {
@@ -81,7 +81,7 @@ interface ClientForm extends ClientDetails {
 
 const defaultClientForm: ClientForm = {
   ...defaultClient,
-  clientSecret: '',
+  clientSecret: ''
 };
 
 const ClientConfig = (props: Props) => {
@@ -94,7 +94,7 @@ const ClientConfig = (props: Props) => {
     clientId: id !== NEW_ID ? parseInt(id, 10) : 0,
     redirectUris: [],
     showRedirectUriDialog: false,
-    redirectUriDirty: false,
+    redirectUriDirty: false
   });
   const {
     control,
@@ -102,11 +102,11 @@ const ClientConfig = (props: Props) => {
     handleSubmit,
     errors,
     reset,
-    formState: { isDirty },
+    formState: { isDirty }
   } = useForm<ClientForm>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: defaultClientForm,
+    defaultValues: defaultClientForm
   });
 
   const doSubmit = (action: () => TE.TaskEither<Error, ClientDetails>) =>
@@ -120,12 +120,12 @@ const ClientConfig = (props: Props) => {
         });
         reset({
           ...client,
-          clientSecret: SECRET_PLACEHOLDER,
+          clientSecret: SECRET_PLACEHOLDER
         });
         const path = props.match.path.replace(':id', `${client.id}`);
         dispatch(showSuccessReduxAlert(`Successfully saved client ${id}`));
         history.push(path);
-      }),
+      })
     )();
 
   const onSubmit = (values: ClientForm) => {
@@ -133,7 +133,7 @@ const ClientConfig = (props: Props) => {
       ...values,
       clientSecret:
         values.clientSecret !== SECRET_PLACEHOLDER ? values.clientSecret : '',
-      redirectUris: state.redirectUris,
+      redirectUris: state.redirectUris
     };
     if (state.clientId === 0) {
       doSubmit(() => createClient(payload));
@@ -149,12 +149,12 @@ const ClientConfig = (props: Props) => {
         TE.fold<Error, ClientDetails, ClientDetails>(
           (ex: Error): T.Task<ClientDetails> => T.of(defaultClient),
           (clientDetails: ClientDetails): T.Task<ClientDetails> =>
-            T.of(clientDetails),
+            T.of(clientDetails)
         ),
         T.map((client: ClientDetails) => {
           reset({
             ...client,
-            clientSecret: SECRET_PLACEHOLDER,
+            clientSecret: SECRET_PLACEHOLDER
           });
           const redirectUris = client.redirectUris
             .slice()
@@ -162,13 +162,13 @@ const ClientConfig = (props: Props) => {
           setState((draft) => {
             draft.redirectUris = redirectUris;
           });
-        }),
+        })
       )();
 
     const loadNewClient = async () => {
       const [ key, secret ] = await Promise.all([
         generateGuid()(),
-        generateGuid()(),
+        generateGuid()()
       ]);
       if (isRight(key) && isRight(secret)) {
         reset({
@@ -179,7 +179,7 @@ const ClientConfig = (props: Props) => {
           enabled: true,
           accessTokenTimeoutSecs: 300,
           refreshTokenTimeoutSecs: 3600,
-          authCodeTimeoutSecs: 60,
+          authCodeTimeoutSecs: 60
         });
         setState((draft) => {
           draft.redirectUris = [];
@@ -199,12 +199,12 @@ const ClientConfig = (props: Props) => {
       generateGuid(),
       TE.fold(
         (ex: Error) => T.of(''),
-        (guid: string) => T.of(guid),
+        (guid: string) => T.of(guid)
       ),
       T.map((guid: string) => {
         setValue('clientKey', guid);
         return guid;
-      }),
+      })
     )();
 
   const generateClientSecret = (): Promise<string> =>
@@ -212,12 +212,12 @@ const ClientConfig = (props: Props) => {
       generateGuid(),
       TE.fold(
         (ex: Error) => T.of(''),
-        (guid: string) => T.of(guid),
+        (guid: string) => T.of(guid)
       ),
       T.map((guid: string) => {
         setValue('clientSecret', guid);
         return guid;
-      }),
+      })
     )();
 
   const showRedirectUriDialog = (selectedUri?: string) =>
@@ -237,21 +237,21 @@ const ClientConfig = (props: Props) => {
       uuid: nanoid(),
       avatar: () => <Language />,
       text: {
-        primary: uri,
+        primary: uri
       },
       secondaryActions: [
         {
           uuid: nanoid(),
           text: 'Edit',
-          click: () => showRedirectUriDialog(uri),
+          click: () => showRedirectUriDialog(uri)
         },
         {
           uuid: nanoid(),
           text: 'Remove',
-          click: () => removeRedirectUri(index),
-        },
-      ],
-    }),
+          click: () => removeRedirectUri(index)
+        }
+      ]
+    })
   );
 
   const cancelRedirectUri = () =>
@@ -263,7 +263,7 @@ const ClientConfig = (props: Props) => {
     setState((draft) => {
       if (draft.selectedRedirectUri) {
         const index = draft.redirectUris.findIndex(
-          (uri) => uri === draft.selectedRedirectUri,
+          (uri) => uri === draft.selectedRedirectUri
         );
         if (index >= 0) {
           draft.redirectUris.splice(index, 1);
@@ -291,8 +291,8 @@ const ClientConfig = (props: Props) => {
           history.push('/clients');
           dispatch(showSuccessReduxAlert(`Successfully deleted client ${id}`));
           return client;
-        },
-      ),
+        }
+      )
     )();
 
   return (
@@ -381,8 +381,8 @@ const ClientConfig = (props: Props) => {
               rules={{
                 required: 'Required',
                 validate: {
-                  greaterThanZero,
-                },
+                  greaterThanZero
+                }
               }}
               transform={(value: string) => (value ? parseInt(value, 10) : '')}
             />
@@ -397,8 +397,8 @@ const ClientConfig = (props: Props) => {
               rules={{
                 required: 'Required',
                 validate: {
-                  greaterThanZero,
-                },
+                  greaterThanZero
+                }
               }}
               transform={(value: string) => (value ? parseInt(value, 10) : '')}
             />
@@ -413,8 +413,8 @@ const ClientConfig = (props: Props) => {
               rules={{
                 required: 'Required',
                 validate: {
-                  greaterThanZero,
-                },
+                  greaterThanZero
+                }
               }}
               transform={(value: string) => (value ? parseInt(value, 10) : '')}
             />

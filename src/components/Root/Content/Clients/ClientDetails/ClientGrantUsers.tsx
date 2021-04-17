@@ -25,7 +25,7 @@ import Typography from '@material-ui/core/Typography';
 import { useImmer } from 'use-immer';
 import {
   ConfirmDialog,
-  SectionHeader,
+  SectionHeader
 } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
@@ -57,13 +57,13 @@ const ClientGrantUsers = (props: Props) => {
     removeUser,
     selectedUser,
     allUsers,
-    saveAddUser,
+    saveAddUser
   } = props;
 
   const [ state, setState ] = useImmer<State>({
     showUserDialog: false,
     showRemoveDialog: false,
-    userToRemoveId: 0,
+    userToRemoveId: 0
   });
 
   const showRemoveDialog = (userId: number) =>
@@ -77,17 +77,17 @@ const ClientGrantUsers = (props: Props) => {
     avatar: () => <PersonIcon />,
     click: () => selectUser(user),
     active: exists((selected: ClientUser) => selected.id === user.id)(
-      selectedUser,
+      selectedUser
     ),
     text: {
       primary: `${user.firstName} ${user.lastName}`,
-      secondary: user.roles.map((role) => role.name).join(', '),
+      secondary: user.roles.map((role) => role.name).join(', ')
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Go',
-        click: () => history.push(`/users/${user.id}`),
+        click: () => history.push(`/users/${user.id}`)
       },
       {
         uuid: nanoid(),
@@ -95,9 +95,9 @@ const ClientGrantUsers = (props: Props) => {
         click: (event: MouseEvent) => {
           event.stopPropagation();
           showRemoveDialog(user.id);
-        },
-      },
-    ],
+        }
+      }
+    ]
   }));
 
   const availableUserOptions: Array<SelectOption<number>> = allUsers
@@ -107,7 +107,7 @@ const ClientGrantUsers = (props: Props) => {
     })
     .map((user) => ({
       value: user.id,
-      label: user.email,
+      label: user.email
     }));
 
   const doSaveAddUser = (selected: SelectOption<number>) => {

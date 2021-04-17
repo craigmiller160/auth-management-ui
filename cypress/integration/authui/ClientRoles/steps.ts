@@ -52,7 +52,7 @@ Then(
     cy.clientRolesPage((clientRolesPage) => {
       clientRolesPage.validateRoleDialog(fieldText);
     });
-  },
+  }
 );
 
 When('I enter {string} into the text field', (text: string) => {
@@ -76,7 +76,7 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 When(
@@ -94,7 +94,7 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 Then('the role delete dialog is visible', () => {
@@ -118,5 +118,5 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );

@@ -19,7 +19,7 @@
 import {
   Validate,
   ValidationRule,
-  ValidationValueMessage,
+  ValidationValueMessage
 } from 'react-hook-form/dist/types/form';
 import { ReactText } from 'react';
 

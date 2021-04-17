@@ -36,7 +36,7 @@ export const deleteUser = (pool: Pool) => async (email: string) => {
   const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
     pool,
     SELECT_USER_ID_SQL,
-    [ email ],
+    [ email ]
   );
 
   if (result.rows?.[0]?.id) {

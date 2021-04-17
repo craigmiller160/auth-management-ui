@@ -27,20 +27,20 @@ import * as T from 'fp-ts/es6/Task';
 import { pipe } from 'fp-ts/es6/pipeable';
 import {
   ConfirmDialog,
-  SectionHeader,
+  SectionHeader
 } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import {
   addClientToUser,
-  removeClientFromUser,
+  removeClientFromUser
 } from '../../../../../services/UserService';
 import { getAllClients } from '../../../../../services/ClientService';
 import List, { Item } from '../../../../ui/List';
 import { UserClient } from '../../../../../types/user';
 import {
   ClientListItem,
-  ClientListResponse,
+  ClientListResponse
 } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
@@ -65,7 +65,7 @@ const UserClients = (props: Props) => {
     userId,
     updateClients,
     selectedClient,
-    selectClient,
+    selectClient
   } = props;
 
   const history = useHistory();
@@ -73,7 +73,7 @@ const UserClients = (props: Props) => {
     allClients: [],
     showAddClientDialog: false,
     showRemoveClientDialog: false,
-    clientIdToRemove: 0,
+    clientIdToRemove: 0
   });
 
   useEffect(() => {
@@ -83,13 +83,13 @@ const UserClients = (props: Props) => {
         TE.fold(
           (): T.Task<ClientListItem[]> => T.of([]),
           (res: ClientListResponse): T.Task<ClientListItem[]> =>
-            T.of(res.clients),
+            T.of(res.clients)
         ),
         T.map((items: ClientListItem[]) =>
           setState((draft) => {
             draft.allClients = items;
-          }),
-        ),
+          })
+        )
       )();
 
     action();
@@ -109,13 +109,13 @@ const UserClients = (props: Props) => {
     click: () => selectClient(client),
     avatar: () => <Business />,
     text: {
-      primary: client.name,
+      primary: client.name
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Go',
-        click: () => goToClient(client.id),
+        click: () => goToClient(client.id)
       },
       {
         uuid: nanoid(),
@@ -123,12 +123,12 @@ const UserClients = (props: Props) => {
         click: (event: MouseEvent) => {
           event.stopPropagation();
           removeClientClick(client.id);
-        },
-      },
+        }
+      }
     ],
     active: exists((selected: UserClient) => selected.id === client.id)(
-      selectedClient,
-    ),
+      selectedClient
+    )
   }));
 
   const addClientClick = () =>
@@ -145,9 +145,9 @@ const UserClients = (props: Props) => {
       addClientToUser(userId, clientId),
       TE.fold(
         (): T.Task<UserClient[]> => T.of([]),
-        (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients),
+        (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients)
       ),
-      T.map((clients: UserClient[]) => updateClients(clients)),
+      T.map((clients: UserClient[]) => updateClients(clients))
     )();
   };
 
@@ -161,14 +161,14 @@ const UserClients = (props: Props) => {
       state.allClients
         .filter(
           (client) =>
-            !userClients.find((otherClient) => client.id === otherClient.id),
+            !userClients.find((otherClient) => client.id === otherClient.id)
         )
         .sort((client1, client2) => client1.name.localeCompare(client2.name))
         .map((client) => ({
           label: client.name,
-          value: client.id,
+          value: client.id
         })),
-    [ state.allClients, userClients ],
+    [ state.allClients, userClients ]
   );
 
   const removeClientOnCancel = () =>
@@ -184,9 +184,9 @@ const UserClients = (props: Props) => {
       removeClientFromUser(userId, state.clientIdToRemove),
       TE.fold(
         (): T.Task<UserClient[]> => T.of([]),
-        (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients),
+        (clients: UserClient[]): T.Task<UserClient[]> => T.of(clients)
       ),
-      T.map((clients: UserClient[]) => updateClients(clients)),
+      T.map((clients: UserClient[]) => updateClients(clients))
     )();
   };
 

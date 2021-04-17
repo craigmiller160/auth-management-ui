@@ -26,39 +26,39 @@ export interface HandledChangeEvent {
 }
 
 const handleCheckbox = (
-  handler: (handledEvent: HandledChangeEvent) => void,
+  handler: (handledEvent: HandledChangeEvent) => void
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
   handler({
     name: changeEvent.target.name,
-    value: changeEvent.target.checked,
+    value: changeEvent.target.checked
   });
 };
 
 const handleNumberField = (
-  handler: (handledEvent: HandledChangeEvent) => void,
+  handler: (handledEvent: HandledChangeEvent) => void
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
   const value = changeEvent.target.value ?
     parseInt(changeEvent.target.value, 10) :
     0;
   handler({
     name: changeEvent.target.name,
-    value,
+    value
   });
 };
 
 const handleTextField = (
-  handler: (handledEvent: HandledChangeEvent) => void,
+  handler: (handledEvent: HandledChangeEvent) => void
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
   handler({
     name: changeEvent.target.name,
-    value: changeEvent.target.value,
+    value: changeEvent.target.value
   });
 };
 
 export const createChangeHandler = (
-  handler: (event: HandledChangeEvent) => void,
+  handler: (event: HandledChangeEvent) => void
 ) => ({
   handleCheckbox: handleCheckbox(handler),
   handleNumberField: handleNumberField(handler),
-  handleTextField: handleTextField(handler),
+  handleTextField: handleTextField(handler)
 });

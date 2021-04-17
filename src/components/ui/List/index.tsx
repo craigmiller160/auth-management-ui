@@ -55,18 +55,18 @@ const useStyles = makeStyles({
   ListItem: {
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
+      backgroundColor: theme.palette.secondary.light
     },
     '&.active': {
-      backgroundColor: theme.palette.secondary.light,
-    },
+      backgroundColor: theme.palette.secondary.light
+    }
   },
   Button: {
     '&:hover': {
       backgroundColor: theme.palette.primary.main,
-      color: theme.palette.secondary.main,
-    },
-  },
+      color: theme.palette.secondary.main
+    }
+  }
 });
 
 const List = (props: Props) => {
@@ -106,11 +106,11 @@ const List = (props: Props) => {
               <ListItemText
                 primary={item.text.primary}
                 primaryTypographyProps={{
-                  id: primaryTextId,
+                  id: primaryTextId
                 }}
                 secondary={item.text.secondary}
                 secondaryTypographyProps={{
-                  id: secondaryTextId,
+                  id: secondaryTextId
                 }}
               />
               {item.secondaryActions && (

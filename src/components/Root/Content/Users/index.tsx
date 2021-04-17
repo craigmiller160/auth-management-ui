@@ -38,7 +38,7 @@ const header = [ 'Email', 'First Name', 'Last Name' ];
 const Users = () => {
   const history = useHistory();
   const [ state, setState ] = useState<State>({
-    users: [],
+    users: []
   });
 
   useEffect(() => {
@@ -47,13 +47,13 @@ const Users = () => {
         getAllUsers(),
         TE.fold(
           (): T.Task<UserDetails[]> => T.of([]),
-          (list: UserList): T.Task<UserDetails[]> => T.of(list.users),
+          (list: UserList): T.Task<UserDetails[]> => T.of(list.users)
         ),
         T.map((users: UserDetails[]) =>
           setState({
-            users,
-          }),
-        ),
+            users
+          })
+        )
       )();
     };
 
@@ -66,9 +66,9 @@ const Users = () => {
     () =>
       state.users.map((user) => ({
         click: () => history.push(`/users/${user.id}`),
-        items: [ user.email, user.firstName, user.lastName ],
+        items: [ user.email, user.firstName, user.lastName ]
       })),
-    [ state.users, history ],
+    [ state.users, history ]
   );
 
   return (

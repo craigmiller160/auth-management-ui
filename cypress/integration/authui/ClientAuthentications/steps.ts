@@ -29,7 +29,7 @@ const cleanup = () => {
 Before(() => {
   cleanup();
   cy.task('insertClient', testClient).then((clientId: number) =>
-    cy.task('insertUser', { user: testUser, clientId }),
+    cy.task('insertUser', { user: testUser, clientId })
   );
 });
 
@@ -51,5 +51,5 @@ When(
     cy.clientAuthsPage((clientAuthsPage) => {
       clientAuthsPage.clickRevokeAuthBtn(authIndex);
     });
-  },
+  }
 );

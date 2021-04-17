@@ -23,12 +23,12 @@ import authSlice from './auth/slice';
 
 const rootReducer = combineReducers({
   alert: reduxAlertReducer,
-  auth: authSlice.reducer,
+  auth: authSlice.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 export default configureStore({
   reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: process.env.NODE_ENV !== 'production'
 });

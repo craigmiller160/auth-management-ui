@@ -26,7 +26,7 @@ export const mockCsrfPreflight = (mockApi: MockAdapter) =>
       200,
       null,
       {
-        'x-csrf-token': 'ABCDEFG',
-      },
+        'x-csrf-token': 'ABCDEFG'
+      }
     ];
   });

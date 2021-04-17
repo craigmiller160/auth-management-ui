@@ -75,7 +75,7 @@ const clickTab = (tabIndex: number) => {
 const clientDetailsPage = {
   validatePageCommon,
   isTabSelected,
-  clickTab,
+  clickTab
 };
 
 export type ClientDetailsPage = typeof clientDetailsPage;

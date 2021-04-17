@@ -28,7 +28,7 @@ import {
   UserDetails,
   UserInput,
   UserList,
-  UserRole,
+  UserRole
 } from '../types/user';
 import ajaxApi from './AjaxApi';
 import {
@@ -40,7 +40,7 @@ import {
   RemoveRoleFromUserWrapper,
   UpdateUserWrapper,
   UserClientsWrapper,
-  UserDetailsWrapper,
+  UserDetailsWrapper
 } from '../types/graphApi';
 
 export const getAllUsers = (): TaskEither<Error, UserList> =>
@@ -56,15 +56,15 @@ export const getAllUsers = (): TaskEither<Error, UserList> =>
                     }
                 }
             `,
-      errorMsg: 'Error getting all users',
+      errorMsg: 'Error getting all users'
     }),
     TE.map(
-      (res: AxiosResponse<GraphQLQueryResponse<UserList>>) => res.data.data,
-    ),
+      (res: AxiosResponse<GraphQLQueryResponse<UserList>>) => res.data.data
+    )
   );
 
 export const getUserDetails = (
-  userId: number,
+  userId: number
 ): TE.TaskEither<Error, UserDetails> =>
   pipe(
     ajaxApi.graphql<UserDetailsWrapper>({
@@ -79,16 +79,16 @@ export const getUserDetails = (
                     }
                 }
             `,
-      errorMsg: `Error getting user details for ${userId}`,
+      errorMsg: `Error getting user details for ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<UserDetailsWrapper>>) =>
-        res.data.data.user,
-    ),
+        res.data.data.user
+    )
   );
 
 export const getUserClients = (
-  userId: number,
+  userId: number
 ): TE.TaskEither<Error, UserClients> =>
   pipe(
     ajaxApi.graphql<UserClientsWrapper>({
@@ -113,17 +113,17 @@ export const getUserClients = (
                     }
                 }
             `,
-      errorMsg: `Error getting user clients for ${userId}`,
+      errorMsg: `Error getting user clients for ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<UserClientsWrapper>>) =>
-        res.data.data.user,
-    ),
+        res.data.data.user
+    )
   );
 
 export const updateUser = (
   userId: number,
-  user: UserInput,
+  user: UserInput
 ): TE.TaskEither<Error, UserDetails> =>
   pipe(
     ajaxApi.graphql<UpdateUserWrapper>({
@@ -144,16 +144,16 @@ export const updateUser = (
                     }
                 }
             `,
-      errorMsg: `Error updating user ${userId}`,
+      errorMsg: `Error updating user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<UpdateUserWrapper>>) =>
-        res.data.data.updateUser,
-    ),
+        res.data.data.updateUser
+    )
   );
 
 export const createUser = (
-  user: UserInput,
+  user: UserInput
 ): TE.TaskEither<Error, UserDetails> =>
   pipe(
     ajaxApi.graphql<CreateUserWrapper>({
@@ -174,12 +174,12 @@ export const createUser = (
                     }                  
                 }
             `,
-      errorMsg: 'Error creating user',
+      errorMsg: 'Error creating user'
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<CreateUserWrapper>>) =>
-        res.data.data.createUser,
-    ),
+        res.data.data.createUser
+    )
   );
 
 export const deleteUser = (userId: number): TE.TaskEither<Error, UserDetails> =>
@@ -196,17 +196,17 @@ export const deleteUser = (userId: number): TE.TaskEither<Error, UserDetails> =>
                     }
                 }
             `,
-      errorMsg: `Error deleting user ${userId}`,
+      errorMsg: `Error deleting user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<DeleteUserWrapper>>) =>
-        res.data.data.deleteUser,
-    ),
+        res.data.data.deleteUser
+    )
   );
 
 export const removeClientFromUser = (
   userId: number,
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, UserClient[]> =>
   pipe(
     ajaxApi.graphql<RemoveClientFromUserWrapper>({
@@ -227,17 +227,17 @@ export const removeClientFromUser = (
                     }
                 }
             `,
-      errorMsg: `Error removing client ${clientId} from user ${userId}`,
+      errorMsg: `Error removing client ${clientId} from user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<RemoveClientFromUserWrapper>>) =>
-        res.data.data.removeClientFromUser,
-    ),
+        res.data.data.removeClientFromUser
+    )
   );
 
 export const addClientToUser = (
   userId: number,
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, UserClient[]> =>
   pipe(
     ajaxApi.graphql<AddClientToUserWrapper>({
@@ -258,18 +258,18 @@ export const addClientToUser = (
                     }
                 }
             `,
-      errorMsg: `Error adding client ${clientId} to user ${userId}`,
+      errorMsg: `Error adding client ${clientId} to user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<AddClientToUserWrapper>>) =>
-        res.data.data.addClientToUser,
-    ),
+        res.data.data.addClientToUser
+    )
   );
 
 export const removeRoleFromUser = (
   userId: number,
   clientId: number,
-  roleId: number,
+  roleId: number
 ): TE.TaskEither<Error, UserRole[]> =>
   pipe(
     ajaxApi.graphql<RemoveRoleFromUserWrapper>({
@@ -281,18 +281,18 @@ export const removeRoleFromUser = (
                     }
                 }
             `,
-      errorMsg: `Error removing role ${roleId} from user ${userId}`,
+      errorMsg: `Error removing role ${roleId} from user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<RemoveRoleFromUserWrapper>>) =>
-        res.data.data.removeRoleFromUser,
-    ),
+        res.data.data.removeRoleFromUser
+    )
   );
 
 export const addRoleToUser = (
   userId: number,
   clientId: number,
-  roleId: number,
+  roleId: number
 ): TE.TaskEither<Error, UserRole[]> =>
   pipe(
     ajaxApi.graphql<AddRoleToUserWrapper>({
@@ -304,33 +304,33 @@ export const addRoleToUser = (
                     }
                 }
             `,
-      errorMsg: `Error adding role ${roleId} to user ${userId}`,
+      errorMsg: `Error adding role ${roleId} to user ${userId}`
     }),
     TE.map(
       (res: AxiosResponse<GraphQLQueryResponse<AddRoleToUserWrapper>>) =>
-        res.data.data.addRoleToUser,
-    ),
+        res.data.data.addRoleToUser
+    )
   );
 
 export const getAllUserAuthDetails = (
-  userId: number,
+  userId: number
 ): TE.TaskEither<Error, UserAuthDetailsList> =>
   pipe(
     ajaxApi.get<UserAuthDetailsList>({
       uri: `/users/auth/${userId}`,
-      errorMsg: `Error getting all auth details for user ${userId}`,
+      errorMsg: `Error getting all auth details for user ${userId}`
     }),
-    TE.map((res: AxiosResponse<UserAuthDetailsList>) => res.data),
+    TE.map((res: AxiosResponse<UserAuthDetailsList>) => res.data)
   );
 
 export const revokeUserAuthAccess = (
   userId: number,
-  clientId: number,
+  clientId: number
 ): TE.TaskEither<Error, void> =>
   pipe(
     ajaxApi.post<void, void>({
       uri: `/users/auth/${userId}/${clientId}/revoke`,
-      errorMsg: `Error revoking access for user ${userId} for client ${clientId}`,
+      errorMsg: `Error revoking access for user ${userId} for client ${clientId}`
     }),
-    TE.map((res: AxiosResponse<void>) => res.data),
+    TE.map((res: AxiosResponse<void>) => res.data)
   );

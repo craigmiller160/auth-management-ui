@@ -47,7 +47,7 @@ const ClientGrantRoles = (props: Props) => {
   const [ state, setState ] = useImmer<State>({
     showRoleDialog: false,
     showRemoveDialog: false,
-    roleToRemoveId: 0,
+    roleToRemoveId: 0
   });
 
   const doSaveAddRole = (selected: SelectOption<number>) => {
@@ -67,27 +67,27 @@ const ClientGrantRoles = (props: Props) => {
     uuid: nanoid(),
     avatar: () => <AssignIcon />,
     text: {
-      primary: role.name,
+      primary: role.name
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Remove',
-        click: () => showRemoveDialog(role.id),
-      },
-    ],
+        click: () => showRemoveDialog(role.id)
+      }
+    ]
   }));
 
   const roleOptions: Array<SelectOption<number>> = allRoles
     .filter((role) => {
       const index = selectedUser.roles.findIndex(
-        (uRole) => uRole.id === role.id,
+        (uRole) => uRole.id === role.id
       );
       return index === -1;
     })
     .map((role) => ({
       value: role.id,
-      label: role.name,
+      label: role.name
     }));
 
   const doRemoveRole = () => {

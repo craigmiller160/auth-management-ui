@@ -33,12 +33,12 @@ const AuthNavbar = () => {
   const items: Array<NavbarItem> = [
     {
       to: '/users',
-      text: 'Users',
+      text: 'Users'
     },
     {
       to: '/clients',
-      text: 'Clients',
-    },
+      text: 'Clients'
+    }
   ];
 
   const doLogout = async () => {

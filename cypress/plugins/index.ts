@@ -34,8 +34,8 @@ export default (on: OnFn, config: CypressConfig) => {
   on(
     'file:preprocessor',
     cucumber({
-      typescript: require.resolve('typescript'),
-    }),
+      typescript: require.resolve('typescript')
+    })
   );
 
   on('task', {
@@ -43,6 +43,6 @@ export default (on: OnFn, config: CypressConfig) => {
     insertClient: insertClient(pool),
     insertUser: insertUser(pool),
     deleteUser: deleteUser(pool),
-    insertRole: insertRole(pool),
+    insertRole: insertRole(pool)
   });
 };

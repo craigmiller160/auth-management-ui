@@ -107,7 +107,7 @@ const clientConfigRedirectUris = {
   clickDialogSave,
   clickDialogCancel,
   clickEditUriBtn,
-  clickRemoveUriBtn,
+  clickRemoveUriBtn
 };
 
 export type ClientConfigRedirectUris = typeof clientConfigRedirectUris;

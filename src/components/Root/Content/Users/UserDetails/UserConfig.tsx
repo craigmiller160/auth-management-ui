@@ -28,7 +28,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import {
   ConfirmDialog,
-  showSuccessReduxAlert,
+  showSuccessReduxAlert
 } from '@craigmiller160/react-material-ui-common';
 import TextField from '../../../../ui/Form/TextField';
 import { email } from '../../../../../utils/validations';
@@ -39,7 +39,7 @@ import {
   createUser,
   deleteUser,
   getUserDetails,
-  updateUser,
+  updateUser
 } from '../../../../../services/UserService';
 import { UserDetails, UserInput } from '../../../../../types/user';
 
@@ -60,13 +60,13 @@ const defaultUser: UserDetails = {
   email: '',
   firstName: '',
   lastName: '',
-  enabled: true,
+  enabled: true
 };
 
 const defaultForm: UserForm = {
   ...defaultUser,
   password: '',
-  confirmPassword: '',
+  confirmPassword: ''
 };
 
 const UserConfig = (props: Props) => {
@@ -76,7 +76,7 @@ const UserConfig = (props: Props) => {
   const [ state, setState ] = useImmer<State>({
     allowNavigationOverride: false,
     showDeleteDialog: false,
-    userId: id !== NEW_ID ? parseInt(id, 10) : 0,
+    userId: id !== NEW_ID ? parseInt(id, 10) : 0
   });
   const {
     control,
@@ -85,11 +85,11 @@ const UserConfig = (props: Props) => {
     reset,
     getValues,
     watch,
-    formState: { isDirty },
+    formState: { isDirty }
   } = useForm<UserForm>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: defaultForm,
+    defaultValues: defaultForm
   });
   const watchPassword = watch('password', '');
 
@@ -103,17 +103,17 @@ const UserConfig = (props: Props) => {
         reset({
           ...user,
           password: '',
-          confirmPassword: '',
+          confirmPassword: ''
         });
         const path = props.match.path.replace(':id', `${user.id}`);
         dispatch(showSuccessReduxAlert(`Successfully saved user ${id}`));
         history.push(path);
-      }),
+      })
     );
 
   const onSubmit = (values: UserForm) => {
     const payload: UserInput = {
-      ...values,
+      ...values
     };
     if (state.userId === 0) {
       doSubmit(() => createUser(payload));
@@ -127,7 +127,7 @@ const UserConfig = (props: Props) => {
       pipe(
         getUserDetails(state.userId),
         TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
-        T.map((user) => reset(user)),
+        T.map((user) => reset(user))
       );
 
     if (state.userId > 0) {
@@ -164,7 +164,7 @@ const UserConfig = (props: Props) => {
         });
         history.push('/users');
         dispatch(showSuccessReduxAlert(`Successfully deleted user ${id}`));
-      }),
+      })
     )();
 
   return (
@@ -185,8 +185,8 @@ const UserConfig = (props: Props) => {
               rules={{
                 required: 'Required',
                 validate: {
-                  email,
-                },
+                  email
+                }
               }}
             />
             <TextField
@@ -196,7 +196,7 @@ const UserConfig = (props: Props) => {
               label="First Name"
               error={errors.firstName}
               rules={{
-                required: 'Required',
+                required: 'Required'
               }}
             />
             <TextField
@@ -206,7 +206,7 @@ const UserConfig = (props: Props) => {
               label="Last Name"
               error={errors.lastName}
               rules={{
-                required: 'Required',
+                required: 'Required'
               }}
             />
           </Grid>
@@ -230,8 +230,8 @@ const UserConfig = (props: Props) => {
               error={errors.confirmPassword}
               rules={{
                 validate: {
-                  confirmPasswordValidator,
-                },
+                  confirmPasswordValidator
+                }
               }}
               disabled={!watchPassword}
             />

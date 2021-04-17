@@ -20,7 +20,7 @@ import {
   ClientDetails,
   ClientUser,
   ClientWithRoles,
-  FullClientDetails,
+  FullClientDetails
 } from './client';
 import { Role } from './role';
 import { UserClient, UserClients, UserDetails, UserRole } from './user';

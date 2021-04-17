@@ -23,7 +23,7 @@ export const testUser: InsertUser = {
   firstName: 'Test',
   lastName: 'User',
   password: 'password',
-  enabled: true,
+  enabled: true
 };
 
 export const testUser2: InsertUser = {
@@ -31,5 +31,5 @@ export const testUser2: InsertUser = {
   firstName: 'Test2',
   lastName: 'User',
   password: 'password',
-  enabled: true,
+  enabled: true
 };

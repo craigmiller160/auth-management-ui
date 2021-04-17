@@ -32,11 +32,11 @@ import { formatApiDateTime } from '../../../../../utils/date';
 import List, { Item } from '../../../../ui/List';
 import {
   UserAuthDetails,
-  UserAuthDetailsList,
+  UserAuthDetailsList
 } from '../../../../../types/user';
 import {
   getAllUserAuthDetails,
-  revokeUserAuthAccess,
+  revokeUserAuthAccess
 } from '../../../../../services/UserService';
 
 interface State {
@@ -47,14 +47,14 @@ interface Props extends IdMatchProps {}
 
 const defaultUserAuths: UserAuthDetailsList = {
   email: '',
-  authDetails: [],
+  authDetails: []
 };
 
 const UserAuths = (props: Props) => {
   const { id } = props.match.params;
   const [ state, setState ] = useImmer<State>({
     userId: id !== NEW_ID ? parseInt(id, 10) : 0,
-    userAuths: defaultUserAuths,
+    userAuths: defaultUserAuths
   });
 
   useEffect(() => {
@@ -63,13 +63,13 @@ const UserAuths = (props: Props) => {
         getAllUserAuthDetails(state.userId),
         TE.fold(
           (): T.Task<UserAuthDetailsList> => T.of(defaultUserAuths),
-          (userAuths: UserAuthDetailsList) => T.of(userAuths),
+          (userAuths: UserAuthDetailsList) => T.of(userAuths)
         ),
         T.map((userAuths: UserAuthDetailsList) =>
           setState((draft) => {
             draft.userAuths = userAuths;
-          }),
-        ),
+          })
+        )
       )();
 
     action();
@@ -79,20 +79,18 @@ const UserAuths = (props: Props) => {
     pipe(
       revokeUserAuthAccess(state.userId, clientId),
       TE.map(() =>
-        state.userAuths.authDetails.filter(
-          (auth) => auth.clientId !== clientId,
-        ),
+        state.userAuths.authDetails.filter((auth) => auth.clientId !== clientId)
       ),
       TE.fold(
         (): T.Task<UserAuthDetails[]> => T.of(state.userAuths.authDetails),
         (authDetails: UserAuthDetails[]): T.Task<UserAuthDetails[]> =>
-          T.of(authDetails),
+          T.of(authDetails)
       ),
       T.map((authDetails: UserAuthDetails[]) =>
         setState((draft) => {
           draft.userAuths.authDetails = authDetails;
-        }),
-      ),
+        })
+      )
     )();
   };
 
@@ -102,16 +100,16 @@ const UserAuths = (props: Props) => {
     text: {
       primary: `Client: ${auth.clientName}`,
       secondary: `Last Authenticated: ${formatApiDateTime(
-        auth.lastAuthenticated,
-      )}`,
+        auth.lastAuthenticated
+      )}`
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Revoke',
-        click: () => doRevoke(auth.clientId),
-      },
-    ],
+        click: () => doRevoke(auth.clientId)
+      }
+    ]
   }));
 
   return (

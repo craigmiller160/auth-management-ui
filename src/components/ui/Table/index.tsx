@@ -41,17 +41,17 @@ interface Props {
 const useStyles = makeStyles({
   TableHeader: {
     '& th': {
-      fontWeight: 'bold',
-    },
+      fontWeight: 'bold'
+    }
   },
   TableBody: {
     '& tr': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     },
     '& tr:hover': {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  },
+      backgroundColor: theme.palette.secondary.light
+    }
+  }
 });
 
 const Table = (props: Props) => {

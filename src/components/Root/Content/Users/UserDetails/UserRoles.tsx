@@ -26,13 +26,13 @@ import * as T from 'fp-ts/es6/Task';
 import { useImmer } from 'use-immer';
 import {
   ConfirmDialog,
-  SectionHeader,
+  SectionHeader
 } from '@craigmiller160/react-material-ui-common';
 import { nanoid } from 'nanoid';
 import { SelectOption } from '../../../../ui/Form/Autocomplete';
 import {
   addRoleToUser,
-  removeRoleFromUser,
+  removeRoleFromUser
 } from '../../../../../services/UserService';
 import List, { Item } from '../../../../ui/List';
 import { UserClient, UserRole } from '../../../../../types/user';
@@ -55,13 +55,13 @@ const UserRoles = (props: Props) => {
   const [ state, setState ] = useImmer<State>({
     showAddRoleDialog: false,
     showRemoveRoleDialog: false,
-    roleIdToRemove: 0,
+    roleIdToRemove: 0
   });
 
   const clientId = pipe(
     selectedClient,
     map((client: UserClient) => client.id),
-    getOrElse(() => 0),
+    getOrElse(() => 0)
   );
 
   if (isNone(selectedClient)) {
@@ -77,32 +77,32 @@ const UserRoles = (props: Props) => {
   const roleItems: Array<Item> = pipe(
     selectedClient,
     map((selected: UserClient) => selected.userRoles),
-    getOrElse((): Array<UserRole> => []),
+    getOrElse((): Array<UserRole> => [])
   ).map((role: UserRole) => ({
     uuid: nanoid(),
     text: {
-      primary: role.name,
+      primary: role.name
     },
     secondaryActions: [
       {
         uuid: nanoid(),
         text: 'Remove',
-        click: () => removeRoleClick(role.id),
-      },
-    ],
+        click: () => removeRoleClick(role.id)
+      }
+    ]
   }));
 
   const roleOptions: Array<SelectOption<number>> = pipe(
     selectedClient,
     map((client: UserClient) =>
       client.allRoles.filter(
-        (r1) => !client.userRoles.find((r2) => r1.id === r2.id),
-      ),
+        (r1) => !client.userRoles.find((r2) => r1.id === r2.id)
+      )
     ),
-    getOrElse((): Array<UserRole> => []),
+    getOrElse((): Array<UserRole> => [])
   ).map((role: UserRole) => ({
     label: role.name,
-    value: role.id,
+    value: role.id
   }));
 
   const addRoleClick = () =>
@@ -124,9 +124,9 @@ const UserRoles = (props: Props) => {
       addRoleToUser(userId, clientId, roleId),
       TE.fold(
         (): T.Task<UserRole[]> => T.of([]),
-        (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles),
+        (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
       ),
-      T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles)),
+      T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
     )();
   };
 
@@ -138,9 +138,9 @@ const UserRoles = (props: Props) => {
       removeRoleFromUser(userId, clientId, state.roleIdToRemove),
       TE.fold(
         (): T.Task<UserRole[]> => T.of([]),
-        (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles),
+        (userRoles: UserRole[]): T.Task<UserRole[]> => T.of(userRoles)
       ),
-      T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles)),
+      T.map((userRoles: UserRole[]) => updateUserRoles(clientId, userRoles))
     )();
   };
 
@@ -153,10 +153,10 @@ const UserRoles = (props: Props) => {
     <>
       <SectionHeader title="Roles" />
       {exists((selected: UserClient) => selected.allRoles.length === 0)(
-        selectedClient,
+        selectedClient
       ) && <Typography variant="h6">No Roles</Typography>}
       {exists((selected: UserClient) => selected.allRoles.length > 0)(
-        selectedClient,
+        selectedClient
       ) && (
         <>
           <List items={roleItems} />

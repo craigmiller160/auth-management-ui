@@ -21,7 +21,7 @@ import {
   And,
   Before,
   Then,
-  When,
+  When
 } from 'cypress-cucumber-preprocessor/steps';
 import { TableDefinition } from 'cucumber';
 import { testUser, testUser2 } from '../../../data/user';
@@ -38,7 +38,7 @@ Before(() => {
   cleanup();
   cy.task('insertClient', testClient).then((clientId) => {
     cy.task('insertUser', { user: testUser, clientId }).then(() =>
-      cy.task('insertRole', { name: 'ROLE_WRITE', clientId }),
+      cy.task('insertRole', { name: 'ROLE_WRITE', clientId })
     );
   });
   cy.task('insertUser', testUser2);
@@ -67,10 +67,10 @@ Then('the client grants page is displayed', (data: TableDefinition) => {
       return {
         users,
         roles,
-        selectedUser,
+        selectedUser
       };
     },
-    { users: [], roles: [] },
+    { users: [], roles: [] }
   );
 
   cy.clientGrantsPage((clientGrantsPage) => {
@@ -115,7 +115,7 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 When(
@@ -133,7 +133,7 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );
 
 Then('the remove user dialog is visible', () => {
@@ -144,7 +144,7 @@ When(
   'I click on the {string} button of the remove user dialog',
   (buttonType: string) => {
     // TODO finish this
-  },
+  }
 );
 
 Then('the role dialog is visible', () => {
@@ -159,7 +159,7 @@ When(
   'I click on the {string} button in the role dialog',
   (buttonType: string) => {
     // TODO finish this
-  },
+  }
 );
 
 Then('the remove role dialog is visible', () => {
@@ -170,7 +170,7 @@ When(
   'I click on the {string} button of the remove role dialog',
   (buttonType: string) => {
     // TODO finish this
-  },
+  }
 );
 
 Then('I am on the user config page for {string}', (userEmail: string) => {
@@ -195,5 +195,5 @@ When(
           throw new Error(`Invalid button type: ${buttonType}`);
       }
     });
-  },
+  }
 );

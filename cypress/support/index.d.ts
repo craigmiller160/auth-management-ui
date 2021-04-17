@@ -41,21 +41,21 @@ declare namespace Cypress {
     homePage(pageFn: PageFunction<HomePage>): Chainable<Element>;
     clientsPage(pageFn: PageFunction<ClientsPage>): Chainable<Element>;
     clientDetailsPage(
-      pageFn: PageFunction<ClientDetailsPage>,
+      pageFn: PageFunction<ClientDetailsPage>
     ): Chainable<Element>;
     clientConfigPage(
-      pageFn: PageFunction<ClientConfigPage>,
+      pageFn: PageFunction<ClientConfigPage>
     ): Chainable<Element>;
     clientConfigDeleteDialog(
-      pageFn: PageFunction<ClientConfigDeleteDialog>,
+      pageFn: PageFunction<ClientConfigDeleteDialog>
     ): Chainable<Element>;
     clientConfigRedirectUris(
-      pageFn: PageFunction<ClientConfigRedirectUris>,
+      pageFn: PageFunction<ClientConfigRedirectUris>
     ): Chainable<Element>;
     clientAuthsPage(pagFn: PageFunction<ClientAuthsPage>): Chainable<Element>;
     clientRolesPage(pageFn: PageFunction<ClientRolesPage>): Chainable<Element>;
     clientGrantsPage(
-      pageFn: PageFunction<ClientGrantsPage>,
+      pageFn: PageFunction<ClientGrantsPage>
     ): Chainable<Element>;
     alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
     doLogin(): Chainable<Element>;

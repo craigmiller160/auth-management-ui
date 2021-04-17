@@ -60,7 +60,7 @@ const clientsPage = {
   validatePage,
   clickNewClientBtn,
   clientRecordExists,
-  clickClientRow,
+  clickClientRow
 };
 
 export type ClientsPage = typeof clientsPage;

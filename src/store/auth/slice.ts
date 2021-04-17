@@ -29,12 +29,12 @@ interface StateType {
 export const initialState: StateType = {
   csrfToken: none,
   userData: none,
-  hasChecked: false,
+  hasChecked: false
 };
 
 const setUserData = (
   draft: StateType,
-  action: PayloadAction<Option<AuthUser>>,
+  action: PayloadAction<Option<AuthUser>>
 ) => {
   draft.userData = action.payload;
   draft.hasChecked = true;
@@ -42,7 +42,7 @@ const setUserData = (
 
 const setCsrfToken = (
   draft: StateType,
-  action: PayloadAction<Option<string>>,
+  action: PayloadAction<Option<string>>
 ) => {
   draft.csrfToken = action.payload;
 };
@@ -52,6 +52,6 @@ export default createSlice({
   initialState,
   reducers: {
     setUserData,
-    setCsrfToken,
-  },
+    setCsrfToken
+  }
 });

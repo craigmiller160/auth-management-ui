@@ -29,6 +29,6 @@ beforeEach(() => {
     pathname: '/',
     search: '',
     hash: '',
-    href: '',
+    href: ''
   };
 });

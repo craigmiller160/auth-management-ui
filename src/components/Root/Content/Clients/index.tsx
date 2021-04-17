@@ -38,7 +38,7 @@ const header = [ 'Name', 'Key' ];
 const Clients = () => {
   const history = useHistory();
   const [ state, setState ] = useState<State>({
-    clients: [],
+    clients: []
   });
 
   useEffect(() => {
@@ -47,13 +47,13 @@ const Clients = () => {
       TE.fold<Error, ClientListResponse, Array<ClientListItem>>(
         (): T.Task<Array<ClientListItem>> => T.of([]),
         (data: ClientListResponse): T.Task<Array<ClientListItem>> =>
-          T.of(data.clients),
+          T.of(data.clients)
       ),
       T.map((clients: Array<ClientListItem>) => {
         setState({
-          clients,
+          clients
         });
-      }),
+      })
     )();
   }, []);
 
@@ -64,9 +64,9 @@ const Clients = () => {
       state.clients.map((client) => ({
         id: `${client.name.replaceAll(' ', '-')}-row`,
         click: () => history.push(`/clients/${client.id}`),
-        items: [ client.name, client.clientKey ],
+        items: [ client.name, client.clientKey ]
       })),
-    [ state.clients, history ],
+    [ state.clients, history ]
   );
 
   return (

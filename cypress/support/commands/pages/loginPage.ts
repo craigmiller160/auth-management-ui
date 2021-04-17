@@ -42,7 +42,7 @@ const validatePage = () => {
 
 const loginPage = {
   login,
-  validatePage,
+  validatePage
 };
 
 export type LoginPage = typeof loginPage;
