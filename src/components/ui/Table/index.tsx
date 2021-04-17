@@ -16,77 +16,71 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import TableContainer from '@material-ui/core/TableContainer';
-import { makeStyles } from '@material-ui/core/styles';
-import MuiTable from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import theme from '../../theme';
+import React from 'react'
+import TableContainer from '@material-ui/core/TableContainer'
+import { makeStyles } from '@material-ui/core/styles'
+import MuiTable from '@material-ui/core/Table'
+import TableHead from '@material-ui/core/TableHead'
+import TableCell from '@material-ui/core/TableCell'
+import TableBody from '@material-ui/core/TableBody'
+import TableRow from '@material-ui/core/TableRow'
+import theme from '../../theme'
 
 export interface BodyRow {
-    click: () => void;
-    items: Array<string | number | boolean>;
-    id?: string;
+  click: () => void
+  items: Array<string | number | boolean>
+  id?: string
 }
 
 interface Props {
-    header: Array<string>;
-    body: Array<BodyRow>;
-    id?: string;
+  header: Array<string>
+  body: Array<BodyRow>
+  id?: string
 }
 
 const useStyles = makeStyles({
-    TableHeader: {
-        '& th': {
-            fontWeight: 'bold'
-        }
+  TableHeader: {
+    '& th': {
+      fontWeight: 'bold',
     },
-    TableBody: {
-        '& tr': {
-            cursor: 'pointer'
-        },
-        '& tr:hover': {
-            backgroundColor: theme.palette.secondary.light
-        }
-    }
-});
+  },
+  TableBody: {
+    '& tr': {
+      cursor: 'pointer',
+    },
+    '& tr:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  },
+})
 
 const Table = (props: Props) => {
-    const classes = useStyles();
-    return (
-        <TableContainer id={ props.id }>
-            <MuiTable>
-                <TableHead className={ classes.TableHeader }>
-                    <TableRow>
-                        {
-                            props.header.map((name, index) => (
-                                <TableCell key={ name }>{ name }</TableCell>
-                            ))
-                        }
-                    </TableRow>
-                </TableHead>
-                <TableBody className={ classes.TableBody }>
-                    {
-                        props.body.map((row, index) => {
-                            const id = row.id ?? `id_${index}`;
-                            return (
-                                <TableRow id={ id } key={ id } onClick={ row.click }>
-                                    {
-                                        row.items.map((item) => (
-                                            <TableCell key={ `${item}` }>{ item }</TableCell>
-                                        ))
-                                    }
-                                </TableRow>
-                            );
-                        })
-                    }
-                </TableBody>
-            </MuiTable>
-        </TableContainer>
-    );
-};
+  const classes = useStyles()
+  return (
+    <TableContainer id={props.id}>
+      <MuiTable>
+        <TableHead className={classes.TableHeader}>
+          <TableRow>
+            {props.header.map((name, index) => (
+              <TableCell key={name}>{name}</TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody className={classes.TableBody}>
+          {props.body.map((row, index) => {
+            const id = row.id ?? `id_${index}`
+            return (
+              <TableRow id={id} key={id} onClick={row.click}>
+                {row.items.map((item) => (
+                  <TableCell key={`${item}`}>{item}</TableCell>
+                ))}
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </MuiTable>
+    </TableContainer>
+  )
+}
 
-export default Table;
+export default Table

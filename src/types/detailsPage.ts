@@ -16,14 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { match } from 'react-router';
+import { match } from 'react-router'
 
-export const NEW_ID = 'new';
+export const NEW_ID = 'new'
 
 export interface IdMatchParams {
-    id: string;
+  id: string
 }
 
 export interface IdMatchProps {
-    match: match<IdMatchParams>;
+  match: match<IdMatchParams>
 }

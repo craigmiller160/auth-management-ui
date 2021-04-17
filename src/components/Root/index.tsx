@@ -16,29 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Content from './Content';
-import { loadAuthUser } from '../../store/auth/actions';
-import { RootState } from '../../store';
-import AuthNavbar from './AuthNavbar';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Content from './Content'
+import { loadAuthUser } from '../../store/auth/actions'
+import { RootState } from '../../store'
+import AuthNavbar from './AuthNavbar'
 
 const Root = () => {
-    const dispatch = useDispatch();
-    const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
-    useEffect(() => {
-        dispatch(loadAuthUser());
-    }, [ dispatch ]);
+  const dispatch = useDispatch()
+  const hasChecked = useSelector((state: RootState) => state.auth.hasChecked)
+  useEffect(() => {
+    dispatch(loadAuthUser())
+  }, [ dispatch ])
 
-    return (
-        <div>
-            <AuthNavbar />
-            {
-                hasChecked &&
-                <Content />
-            }
-        </div>
-    );
-};
+  return (
+    <div>
+      <AuthNavbar />
+      {hasChecked && <Content />}
+    </div>
+  )
+}
 
-export default Root;
+export default Root

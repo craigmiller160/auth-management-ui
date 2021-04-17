@@ -16,22 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import { Provider as ReduxProvider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
-import store from '../store';
-import Root from './Root';
-import theme from './theme';
+import React from 'react'
+import { Provider as ReduxProvider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from '@material-ui/core/styles'
+import store from '../store'
+import Root from './Root'
+import theme from './theme'
 
 const App = () => (
-    <ReduxProvider store={ store }>
-        <BrowserRouter basename="/auth-management">
-            <ThemeProvider theme={ theme }>
-                <Root />
-            </ThemeProvider>
-        </BrowserRouter>
-    </ReduxProvider>
-);
+  <ReduxProvider store={store}>
+    <BrowserRouter basename="/auth-management">
+      <ThemeProvider theme={theme}>
+        <Root />
+      </ThemeProvider>
+    </BrowserRouter>
+  </ReduxProvider>
+)
 
-export default App;
+export default App

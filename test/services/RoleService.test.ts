@@ -16,35 +16,42 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import MockAdapter from 'axios-mock-adapter';
-import { Either } from 'fp-ts/es6/Either';
-import { mockAndValidateGraphQL, mockCsrfPreflight } from '@craigmiller160/ajax-api-fp-ts/lib/test-utils';
-import ajaxApi from '../../src/services/AjaxApi';
-import { ClientRole } from '../../src/types/client';
+import MockAdapter from 'axios-mock-adapter'
+import { Either } from 'fp-ts/es6/Either'
 import {
-    CreateRoleWrapper,
-    DeleteRoleWrapper,
-    GraphQLQueryResponse,
-    UpdateRoleWrapper
-} from '../../src/types/graphApi';
-import { createRole, deleteRole, updateRole } from '../../src/services/RoleService';
-import { Role } from '../../src/types/role';
+  mockAndValidateGraphQL,
+  mockCsrfPreflight,
+} from '@craigmiller160/ajax-api-fp-ts/lib/test-utils'
+import ajaxApi from '../../src/services/AjaxApi'
+import { ClientRole } from '../../src/types/client'
+import {
+  CreateRoleWrapper,
+  DeleteRoleWrapper,
+  GraphQLQueryResponse,
+  UpdateRoleWrapper,
+} from '../../src/types/graphApi'
+import {
+  createRole,
+  deleteRole,
+  updateRole,
+} from '../../src/services/RoleService'
+import { Role } from '../../src/types/role'
 
-const mockAjaxApi = new MockAdapter(ajaxApi.instance);
+const mockAjaxApi = new MockAdapter(ajaxApi.instance)
 
 const role: ClientRole = {
-    id: 1,
-    name: 'The Role'
-};
-const clientId = 1;
+  id: 1,
+  name: 'The Role',
+}
+const clientId = 1
 
 describe('RoleService', () => {
-    beforeEach(() => {
-        mockAjaxApi.reset();
-    });
+  beforeEach(() => {
+    mockAjaxApi.reset()
+  })
 
-    it('createRole', async () => {
-        const payload = `
+  it('createRole', async () => {
+    const payload = `
             mutation {
                 createRole(role: {
                     name: "${role.name}",
@@ -55,30 +62,30 @@ describe('RoleService', () => {
                     clientId
                 }
             }
-        `;
-        const responseData: GraphQLQueryResponse<CreateRoleWrapper> = {
-            data: {
-                createRole: {
-                    ...role,
-                    clientId
-                }
-            }
-        };
-        mockCsrfPreflight(mockAjaxApi, '/graphql');
-        mockAndValidateGraphQL({
-            mockApi: mockAjaxApi,
-            payload,
-            responseData
-        });
-        const result: Either<Error, Role> = await createRole(clientId, role)();
-        expect(result).toEqualRight({
-            ...role,
-            clientId
-        });
-    });
+        `
+    const responseData: GraphQLQueryResponse<CreateRoleWrapper> = {
+      data: {
+        createRole: {
+          ...role,
+          clientId,
+        },
+      },
+    }
+    mockCsrfPreflight(mockAjaxApi, '/graphql')
+    mockAndValidateGraphQL({
+      mockApi: mockAjaxApi,
+      payload,
+      responseData,
+    })
+    const result: Either<Error, Role> = await createRole(clientId, role)()
+    expect(result).toEqualRight({
+      ...role,
+      clientId,
+    })
+  })
 
-    it('updateRole', async () => {
-        const payload = `
+  it('updateRole', async () => {
+    const payload = `
                 mutation {
                     updateRole(roleId: ${role.id}, role: {
                         name: "${role.name}",
@@ -89,30 +96,34 @@ describe('RoleService', () => {
                         clientId
                     }
                 }
-            `;
-        const responseData: GraphQLQueryResponse<UpdateRoleWrapper> = {
-            data: {
-                updateRole: {
-                    ...role,
-                    clientId
-                }
-            }
-        };
-        mockCsrfPreflight(mockAjaxApi, '/graphql');
-        mockAndValidateGraphQL({
-            mockApi: mockAjaxApi,
-            payload,
-            responseData
-        });
-        const result: Either<Error, Role> = await updateRole(clientId, role.id, role)();
-        expect(result).toEqualRight({
-            ...role,
-            clientId
-        });
-    });
+            `
+    const responseData: GraphQLQueryResponse<UpdateRoleWrapper> = {
+      data: {
+        updateRole: {
+          ...role,
+          clientId,
+        },
+      },
+    }
+    mockCsrfPreflight(mockAjaxApi, '/graphql')
+    mockAndValidateGraphQL({
+      mockApi: mockAjaxApi,
+      payload,
+      responseData,
+    })
+    const result: Either<Error, Role> = await updateRole(
+      clientId,
+      role.id,
+      role,
+    )()
+    expect(result).toEqualRight({
+      ...role,
+      clientId,
+    })
+  })
 
-    it('deleteRole', async () => {
-        const payload = `
+  it('deleteRole', async () => {
+    const payload = `
                 mutation {
                     deleteRole(roleId: ${role.id}) {
                         id
@@ -120,25 +131,25 @@ describe('RoleService', () => {
                         clientId
                     }
                 }
-            `;
-        const responseData: GraphQLQueryResponse<DeleteRoleWrapper> = {
-            data: {
-                deleteRole: {
-                    ...role,
-                    clientId
-                }
-            }
-        };
-        mockCsrfPreflight(mockAjaxApi, '/graphql');
-        mockAndValidateGraphQL({
-            mockApi: mockAjaxApi,
-            payload,
-            responseData
-        });
-        const result: Either<Error, Role> = await deleteRole(role.id)();
-        expect(result).toEqualRight({
-            ...role,
-            clientId
-        });
-    });
-});
+            `
+    const responseData: GraphQLQueryResponse<DeleteRoleWrapper> = {
+      data: {
+        deleteRole: {
+          ...role,
+          clientId,
+        },
+      },
+    }
+    mockCsrfPreflight(mockAjaxApi, '/graphql')
+    mockAndValidateGraphQL({
+      mockApi: mockAjaxApi,
+      payload,
+      responseData,
+    })
+    const result: Either<Error, Role> = await deleteRole(role.id)()
+    expect(result).toEqualRight({
+      ...role,
+      clientId,
+    })
+  })
+})

@@ -16,15 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@craigmiller160/react-web-config/polyfills';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App';
-import './index.scss';
+import '@craigmiller160/react-web-config/polyfills'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/App'
+import './index.scss'
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
-);
+  document.getElementById('root'),
+)

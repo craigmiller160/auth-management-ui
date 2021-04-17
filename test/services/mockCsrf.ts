@@ -17,17 +17,16 @@
  */
 
 // TODO move this to ajax-api library... do it in VideoManagerClient first
-import MockAdapter from 'axios-mock-adapter';
+import MockAdapter from 'axios-mock-adapter'
 
 export const mockCsrfPreflight = (mockApi: MockAdapter) =>
-    mockApi.onOptions('/graphql')
-        .reply((config) => {
-            expect(config.headers['x-csrf-token']).toEqual('fetch');
-            return [
-                200,
-                null,
-                {
-                    'x-csrf-token': 'ABCDEFG'
-                }
-            ];
-        });
+  mockApi.onOptions('/graphql').reply((config) => {
+    expect(config.headers['x-csrf-token']).toEqual('fetch')
+    return [
+      200,
+      null,
+      {
+        'x-csrf-token': 'ABCDEFG',
+      },
+    ]
+  })
