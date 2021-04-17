@@ -1096,10 +1096,8 @@
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
 
-"@craigmiller160/react-web-config@^2.8.2":
-  version "2.8.2"
-  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/react-web-config/-/react-web-config-2.8.2.tgz#9de6a1ca696421ac30aac8c2d6f60754f4e43955"
-  integrity sha512-uDlAsQzr0hS90omvRteN6eMSUTqfA9YJC0zofBYu+MiP9DQImYk8iSJWn6iQaxGODXA3TDywq6Llo6/n3iRgcw==
+"@craigmiller160/react-web-config@file:.yalc/@craigmiller160/react-web-config":
+  version "2.9.0-beta"
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/plugin-proposal-class-properties" "^7.12.1"
