@@ -17,5 +17,5 @@
 import './commands';
 
 beforeEach(() => {
-    cy.visit('https://localhost:3000');
+	cy.visit('https://localhost:3000');
 });

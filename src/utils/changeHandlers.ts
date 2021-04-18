@@ -21,37 +21,51 @@ import { ChangeEvent } from 'react';
 export type SupportedHandledChangeTypes = string | boolean | number;
 
 export interface HandledChangeEvent {
-    name: string;
-    value: SupportedHandledChangeTypes;
+	name: string;
+	value: SupportedHandledChangeTypes;
+}
+export type ChangeHandler = (event: HandledChangeEvent) => void;
+
+const handleCheckbox = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
+	handler({
+		name: changeEvent.target.name,
+		value: changeEvent.target.checked
+	});
+};
+
+const handleNumberField = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
+	const value = changeEvent.target.value
+		? parseInt(changeEvent.target.value, 10)
+		: 0;
+	handler({
+		name: changeEvent.target.name,
+		value
+	});
+};
+
+const handleTextField = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
+	handler({
+		name: changeEvent.target.name,
+		value: changeEvent.target.value
+	});
+};
+
+export interface ChangeHandlerHolder {
+	handleCheckbox: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
+	handleNumberField: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
+	handleTextField: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const handleCheckbox = (handler: (handledEvent: HandledChangeEvent) => void) =>
-    (changeEvent: ChangeEvent<HTMLInputElement>) => {
-    handler({
-        name: changeEvent.target.name,
-        value: changeEvent.target.checked
-    });
-};
-
-const handleNumberField = (handler: (handledEvent: HandledChangeEvent) => void) =>
-    (changeEvent: ChangeEvent<HTMLInputElement>) => {
-    const value = changeEvent.target.value ? parseInt(changeEvent.target.value, 10) : 0;
-    handler({
-        name: changeEvent.target.name,
-        value
-    });
-};
-
-const handleTextField = (handler: (handledEvent: HandledChangeEvent) => void) =>
-    (changeEvent: ChangeEvent<HTMLInputElement>) => {
-    handler({
-        name: changeEvent.target.name,
-        value: changeEvent.target.value
-    });
-};
-
-export const createChangeHandler = (handler: (event: HandledChangeEvent) => void) => ({
-    handleCheckbox: handleCheckbox(handler),
-    handleNumberField: handleNumberField(handler),
-    handleTextField: handleTextField(handler)
+export const createChangeHandler = (
+	handler: ChangeHandler
+): ChangeHandlerHolder => ({
+	handleCheckbox: handleCheckbox(handler),
+	handleNumberField: handleNumberField(handler),
+	handleTextField: handleTextField(handler)
 });

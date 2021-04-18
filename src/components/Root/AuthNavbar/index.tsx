@@ -25,37 +25,37 @@ import { RootState } from '../../../store';
 import { login, logout } from '../../../services/AuthService';
 import authSlice from '../../../store/auth/slice';
 
-const AuthNavbar = () => {
-    const isAuth = useSelector(isAuthorized);
-    const dispatch = useDispatch();
-    const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
+const AuthNavbar = (): JSX.Element => {
+	const isAuth = useSelector(isAuthorized);
+	const dispatch = useDispatch();
+	const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
 
-    const items: Array<NavbarItem> = [
-        {
-            to: '/users',
-            text: 'Users'
-        },
-        {
-            to: '/clients',
-            text: 'Clients'
-        }
-    ];
+	const items: Array<NavbarItem> = [
+		{
+			to: '/users',
+			text: 'Users'
+		},
+		{
+			to: '/clients',
+			text: 'Clients'
+		}
+	];
 
-    const doLogout = async () => {
-        await logout()();
-        dispatch(authSlice.actions.setUserData(none));
-    };
+	const doLogout = async () => {
+		await logout()();
+		dispatch(authSlice.actions.setUserData(none));
+	};
 
-    return (
-        <Navbar
-            isAuth={ isAuth }
-            showAuthBtn={ hasChecked }
-            login={ () => login()() }
-            logout={ doLogout }
-            title="OAuth Management"
-            items={ items }
-        />
-    );
+	return (
+		<Navbar
+			isAuth={isAuth}
+			showAuthBtn={hasChecked}
+			login={() => login()()}
+			logout={doLogout}
+			title="OAuth Management"
+			items={items}
+		/>
+	);
 };
 
 export default AuthNavbar;

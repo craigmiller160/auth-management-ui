@@ -34,19 +34,34 @@ type AlertPage = import('./commands/pages/alertPage').AlertPage;
 type PageFunction<T> = (page: T) => void;
 
 declare namespace Cypress {
-    interface Chainable { // eslint-disable-line @typescript-eslint/no-unused-vars
-        loginPage(pageFn: PageFunction<LoginPage>): Chainable<Element>;
-        navbarPage(pageFn: PageFunction<NavbarPage>): Chainable<Element>;
-        homePage(pageFn: PageFunction<HomePage>): Chainable<Element>;
-        clientsPage(pageFn: PageFunction<ClientsPage>): Chainable<Element>;
-        clientDetailsPage(pageFn: PageFunction<ClientDetailsPage>): Chainable<Element>;
-        clientConfigPage(pageFn: PageFunction<ClientConfigPage>): Chainable<Element>;
-        clientConfigDeleteDialog(pageFn: PageFunction<ClientConfigDeleteDialog>): Chainable<Element>;
-        clientConfigRedirectUris(pageFn: PageFunction<ClientConfigRedirectUris>): Chainable<Element>;
-        clientAuthsPage(pagFn: PageFunction<ClientAuthsPage>): Chainable<Element>;
-        clientRolesPage(pageFn: PageFunction<ClientRolesPage>): Chainable<Element>;
-        clientGrantsPage(pageFn: PageFunction<ClientGrantsPage>): Chainable<Element>;
-        alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
-        doLogin(): Chainable<Element>;
-    }
+	interface Chainable {
+		// eslint-disable-line @typescript-eslint/no-unused-vars
+		loginPage(pageFn: PageFunction<LoginPage>): Chainable<Element>;
+		navbarPage(pageFn: PageFunction<NavbarPage>): Chainable<Element>;
+		homePage(pageFn: PageFunction<HomePage>): Chainable<Element>;
+		clientsPage(pageFn: PageFunction<ClientsPage>): Chainable<Element>;
+		clientDetailsPage(
+			pageFn: PageFunction<ClientDetailsPage>
+		): Chainable<Element>;
+		clientConfigPage(
+			pageFn: PageFunction<ClientConfigPage>
+		): Chainable<Element>;
+		clientConfigDeleteDialog(
+			pageFn: PageFunction<ClientConfigDeleteDialog>
+		): Chainable<Element>;
+		clientConfigRedirectUris(
+			pageFn: PageFunction<ClientConfigRedirectUris>
+		): Chainable<Element>;
+		clientAuthsPage(
+			pagFn: PageFunction<ClientAuthsPage>
+		): Chainable<Element>;
+		clientRolesPage(
+			pageFn: PageFunction<ClientRolesPage>
+		): Chainable<Element>;
+		clientGrantsPage(
+			pageFn: PageFunction<ClientGrantsPage>
+		): Chainable<Element>;
+		alertPage(pageFn: PageFunction<AlertPage>): Chainable<Element>;
+		doLogin(): Chainable<Element>;
+	}
 }

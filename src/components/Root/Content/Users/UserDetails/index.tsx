@@ -18,7 +18,11 @@
 
 import React from 'react';
 import { useRouteMatch } from 'react-router';
-import { PageHeader, TabConfig, Tabs } from '@craigmiller160/react-material-ui-common';
+import {
+	PageHeader,
+	TabConfig,
+	Tabs
+} from '@craigmiller160/react-material-ui-common';
 import UserConfig from './UserConfig';
 import UserGrants from './UserGrants';
 import UserAuths from './UserAuths';
@@ -33,36 +37,36 @@ const LABEL_CONFIG = 'Config';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-const UserDetails = () => {
-    const match = useRouteMatch<IdMatchParams>();
-    const { id } = match.params;
+const UserDetails = (): JSX.Element => {
+	const match = useRouteMatch<IdMatchParams>();
+	const { id } = match.params;
 
-    const tabs: Array<TabConfig> = [
-        {
-            label: LABEL_CONFIG,
-            path: PATH_CONFIG,
-            component: UserConfig
-        }
-    ];
-    if (id !== NEW_ID) {
-        tabs.push({
-            label: LABEL_GRANTS,
-            path: PATH_GRANTS,
-            component: UserGrants
-        });
-        tabs.push({
-            label: LABEL_AUTHS,
-            path: PATH_AUTHS,
-            component: UserAuths
-        });
-    }
+	const tabs: Array<TabConfig> = [
+		{
+			label: LABEL_CONFIG,
+			path: PATH_CONFIG,
+			component: UserConfig
+		}
+	];
+	if (id !== NEW_ID) {
+		tabs.push({
+			label: LABEL_GRANTS,
+			path: PATH_GRANTS,
+			component: UserGrants
+		});
+		tabs.push({
+			label: LABEL_AUTHS,
+			path: PATH_AUTHS,
+			component: UserAuths
+		});
+	}
 
-    return (
-        <div className="UserDetails">
-            <PageHeader title="User Details" />
-            <Tabs tabs={ tabs } />
-        </div>
-    );
+	return (
+		<div className="UserDetails">
+			<PageHeader title="User Details" />
+			<Tabs tabs={tabs} />
+		</div>
+	);
 };
 
 export default UserDetails;

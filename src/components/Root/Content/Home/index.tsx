@@ -19,10 +19,10 @@
 import React from 'react';
 import { PageHeader } from '@craigmiller160/react-material-ui-common';
 
-const Home = () => (
-    <div id="home-page">
-        <PageHeader title="Welcome to OAuth Management" />
-    </div>
+const Home = (): JSX.Element => (
+	<div id="home-page">
+		<PageHeader title="Welcome to OAuth Management" />
+	</div>
 );
 
 export default Home;

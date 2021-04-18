@@ -22,42 +22,36 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 
 interface Props {
-    id?: string;
-    name: string;
-    control: Control;
-    label: string;
-    color?: 'primary' | 'secondary' | 'default';
+	id?: string;
+	name: string;
+	control: Control;
+	label: string;
+	color?: 'primary' | 'secondary' | 'default';
 }
 
-const Checkbox = (props: Props) => {
-    const {
-        id,
-        name,
-        control,
-        color,
-        label
-    } = props;
+const Checkbox = (props: Props): JSX.Element => {
+	const { id, name, control, color, label } = props;
 
-    return (
-        <Controller
-            control={ control }
-            name={ name }
-            render={ ({ onChange, onBlur, value }) => (
-                <FormControlLabel
-                    label={ label }
-                    control={ (
-                        <MuiCheckbox
-                            id={ id }
-                            onChange={ (event) => onChange(event.target.checked) }
-                            onBlur={ onBlur }
-                            checked={ value }
-                            color={ color ?? 'primary' }
-                        />
-                    ) }
-                />
-            ) }
-        />
-    );
+	return (
+		<Controller
+			control={control}
+			name={name}
+			render={({ onChange, onBlur, value }) => (
+				<FormControlLabel
+					label={label}
+					control={
+						<MuiCheckbox
+							id={id}
+							onChange={(event) => onChange(event.target.checked)}
+							onBlur={onBlur}
+							checked={value}
+							color={color ?? 'primary'}
+						/>
+					}
+				/>
+			)}
+		/>
+	);
 };
 
 export default Checkbox;

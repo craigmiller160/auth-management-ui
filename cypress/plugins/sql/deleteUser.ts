@@ -20,27 +20,42 @@ import { Pool, QueryResult } from 'pg';
 import { safelyExecuteQuery } from './safelyExecuteQuery';
 
 interface UserIdRow {
-    id: number;
+	id: number;
 }
 
 const SELECT_USER_ID_SQL = 'SELECT id FROM dev.users WHERE email = $1';
-const DELETE_CLIENT_USER_ROLES_SQL = 'DELETE FROM dev.client_user_roles WHERE user_id = $1';
-const DELETE_CLIENT_USERS_SQL = 'DELETE FROM dev.client_users WHERE user_id = $1';
-const DELETE_REFRESH_TOKENS_SQL = 'DELETE FROM dev.refresh_tokens WHERE user_id = $1';
+const DELETE_CLIENT_USER_ROLES_SQL =
+	'DELETE FROM dev.client_user_roles WHERE user_id = $1';
+const DELETE_CLIENT_USERS_SQL =
+	'DELETE FROM dev.client_users WHERE user_id = $1';
+const DELETE_REFRESH_TOKENS_SQL =
+	'DELETE FROM dev.refresh_tokens WHERE user_id = $1';
 const DELETE_USER_SQL = 'DELETE FROM dev.users WHERE id = $1';
 
-export const deleteUser = (pool: Pool) => async (email: string) => {
-    const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
-        pool, SELECT_USER_ID_SQL, [ email ]
-    );
+export const deleteUser = (pool: Pool) => async (
+	email: string
+): Promise<void> => {
+	const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
+		pool,
+		SELECT_USER_ID_SQL,
+		[email]
+	);
 
-    if (result.rows?.[0]?.id) {
-        const userId = result.rows[0].id;
+	if (result.rows?.[0]?.id) {
+		const userId = result.rows[0].id;
 
-        await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [ userId ]);
-        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [ userId ]);
-        await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [ userId ]);
-        await safelyExecuteQuery<any>(pool, DELETE_USER_SQL, [ userId ]);
-    }
-    return null;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [
+			userId
+		]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [
+			userId
+		]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [userId]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		await safelyExecuteQuery<any>(pool, DELETE_USER_SQL, [userId]);
+	}
+	return null;
 };

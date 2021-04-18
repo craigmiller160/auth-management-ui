@@ -24,14 +24,14 @@ import store from '../store';
 import Root from './Root';
 import theme from './theme';
 
-const App = () => (
-    <ReduxProvider store={ store }>
-        <BrowserRouter basename="/auth-management">
-            <ThemeProvider theme={ theme }>
-                <Root />
-            </ThemeProvider>
-        </BrowserRouter>
-    </ReduxProvider>
+const App = (): JSX.Element => (
+	<ReduxProvider store={store}>
+		<BrowserRouter basename="/auth-management">
+			<ThemeProvider theme={theme}>
+				<Root />
+			</ThemeProvider>
+		</BrowserRouter>
+	</ReduxProvider>
 );
 
 export default App;

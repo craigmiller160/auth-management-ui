@@ -24,49 +24,41 @@ const SELECT_USERS_BTN = '#navbar-item-users';
 const SELECT_CLIENTS_BTN = '#navbar-item-clients';
 
 const validateLoggedOut = () => {
-    cy.get(SELECT_NAVBAR_TITLE)
-        .should('have.text', 'OAuth Management');
+	cy.get(SELECT_NAVBAR_TITLE).should('have.text', 'OAuth Management');
 
-    cy.get(SELECT_USERS_BTN)
-        .should('not.be.visible');
-    cy.get(SELECT_CLIENTS_BTN)
-        .should('not.be.visible');
+	cy.get(SELECT_USERS_BTN).should('not.be.visible');
+	cy.get(SELECT_CLIENTS_BTN).should('not.be.visible');
 
-    cy.get(SELECT_AUTH_BTN)
-        .should('have.text', 'Login');
+	cy.get(SELECT_AUTH_BTN).should('have.text', 'Login');
 };
 
 const validateLoggedIn = () => {
-    cy.get(SELECT_NAVBAR_TITLE)
-        .should('have.text', 'OAuth Management');
+	cy.get(SELECT_NAVBAR_TITLE).should('have.text', 'OAuth Management');
 
-    cy.get(SELECT_USERS_BTN)
-        .should('be.visible');
-    cy.get(SELECT_CLIENTS_BTN)
-        .should('be.visible');
+	cy.get(SELECT_USERS_BTN).should('be.visible');
+	cy.get(SELECT_CLIENTS_BTN).should('be.visible');
 
-    cy.get(SELECT_AUTH_BTN)
-        .should('have.text', 'Logout');
+	cy.get(SELECT_AUTH_BTN).should('have.text', 'Logout');
 };
 
 const clickAuthBtn = () => {
-    cy.get(SELECT_AUTH_BTN).click();
+	cy.get(SELECT_AUTH_BTN).click();
 };
 
 const clickUsers = () => {
-    cy.get(SELECT_USERS_BTN).click();
+	cy.get(SELECT_USERS_BTN).click();
 };
 
 const clickClients = () => {
-    cy.get(SELECT_CLIENTS_BTN).click();
+	cy.get(SELECT_CLIENTS_BTN).click();
 };
 
 const navbarPage = {
-    validateLoggedOut,
-    validateLoggedIn,
-    clickAuthBtn,
-    clickUsers,
-    clickClients
+	validateLoggedOut,
+	validateLoggedIn,
+	clickAuthBtn,
+	clickUsers,
+	clickClients
 };
 
 export type NavbarPage = typeof navbarPage;

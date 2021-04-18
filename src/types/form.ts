@@ -16,15 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Validate, ValidationRule, ValidationValueMessage } from 'react-hook-form/dist/types/validator';
+import {
+	Validate,
+	ValidationRule,
+	ValidationValueMessage
+} from 'react-hook-form/dist/types/validator';
 import { ReactText } from 'react';
 
 export interface FieldRules {
-    required?: string | boolean | ValidationValueMessage<boolean>;
-    min?: ValidationRule<ReactText>;
-    max?: ValidationRule<ReactText>;
-    maxLength?: ValidationRule<ReactText>;
-    minLength?: ValidationRule<ReactText>;
-    pattern?: ValidationRule<RegExp>;
-    validate?: Validate | Record<string, Validate>;
+	required?: string | boolean | ValidationValueMessage<boolean>;
+	min?: ValidationRule<ReactText>;
+	max?: ValidationRule<ReactText>;
+	maxLength?: ValidationRule<ReactText>;
+	minLength?: ValidationRule<ReactText>;
+	pattern?: ValidationRule<RegExp>;
+	validate?: Validate | Record<string, Validate>;
 }

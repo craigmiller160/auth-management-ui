@@ -23,22 +23,19 @@ import { loadAuthUser } from '../../store/auth/actions';
 import { RootState } from '../../store';
 import AuthNavbar from './AuthNavbar';
 
-const Root = () => {
-    const dispatch = useDispatch();
-    const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
-    useEffect(() => {
-        dispatch(loadAuthUser());
-    }, [ dispatch ]);
+const Root = (): JSX.Element => {
+	const dispatch = useDispatch();
+	const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
+	useEffect(() => {
+		dispatch(loadAuthUser());
+	}, [dispatch]);
 
-    return (
-        <div>
-            <AuthNavbar />
-            {
-                hasChecked &&
-                <Content />
-            }
-        </div>
-    );
+	return (
+		<div>
+			<AuthNavbar />
+			{hasChecked && <Content />}
+		</div>
+	);
 };
 
 export default Root;

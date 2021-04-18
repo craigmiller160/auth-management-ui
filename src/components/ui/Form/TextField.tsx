@@ -22,62 +22,62 @@ import MuiTextField from '@material-ui/core/TextField';
 import { FieldRules } from '../../../types/form';
 
 interface Props {
-    id?: string;
-    name: string;
-    control: Control;
-    label: string;
-    className?: string;
-    error?: FieldError;
-    rules?: FieldRules;
-    type?: 'text' | 'number' | 'password';
-    disabled?: boolean;
-    transform?: (value: string) => any;
-    placeholder?: string;
+	id?: string;
+	name: string;
+	control: Control;
+	label: string;
+	className?: string;
+	error?: FieldError;
+	rules?: FieldRules;
+	type?: 'text' | 'number' | 'password';
+	disabled?: boolean;
+	transform?: (value: string) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
+	placeholder?: string;
 }
 
-const TextField = (props: Props) => {
-    const {
-        id,
-        name,
-        control,
-        className,
-        label,
-        error,
-        rules,
-        type,
-        disabled,
-        transform,
-        placeholder
-    } = props;
+const TextField = (props: Props): JSX.Element => {
+	const {
+		id,
+		name,
+		control,
+		className,
+		label,
+		error,
+		rules,
+		type,
+		disabled,
+		transform,
+		placeholder
+	} = props;
 
-    return (
-        <Controller
-            control={ control }
-            name={ name }
-            rules={ rules }
-            render={ ({ onChange, onBlur, value }) => (
-                <MuiTextField
-                    id={ id }
-                    type={ type }
-                    className={ className }
-                    label={ label }
-                    placeholder={ placeholder }
-                    onChange={ (event) => {
-                        if (transform) {
-                            onChange(transform(event.target.value));
-                        } else {
-                            onChange(event.target.value);
-                        }
-                    } }
-                    onBlur={ onBlur }
-                    value={ value }
-                    error={ !!error }
-                    helperText={ error?.message ?? '' }
-                    disabled={ disabled }
-                />
-            ) }
-        />
-    );
+	return (
+		<Controller
+			control={control}
+			name={name}
+			rules={rules}
+			render={({ onChange, onBlur, value }) => (
+				<MuiTextField
+					id={id}
+					type={type}
+					className={className}
+					label={label}
+					placeholder={placeholder}
+					onChange={(event) => {
+						if (transform) {
+							onChange(transform(event.target.value));
+						} else {
+							onChange(event.target.value);
+						}
+					}}
+					onBlur={onBlur}
+					value={value}
+					error={!!error}
+					helperText={error?.message ?? ''}
+					disabled={disabled}
+				/>
+			)}
+		/>
+	);
 };
 
 export default TextField;

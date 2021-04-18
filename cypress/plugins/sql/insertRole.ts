@@ -20,18 +20,19 @@ import { Pool } from 'pg';
 import { safelyExecuteQuery } from './safelyExecuteQuery';
 
 export interface InsertRole {
-    name: string;
-    clientId: number;
+	name: string;
+	clientId: number;
 }
 
-const INSERT_ROLE_SQL = 'INSERT INTO dev.roles (name, client_id) VALUES ($1,$2)';
+const INSERT_ROLE_SQL =
+	'INSERT INTO dev.roles (name, client_id) VALUES ($1,$2)';
 
-export const insertRole = (pool: Pool) => async (role: InsertRole) => {
-    const insertRoleParams = [
-        role.name,
-        role.clientId
-    ];
+export const insertRole = (pool: Pool) => async (
+	role: InsertRole
+): Promise<void> => {
+	const insertRoleParams = [role.name, role.clientId];
 
-    await safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, insertRoleParams);
-    return null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	await safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, insertRoleParams);
+	return null;
 };

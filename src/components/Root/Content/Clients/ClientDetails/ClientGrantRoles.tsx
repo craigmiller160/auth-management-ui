@@ -29,131 +29,128 @@ import { ClientRole, ClientUser } from '../../../../../types/client';
 import SelectDialog from '../../../../ui/Dialog/SelectDialog';
 
 interface Props {
-    selectedUser: ClientUser;
-    removeRole: (roleId: number) => void;
-    saveAddRole: (roleId: number) => void;
-    allRoles: Array<ClientRole>;
+	selectedUser: ClientUser;
+	removeRole: (roleId: number) => void;
+	saveAddRole: (roleId: number) => void;
+	allRoles: Array<ClientRole>;
 }
 
 interface State {
-    showRoleDialog: boolean;
-    showRemoveDialog: boolean;
-    roleToRemoveId: number;
+	showRoleDialog: boolean;
+	showRemoveDialog: boolean;
+	roleToRemoveId: number;
 }
 
-const ClientGrantRoles = (props: Props) => {
-    const {
-        selectedUser,
-        removeRole,
-        saveAddRole,
-        allRoles
-    } = props;
+const ClientGrantRoles = (props: Props): JSX.Element => {
+	const { selectedUser, removeRole, saveAddRole, allRoles } = props;
 
-    const [ state, setState ] = useImmer<State>({
-        showRoleDialog: false,
-        showRemoveDialog: false,
-        roleToRemoveId: 0
-    });
+	const [state, setState] = useImmer<State>({
+		showRoleDialog: false,
+		showRemoveDialog: false,
+		roleToRemoveId: 0
+	});
 
-    const doSaveAddRole = (selected: SelectOption<number>) => {
-        setState((draft) => {
-            draft.showRoleDialog = false;
-        });
-        saveAddRole(selected.value);
-    };
+	const doSaveAddRole = (selected: SelectOption<number>) => {
+		setState((draft) => {
+			draft.showRoleDialog = false;
+		});
+		saveAddRole(selected.value);
+	};
 
-    const showRemoveDialog = (roleId: number) =>
-        setState((draft) => {
-            draft.roleToRemoveId = roleId;
-            draft.showRemoveDialog = true;
-        });
+	const showRemoveDialog = (roleId: number) =>
+		setState((draft) => {
+			draft.roleToRemoveId = roleId;
+			draft.showRemoveDialog = true;
+		});
 
-    const roleItems: Array<Item> = selectedUser.roles
-        .map((role) => ({
-            uuid: nanoid(),
-            avatar: () => <AssignIcon />,
-            text: {
-                primary: role.name
-            },
-            secondaryActions: [
-                {
-                    uuid: nanoid(),
-                    text: 'Remove',
-                    click: () => showRemoveDialog(role.id)
-                }
-            ]
-        }));
+	const roleItems: Array<Item> = selectedUser.roles.map((role) => ({
+		uuid: nanoid(),
+		avatar: () => <AssignIcon />,
+		text: {
+			primary: role.name
+		},
+		secondaryActions: [
+			{
+				uuid: nanoid(),
+				text: 'Remove',
+				click: () => showRemoveDialog(role.id)
+			}
+		]
+	}));
 
-    const roleOptions: Array<SelectOption<number>> = allRoles
-        .filter((role) => {
-            const index = selectedUser.roles.findIndex((uRole) => uRole.id === role.id);
-            return index === -1;
-        })
-        .map((role) => ({
-            value: role.id,
-            label: role.name
-        }));
+	const roleOptions: Array<SelectOption<number>> = allRoles
+		.filter((role) => {
+			const index = selectedUser.roles.findIndex(
+				(uRole) => uRole.id === role.id
+			);
+			return index === -1;
+		})
+		.map((role) => ({
+			value: role.id,
+			label: role.name
+		}));
 
-    const doRemoveRole = () => {
-        setState((draft) => {
-            draft.showRemoveDialog = false;
-        });
-        removeRole(state.roleToRemoveId);
-    };
+	const doRemoveRole = () => {
+		setState((draft) => {
+			draft.showRemoveDialog = false;
+		});
+		removeRole(state.roleToRemoveId);
+	};
 
-    return (
-        <>
-            {
-                roleItems.length > 0 &&
-                <List
-                    id="client-grant-roles-list"
-                    items={ roleItems }
-                />
-            }
-            {
-                roleItems.length === 0 &&
-                <Typography
-                    id="no-client-roles-msg"
-                    className="no-items"
-                    variant="body1"
-                >
-                    No Roles
-                </Typography>
-            }
-            <Button
-                id="add-client-role-btn"
-                variant="contained"
-                color="primary"
-                onClick={ () => setState((draft) => {
-                    draft.showRoleDialog = true;
-                }) }
-                disabled={ roleOptions.length === 0 }
-            >
-                Add Role
-            </Button>
-            <SelectDialog
-                id="client-role-dialog"
-                label="Role"
-                open={ state.showRoleDialog }
-                title="Add Role"
-                onSelect={ doSaveAddRole }
-                onCancel={ () => setState((draft) => {
-                    draft.showRoleDialog = false;
-                }) }
-                options={ roleOptions }
-            />
-            <ConfirmDialog
-                id="remove-client-role-dialog"
-                open={ state.showRemoveDialog }
-                title="Remove Role"
-                message="Are you sure you want to remove this role?"
-                onConfirm={ doRemoveRole }
-                onCancel={ () => setState((draft) => {
-                    draft.showRemoveDialog = false;
-                }) }
-            />
-        </>
-    );
+	return (
+		<>
+			{roleItems.length > 0 && (
+				<List id="client-grant-roles-list" items={roleItems} />
+			)}
+			{roleItems.length === 0 && (
+				<Typography
+					id="no-client-roles-msg"
+					className="no-items"
+					variant="body1"
+				>
+					No Roles
+				</Typography>
+			)}
+			<Button
+				id="add-client-role-btn"
+				variant="contained"
+				color="primary"
+				onClick={() =>
+					setState((draft) => {
+						draft.showRoleDialog = true;
+					})
+				}
+				disabled={roleOptions.length === 0}
+			>
+				Add Role
+			</Button>
+			<SelectDialog
+				id="client-role-dialog"
+				label="Role"
+				open={state.showRoleDialog}
+				title="Add Role"
+				onSelect={doSaveAddRole}
+				onCancel={() =>
+					setState((draft) => {
+						draft.showRoleDialog = false;
+					})
+				}
+				options={roleOptions}
+			/>
+			<ConfirmDialog
+				id="remove-client-role-dialog"
+				open={state.showRemoveDialog}
+				title="Remove Role"
+				message="Are you sure you want to remove this role?"
+				onConfirm={doRemoveRole}
+				onCancel={() =>
+					setState((draft) => {
+						draft.showRemoveDialog = false;
+					})
+				}
+			/>
+		</>
+	);
 };
 
 export default ClientGrantRoles;

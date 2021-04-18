@@ -21,38 +21,38 @@ import createPage from '../createPage';
 const SELECT_DELETE_DIALOG = '#delete-client-dialog';
 const SELECT_DELETE_DIALOG_TITLE = '#delete-client-dialog h2';
 const SELECT_DELETE_DIALOG_BODY = '#delete-client-dialog p';
-const SELECT_DELETE_DIALOG_CONFIRM = '#delete-client-dialog #delete-client-dialog-btn-0';
-const SELECT_DELETE_DIALOG_CANCEL = '#delete-client-dialog #delete-client-dialog-btn-1';
+const SELECT_DELETE_DIALOG_CONFIRM =
+	'#delete-client-dialog #delete-client-dialog-btn-0';
+const SELECT_DELETE_DIALOG_CANCEL =
+	'#delete-client-dialog #delete-client-dialog-btn-1';
 
 const validateDeleteDialog = (showDialog: boolean) => {
-    if (showDialog) {
-        cy.get(SELECT_DELETE_DIALOG_TITLE)
-            .should('have.text', 'Delete Client');
-        cy.get(SELECT_DELETE_DIALOG_BODY)
-            .should('have.text', 'Are you sure you want to delete this client?');
+	if (showDialog) {
+		cy.get(SELECT_DELETE_DIALOG_TITLE).should('have.text', 'Delete Client');
+		cy.get(SELECT_DELETE_DIALOG_BODY).should(
+			'have.text',
+			'Are you sure you want to delete this client?'
+		);
 
-        cy.get(SELECT_DELETE_DIALOG_CONFIRM)
-            .should('have.text', 'Confirm');
-        cy.get(SELECT_DELETE_DIALOG_CANCEL)
-            .should('have.text', 'Cancel');
-    } else {
-        cy.get(SELECT_DELETE_DIALOG)
-            .should('not.exist');
-    }
+		cy.get(SELECT_DELETE_DIALOG_CONFIRM).should('have.text', 'Confirm');
+		cy.get(SELECT_DELETE_DIALOG_CANCEL).should('have.text', 'Cancel');
+	} else {
+		cy.get(SELECT_DELETE_DIALOG).should('not.exist');
+	}
 };
 
 const clickDeleteConfirm = () => {
-    cy.get(SELECT_DELETE_DIALOG_CONFIRM).click();
+	cy.get(SELECT_DELETE_DIALOG_CONFIRM).click();
 };
 
 const clickDeleteCancel = () => {
-    cy.get(SELECT_DELETE_DIALOG_CANCEL).click();
+	cy.get(SELECT_DELETE_DIALOG_CANCEL).click();
 };
 
 const clientConfigDeleteDialog = {
-    validateDeleteDialog,
-    clickDeleteConfirm,
-    clickDeleteCancel
+	validateDeleteDialog,
+	clickDeleteConfirm,
+	clickDeleteCancel
 };
 
 export type ClientConfigDeleteDialog = typeof clientConfigDeleteDialog;

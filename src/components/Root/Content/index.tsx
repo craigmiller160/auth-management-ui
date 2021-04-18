@@ -31,72 +31,60 @@ import './Content.scss';
 import UserDetails from './Users/UserDetails';
 
 interface RuleProps {
-    isAuth: boolean;
+	isAuth: boolean;
 }
 
-const Content = () => {
-    const isAuth = useSelector(isAuthorized);
+const Content = (): JSX.Element => {
+	const isAuth = useSelector(isAuthorized);
 
-    const isAuthRule: Rule<RuleProps> = {
-        allow: (ruleProps?: RuleProps) => ruleProps?.isAuth ?? false,
-        redirect: '/'
-    };
+	const isAuthRule: Rule<RuleProps> = {
+		allow: (ruleProps?: RuleProps) => ruleProps?.isAuth ?? false,
+		redirect: '/'
+	};
 
-    return (
-        <Container className="Content">
-            <ReduxAlert id="global-alert" />
-            <Switch>
-                <ProtectedRoute
-                    path="/clients"
-                    exact
-                    component={ Clients }
-                    ruleProps={ {
-                        isAuth
-                    } }
-                    rules={ [
-                        isAuthRule
-                    ] }
-                />
-                <ProtectedRoute
-                    path="/clients/:id"
-                    component={ ClientDetails }
-                    ruleProps={ {
-                        isAuth
-                    } }
-                    rules={ [
-                        isAuthRule
-                    ] }
-                />
-                <ProtectedRoute
-                    path="/users"
-                    component={ Users }
-                    exact
-                    ruleProps={ {
-                        isAuth
-                    } }
-                    rules={ [
-                        isAuthRule
-                    ] }
-                />
-                <ProtectedRoute
-                    path="/users/:id"
-                    component={ UserDetails }
-                    ruleProps={ {
-                        isAuth
-                    } }
-                    rules={ [
-                        isAuthRule
-                    ] }
-                />
-                <Route
-                    path="/"
-                    exact
-                    component={ Home }
-                />
-                <Redirect to="/" />
-            </Switch>
-        </Container>
-    );
+	return (
+		<Container className="Content">
+			<ReduxAlert id="global-alert" />
+			<Switch>
+				<ProtectedRoute
+					path="/clients"
+					exact
+					component={Clients}
+					ruleProps={{
+						isAuth
+					}}
+					rules={[isAuthRule]}
+				/>
+				<ProtectedRoute
+					path="/clients/:id"
+					component={ClientDetails}
+					ruleProps={{
+						isAuth
+					}}
+					rules={[isAuthRule]}
+				/>
+				<ProtectedRoute
+					path="/users"
+					component={Users}
+					exact
+					ruleProps={{
+						isAuth
+					}}
+					rules={[isAuthRule]}
+				/>
+				<ProtectedRoute
+					path="/users/:id"
+					component={UserDetails}
+					ruleProps={{
+						isAuth
+					}}
+					rules={[isAuthRule]}
+				/>
+				<Route path="/" exact component={Home} />
+				<Redirect to="/" />
+			</Switch>
+		</Container>
+	);
 };
 
 export default Content;

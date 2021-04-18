@@ -30,108 +30,108 @@ import { nanoid } from 'nanoid';
 import { IdMatchProps, NEW_ID } from '../../../../../types/detailsPage';
 import { formatApiDateTime } from '../../../../../utils/date';
 import List, { Item } from '../../../../ui/List';
-import { UserAuthDetails, UserAuthDetailsList } from '../../../../../types/user';
-import { getAllUserAuthDetails, revokeUserAuthAccess } from '../../../../../services/UserService';
+import {
+	UserAuthDetails,
+	UserAuthDetailsList
+} from '../../../../../types/user';
+import {
+	getAllUserAuthDetails,
+	revokeUserAuthAccess
+} from '../../../../../services/UserService';
 
 interface State {
-    userId: number;
-    userAuths: UserAuthDetailsList;
+	userId: number;
+	userAuths: UserAuthDetailsList;
 }
-interface Props extends IdMatchProps {}
+type Props = IdMatchProps;
 
 const defaultUserAuths: UserAuthDetailsList = {
-    email: '',
-    authDetails: []
+	email: '',
+	authDetails: []
 };
 
-const UserAuths = (props: Props) => {
-    const { id } = props.match.params;
-    const [ state, setState ] = useImmer<State>({
-        userId: id !== NEW_ID ? parseInt(id, 10) : 0,
-        userAuths: defaultUserAuths
-    });
+const UserAuths = (props: Props): JSX.Element => {
+	const { id } = props.match.params;
+	const [state, setState] = useImmer<State>({
+		userId: id !== NEW_ID ? parseInt(id, 10) : 0,
+		userAuths: defaultUserAuths
+	});
 
-    useEffect(() => {
-        const action = () =>
-            pipe(
-                getAllUserAuthDetails(state.userId),
-                TE.fold(
-                    (): T.Task<UserAuthDetailsList> => T.of(defaultUserAuths),
-                    (userAuths: UserAuthDetailsList) => T.of(userAuths)
-                ),
-                T.map((userAuths: UserAuthDetailsList) =>
-                    setState((draft) => {
-                        draft.userAuths = userAuths;
-                    }))
-            )();
+	useEffect(() => {
+		const action = () =>
+			pipe(
+				getAllUserAuthDetails(state.userId),
+				TE.fold(
+					(): T.Task<UserAuthDetailsList> => T.of(defaultUserAuths),
+					(userAuths: UserAuthDetailsList) => T.of(userAuths)
+				),
+				T.map((userAuths: UserAuthDetailsList) =>
+					setState((draft) => {
+						draft.userAuths = userAuths;
+					})
+				)
+			)();
 
-        action();
-    }, [ setState, state.userId ]);
+		action();
+	}, [setState, state.userId]);
 
-    const doRevoke = (clientId: number) => {
-        pipe(
-            revokeUserAuthAccess(state.userId, clientId),
-            TE.map(() =>
-                state.userAuths.authDetails
-                    .filter((auth) => auth.clientId !== clientId)),
-            TE.fold(
-                (): T.Task<UserAuthDetails[]> => T.of(state.userAuths.authDetails),
-                (authDetails: UserAuthDetails[]): T.Task<UserAuthDetails[]> => T.of(authDetails)
-            ),
-            T.map((authDetails: UserAuthDetails[]) =>
-                setState((draft) => {
-                    draft.userAuths.authDetails = authDetails;
-                }))
-        )();
-    };
+	const doRevoke = (clientId: number) => {
+		pipe(
+			revokeUserAuthAccess(state.userId, clientId),
+			TE.map(() =>
+				state.userAuths.authDetails.filter(
+					(auth) => auth.clientId !== clientId
+				)
+			),
+			TE.fold(
+				(): T.Task<UserAuthDetails[]> =>
+					T.of(state.userAuths.authDetails),
+				(authDetails: UserAuthDetails[]): T.Task<UserAuthDetails[]> =>
+					T.of(authDetails)
+			),
+			T.map((authDetails: UserAuthDetails[]) =>
+				setState((draft) => {
+					draft.userAuths.authDetails = authDetails;
+				})
+			)
+		)();
+	};
 
-    const items: Array<Item> = state.userAuths.authDetails
-        .map((auth) => ({
-            uuid: nanoid(),
-            avatar: () => <LockOpen />,
-            text: {
-                primary: `Client: ${auth.clientName}`,
-                secondary: `Last Authenticated: ${formatApiDateTime(auth.lastAuthenticated)}`
-            },
-            secondaryActions: [
-                {
-                    uuid: nanoid(),
-                    text: 'Revoke',
-                    click: () => doRevoke(auth.clientId)
-                }
-            ]
-        }));
+	const items: Array<Item> = state.userAuths.authDetails.map((auth) => ({
+		uuid: nanoid(),
+		avatar: () => <LockOpen />,
+		text: {
+			primary: `Client: ${auth.clientName}`,
+			secondary: `Last Authenticated: ${formatApiDateTime(
+				auth.lastAuthenticated
+			)}`
+		},
+		secondaryActions: [
+			{
+				uuid: nanoid(),
+				text: 'Revoke',
+				click: () => doRevoke(auth.clientId)
+			}
+		]
+	}));
 
-    return (
-        <div className="UserAuths">
-            <SectionHeader
-                title={ state.userAuths.email }
-                noDivider
-            />
-            {
-                items.length > 0 &&
-                <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                >
-                    <Grid item md={ 6 }>
-                        <List items={ items } />
-                    </Grid>
-                </Grid>
-            }
-            {
-                items.length === 0 &&
-                <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                >
-                    <Typography variant="body1">Not Authenticated</Typography>
-                </Grid>
-            }
-        </div>
-    );
+	return (
+		<div className="UserAuths">
+			<SectionHeader title={state.userAuths.email} noDivider />
+			{items.length > 0 && (
+				<Grid container direction="row" justify="center">
+					<Grid item md={6}>
+						<List items={items} />
+					</Grid>
+				</Grid>
+			)}
+			{items.length === 0 && (
+				<Grid container direction="row" justify="center">
+					<Typography variant="body1">Not Authenticated</Typography>
+				</Grid>
+			)}
+		</div>
+	);
 };
 
 export default UserAuths;

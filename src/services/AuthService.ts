@@ -24,35 +24,35 @@ import { AuthCodeLogin, AuthUser } from '../types/auth';
 import ajaxApi from './AjaxApi';
 
 export const logout = (): TE.TaskEither<Error, AxiosResponse<void>> =>
-    ajaxApi.get<void>({
-        uri: '/oauth/logout',
-        errorMsg: 'Error logging out'
-    });
+	ajaxApi.get<void>({
+		uri: '/oauth/logout',
+		errorMsg: 'Error logging out'
+	});
 
 export const login = (): TE.TaskEither<Error, AuthCodeLogin> =>
-    pipe(
-        ajaxApi.post<void, AuthCodeLogin>({
-            uri: '/oauth/authcode/login',
-            errorMsg: 'Error getting login URL'
-        }),
-        TE.map((res: AxiosResponse<AuthCodeLogin>) => res.data),
-        TE.map((loginData: AuthCodeLogin) => {
-            window.location.assign(loginData.url);
-            return loginData;
-        })
-    );
+	pipe(
+		ajaxApi.post<void, AuthCodeLogin>({
+			uri: '/oauth/authcode/login',
+			errorMsg: 'Error getting login URL'
+		}),
+		TE.map((res: AxiosResponse<AuthCodeLogin>) => res.data),
+		TE.map((loginData: AuthCodeLogin) => {
+			window.location.assign(loginData.url);
+			return loginData;
+		})
+	);
 
 export const getAuthUser = (): TE.TaskEither<Error, AuthUser> =>
-    pipe(
-        ajaxApi.get<AuthUser>({
-            uri: '/oauth/user',
-            errorMsg: 'Error getting authenticated user',
-            suppressError: (ex: Error) => {
-                if (isAxiosError(ex)) {
-                    return ex.response?.status === 401;
-                }
-                return false;
-            }
-        }),
-        TE.map((res: AxiosResponse<AuthUser>) => res.data)
-    );
+	pipe(
+		ajaxApi.get<AuthUser>({
+			uri: '/oauth/user',
+			errorMsg: 'Error getting authenticated user',
+			suppressError: (ex: Error) => {
+				if (isAxiosError(ex)) {
+					return ex.response?.status === 401;
+				}
+				return false;
+			}
+		}),
+		TE.map((res: AxiosResponse<AuthUser>) => res.data)
+	);
