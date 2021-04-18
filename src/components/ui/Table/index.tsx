@@ -54,14 +54,14 @@ const useStyles = makeStyles({
 	}
 });
 
-const Table = (props: Props) => {
+const Table = (props: Props): JSX.Element => {
 	const classes = useStyles();
 	return (
 		<TableContainer id={props.id}>
 			<MuiTable>
 				<TableHead className={classes.TableHeader}>
 					<TableRow>
-						{props.header.map((name, index) => (
+						{props.header.map((name) => (
 							<TableCell key={name}>{name}</TableCell>
 						))}
 					</TableRow>

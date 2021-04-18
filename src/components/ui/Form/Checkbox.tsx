@@ -29,7 +29,7 @@ interface Props {
 	color?: 'primary' | 'secondary' | 'default';
 }
 
-const Checkbox = (props: Props) => {
+const Checkbox = (props: Props): JSX.Element => {
 	const { id, name, control, color, label } = props;
 
 	return (

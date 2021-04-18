@@ -7,7 +7,12 @@ import store from '../store';
 import { ErrorResponse } from '../types/api';
 import authSlice from '../store/auth/slice';
 
-const isErrorResponse = (data?: any): data is ErrorResponse =>
+interface MaybeErrorResponse {
+	status?: number;
+	message?: string;
+}
+
+const isErrorResponse = (data?: MaybeErrorResponse): data is ErrorResponse =>
 	data?.status !== undefined && data?.message !== undefined;
 
 const getFullErrorResponseMessage = (
@@ -37,12 +42,14 @@ const ajaxErrorHandler: DefaultErrorHandler = (
 ): void => {
 	// TODO add a check for dev/test env and if so, log the error
 	if (status > 0 && (error as AxiosError).response) {
-		const response: AxiosResponse = (error as AxiosError).response!;
-		const fullMessage = getFullErrorResponseMessage(
-			requestMessage ?? '',
-			response
-		);
-		store.dispatch(showErrorReduxAlert(fullMessage));
+		const response: AxiosResponse | undefined = (error as AxiosError).response;
+		if (response) {
+			const fullMessage = getFullErrorResponseMessage(
+				requestMessage ?? '',
+				response
+			);
+			store.dispatch(showErrorReduxAlert(fullMessage));
+		}
 
 		if (status === 401) {
 			store.dispatch(authSlice.actions.setUserData(none));

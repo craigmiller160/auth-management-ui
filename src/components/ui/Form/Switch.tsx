@@ -30,7 +30,7 @@ interface Props {
 	className?: string;
 }
 
-const Switch = (props: Props) => {
+const Switch = (props: Props): JSX.Element => {
 	const { id, className, name, control, color, label } = props;
 
 	const labelClassName = `${className ?? ''} switch-label`;

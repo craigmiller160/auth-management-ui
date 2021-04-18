@@ -31,11 +31,11 @@ interface Props {
 	rules?: FieldRules;
 	type?: 'text' | 'number' | 'password';
 	disabled?: boolean;
-	transform?: (value: string) => any;
+	transform?: (value: string) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
 	placeholder?: string;
 }
 
-const TextField = (props: Props) => {
+const TextField = (props: Props): JSX.Element => {
 	const {
 		id,
 		name,

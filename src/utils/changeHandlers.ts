@@ -26,18 +26,18 @@ export interface HandledChangeEvent {
 }
 export type ChangeHandler = (event: HandledChangeEvent) => void;
 
-const handleCheckbox = (
-	handler: ChangeHandler
-) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
+const handleCheckbox = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
 	handler({
 		name: changeEvent.target.name,
 		value: changeEvent.target.checked
 	});
 };
 
-const handleNumberField = (
-	handler: ChangeHandler
-) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
+const handleNumberField = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
 	const value = changeEvent.target.value
 		? parseInt(changeEvent.target.value, 10)
 		: 0;
@@ -47,9 +47,9 @@ const handleNumberField = (
 	});
 };
 
-const handleTextField = (
-	handler: ChangeHandler
-) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
+const handleTextField = (handler: ChangeHandler) => (
+	changeEvent: ChangeEvent<HTMLInputElement>
+) => {
 	handler({
 		name: changeEvent.target.name,
 		value: changeEvent.target.value
@@ -57,9 +57,9 @@ const handleTextField = (
 };
 
 export interface ChangeHandlerHolder {
-	handleCheckbox: (changeEvent: ChangeEvent<HTMLInputElement>) => void,
-	handleNumberField: (changeEvent: ChangeEvent<HTMLInputElement>) => void,
-	handleTextField: (changeEvent: ChangeEvent<HTMLInputElement>) => void
+	handleCheckbox: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
+	handleNumberField: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
+	handleTextField: (changeEvent: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const createChangeHandler = (

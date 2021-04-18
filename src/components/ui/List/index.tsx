@@ -69,7 +69,7 @@ const useStyles = makeStyles({
 	}
 });
 
-const List = (props: Props) => {
+const List = (props: Props): JSX.Element => {
 	const classes = useStyles();
 	const { id, items, columnLayout = false } = props;
 

@@ -39,11 +39,13 @@ interface Props<T> {
 	options: Array<SelectOption<T>>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const defaultForm: SelectForm<any> = {
 	value: null
 };
 
-const SelectDialog = <T extends any>(props: Props<T>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SelectDialog = <T extends any>(props: Props<T>): JSX.Element => {
 	const { id, open, title, onSelect, onCancel, options, label } = props;
 
 	const { control, handleSubmit, errors, reset } = useForm<SelectForm<T>>({
