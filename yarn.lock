@@ -1060,6 +1060,16 @@
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/jest-matchers-common/-/jest-matchers-common-1.0.2.tgz#5acb424791ded2af61e17a31f4dc11b2c2917fa0"
   integrity sha512-2I+hzeyfaFogfoQuw9nCaodnlAxKolvKDgkBVu424njW2I6d65pUVsn4TlzUgKSzX3MCWATxNOuFEz7SEEih6w==
 
+"@craigmiller160/react-hook-form-material-ui@^1.1.2":
+  version "1.1.2"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/react-hook-form-material-ui/-/react-hook-form-material-ui-1.1.2.tgz#1e7c5c03fe99e296874a87a7e4c3b7fe18a8435c"
+  integrity sha512-ulv4tZOaZ20L9O5lsOd2PMBkS6v2JAO+tvJRNIxYzCmt46eKM5JI3GdiV9XbuYkvDM1tGYFm489fvHFlAKU5Pg==
+  dependencies:
+    "@material-ui/core" "^4.11.3"
+    "@material-ui/lab" "^4.0.0-alpha.57"
+    react "^17.0.1"
+    react-hook-form "^6.14.2"
+
 "@craigmiller160/react-material-ui-common@^1.2.2":
   version "1.2.2"
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/react-material-ui-common/-/react-material-ui-common-1.2.2.tgz#91f6502355ac78b89489c6a30c2f4c6e1dd3fc52"
