@@ -63,7 +63,7 @@ interface State {
 	selectedUser: Option<ClientUser>;
 }
 
-const ClientGrants = (props: Props) => {
+const ClientGrants = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 
 	const [state, setState] = useImmer<State>({
@@ -91,7 +91,7 @@ const ClientGrants = (props: Props) => {
 						return fullClientDetails.users;
 					}
 				),
-				TE.getOrElse((ex: Error): T.Task<Array<ClientUser>> => T.of([]))
+				TE.getOrElse((): T.Task<Array<ClientUser>> => T.of([]))
 			),
 		[state.clientId, setState]
 	);

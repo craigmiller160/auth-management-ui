@@ -34,7 +34,7 @@ interface RuleProps {
 	isAuth: boolean;
 }
 
-const Content = () => {
+const Content = (): JSX.Element => {
 	const isAuth = useSelector(isAuthorized);
 
 	const isAuthRule: Rule<RuleProps> = {

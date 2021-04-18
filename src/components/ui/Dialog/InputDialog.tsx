@@ -37,12 +37,12 @@ interface Props {
 	onSave: (value: string) => void;
 	label: string;
 	initialValue?: string;
-	transform?: (value: string) => any;
+	transform?: (value: string) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
 	prefix?: string;
 	successBtnLabel?: string;
 }
 
-const InputDialog = (props: Props) => {
+const InputDialog = (props: Props): JSX.Element => {
 	const {
 		id,
 		open,

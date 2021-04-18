@@ -35,7 +35,7 @@ interface State {
 
 const header = ['Name', 'Key'];
 
-const Clients = () => {
+const Clients = (): JSX.Element => {
 	const history = useHistory();
 	const [state, setState] = useState<State>({
 		clients: []

@@ -37,7 +37,7 @@ const LABEL_CONFIG = 'Config';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-const UserDetails = () => {
+const UserDetails = (): JSX.Element => {
 	const match = useRouteMatch<IdMatchParams>();
 	const { id } = match.params;
 

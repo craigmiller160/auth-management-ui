@@ -50,7 +50,7 @@ const defaultUserAuths: UserAuthDetailsList = {
 	authDetails: []
 };
 
-const UserAuths = (props: Props) => {
+const UserAuths = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const [state, setState] = useImmer<State>({
 		userId: id !== NEW_ID ? parseInt(id, 10) : 0,

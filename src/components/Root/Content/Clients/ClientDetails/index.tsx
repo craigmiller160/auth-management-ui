@@ -40,7 +40,7 @@ const LABEL_ROLES = 'Roles';
 const LABEL_GRANTS = 'Grants';
 const LABEL_AUTHS = 'Authentications';
 
-const ClientDetails = () => {
+const ClientDetails = (): JSX.Element => {
 	const match = useRouteMatch<IdMatchParams>();
 	const { id } = match.params;
 

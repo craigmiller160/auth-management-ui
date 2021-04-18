@@ -41,7 +41,7 @@ interface State {
 	roleToRemoveId: number;
 }
 
-const ClientGrantRoles = (props: Props) => {
+const ClientGrantRoles = (props: Props): JSX.Element => {
 	const { selectedUser, removeRole, saveAddRole, allRoles } = props;
 
 	const [state, setState] = useImmer<State>({

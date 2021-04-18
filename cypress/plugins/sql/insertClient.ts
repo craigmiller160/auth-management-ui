@@ -57,6 +57,7 @@ export const insertClient = (pool: Pool) => async (
 		client.refreshTokenTimeout,
 		client.authCodeTimeout
 	];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	await safelyExecuteQuery<any>(pool, INSERT_CLIENT_SQL, insertClientParams);
 
 	const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
@@ -67,11 +68,13 @@ export const insertClient = (pool: Pool) => async (
 	const clientId = result.rows[0].id;
 
 	const uriPromises = client.redirectUris.map((uri) =>
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [clientId, uri])
 	);
 	await Promise.all(uriPromises);
 
 	const rolePromises = client.roles.map((role) =>
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, [role, clientId])
 	);
 	await Promise.all(rolePromises);

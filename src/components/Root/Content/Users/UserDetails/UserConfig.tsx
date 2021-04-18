@@ -69,7 +69,7 @@ const defaultForm: UserForm = {
 	confirmPassword: ''
 };
 
-const UserConfig = (props: Props) => {
+const UserConfig = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const dispatch = useDispatch();
 	const history = useHistory();

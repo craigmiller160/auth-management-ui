@@ -59,7 +59,7 @@ interface State {
 	clientIdToRemove: number;
 }
 
-const UserClients = (props: Props) => {
+const UserClients = (props: Props): JSX.Element => {
 	const {
 		userClients,
 		userId,

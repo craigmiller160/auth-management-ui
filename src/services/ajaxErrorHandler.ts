@@ -42,7 +42,8 @@ const ajaxErrorHandler: DefaultErrorHandler = (
 ): void => {
 	// TODO add a check for dev/test env and if so, log the error
 	if (status > 0 && (error as AxiosError).response) {
-		const response: AxiosResponse | undefined = (error as AxiosError).response;
+		const response: AxiosResponse | undefined = (error as AxiosError)
+			.response;
 		if (response) {
 			const fullMessage = getFullErrorResponseMessage(
 				requestMessage ?? '',

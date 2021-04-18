@@ -41,7 +41,7 @@ interface State {
 	userAuthDetails: Array<UserAuthDetails>;
 }
 
-const ClientAuths = (props: Props) => {
+const ClientAuths = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const [state, setState] = useImmer<State>({
 		clientId: id !== NEW_ID ? parseInt(id, 10) : 0,

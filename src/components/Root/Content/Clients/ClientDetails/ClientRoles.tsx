@@ -54,7 +54,7 @@ interface State {
 	clientId: number;
 }
 
-const ClientRoles = (props: Props) => {
+const ClientRoles = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const [state, setState] = useImmer<State>({
 		showRoleDialog: false,

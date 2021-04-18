@@ -16,6 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export default <T>(pageObj: T) => (pageFn: (page: T) => void) => {
+export default <T>(pageObj: T) => (pageFn: (page: T) => void): void => {
 	pageFn(pageObj);
 };

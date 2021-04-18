@@ -54,7 +54,7 @@ const defaultUser: UserClientsType = {
 	clients: []
 };
 
-const UserGrants = (props: Props) => {
+const UserGrants = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const [state, setState] = useImmer<State>({
 		userId: id !== NEW_ID ? parseInt(id, 10) : 0,

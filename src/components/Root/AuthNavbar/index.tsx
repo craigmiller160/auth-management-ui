@@ -25,7 +25,7 @@ import { RootState } from '../../../store';
 import { login, logout } from '../../../services/AuthService';
 import authSlice from '../../../store/auth/slice';
 
-const AuthNavbar = () => {
+const AuthNavbar = (): JSX.Element => {
 	const isAuth = useSelector(isAuthorized);
 	const dispatch = useDispatch();
 	const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);

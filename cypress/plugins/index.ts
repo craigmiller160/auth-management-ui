@@ -21,12 +21,13 @@ import { insertUser } from './sql/insertUser';
 import { deleteUser } from './sql/deleteUser';
 import { insertRole } from './sql/insertRole';
 
+// eslint-disable-next-line  @typescript-eslint/ban-types
 type OnFn = (name: string, value: object) => void;
 
 /**
  * @type {Cypress.PluginConfig}
  */
-export default (on: OnFn, config: CypressConfig) => {
+export default (on: OnFn, config: CypressConfig): void => {
 	// `on` is used to hook into various events Cypress emits
 	// `config` is the resolved Cypress config
 	const pool = createPool(config.env);

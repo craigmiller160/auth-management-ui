@@ -32,7 +32,9 @@ const DELETE_REFRESH_TOKENS_SQL =
 	'DELETE FROM dev.refresh_tokens WHERE user_id = $1';
 const DELETE_USER_SQL = 'DELETE FROM dev.users WHERE id = $1';
 
-export const deleteUser = (pool: Pool) => async (email: string) => {
+export const deleteUser = (pool: Pool) => async (
+	email: string
+): Promise<void> => {
 	const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
 		pool,
 		SELECT_USER_ID_SQL,
@@ -42,13 +44,17 @@ export const deleteUser = (pool: Pool) => async (email: string) => {
 	if (result.rows?.[0]?.id) {
 		const userId = result.rows[0].id;
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [
 			userId
 		]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [
 			userId
 		]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [userId]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, DELETE_USER_SQL, [userId]);
 	}
 	return null;

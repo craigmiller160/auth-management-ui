@@ -24,7 +24,7 @@ import store from '../store';
 import Root from './Root';
 import theme from './theme';
 
-const App = () => (
+const App = (): JSX.Element => (
 	<ReduxProvider store={store}>
 		<BrowserRouter basename="/auth-management">
 			<ThemeProvider theme={theme}>

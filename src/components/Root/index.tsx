@@ -23,7 +23,7 @@ import { loadAuthUser } from '../../store/auth/actions';
 import { RootState } from '../../store';
 import AuthNavbar from './AuthNavbar';
 
-const Root = () => {
+const Root = (): JSX.Element => {
 	const dispatch = useDispatch();
 	const hasChecked = useSelector((state: RootState) => state.auth.hasChecked);
 	useEffect(() => {

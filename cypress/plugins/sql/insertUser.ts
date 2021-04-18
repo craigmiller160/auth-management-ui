@@ -65,6 +65,7 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
 		user.enabled
 	];
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	await safelyExecuteQuery<any>(pool, INSERT_USER_SQL, insertUserParams);
 
 	const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
@@ -76,10 +77,12 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
 	const userId = result.rows[0].id;
 
 	if (userId && clientId) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [
 			userId,
 			clientId
 		]);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, [
 			'1',
 			'ABCDEFG',
@@ -93,6 +96,7 @@ export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
 			[clientId]
 		);
 		const rolePromises = roleResult.rows.map((role) =>
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [
 				userId,
 				clientId,

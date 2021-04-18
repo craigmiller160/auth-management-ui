@@ -83,7 +83,7 @@ const defaultClientForm: ClientForm = {
 	clientSecret: ''
 };
 
-const ClientConfig = (props: Props) => {
+const ClientConfig = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -150,7 +150,7 @@ const ClientConfig = (props: Props) => {
 			pipe(
 				getClientDetails(state.clientId),
 				TE.fold<Error, ClientDetails, ClientDetails>(
-					(ex: Error): T.Task<ClientDetails> => T.of(defaultClient),
+					(): T.Task<ClientDetails> => T.of(defaultClient),
 					(clientDetails: ClientDetails): T.Task<ClientDetails> =>
 						T.of(clientDetails)
 				),
@@ -201,7 +201,7 @@ const ClientConfig = (props: Props) => {
 		pipe(
 			generateGuid(),
 			TE.fold(
-				(ex: Error) => T.of(''),
+				() => T.of(''),
 				(guid: string) => T.of(guid)
 			),
 			T.map((guid: string) => {
@@ -214,7 +214,7 @@ const ClientConfig = (props: Props) => {
 		pipe(
 			generateGuid(),
 			TE.fold(
-				(ex: Error) => T.of(''),
+				() => T.of(''),
 				(guid: string) => T.of(guid)
 			),
 			T.map((guid: string) => {

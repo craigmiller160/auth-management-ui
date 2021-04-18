@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="../../../support/index.d.ts" />
 
 import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps';

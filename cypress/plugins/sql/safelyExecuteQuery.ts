@@ -21,7 +21,7 @@ import { Pool, QueryResult } from 'pg';
 export const safelyExecuteQuery = <R>(
 	pool: Pool,
 	sql: string,
-	params: Array<any> = []
+	params: Array<any> = [] // eslint-disable-line @typescript-eslint/no-explicit-any
 ): Promise<QueryResult<R>> =>
 	pool
 		.connect()

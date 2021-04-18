@@ -49,7 +49,7 @@ interface State {
 	userToRemoveId: number;
 }
 
-const ClientGrantUsers = (props: Props) => {
+const ClientGrantUsers = (props: Props): JSX.Element => {
 	const history = useHistory();
 	const {
 		clientUsers,

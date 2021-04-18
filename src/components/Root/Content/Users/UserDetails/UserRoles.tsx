@@ -50,7 +50,7 @@ interface State {
 	roleIdToRemove: number;
 }
 
-const UserRoles = (props: Props) => {
+const UserRoles = (props: Props): JSX.Element => {
 	const { selectedClient, userId, updateUserRoles } = props;
 	const [state, setState] = useImmer<State>({
 		showAddRoleDialog: false,
