@@ -23,60 +23,60 @@ import TextField from '@material-ui/core/TextField';
 import { FieldRules } from '../../../types/form';
 
 export interface SelectOption<R> {
-    label: string;
-    value: R;
+	label: string;
+	value: R;
 }
 
 interface Props<R> {
-    id?: string;
-    name: string;
-    control: Control;
-    error?: FieldError;
-    rules?: FieldRules;
-    label: string;
-    options: SelectOption<R>[];
-    className?: string;
+	id?: string;
+	name: string;
+	control: Control;
+	error?: FieldError;
+	rules?: FieldRules;
+	label: string;
+	options: SelectOption<R>[];
+	className?: string;
 }
 
 const Autocomplete = <R extends any>(props: Props<R>) => {
-    const {
-        id,
-        name,
-        control,
-        error,
-        rules,
-        label,
-        options,
-        className
-    } = props;
+	const {
+		id,
+		name,
+		control,
+		error,
+		rules,
+		label,
+		options,
+		className
+	} = props;
 
-    return (
-        <Controller
-            control={ control }
-            name={ name }
-            rules={ rules }
-            render={ ({ onChange, onBlur, value }) => (
-                <MuiAutocomplete
-                    id={ id }
-                    className={ className }
-                    options={ options }
-                    getOptionLabel={ (option) => option?.label ?? '' }
-                    value={ value }
-                    onChange={ (event, newValue) => onChange(newValue) }
-                    onBlur={ onBlur }
-                    renderInput={ (params) => (
-                        <TextField
-                            { ...params }
-                            label={ label }
-                            variant="outlined"
-                            error={ !!error }
-                            helperText={ error?.message ?? '' }
-                        />
-                    ) }
-                />
-            ) }
-        />
-    );
+	return (
+		<Controller
+			control={control}
+			name={name}
+			rules={rules}
+			render={({ onChange, onBlur, value }) => (
+				<MuiAutocomplete
+					id={id}
+					className={className}
+					options={options}
+					getOptionLabel={(option) => option?.label ?? ''}
+					value={value}
+					onChange={(event, newValue) => onChange(newValue)}
+					onBlur={onBlur}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label={label}
+							variant="outlined"
+							error={!!error}
+							helperText={error?.message ?? ''}
+						/>
+					)}
+				/>
+			)}
+		/>
+	);
 };
 
 export default Autocomplete;

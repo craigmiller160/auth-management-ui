@@ -16,95 +16,100 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ClientDetails, ClientUser, ClientWithRoles, FullClientDetails } from './client';
+import {
+	ClientDetails,
+	ClientUser,
+	ClientWithRoles,
+	FullClientDetails
+} from './client';
 import { Role } from './role';
 import { UserClient, UserClients, UserDetails, UserRole } from './user';
 
 export interface GraphQLError {
-    message: string;
+	message: string;
 }
 
 export interface GraphQLQueryResponse<T> {
-    data: T;
-    errors?: Array<GraphQLError>;
+	data: T;
+	errors?: Array<GraphQLError>;
 }
 
 export interface OldClientDetailsWrapper {
-    client: FullClientDetails;
+	client: FullClientDetails;
 }
 
 export interface ClientDetailsWrapper {
-    client: ClientDetails;
+	client: ClientDetails;
 }
 
 export interface UpdateClientWrapper {
-    updateClient: ClientDetails;
+	updateClient: ClientDetails;
 }
 
 export interface CreateClientWrapper {
-    createClient: ClientDetails;
+	createClient: ClientDetails;
 }
 
 export interface DeleteClientWrapper {
-    deleteClient: ClientDetails;
+	deleteClient: ClientDetails;
 }
 
 export interface CreateRoleWrapper {
-    createRole: Role;
+	createRole: Role;
 }
 
 export interface UpdateRoleWrapper {
-    updateRole: Role;
+	updateRole: Role;
 }
 
 export interface DeleteRoleWrapper {
-    deleteRole: Role;
+	deleteRole: Role;
 }
 
 export interface UserDetailsWrapper {
-    user: UserDetails;
+	user: UserDetails;
 }
 
 export interface UserClientsWrapper {
-    user: UserClients;
+	user: UserClients;
 }
 
 export interface UpdateUserWrapper {
-    updateUser: UserDetails;
+	updateUser: UserDetails;
 }
 
 export interface CreateUserWrapper {
-    createUser: UserDetails;
+	createUser: UserDetails;
 }
 
 export interface DeleteUserWrapper {
-    deleteUser: UserDetails;
+	deleteUser: UserDetails;
 }
 
 export interface RemoveUserFromClientWrapper {
-    removeUserFromClient: Array<ClientUser>;
+	removeUserFromClient: Array<ClientUser>;
 }
 
 export interface AddUserToClientWrapper {
-    addUserToClient: Array<ClientUser>;
+	addUserToClient: Array<ClientUser>;
 }
 
 export interface RemoveClientFromUserWrapper {
-    removeClientFromUser: Array<UserClient>;
+	removeClientFromUser: Array<UserClient>;
 }
 
 export interface AddClientToUserWrapper {
-    addClientToUser: Array<UserClient>;
+	addClientToUser: Array<UserClient>;
 }
 
 export interface RemoveRoleFromUserWrapper {
-    removeRoleFromUser: Array<UserRole>;
+	removeRoleFromUser: Array<UserRole>;
 }
 
 export interface AddRoleToUserWrapper {
-    addRoleToUser: Array<UserRole>;
+	addRoleToUser: Array<UserRole>;
 }
 
 export interface ClientRolesWrapper {
-    client: ClientWithRoles;
+	client: ClientWithRoles;
 }

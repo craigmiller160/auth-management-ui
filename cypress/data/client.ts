@@ -19,17 +19,14 @@
 import { InsertClient } from '../plugins/sql/insertClient';
 
 export const testClient: InsertClient = {
-    name: 'Test Client',
-    clientKey: 'ABCDEFG',
-    clientSecret: '{bcrypt}$2a$10$HYKpEK6BFUFH99fHm5yOhuk4hn1gFErtLveeonVSHW1G7n5bUhGUe',
-    enabled: false,
-    accessTokenTimeout: 10,
-    refreshTokenTimeout: 20,
-    authCodeTimeout: 30,
-    redirectUris: [
-        'https://localhost:123/authcode'
-    ],
-    roles: [
-        'ROLE_READ'
-    ]
+	name: 'Test Client',
+	clientKey: 'ABCDEFG',
+	clientSecret:
+		'{bcrypt}$2a$10$HYKpEK6BFUFH99fHm5yOhuk4hn1gFErtLveeonVSHW1G7n5bUhGUe',
+	enabled: false,
+	accessTokenTimeout: 10,
+	refreshTokenTimeout: 20,
+	authCodeTimeout: 30,
+	redirectUris: ['https://localhost:123/authcode'],
+	roles: ['ROLE_READ']
 };

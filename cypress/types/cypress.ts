@@ -17,15 +17,15 @@
  */
 
 export interface CypressEnv {
-    username: string;
-    password: string;
-    postgresUser: string;
-    postgresPassword: string;
-    postgresHost: string;
-    postgresPort: number;
-    postgresDatabase: string;
+	username: string;
+	password: string;
+	postgresUser: string;
+	postgresPassword: string;
+	postgresHost: string;
+	postgresPort: number;
+	postgresDatabase: string;
 }
 
 export interface CypressConfig {
-    env: CypressEnv;
+	env: CypressEnv;
 }

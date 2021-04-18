@@ -30,53 +30,47 @@ const ALERT_SUCCESS_CLASS = 'MuiAlert-standardSuccess';
 const ALERT_ERROR_CLASS = 'MuiAlert-standardError';
 
 const isVisible = (visible: boolean) => {
-    cy.get(SELECT_COLLAPSE)
-        .should(`${!visible ? 'not.' : ''}have.class`, COLLAPSE_VISIBLE_CLASS);
+	cy.get(SELECT_COLLAPSE).should(
+		`${!visible ? 'not.' : ''}have.class`,
+		COLLAPSE_VISIBLE_CLASS
+	);
 };
 
 const isHidden = () => {
-    cy.get(SELECT_COLLAPSE)
-        .should('have.class', COLLAPSE_HIDDEN_CLASS);
+	cy.get(SELECT_COLLAPSE).should('have.class', COLLAPSE_HIDDEN_CLASS);
 };
 
 const isSuccess = () => {
-    cy.get(SELECT_ALERT)
-        .should('have.class', ALERT_SUCCESS_CLASS);
-    cy.get(SELECT_ALERT_TITLE)
-        .should('have.text', 'Success');
+	cy.get(SELECT_ALERT).should('have.class', ALERT_SUCCESS_CLASS);
+	cy.get(SELECT_ALERT_TITLE).should('have.text', 'Success');
 };
 
 const isError = () => {
-    cy.get(SELECT_ALERT)
-        .should('have.class', ALERT_ERROR_CLASS);
-    cy.get(SELECT_ALERT_TITLE)
-        .should('have.text', 'Error');
+	cy.get(SELECT_ALERT).should('have.class', ALERT_ERROR_CLASS);
+	cy.get(SELECT_ALERT_TITLE).should('have.text', 'Error');
 };
 
 const messageEquals = (message: string) => {
-    cy.get(SELECT_ALERT_MESSAGE)
-        .should('have.text', message);
+	cy.get(SELECT_ALERT_MESSAGE).should('have.text', message);
 };
 
 const messageContains = (message: string) => {
-    cy.get(SELECT_ALERT_MESSAGE)
-        .should('contain.text', message);
+	cy.get(SELECT_ALERT_MESSAGE).should('contain.text', message);
 };
 
 const closeAlert = () => {
-    cy.get(SELECT_ALERT_CLOSE_BTN).click();
-    cy.get(SELECT_COLLAPSE)
-        .should('have.class', COLLAPSE_HIDDEN_CLASS);
+	cy.get(SELECT_ALERT_CLOSE_BTN).click();
+	cy.get(SELECT_COLLAPSE).should('have.class', COLLAPSE_HIDDEN_CLASS);
 };
 
 const alertPage = {
-    isVisible,
-    isHidden,
-    isSuccess,
-    isError,
-    messageEquals,
-    closeAlert,
-    messageContains
+	isVisible,
+	isHidden,
+	isSuccess,
+	isError,
+	messageEquals,
+	closeAlert,
+	messageContains
 };
 
 export type AlertPage = typeof alertPage;

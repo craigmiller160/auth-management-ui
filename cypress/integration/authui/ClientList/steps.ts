@@ -20,20 +20,20 @@ import { After, And, Before } from 'cypress-cucumber-preprocessor/steps';
 import { testClient } from '../../../data/client';
 
 const cleanup = () => {
-    cy.task('deleteClient', 'Test Client');
+	cy.task('deleteClient', 'Test Client');
 };
 
 Before(() => {
-    cleanup();
-    cy.task('insertClient', testClient);
+	cleanup();
+	cy.task('insertClient', testClient);
 });
 
 After(() => {
-    cleanup();
+	cleanup();
 });
 
 And('the client list ui is displayed', () => {
-    cy.clientsPage((clientsPage) => {
-        clientsPage.validatePage();
-    });
+	cy.clientsPage((clientsPage) => {
+		clientsPage.validatePage();
+	});
 });

@@ -22,31 +22,34 @@ import { testClient } from '../../../data/client';
 import { testUser } from '../../../data/user';
 
 const cleanup = () => {
-    cy.task('deleteUser', 'test@gmail.com');
-    cy.task('deleteClient', 'Test Client');
+	cy.task('deleteUser', 'test@gmail.com');
+	cy.task('deleteClient', 'Test Client');
 };
 
 Before(() => {
-    cleanup();
-    cy.task('insertClient', testClient)
-        .then((clientId: number) =>
-            cy.task('insertUser', { user: testUser, clientId }));
+	cleanup();
+	cy.task('insertClient', testClient).then((clientId: number) =>
+		cy.task('insertUser', { user: testUser, clientId })
+	);
 });
 
 After(() => {
-    cleanup();
+	cleanup();
 });
 
 Then('the authentications page is displayed', (data: TableDefinition) => {
-    const userEmails = data.rows().map((row) => row[0]);
+	const userEmails = data.rows().map((row) => row[0]);
 
-    cy.clientAuthsPage((clientAuthsPage) => {
-        clientAuthsPage.validatePage(userEmails);
-    });
+	cy.clientAuthsPage((clientAuthsPage) => {
+		clientAuthsPage.validatePage(userEmails);
+	});
 });
 
-When('I click the revoke button for authentication {int}', (authIndex: number) => {
-    cy.clientAuthsPage((clientAuthsPage) => {
-        clientAuthsPage.clickRevokeAuthBtn(authIndex);
-    });
-});
+When(
+	'I click the revoke button for authentication {int}',
+	(authIndex: number) => {
+		cy.clientAuthsPage((clientAuthsPage) => {
+			clientAuthsPage.clickRevokeAuthBtn(authIndex);
+		});
+	}
+);

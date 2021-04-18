@@ -26,32 +26,23 @@ const SELECT_PASSWORD_FIELD = '#oauth2-login-page input#password';
 const SELECT_SUBMIT_BTN = '#oauth2-login-page #submitBtn';
 
 const login = (username: string, password: string) => {
-    cy.get(SELECT_USERNAME_FIELD)
-        .type(username);
-    cy.get(SELECT_PASSWORD_FIELD)
-        .type(password);
-    cy.get(SELECT_SUBMIT_BTN)
-        .click();
+	cy.get(SELECT_USERNAME_FIELD).type(username);
+	cy.get(SELECT_PASSWORD_FIELD).type(password);
+	cy.get(SELECT_SUBMIT_BTN).click();
 };
 
 const validatePage = () => {
-    cy.get(SELECT_NAVBAR_BRAND)
-        .should('have.text', 'OAuth2 Login');
-    cy.get(SELECT_USERNAME_LABEL)
-        .should('have.text', 'Username');
-    cy.get(SELECT_USERNAME_FIELD)
-        .should('be.visible');
-    cy.get(SELECT_PASSWORD_LABEL)
-        .should('have.text', 'Password');
-    cy.get(SELECT_PASSWORD_FIELD)
-        .should('be.visible');
-    cy.get(SELECT_SUBMIT_BTN)
-        .should('have.text', 'Login');
+	cy.get(SELECT_NAVBAR_BRAND).should('have.text', 'OAuth2 Login');
+	cy.get(SELECT_USERNAME_LABEL).should('have.text', 'Username');
+	cy.get(SELECT_USERNAME_FIELD).should('be.visible');
+	cy.get(SELECT_PASSWORD_LABEL).should('have.text', 'Password');
+	cy.get(SELECT_PASSWORD_FIELD).should('be.visible');
+	cy.get(SELECT_SUBMIT_BTN).should('have.text', 'Login');
 };
 
 const loginPage = {
-    login,
-    validatePage
+	login,
+	validatePage
 };
 
 export type LoginPage = typeof loginPage;

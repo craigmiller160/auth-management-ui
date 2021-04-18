@@ -25,13 +25,13 @@ import Root from './Root';
 import theme from './theme';
 
 const App = () => (
-    <ReduxProvider store={ store }>
-        <BrowserRouter basename="/auth-management">
-            <ThemeProvider theme={ theme }>
-                <Root />
-            </ThemeProvider>
-        </BrowserRouter>
-    </ReduxProvider>
+	<ReduxProvider store={store}>
+		<BrowserRouter basename="/auth-management">
+			<ThemeProvider theme={theme}>
+				<Root />
+			</ThemeProvider>
+		</BrowserRouter>
+	</ReduxProvider>
 );
 
 export default App;
