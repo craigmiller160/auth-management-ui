@@ -24,9 +24,10 @@ export interface HandledChangeEvent {
 	name: string;
 	value: SupportedHandledChangeTypes;
 }
+export type ChangeHandler = (event: HandledChangeEvent) => void;
 
 const handleCheckbox = (
-	handler: (handledEvent: HandledChangeEvent) => void
+	handler: ChangeHandler
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
 	handler({
 		name: changeEvent.target.name,
@@ -35,7 +36,7 @@ const handleCheckbox = (
 };
 
 const handleNumberField = (
-	handler: (handledEvent: HandledChangeEvent) => void
+	handler: ChangeHandler
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
 	const value = changeEvent.target.value
 		? parseInt(changeEvent.target.value, 10)
@@ -47,7 +48,7 @@ const handleNumberField = (
 };
 
 const handleTextField = (
-	handler: (handledEvent: HandledChangeEvent) => void
+	handler: ChangeHandler
 ) => (changeEvent: ChangeEvent<HTMLInputElement>) => {
 	handler({
 		name: changeEvent.target.name,
@@ -55,9 +56,15 @@ const handleTextField = (
 	});
 };
 
+export interface ChangeHandlerHolder {
+	handleCheckbox: (changeEvent: ChangeEvent<HTMLInputElement>) => void,
+	handleNumberField: (changeEvent: ChangeEvent<HTMLInputElement>) => void,
+	handleTextField: (changeEvent: ChangeEvent<HTMLInputElement>) => void
+}
+
 export const createChangeHandler = (
-	handler: (event: HandledChangeEvent) => void
-) => ({
+	handler: ChangeHandler
+): ChangeHandlerHolder => ({
 	handleCheckbox: handleCheckbox(handler),
 	handleNumberField: handleNumberField(handler),
 	handleTextField: handleTextField(handler)
