@@ -123,8 +123,9 @@ describe('Clients', () => {
 
 		it('select client', async () => {
 			const component = await doMount(testHistory);
-			const body = (component.find('Table').props() as any)
-				.body as BodyRow[];
+			const body = (component.find('Table').props() as {
+				body: BodyRow[];
+			}).body;
 			body[0].click();
 			expect(testHistory).toHaveLength(2);
 			expect(testHistory.entries[1].pathname).toEqual('/clients/1');

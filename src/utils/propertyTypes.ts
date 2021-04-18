@@ -17,6 +17,7 @@
  */
 
 // TODO make separate library
+/* eslint-disable */
 
 type AnyPropName = {
 	[name: string]: any;
