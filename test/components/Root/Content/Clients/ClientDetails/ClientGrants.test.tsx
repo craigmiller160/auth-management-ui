@@ -1,18 +1,18 @@
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
-import { MemoryHistory } from 'history';
-import { render, waitFor } from '@testing-library/react';
+import { createMemoryHistory, MemoryHistory } from 'history';
+import { render, waitFor, screen } from '@testing-library/react';
 import { Route, Router, Switch } from 'react-router';
 import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
-import { ClientDetails } from '../../../../../../src/types/client';
+import { ClientDetails, FullClientDetails } from '../../../../../../src/types/client';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
-    createClient: jest.fn(),
-    deleteClient: jest.fn(),
-    generateGuid: jest.fn(),
-    getClientDetails: jest.fn(),
-    updateClient: jest.fn()
+    getFullClientDetails: jest.fn()
+}));
+
+jest.mock('../../../../../../src/services/UserService', () => ({
+    getAllUsers: jest.fn()
 }));
 
 const [TestReduxProvider, storeHandler] = createTestReduxProvider({});
@@ -34,7 +34,7 @@ const doRender = (history: MemoryHistory) =>
         )
     );
 
-const existingClient: ClientDetails = {
+const client: FullClientDetails = {
     id: 1,
     name: 'Client',
     clientKey: 'Key',
@@ -42,34 +42,45 @@ const existingClient: ClientDetails = {
     accessTokenTimeoutSecs: 100,
     refreshTokenTimeoutSecs: 200,
     authCodeTimeoutSecs: 300,
-    redirectUris: ['https://www.google.com', 'https://www.facebook.com']
+    redirectUris: ['https://www.google.com', 'https://www.facebook.com'],
+    roles: [],
+    users: []
 };
 
 describe('ClientGrants', () => {
+    let testHistory: MemoryHistory;
+    beforeEach(() => {
+        jest.resetAllMocks();
+        testHistory = createMemoryHistory();
+        testHistory.push('/clients/1/grants');
+    });
+
     describe('rendering', () => {
-        it('renders with users', () => {
-            throw new Error();
+        it('renders with users', async () => {
+            await doRender(testHistory);
+
+            screen.debug(); // TODO delete this
         });
 
-        it('renders without users', () => {
+        it('renders without users', async () => {
             throw new Error();
         });
     });
 
     describe('behavior', () => {
-        it('add a user', () => {
+        it('add a user', async () => {
             throw new Error();
         });
 
-        it('remove a user', () => {
+        it('remove a user', async () => {
             throw new Error();
         });
 
-        it('add a role to a user', () => {
+        it('add a role to a user', async () => {
             throw new Error();
         });
 
-        it('remove a role from a user', () => {
+        it('remove a role from a user', async () => {
             throw new Error();
         });
     });
