@@ -6,13 +6,13 @@ import ClientConfig from '../../../../../../src/components/Root/Content/Clients/
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
 import {
-	ClientDetails,
+	ClientDetails, ClientUser,
 	FullClientDetails
 } from '../../../../../../src/types/client';
 import { getFullClientDetails } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
-import { UserDetails, UserList } from '../../../../../../src/types/user';
+import { UserClient, UserDetails, UserList } from '../../../../../../src/types/user';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn()
@@ -23,10 +23,6 @@ jest.mock('../../../../../../src/services/UserService', () => ({
 }));
 
 const [TestReduxProvider, storeHandler] = createTestReduxProvider({});
-
-const firstGuid = 'ABCDEFG';
-const secondGuid = 'HIJKLMNOP';
-const stars = '**********';
 
 const doRender = (history: MemoryHistory) =>
 	waitFor(() =>
@@ -44,6 +40,27 @@ const doRender = (history: MemoryHistory) =>
 		)
 	);
 
+const user1: UserDetails = {
+	id: 1,
+	email: 'user1@gmail.com',
+	firstName: 'user1-first',
+	lastName: 'user1-last',
+	enabled: true
+};
+
+const clientUser1: ClientUser = {
+	...user1,
+	roles: []
+};
+
+const user2: UserDetails = {
+	id: 2,
+	email: 'user2@gmail.com',
+	firstName: 'user2-first',
+	lastName: 'user2-last',
+	enabled: true
+};
+
 const client: FullClientDetails = {
 	id: 1,
 	name: 'Client Name',
@@ -54,18 +71,18 @@ const client: FullClientDetails = {
 	authCodeTimeoutSecs: 300,
 	redirectUris: ['https://www.google.com', 'https://www.facebook.com'],
 	roles: [],
-	users: []
+	users: [clientUser1]
 };
 
 const userList: UserList = {
-	users: []
+	users: [user1,user2]
 };
 
-const mockGetFullClientDetails = () =>
-    (getFullClientDetails as jest.Mock).mockImplementation(() => TE.right(client));
+const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
+    (getFullClientDetails as jest.Mock).mockImplementation(() => TE.right(clientArg));
 
-const mockGetAllUsers = () =>
-	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userList));
+const mockGetAllUsers = (userListArg: UserList) =>
+	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userListArg));
 
 describe('ClientGrants', () => {
 	let testHistory: MemoryHistory;
@@ -73,29 +90,51 @@ describe('ClientGrants', () => {
 		jest.resetAllMocks();
 		testHistory = createMemoryHistory();
 		testHistory.push('/clients/1/grants');
-
-		mockGetFullClientDetails();
-		mockGetAllUsers();
 	});
 
 	describe('rendering', () => {
 		it('renders with users', async () => {
+			mockGetFullClientDetails(client);
+			mockGetAllUsers(userList);
+
 			await doRender(testHistory);
 
 			expect(screen.queryByText('Client Name'))
-                .toBeInTheDocument();
-            expect(screen.queryByText('Users'))
 				.toBeInTheDocument();
-            expect(screen.queryByText('No Users'))
+			expect(screen.queryByText('Users'))
 				.toBeInTheDocument();
-            expect(screen.queryByText('Roles'))
+			expect(screen.queryByText(`${user1.firstName} ${user1.lastName}`))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Roles'))
 				.toBeInTheDocument();
 
-            expect(getFullClientDetails).toHaveBeenCalledWith(1);
-            expect(getAllUsers).toHaveBeenCalled();
+			expect(getFullClientDetails).toHaveBeenCalledWith(1);
+			expect(getAllUsers).toHaveBeenCalled();
 		});
 
 		it('renders without users', async () => {
+			mockGetFullClientDetails({
+				...client,
+				users: []
+			});
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			expect(screen.queryByText('Client Name'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Users'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('No Users'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Roles'))
+				.toBeInTheDocument();
+
+			expect(getFullClientDetails).toHaveBeenCalledWith(1);
+			expect(getAllUsers).toHaveBeenCalled();
+		});
+
+		it('renders without users with add button disabled', () => {
 			throw new Error();
 		});
 	});
