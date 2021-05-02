@@ -76,6 +76,7 @@ describe('ClientGrants', () => {
             expect(screen.queryByText('Client Name'))
                 .toBeInTheDocument();
             // TODO finish the test
+            // TODO don't forget validating the API functions
 		});
 
 		it('renders without users', async () => {

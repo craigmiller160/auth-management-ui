@@ -83,6 +83,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 					(
 						fullClientDetails: FullClientDetails
 					): Array<ClientUser> => {
+						console.log('Client', fullClientDetails); // TODO delete this
 						setState((draft) => {
 							draft.clientName = fullClientDetails.name;
 							draft.allRoles = fullClientDetails.roles;
@@ -135,6 +136,17 @@ const ClientGrants = (props: Props): JSX.Element => {
 		[loadFullClientDetails, loadUsers]
 	);
 
+	// TODO rename this
+	const newLoadAll = useCallback(() => {
+		return pipe(
+			getFullClientDetails(state.clientId),
+			TE.map((clientDetails: FullClientDetails) => {
+				console.log('NewClientDetails', clientDetails); // TODO delete this
+				return clientDetails;
+			})
+		)
+	}, []); // TODO work on dependencies
+
 	const removeUser = async (userId: number) => {
 		await removeUserFromClient(userId, state.clientId)();
 		pipe(
@@ -152,6 +164,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 
 	useEffect(() => {
 		loadAll();
+		newLoadAll(); // TODO trying this
 	}, [loadAll]);
 
 	const saveAddRole = (roleId: number) =>

@@ -36,7 +36,7 @@ import {
 	ClientRolesWrapper,
 	CreateClientWrapper,
 	DeleteClientWrapper,
-	OldClientDetailsWrapper,
+	FullClientDetailsWrapper,
 	RemoveUserFromClientWrapper,
 	UpdateClientWrapper
 } from '../types/graphApi';
@@ -65,7 +65,7 @@ export const getFullClientDetails = (
 	clientId: number
 ): TE.TaskEither<Error, FullClientDetails> =>
 	pipe(
-		ajaxApi.graphql<OldClientDetailsWrapper>({
+		ajaxApi.graphql<FullClientDetailsWrapper>({
 			payload: `
                 query {
                     client(clientId: ${clientId}) {
@@ -100,7 +100,7 @@ export const getFullClientDetails = (
 		TE.map(
 			(
 				res: AxiosResponse<
-					GraphQLQueryResponse<OldClientDetailsWrapper>
+					GraphQLQueryResponse<FullClientDetailsWrapper>
 				>
 			) => res.data.data.client
 		)

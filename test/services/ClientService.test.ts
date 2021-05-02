@@ -29,7 +29,7 @@ import {
 	CreateClientWrapper,
 	DeleteClientWrapper,
 	GraphQLQueryResponse,
-	OldClientDetailsWrapper,
+	FullClientDetailsWrapper,
 	RemoveUserFromClientWrapper,
 	UpdateClientWrapper
 } from '../../src/types/graphApi';
@@ -164,10 +164,10 @@ describe('ClientService', () => {
                     }
                 }
             `;
-		const data: OldClientDetailsWrapper = {
+		const data: FullClientDetailsWrapper = {
 			client: fullClient
 		};
-		const responseData: GraphQLQueryResponse<OldClientDetailsWrapper> = {
+		const responseData: GraphQLQueryResponse<FullClientDetailsWrapper> = {
 			data
 		};
 		mockCsrfPreflight(mockAjaxApi, '/graphql');

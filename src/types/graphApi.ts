@@ -34,7 +34,7 @@ export interface GraphQLQueryResponse<T> {
 	errors?: Array<GraphQLError>;
 }
 
-export interface OldClientDetailsWrapper {
+export interface FullClientDetailsWrapper {
 	client: FullClientDetails;
 }
 
