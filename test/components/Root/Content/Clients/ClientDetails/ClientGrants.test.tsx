@@ -1,18 +1,17 @@
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Route, Router, Switch } from 'react-router';
-import ClientConfig from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientConfig';
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
 import {
-	ClientDetails, ClientUser,
+	ClientUser,
 	FullClientDetails
 } from '../../../../../../src/types/client';
 import { getFullClientDetails } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
-import { UserClient, UserDetails, UserList } from '../../../../../../src/types/user';
+import { UserDetails, UserList } from '../../../../../../src/types/user';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn()
@@ -22,7 +21,7 @@ jest.mock('../../../../../../src/services/UserService', () => ({
 	getAllUsers: jest.fn()
 }));
 
-const [TestReduxProvider, storeHandler] = createTestReduxProvider({});
+const [TestReduxProvider] = createTestReduxProvider({});
 
 const doRender = (history: MemoryHistory) =>
 	waitFor(() =>
@@ -75,11 +74,13 @@ const client: FullClientDetails = {
 };
 
 const userList: UserList = {
-	users: [user1,user2]
+	users: [user1, user2]
 };
 
 const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
-    (getFullClientDetails as jest.Mock).mockImplementation(() => TE.right(clientArg));
+	(getFullClientDetails as jest.Mock).mockImplementation(() =>
+		TE.right(clientArg)
+	);
 
 const mockGetAllUsers = (userListArg: UserList) =>
 	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userListArg));
@@ -99,14 +100,12 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			expect(screen.queryByText('Client Name'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Users'))
-				.toBeInTheDocument();
-			expect(screen.queryByText(`${user1.firstName} ${user1.lastName}`))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Roles'))
-				.toBeInTheDocument();
+			expect(screen.queryByText('Client Name')).toBeInTheDocument();
+			expect(screen.queryByText('Users')).toBeInTheDocument();
+			expect(
+				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
+			).toBeInTheDocument();
+			expect(screen.queryByText('Roles')).toBeInTheDocument();
 			const addUserButton = screen.queryByRole('button', {
 				name: 'Add User'
 			});
@@ -125,14 +124,10 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			expect(screen.queryByText('Client Name'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Users'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('No Users'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Roles'))
-				.toBeInTheDocument();
+			expect(screen.queryByText('Client Name')).toBeInTheDocument();
+			expect(screen.queryByText('Users')).toBeInTheDocument();
+			expect(screen.queryByText('No Users')).toBeInTheDocument();
+			expect(screen.queryByText('Roles')).toBeInTheDocument();
 			const addUserButton = screen.queryByRole('button', {
 				name: 'Add User'
 			});
@@ -153,14 +148,10 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			expect(screen.queryByText('Client Name'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Users'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('No Users'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Roles'))
-				.toBeInTheDocument();
+			expect(screen.queryByText('Client Name')).toBeInTheDocument();
+			expect(screen.queryByText('Users')).toBeInTheDocument();
+			expect(screen.queryByText('No Users')).toBeInTheDocument();
+			expect(screen.queryByText('Roles')).toBeInTheDocument();
 			const addUserButton = screen.queryByRole('button', {
 				name: 'Add User'
 			});

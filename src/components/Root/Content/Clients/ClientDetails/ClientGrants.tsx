@@ -21,7 +21,6 @@ import { useImmer } from 'use-immer';
 import { pipe } from 'fp-ts/es6/pipeable';
 import Grid from '@material-ui/core/Grid';
 import * as TE from 'fp-ts/es6/TaskEither';
-import * as T from 'fp-ts/es6/Task';
 import {
 	fromNullable,
 	getOrElse as oGetOrElse,
@@ -48,7 +47,7 @@ import {
 	getAllUsers,
 	removeRoleFromUser
 } from '../../../../../services/UserService';
-import { UserDetails, UserList } from '../../../../../types/user';
+import { UserDetails } from '../../../../../types/user';
 import ClientGrantUsers from './ClientGrantUsers';
 import ClientGrantRoles from './ClientGrantRoles';
 
@@ -80,33 +79,39 @@ const ClientGrants = (props: Props): JSX.Element => {
 		selectedUser: none
 	});
 
-	const loadEverything = pipe(
-		getFullClientDetails(state.clientId),
-		TE.chain((clientDetails) =>
+	const loadEverything = useCallback(
+		() =>
 			pipe(
-				getAllUsers(),
-				TE.map((userList) =>
-					userList.users.filter((user) => {
-						const index = clientDetails.users.findIndex(
-							(cUser) => cUser.id === user.id
-						);
-						return index === -1;
-					})
+				getFullClientDetails(state.clientId),
+				TE.chain((clientDetails) =>
+					pipe(
+						getAllUsers(),
+						TE.map((userList) =>
+							userList.users.filter((user) => {
+								const index = clientDetails.users.findIndex(
+									(cUser) => cUser.id === user.id
+								);
+								return index === -1;
+							})
+						),
+						TE.map(
+							(users): LoadingContainer => ({
+								client: clientDetails,
+								allUsers: users
+							})
+						)
+					)
 				),
-				TE.map((users): LoadingContainer => ({
-					client: clientDetails,
-					allUsers: users
-				}))
-			)
-		),
-		TE.map((container) => {
-			setState((draft) => {
-				draft.clientName = container.client.name;
-				draft.allRoles = container.client.roles;
-				draft.clientUsers = container.client.users;
-				draft.allUsers = container.allUsers;
-			});
-		})
+				TE.map((container) => {
+					setState((draft) => {
+						draft.clientName = container.client.name;
+						draft.allRoles = container.client.roles;
+						draft.clientUsers = container.client.users;
+						draft.allUsers = container.allUsers;
+					});
+				})
+			),
+		[setState, state.clientId]
 	);
 
 	const removeUser = async (userId: number) => {
@@ -126,9 +131,8 @@ const ClientGrants = (props: Props): JSX.Element => {
 	};
 
 	useEffect(() => {
-		loadEverything()
-		// loadAll()();
-	}, []); // TODO fix this block
+		loadEverything();
+	}, [loadEverything]);
 
 	const saveAddRole = (roleId: number) =>
 		pipe(
