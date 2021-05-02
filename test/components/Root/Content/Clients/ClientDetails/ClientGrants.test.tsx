@@ -92,6 +92,9 @@ const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
 const mockGetAllUsers = (userListArg: UserList) =>
 	(getAllUsers as jest.Mock).mockImplementationOnce(() => TE.right(userListArg));
 
+const mockAddUserToClient = () =>
+	(addUserToClient as jest.Mock).mockImplementationOnce(() => TE.right([]));
+
 const getAddUserBtn = () => screen.getByRole('button', {
 	name: 'Add User'
 });
@@ -102,6 +105,8 @@ describe('ClientGrants', () => {
 		jest.resetAllMocks();
 		testHistory = createMemoryHistory();
 		testHistory.push('/clients/1/grants');
+
+		mockAddUserToClient();
 	});
 
 	describe('rendering', () => {
@@ -168,7 +173,7 @@ describe('ClientGrants', () => {
 	});
 
 	describe('behavior', () => {
-		it('add a user', async () => {
+		it('add a user, with no more users available to add', async () => {
 			mockGetFullClientDetails(client);
 			mockGetFullClientDetails({
 				...client,
@@ -177,6 +182,7 @@ describe('ClientGrants', () => {
 					clientUser2
 				]
 			})
+			mockGetAllUsers(userList);
 			mockGetAllUsers(userList);
 
 			await doRender(testHistory);
@@ -206,11 +212,11 @@ describe('ClientGrants', () => {
 				name: 'Select'
 			})));
 
-			screen.debug(); // TODO delete this
-
 			expect(
 				screen.queryByText(`${user2.firstName} ${user2.lastName}`)
 			).toBeInTheDocument();
+
+			expect(addUserButton).toBeDisabled();
 
 			expect(addUserToClient).toHaveBeenCalledWith(2, 1);
 		});

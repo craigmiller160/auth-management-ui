@@ -188,7 +188,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 			TE.map(() => {
 				loadEverything()
 			})
-		);
+		)();
 
 	const selectUser = (user: ClientUser) =>
 		setState((draft) => {
