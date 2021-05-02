@@ -1,6 +1,6 @@
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
 import { Route, Router, Switch } from 'react-router';
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
@@ -262,6 +262,8 @@ describe('ClientGrants', () => {
 				name: 'Remove'
 			})));
 
+			expect(screen.queryByText('Are you sure you want to remove this user?'))
+				.toBeInTheDocument();
 			expect(screen.queryByText('Confirm'))
 				.toBeInTheDocument();
 			expect(screen.queryByText('Cancel'))
@@ -271,8 +273,7 @@ describe('ClientGrants', () => {
 				name: 'Confirm'
 			})));
 
-			expect(screen.queryByText('Confirm'))
-				.not.toBeInTheDocument();
+			await waitFor(() => expect(screen.queryByText('Confirm')).not.toBeInTheDocument());
 
 			expect(
 				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
