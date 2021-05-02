@@ -129,8 +129,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 			pipe(
 				loadFullClientDetails(),
 				T.map((clientUsers: Array<ClientUser>) => {
-					// TODO fix this
-					// loadUsers(clientUsers)();
+					loadUsers(clientUsers)();
 				})
 			),
 		[loadFullClientDetails, loadUsers]

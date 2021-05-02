@@ -11,6 +11,8 @@ import {
 } from '../../../../../../src/types/client';
 import { getFullClientDetails } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
+import { getAllUsers } from '../../../../../../src/services/UserService';
+import { UserDetails, UserList } from '../../../../../../src/types/user';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn()
@@ -55,8 +57,15 @@ const client: FullClientDetails = {
 	users: []
 };
 
+const userList: UserList = {
+	users: []
+};
+
 const mockGetFullClientDetails = () =>
     (getFullClientDetails as jest.Mock).mockImplementation(() => TE.right(client));
+
+const mockGetAllUsers = () =>
+	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userList));
 
 describe('ClientGrants', () => {
 	let testHistory: MemoryHistory;
@@ -66,6 +75,7 @@ describe('ClientGrants', () => {
 		testHistory.push('/clients/1/grants');
 
 		mockGetFullClientDetails();
+		mockGetAllUsers();
 	});
 
 	describe('rendering', () => {
