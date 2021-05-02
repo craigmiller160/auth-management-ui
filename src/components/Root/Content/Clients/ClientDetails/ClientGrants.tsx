@@ -63,6 +63,13 @@ interface State {
 	selectedUser: Option<ClientUser>;
 }
 
+interface LoadingContainer {
+	client: FullClientDetails;
+	allUsers: UserDetails[];
+}
+
+// TODO cleanup commented code
+
 const ClientGrants = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 
@@ -75,65 +82,94 @@ const ClientGrants = (props: Props): JSX.Element => {
 		selectedUser: none
 	});
 
-	const loadFullClientDetails = useCallback(
-		(): T.Task<Array<ClientUser>> =>
-			pipe(
-				getFullClientDetails(state.clientId),
-				TE.map<FullClientDetails, Array<ClientUser>>(
-					(
-						fullClientDetails: FullClientDetails
-					): Array<ClientUser> => {
-						setState((draft) => {
-							draft.clientName = fullClientDetails.name;
-							draft.allRoles = fullClientDetails.roles;
-							draft.clientUsers = fullClientDetails.users;
-						});
-						return fullClientDetails.users;
-					}
-				),
-				TE.getOrElse<Error, Array<ClientUser>>(
-					(): T.Task<Array<ClientUser>> => T.of([])
-				)
-			),
-		[state.clientId, setState]
-	);
-
-	const loadUsers = useCallback(
-		(clientUsers: Array<ClientUser>) =>
+	const loadEverything = pipe(
+		getFullClientDetails(state.clientId),
+		TE.chain((clientDetails) =>
 			pipe(
 				getAllUsers(),
-				TE.map((list: UserList) => list.users),
-				TE.map((
-					users: UserDetails[] // TODO combine with above function
-				) =>
-					users.filter((user) => {
-						const index = clientUsers.findIndex(
+				TE.map((userList) =>
+					userList.users.filter((user) => {
+						const index = clientDetails.users.findIndex(
 							(cUser) => cUser.id === user.id
 						);
 						return index === -1;
 					})
 				),
-				TE.map((users: UserDetails[]) =>
-					setState((draft) => {
-						// TODO see if this can be moved to the end
-						draft.allUsers = users;
-					})
-				)
-			),
-		[setState]
+				TE.map((users): LoadingContainer => ({
+					client: clientDetails,
+					allUsers: users
+				}))
+			)
+		),
+		TE.map((container) => {
+			setState((draft) => {
+				draft.clientName = container.client.name;
+				draft.allRoles = container.client.roles;
+				draft.clientUsers = container.client.users;
+				draft.allUsers = container.allUsers;
+			});
+		})
 	);
 
+	// const loadFullClientDetails = useCallback(
+	// 	(): T.Task<Array<ClientUser>> =>
+	// 		pipe(
+	// 			getFullClientDetails(state.clientId),
+	// 			TE.map<FullClientDetails, Array<ClientUser>>(
+	// 				(
+	// 					fullClientDetails: FullClientDetails
+	// 				): Array<ClientUser> => {
+	// 					setState((draft) => {
+	// 						draft.clientName = fullClientDetails.name;
+	// 						draft.allRoles = fullClientDetails.roles;
+	// 						draft.clientUsers = fullClientDetails.users;
+	// 					});
+	// 					return fullClientDetails.users;
+	// 				}
+	// 			),
+	// 			TE.getOrElse<Error, Array<ClientUser>>(
+	// 				(): T.Task<Array<ClientUser>> => T.of([])
+	// 			)
+	// 		),
+	// 	[state.clientId, setState]
+	// );
+
+	// const loadUsers = useCallback(
+	// 	(clientUsers: Array<ClientUser>) =>
+	// 		pipe(
+	// 			getAllUsers(),
+	// 			TE.map((list: UserList) => list.users),
+	// 			TE.map((
+	// 				users: UserDetails[] // TODO combine with above function
+	// 			) =>
+	// 				users.filter((user) => {
+	// 					const index = clientUsers.findIndex(
+	// 						(cUser) => cUser.id === user.id
+	// 					);
+	// 					return index === -1;
+	// 				})
+	// 			),
+	// 			TE.map((users: UserDetails[]) =>
+	// 				setState((draft) => {
+	// 					// TODO see if this can be moved to the end
+	// 					draft.allUsers = users;
+	// 				})
+	// 			)
+	// 		),
+	// 	[setState]
+	// );
+
 	// TODO this one is an absolute mess, try to figure out how to optimize this if it works
-	const loadAll = useCallback(
-		() =>
-			pipe(
-				loadFullClientDetails(),
-				T.map((clientUsers: Array<ClientUser>) => {
-					loadUsers(clientUsers)();
-				})
-			),
-		[loadFullClientDetails, loadUsers]
-	);
+	// const loadAll = useCallback(
+	// 	() =>
+	// 		pipe(
+	// 			loadFullClientDetails(),
+	// 			T.map((clientUsers: Array<ClientUser>) => {
+	// 				loadUsers(clientUsers)();
+	// 			})
+	// 		),
+	// 	[loadFullClientDetails, loadUsers]
+	// );
 
 	const removeUser = async (userId: number) => {
 		await removeUserFromClient(userId, state.clientId)();
@@ -147,19 +183,22 @@ const ClientGrants = (props: Props): JSX.Element => {
 				}
 			})
 		);
-		await loadAll();
+		// TODO need to redo load all
+		// await loadAll();
 	};
 
 	useEffect(() => {
-		loadAll()();
-	}, [loadAll]);
+		loadEverything()
+		// loadAll()();
+	}, []); // TODO fix this block
 
 	const saveAddRole = (roleId: number) =>
 		pipe(
 			state.selectedUser,
 			oMap(async (selectedUser) => {
 				await addRoleToUser(selectedUser.id, state.clientId, roleId)();
-				await loadAll();
+				// TODO need to redo load all
+				// await loadAll();
 				setState((draft) => {
 					pipe(
 						draft.selectedUser,
@@ -184,7 +223,8 @@ const ClientGrants = (props: Props): JSX.Element => {
 					state.clientId,
 					roleId
 				)();
-				await loadAll();
+				// TODO need to redo load all
+				// await loadAll();
 				setState((draft) => {
 					pipe(
 						draft.selectedUser,
@@ -202,7 +242,8 @@ const ClientGrants = (props: Props): JSX.Element => {
 
 	const saveAddUser = async (userId: number) => {
 		await addUserToClient(userId, state.clientId)();
-		await loadAll();
+		// TODO need to redo load all
+		// await loadAll();
 	};
 
 	const selectUser = (user: ClientUser) =>
