@@ -222,11 +222,29 @@ describe('ClientGrants', () => {
 		});
 
 		it('go to a user', async () => {
-			throw new Error();
+			mockGetFullClientDetails(client);
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Go'
+			})));
+
+			expect(testHistory.location.pathname).toEqual('/users/1');
 		});
 
 		it('remove a user', async () => {
-			throw new Error();
+			mockGetFullClientDetails(client);
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Remove'
+			})));
+
+			// TODO finish this
 		});
 
 		it('add a role to a user', async () => {
