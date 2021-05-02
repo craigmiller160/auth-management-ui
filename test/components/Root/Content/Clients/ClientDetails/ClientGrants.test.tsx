@@ -82,11 +82,17 @@ describe('ClientGrants', () => {
 		it('renders with users', async () => {
 			await doRender(testHistory);
 
-			screen.debug(); // TODO delete this
-            expect(screen.queryByText('Client Name'))
+			expect(screen.queryByText('Client Name'))
                 .toBeInTheDocument();
-            // TODO finish the test
-            // TODO don't forget validating the API functions
+            expect(screen.queryByText('Users'))
+				.toBeInTheDocument();
+            expect(screen.queryByText('No Users'))
+				.toBeInTheDocument();
+            expect(screen.queryByText('Roles'))
+				.toBeInTheDocument();
+
+            expect(getFullClientDetails).toHaveBeenCalledWith(1);
+            expect(getAllUsers).toHaveBeenCalled();
 		});
 
 		it('renders without users', async () => {

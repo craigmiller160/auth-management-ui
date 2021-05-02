@@ -68,8 +68,6 @@ interface LoadingContainer {
 	allUsers: UserDetails[];
 }
 
-// TODO cleanup commented code
-
 const ClientGrants = (props: Props): JSX.Element => {
 	const { id } = props.match.params;
 
@@ -110,66 +108,6 @@ const ClientGrants = (props: Props): JSX.Element => {
 			});
 		})
 	);
-
-	// const loadFullClientDetails = useCallback(
-	// 	(): T.Task<Array<ClientUser>> =>
-	// 		pipe(
-	// 			getFullClientDetails(state.clientId),
-	// 			TE.map<FullClientDetails, Array<ClientUser>>(
-	// 				(
-	// 					fullClientDetails: FullClientDetails
-	// 				): Array<ClientUser> => {
-	// 					setState((draft) => {
-	// 						draft.clientName = fullClientDetails.name;
-	// 						draft.allRoles = fullClientDetails.roles;
-	// 						draft.clientUsers = fullClientDetails.users;
-	// 					});
-	// 					return fullClientDetails.users;
-	// 				}
-	// 			),
-	// 			TE.getOrElse<Error, Array<ClientUser>>(
-	// 				(): T.Task<Array<ClientUser>> => T.of([])
-	// 			)
-	// 		),
-	// 	[state.clientId, setState]
-	// );
-
-	// const loadUsers = useCallback(
-	// 	(clientUsers: Array<ClientUser>) =>
-	// 		pipe(
-	// 			getAllUsers(),
-	// 			TE.map((list: UserList) => list.users),
-	// 			TE.map((
-	// 				users: UserDetails[] // TODO combine with above function
-	// 			) =>
-	// 				users.filter((user) => {
-	// 					const index = clientUsers.findIndex(
-	// 						(cUser) => cUser.id === user.id
-	// 					);
-	// 					return index === -1;
-	// 				})
-	// 			),
-	// 			TE.map((users: UserDetails[]) =>
-	// 				setState((draft) => {
-	// 					// TODO see if this can be moved to the end
-	// 					draft.allUsers = users;
-	// 				})
-	// 			)
-	// 		),
-	// 	[setState]
-	// );
-
-	// TODO this one is an absolute mess, try to figure out how to optimize this if it works
-	// const loadAll = useCallback(
-	// 	() =>
-	// 		pipe(
-	// 			loadFullClientDetails(),
-	// 			T.map((clientUsers: Array<ClientUser>) => {
-	// 				loadUsers(clientUsers)();
-	// 			})
-	// 		),
-	// 	[loadFullClientDetails, loadUsers]
-	// );
 
 	const removeUser = async (userId: number) => {
 		await removeUserFromClient(userId, state.clientId)();
