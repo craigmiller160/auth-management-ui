@@ -16,7 +16,8 @@ import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn(),
-	addUserToClient: jest.fn()
+	addUserToClient: jest.fn(),
+	removeUserFromClient: jest.fn()
 }));
 
 jest.mock('../../../../../../src/services/UserService', () => ({
@@ -236,6 +237,11 @@ describe('ClientGrants', () => {
 
 		it('remove a user', async () => {
 			mockGetFullClientDetails(client);
+			mockGetFullClientDetails({
+				...client,
+				users: []
+			});
+			mockGetAllUsers(userList);
 			mockGetAllUsers(userList);
 
 			await doRender(testHistory);

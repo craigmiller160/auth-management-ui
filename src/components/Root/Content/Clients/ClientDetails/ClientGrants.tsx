@@ -114,21 +114,23 @@ const ClientGrants = (props: Props): JSX.Element => {
 		[setState, state.clientId]
 	);
 
-	const removeUser = async (userId: number) => {
-		await removeUserFromClient(userId, state.clientId)();
+	const removeUser = (userId: number) =>
 		pipe(
-			state.selectedUser,
-			oMap((selectedUser: ClientUser) => {
-				if (selectedUser.id === userId) {
-					setState((draft) => {
-						draft.selectedUser = none;
-					});
-				}
+			removeUserFromClient(userId, state.clientId),
+			TE.map(() => {
+				pipe(
+					state.selectedUser,
+					oMap((selectedUser: ClientUser) => {
+						if (selectedUser.id === userId) {
+							setState((draft) => {
+								draft.selectedUser = none;
+							});
+						}
+					})
+				);
+				loadEverything();
 			})
 		);
-		// TODO need to redo load all
-		// await loadAll();
-	};
 
 	useEffect(() => {
 		loadEverything();
