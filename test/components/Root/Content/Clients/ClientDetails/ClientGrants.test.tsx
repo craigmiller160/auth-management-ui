@@ -17,6 +17,7 @@ import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
+import { Role } from '../../../../../../src/types/role';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn(),
@@ -45,6 +46,12 @@ const doRender = (history: MemoryHistory) =>
 			</TestReduxProvider>
 		)
 	);
+
+const role1: Role = {
+	id: 1,
+	name: 'MyRole',
+	clientId: 1
+};
 
 const user1: UserDetails = {
 	id: 1,
@@ -317,11 +324,41 @@ describe('ClientGrants', () => {
 				name: 'Add Role'
 			}))
 				.toBeDisabled();
-
 		});
 
 		it('selects a user and adds a role', async () => {
-			throw new Error();
+			mockGetFullClientDetails({
+				...client,
+				roles: [
+					role1
+				]
+			});
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			expect(screen.queryByText('No Roles'))
+				.not.toBeInTheDocument();
+			expect(screen.queryByText('Add Role'))
+				.not.toBeInTheDocument();
+
+			const userListItem = screen.getByText(
+				`${user1.firstName} ${user1.lastName}`
+			);
+			userEvent.click(userListItem);
+
+			expect(screen.queryByText('No Roles'))
+				.toBeInTheDocument();
+			expect(screen.queryByRole('button', {
+				name: 'Add Role'
+			}))
+				.not.toBeDisabled();
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Add Role'
+			})));
+
+			// TODO finish this
 		});
 
 		it('selects a user and removes a role', async () => {
