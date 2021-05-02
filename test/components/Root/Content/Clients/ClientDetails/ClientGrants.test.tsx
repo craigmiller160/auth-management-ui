@@ -107,6 +107,10 @@ describe('ClientGrants', () => {
 				.toBeInTheDocument();
 			expect(screen.queryByText('Roles'))
 				.toBeInTheDocument();
+			const addUserButton = screen.queryByRole('button', {
+				name: 'Add User'
+			});
+			expect(addUserButton).not.toBeDisabled();
 
 			expect(getFullClientDetails).toHaveBeenCalledWith(1);
 			expect(getAllUsers).toHaveBeenCalled();
@@ -129,13 +133,41 @@ describe('ClientGrants', () => {
 				.toBeInTheDocument();
 			expect(screen.queryByText('Roles'))
 				.toBeInTheDocument();
+			const addUserButton = screen.queryByRole('button', {
+				name: 'Add User'
+			});
+			expect(addUserButton).not.toBeDisabled();
 
 			expect(getFullClientDetails).toHaveBeenCalledWith(1);
 			expect(getAllUsers).toHaveBeenCalled();
 		});
 
-		it('renders without users with add button disabled', () => {
-			throw new Error();
+		it('renders without users with add button disabled', async () => {
+			mockGetFullClientDetails({
+				...client,
+				users: []
+			});
+			mockGetAllUsers({
+				users: []
+			});
+
+			await doRender(testHistory);
+
+			expect(screen.queryByText('Client Name'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Users'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('No Users'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Roles'))
+				.toBeInTheDocument();
+			const addUserButton = screen.queryByRole('button', {
+				name: 'Add User'
+			});
+			expect(addUserButton).toBeDisabled();
+
+			expect(getFullClientDetails).toHaveBeenCalledWith(1);
+			expect(getAllUsers).toHaveBeenCalled();
 		});
 	});
 
