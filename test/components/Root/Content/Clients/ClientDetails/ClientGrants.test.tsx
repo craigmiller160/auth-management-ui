@@ -8,14 +8,15 @@ import {
 	ClientUser,
 	FullClientDetails
 } from '../../../../../../src/types/client';
-import { getFullClientDetails } from '../../../../../../src/services/ClientService';
+import { addUserToClient, getFullClientDetails } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
-	getFullClientDetails: jest.fn()
+	getFullClientDetails: jest.fn(),
+	addUserToClient: jest.fn()
 }));
 
 jest.mock('../../../../../../src/services/UserService', () => ({
@@ -61,6 +62,11 @@ const user2: UserDetails = {
 	enabled: true
 };
 
+const clientUser2: ClientUser = {
+	...user2,
+	roles: []
+};
+
 const client: FullClientDetails = {
 	id: 1,
 	name: 'Client Name',
@@ -79,12 +85,12 @@ const userList: UserList = {
 };
 
 const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
-	(getFullClientDetails as jest.Mock).mockImplementation(() =>
+	(getFullClientDetails as jest.Mock).mockImplementationOnce(() =>
 		TE.right(clientArg)
 	);
 
 const mockGetAllUsers = (userListArg: UserList) =>
-	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userListArg));
+	(getAllUsers as jest.Mock).mockImplementationOnce(() => TE.right(userListArg));
 
 const getAddUserBtn = () => screen.getByRole('button', {
 	name: 'Add User'
@@ -164,9 +170,20 @@ describe('ClientGrants', () => {
 	describe('behavior', () => {
 		it('add a user', async () => {
 			mockGetFullClientDetails(client);
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					clientUser1,
+					clientUser2
+				]
+			})
 			mockGetAllUsers(userList);
 
 			await doRender(testHistory);
+
+			expect(
+				screen.queryByText(`${user2.firstName} ${user2.lastName}`)
+			).not.toBeInTheDocument();
 
 			const addUserButton = getAddUserBtn();
 			expect(addUserButton).not.toBeDisabled();
@@ -185,11 +202,17 @@ describe('ClientGrants', () => {
 			expect(screen.getByLabelText('User'))
 				.toHaveValue('user2@gmail.com');
 
-			await waitFor(() => userEvent.click(screen.getByText('Select')));
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Select'
+			})));
+
+			screen.debug(); // TODO delete this
 
 			expect(
 				screen.queryByText(`${user2.firstName} ${user2.lastName}`)
 			).toBeInTheDocument();
+
+			expect(addUserToClient).toHaveBeenCalledWith(2, 1);
 		});
 
 		it('go to a user', async () => {

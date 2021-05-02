@@ -182,11 +182,13 @@ const ClientGrants = (props: Props): JSX.Element => {
 			})
 		);
 
-	const saveAddUser = async (userId: number) => {
-		await addUserToClient(userId, state.clientId)();
-		// TODO need to redo load all
-		// await loadAll();
-	};
+	const saveAddUser = (userId: number) =>
+		pipe(
+			addUserToClient(userId, state.clientId),
+			TE.map(() => {
+				loadEverything()
+			})
+		);
 
 	const selectUser = (user: ClientUser) =>
 		setState((draft) => {
