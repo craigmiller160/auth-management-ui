@@ -246,11 +246,29 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
+			expect(
+				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
+			).toBeInTheDocument();
+
 			await waitFor(() => userEvent.click(screen.getByRole('button', {
 				name: 'Remove'
 			})));
 
-			// TODO finish this
+			expect(screen.queryByText('Confirm'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Cancel'))
+				.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Confirm'
+			})));
+
+			expect(screen.queryByText('Confirm'))
+				.not.toBeInTheDocument();
+
+			expect(
+				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
+			).not.toBeInTheDocument();
 		});
 
 		it('add a role to a user', async () => {

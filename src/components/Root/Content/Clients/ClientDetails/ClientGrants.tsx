@@ -130,7 +130,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 				);
 				loadEverything();
 			})
-		);
+		)();
 
 	useEffect(() => {
 		loadEverything();
