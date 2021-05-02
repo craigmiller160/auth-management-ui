@@ -79,7 +79,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 		(): T.Task<Array<ClientUser>> =>
 			pipe(
 				getFullClientDetails(state.clientId),
-				TE.map<FullClientDetails,Array<ClientUser>>(
+				TE.map<FullClientDetails, Array<ClientUser>>(
 					(
 						fullClientDetails: FullClientDetails
 					): Array<ClientUser> => {
@@ -91,7 +91,9 @@ const ClientGrants = (props: Props): JSX.Element => {
 						return fullClientDetails.users;
 					}
 				),
-				TE.getOrElse<Error,Array<ClientUser>>((): T.Task<Array<ClientUser>> => T.of([]))
+				TE.getOrElse<Error, Array<ClientUser>>(
+					(): T.Task<Array<ClientUser>> => T.of([])
+				)
 			),
 		[state.clientId, setState]
 	);
