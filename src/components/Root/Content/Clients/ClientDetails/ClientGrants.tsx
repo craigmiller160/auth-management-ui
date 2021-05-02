@@ -91,7 +91,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 						return fullClientDetails.users;
 					}
 				),
-				TE.getOrElse((): T.Task<Array<ClientUser>> => T.of([]))
+				TE.getOrElse<FullClientDetails,ClientUser[]>((): T.Task<Array<ClientUser>> => T.of([]))
 			),
 		[state.clientId, setState]
 	);
