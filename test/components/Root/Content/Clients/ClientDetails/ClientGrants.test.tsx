@@ -184,6 +184,12 @@ describe('ClientGrants', () => {
 			userEvent.click(screen.getByText('user2@gmail.com'));
 			expect(screen.getByLabelText('User'))
 				.toHaveValue('user2@gmail.com');
+
+			await waitFor(() => userEvent.click(screen.getByText('Select')));
+
+			expect(
+				screen.queryByText(`${user2.firstName} ${user2.lastName}`)
+			).toBeInTheDocument();
 		});
 
 		it('go to a user', async () => {
