@@ -8,7 +8,11 @@ import {
 	ClientUser,
 	FullClientDetails
 } from '../../../../../../src/types/client';
-import { addUserToClient, getFullClientDetails } from '../../../../../../src/services/ClientService';
+import {
+	addUserToClient,
+	getFullClientDetails,
+	removeUserFromClient
+} from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
@@ -96,6 +100,9 @@ const mockGetAllUsers = (userListArg: UserList) =>
 const mockAddUserToClient = () =>
 	(addUserToClient as jest.Mock).mockImplementationOnce(() => TE.right([]));
 
+const mockRemoveUserFromClient = () =>
+	(removeUserFromClient as jest.Mock).mockImplementation(() => TE.right([]));
+
 const getAddUserBtn = () => screen.getByRole('button', {
 	name: 'Add User'
 });
@@ -108,6 +115,7 @@ describe('ClientGrants', () => {
 		testHistory.push('/clients/1/grants');
 
 		mockAddUserToClient();
+		mockRemoveUserFromClient();
 	});
 
 	describe('rendering', () => {
@@ -271,11 +279,15 @@ describe('ClientGrants', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('add a role to a user', async () => {
+		it('selects a user but no roles are available', () => {
 			throw new Error();
 		});
 
-		it('remove a role from a user', async () => {
+		it('selects a user and adds a role', async () => {
+			throw new Error();
+		});
+
+		it('selects a user and removes a role', async () => {
 			throw new Error();
 		});
 	});
