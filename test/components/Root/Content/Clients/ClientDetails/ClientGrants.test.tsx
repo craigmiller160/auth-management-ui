@@ -176,6 +176,10 @@ describe('ClientGrants', () => {
 			throw new Error();
 		});
 
+		it('go to a user', async () => {
+			throw new Error();
+		});
+
 		it('remove a user', async () => {
 			throw new Error();
 		});
