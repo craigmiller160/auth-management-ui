@@ -1,6 +1,6 @@
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Route, Router, Switch } from 'react-router';
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
@@ -12,6 +12,7 @@ import { getFullClientDetails } from '../../../../../../src/services/ClientServi
 import * as TE from 'fp-ts/es6/TaskEither';
 import { getAllUsers } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../../../src/services/ClientService', () => ({
 	getFullClientDetails: jest.fn()
@@ -85,6 +86,10 @@ const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
 const mockGetAllUsers = (userListArg: UserList) =>
 	(getAllUsers as jest.Mock).mockImplementation(() => TE.right(userListArg));
 
+const getAddUserBtn = () => screen.getByRole('button', {
+	name: 'Add User'
+});
+
 describe('ClientGrants', () => {
 	let testHistory: MemoryHistory;
 	beforeEach(() => {
@@ -106,9 +111,7 @@ describe('ClientGrants', () => {
 				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
 			).toBeInTheDocument();
 			expect(screen.queryByText('Roles')).toBeInTheDocument();
-			const addUserButton = screen.queryByRole('button', {
-				name: 'Add User'
-			});
+			const addUserButton = getAddUserBtn();
 			expect(addUserButton).not.toBeDisabled();
 
 			expect(getFullClientDetails).toHaveBeenCalledWith(1);
@@ -128,9 +131,7 @@ describe('ClientGrants', () => {
 			expect(screen.queryByText('Users')).toBeInTheDocument();
 			expect(screen.queryByText('No Users')).toBeInTheDocument();
 			expect(screen.queryByText('Roles')).toBeInTheDocument();
-			const addUserButton = screen.queryByRole('button', {
-				name: 'Add User'
-			});
+			const addUserButton = getAddUserBtn();
 			expect(addUserButton).not.toBeDisabled();
 
 			expect(getFullClientDetails).toHaveBeenCalledWith(1);
@@ -152,9 +153,7 @@ describe('ClientGrants', () => {
 			expect(screen.queryByText('Users')).toBeInTheDocument();
 			expect(screen.queryByText('No Users')).toBeInTheDocument();
 			expect(screen.queryByText('Roles')).toBeInTheDocument();
-			const addUserButton = screen.queryByRole('button', {
-				name: 'Add User'
-			});
+			const addUserButton = getAddUserBtn();
 			expect(addUserButton).toBeDisabled();
 
 			expect(getFullClientDetails).toHaveBeenCalledWith(1);
@@ -164,7 +163,27 @@ describe('ClientGrants', () => {
 
 	describe('behavior', () => {
 		it('add a user', async () => {
-			throw new Error();
+			mockGetFullClientDetails(client);
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			const addUserButton = getAddUserBtn();
+			expect(addUserButton).not.toBeDisabled();
+
+			await waitFor(() => userEvent.click(addUserButton));
+
+			expect(screen.queryByLabelText('User'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Select'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Cancel'))
+				.toBeInTheDocument();
+
+			userEvent.click(screen.getByLabelText('User'));
+			userEvent.click(screen.getByText('user2@gmail.com'));
+			expect(screen.getByLabelText('User'))
+				.toHaveValue('user2@gmail.com');
 		});
 
 		it('go to a user', async () => {

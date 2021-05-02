@@ -110,7 +110,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 						draft.allUsers = container.allUsers;
 					});
 				})
-			),
+			)(),
 		[setState, state.clientId]
 	);
 
