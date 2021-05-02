@@ -1,6 +1,6 @@
 import { createTestReduxProvider } from '@craigmiller160/react-test-utils';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Route, Router, Switch } from 'react-router';
 import React from 'react';
 import ClientGrants from '../../../../../../src/components/Root/Content/Clients/ClientDetails/ClientGrants';
@@ -95,7 +95,9 @@ const mockGetFullClientDetails = (clientArg: FullClientDetails) =>
 	);
 
 const mockGetAllUsers = (userListArg: UserList) =>
-	(getAllUsers as jest.Mock).mockImplementationOnce(() => TE.right(userListArg));
+	(getAllUsers as jest.Mock).mockImplementationOnce(() =>
+		TE.right(userListArg)
+	);
 
 const mockAddUserToClient = () =>
 	(addUserToClient as jest.Mock).mockImplementationOnce(() => TE.right([]));
@@ -103,9 +105,10 @@ const mockAddUserToClient = () =>
 const mockRemoveUserFromClient = () =>
 	(removeUserFromClient as jest.Mock).mockImplementation(() => TE.right([]));
 
-const getAddUserBtn = () => screen.getByRole('button', {
-	name: 'Add User'
-});
+const getAddUserBtn = () =>
+	screen.getByRole('button', {
+		name: 'Add User'
+	});
 
 describe('ClientGrants', () => {
 	let testHistory: MemoryHistory;
@@ -186,11 +189,8 @@ describe('ClientGrants', () => {
 			mockGetFullClientDetails(client);
 			mockGetFullClientDetails({
 				...client,
-				users: [
-					clientUser1,
-					clientUser2
-				]
-			})
+				users: [clientUser1, clientUser2]
+			});
 			mockGetAllUsers(userList);
 			mockGetAllUsers(userList);
 
@@ -205,21 +205,23 @@ describe('ClientGrants', () => {
 
 			await waitFor(() => userEvent.click(addUserButton));
 
-			expect(screen.queryByLabelText('User'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Select'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Cancel'))
-				.toBeInTheDocument();
+			expect(screen.queryByLabelText('User')).toBeInTheDocument();
+			expect(screen.queryByText('Select')).toBeInTheDocument();
+			expect(screen.queryByText('Cancel')).toBeInTheDocument();
 
 			userEvent.click(screen.getByLabelText('User'));
 			userEvent.click(screen.getByText('user2@gmail.com'));
-			expect(screen.getByLabelText('User'))
-				.toHaveValue('user2@gmail.com');
+			expect(screen.getByLabelText('User')).toHaveValue(
+				'user2@gmail.com'
+			);
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Select'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Select'
+					})
+				)
+			);
 
 			expect(
 				screen.queryByText(`${user2.firstName} ${user2.lastName}`)
@@ -236,9 +238,13 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Go'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Go'
+					})
+				)
+			);
 
 			expect(testHistory.location.pathname).toEqual('/users/1');
 		});
@@ -258,30 +264,60 @@ describe('ClientGrants', () => {
 				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
 			).toBeInTheDocument();
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Remove'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Remove'
+					})
+				)
+			);
 
-			expect(screen.queryByText('Are you sure you want to remove this user?'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Confirm'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Cancel'))
-				.toBeInTheDocument();
+			expect(
+				screen.queryByText('Are you sure you want to remove this user?')
+			).toBeInTheDocument();
+			expect(screen.queryByText('Confirm')).toBeInTheDocument();
+			expect(screen.queryByText('Cancel')).toBeInTheDocument();
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Confirm'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Confirm'
+					})
+				)
+			);
 
-			await waitFor(() => expect(screen.queryByText('Confirm')).not.toBeInTheDocument());
+			await waitFor(() =>
+				expect(screen.queryByText('Confirm')).not.toBeInTheDocument()
+			);
 
 			expect(
 				screen.queryByText(`${user1.firstName} ${user1.lastName}`)
 			).not.toBeInTheDocument();
 		});
 
-		it('selects a user but no roles are available', () => {
-			throw new Error();
+		it('selects a user but no roles are available', async () => {
+			mockGetFullClientDetails(client);
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			expect(screen.queryByText('No Roles'))
+				.not.toBeInTheDocument();
+			expect(screen.queryByText('Add Role'))
+				.not.toBeInTheDocument();
+
+			const userListItem = screen.getByText(
+				`${user1.firstName} ${user1.lastName}`
+			);
+			userEvent.click(userListItem);
+
+			expect(screen.queryByText('No Roles'))
+				.toBeInTheDocument();
+			expect(screen.queryByRole('button', {
+				name: 'Add Role'
+			}))
+				.toBeDisabled();
+
 		});
 
 		it('selects a user and adds a role', async () => {

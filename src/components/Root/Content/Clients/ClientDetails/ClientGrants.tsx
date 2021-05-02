@@ -188,7 +188,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 		pipe(
 			addUserToClient(userId, state.clientId),
 			TE.map(() => {
-				loadEverything()
+				loadEverything();
 			})
 		)();
 
