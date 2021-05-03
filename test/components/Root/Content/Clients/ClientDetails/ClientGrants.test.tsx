@@ -453,12 +453,48 @@ describe('ClientGrants', () => {
 			expect(removeRoleFromUser).toHaveBeenCalledWith(1, 1, 1);
 		});
 
-		it('all dialogs can be cancelled', () => {
-			// TODO add user
-			// TODO add role
-			// TODO remove user
-			// TODO remove role
-			throw new Error();
+		it('cancel add user dialog', async () => {
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1]
+			});
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			expect(screen.queryByLabelText('User'))
+				.not.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Add User'
+			})));
+			expect(screen.queryByLabelText('User'))
+				.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Cancel'
+			})));
+
+			await waitFor(() => expect(screen.queryByLabelText('User'))
+				.not.toBeInTheDocument());
 		});
+
+		it('cancel add role dialog', () => {
+			throw new Error();
+		})
+
+		it('cancel remove user dialog', () => {
+			throw new Error();
+		})
+
+		it('cancel remove role dialog', () => {
+			throw new Error();
+		})
 	});
 });
