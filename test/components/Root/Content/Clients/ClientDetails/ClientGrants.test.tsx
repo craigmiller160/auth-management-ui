@@ -16,7 +16,7 @@ import {
 import * as TE from 'fp-ts/es6/TaskEither';
 import {
 	addRoleToUser,
-	getAllUsers
+	getAllUsers, removeRoleFromUser
 } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
@@ -30,7 +30,8 @@ jest.mock('../../../../../../src/services/ClientService', () => ({
 
 jest.mock('../../../../../../src/services/UserService', () => ({
 	getAllUsers: jest.fn(),
-	addRoleToUser: jest.fn()
+	addRoleToUser: jest.fn(),
+	removeRoleFromUser: jest.fn()
 }));
 
 const [TestReduxProvider] = createTestReduxProvider({});
@@ -119,6 +120,9 @@ const mockRemoveUserFromClient = () =>
 const mockAddRoleToUser = () =>
 	(addRoleToUser as jest.Mock).mockImplementation(() => TE.right([]));
 
+const mockRemoveRoleFromUser = () =>
+	(removeRoleFromUser as jest.Mock).mockImplementation(() => TE.right([]));
+
 const getAddUserBtn = () =>
 	screen.getByRole('button', {
 		name: 'Add User'
@@ -134,6 +138,7 @@ describe('ClientGrants', () => {
 		mockAddUserToClient();
 		mockRemoveUserFromClient();
 		mockAddRoleToUser();
+		mockRemoveRoleFromUser();
 	});
 
 	describe('rendering', () => {
@@ -403,7 +408,36 @@ describe('ClientGrants', () => {
 		});
 
 		it('selects a user and removes a role', async () => {
-			throw new Error();
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1]
+			});
+			mockGetFullClientDetails({
+				...client,
+				roles: [role1]
+			});
+			mockGetAllUsers(userList);
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			const userListItem = screen.getByText(
+				`${user1.firstName} ${user1.lastName}`
+			);
+			userEvent.click(userListItem);
+
+			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
+			expect(screen.queryAllByText('MyRole')).toHaveLength(2);
+
+			// TODO finish this
+
+			// expect(removeRoleFromUser).toHaveBeenCalledWith(1, 1, 1);
 		});
 
 		it('all dialogs can be cancelled', () => {
