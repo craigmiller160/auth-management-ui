@@ -132,12 +132,15 @@ const ClientGrants = (props: Props): JSX.Element => {
 			})
 		)();
 
-	const saveAddRole = (roleId: number) => {
-		const selectedUserId: number = pipe(
+	const getSelectedUserId = (): number =>
+		pipe(
 			state.selectedUser,
 			oMap((selectedUser) => selectedUser.id),
 			oGetOrElse(() => 0)
 		);
+
+	const saveAddRole = (roleId: number) => {
+		const selectedUserId = getSelectedUserId();
 
 		pipe(
 			addRoleToUser(selectedUserId, state.clientId, roleId),
@@ -154,35 +157,23 @@ const ClientGrants = (props: Props): JSX.Element => {
 		)();
 	};
 
-	// const removeRole = (roleId: number) => {
-	//
-	// }
+	const removeRole = (roleId: number) => {
+		const selectedUserId = getSelectedUserId();
 
-	const removeRole = (roleId: number) =>
 		pipe(
-			state.selectedUser,
-			oMap(async (selectedUser) => {
-				await removeRoleFromUser(
-					selectedUser.id,
-					state.clientId,
-					roleId
-				)();
-				// TODO need to redo load all
-				// await loadAll();
+			removeRoleFromUser(selectedUserId, state.clientId, roleId),
+			TE.chain(() => TE.tryCatch(loadEverything, (error) => error)),
+			TE.map(() => {
 				setState((draft) => {
-					pipe(
-						draft.selectedUser,
-						oMap((oldSelectedUser) => {
-							draft.selectedUser = fromNullable(
-								draft.clientUsers.find(
-									(user) => user.id === oldSelectedUser.id
-								)
-							);
-						})
-					);
+					draft.selectedUser = fromNullable(
+						draft.clientUsers.find(
+							(user) => user.id === selectedUserId
+						)
+					)
 				});
 			})
-		);
+		)();
+	};
 
 	useEffect(() => {
 		loadEverything();
