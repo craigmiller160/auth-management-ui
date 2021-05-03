@@ -396,6 +396,9 @@ describe('ClientGrants', () => {
 				expect(screen.queryByText('Select')).not.toBeInTheDocument()
 			);
 
+			// TODO this should be able to be removed...
+			await waitFor(() => userEvent.click(screen.getByText(`${user1.firstName} ${user1.lastName}`)));
+
 			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
 			expect(screen.queryByText('MyRole')).toBeInTheDocument();
 

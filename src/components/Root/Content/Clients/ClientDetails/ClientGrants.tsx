@@ -132,6 +132,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 			})
 		)();
 
+	// TODO cleanup handling of selected user
 	const saveAddRole = (roleId: number) =>
 		pipe(
 			state.selectedUser,
@@ -139,7 +140,11 @@ const ClientGrants = (props: Props): JSX.Element => {
 				pipe(
 					addRoleToUser(selectedUser.id, state.clientId, roleId),
 					TE.map(() => {
+						// TODO after adding role, user should still be selected
 						setState((draft) => {
+
+
+
 							pipe(
 								draft.selectedUser,
 								oMap((oldSelectedUser) => {
