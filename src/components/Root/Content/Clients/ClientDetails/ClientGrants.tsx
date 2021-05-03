@@ -169,7 +169,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 						draft.clientUsers.find(
 							(user) => user.id === selectedUserId
 						)
-					)
+					);
 				});
 			})
 		)();

@@ -16,7 +16,8 @@ import {
 import * as TE from 'fp-ts/es6/TaskEither';
 import {
 	addRoleToUser,
-	getAllUsers, removeRoleFromUser
+	getAllUsers,
+	removeRoleFromUser
 } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
@@ -55,6 +56,11 @@ const doRender = (history: MemoryHistory) =>
 const role1: Role = {
 	id: 1,
 	name: 'MyRole',
+	clientId: 1
+};
+const role2: Role = {
+	id: 2,
+	name: 'MyRole2',
 	clientId: 1
 };
 
@@ -435,17 +441,20 @@ describe('ClientGrants', () => {
 			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
 			expect(screen.queryAllByText('MyRole')).toHaveLength(2);
 
-			await waitFor(() => userEvent.click(screen.queryAllByText('Remove')[1]));
+			await waitFor(() =>
+				userEvent.click(screen.queryAllByText('Remove')[1])
+			);
 
-			expect(screen.queryByText('Are you sure you want to remove this role?'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Confirm'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Cancel'))
-				.toBeInTheDocument();
+			expect(
+				screen.queryByText('Are you sure you want to remove this role?')
+			).toBeInTheDocument();
+			expect(screen.queryByText('Confirm')).toBeInTheDocument();
+			expect(screen.queryByText('Cancel')).toBeInTheDocument();
 
 			await waitFor(() => userEvent.click(screen.getByText('Confirm')));
-			await waitFor(() => expect(screen.queryByText('Confirm')).not.toBeInTheDocument());
+			await waitFor(() =>
+				expect(screen.queryByText('Confirm')).not.toBeInTheDocument()
+			);
 
 			expect(screen.queryByText('No Roles')).toBeInTheDocument();
 			expect(screen.queryAllByText('MyRole')).not.toHaveLength(2);
@@ -468,33 +477,72 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			expect(screen.queryByLabelText('User'))
-				.not.toBeInTheDocument();
+			expect(screen.queryByLabelText('User')).not.toBeInTheDocument();
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Add User'
-			})));
-			expect(screen.queryByLabelText('User'))
-				.toBeInTheDocument();
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Add User'
+					})
+				)
+			);
+			expect(screen.queryByLabelText('User')).toBeInTheDocument();
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Cancel'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Cancel'
+					})
+				)
+			);
 
-			await waitFor(() => expect(screen.queryByLabelText('User'))
-				.not.toBeInTheDocument());
+			await waitFor(() =>
+				expect(screen.queryByLabelText('User')).not.toBeInTheDocument()
+			);
 		});
 
-		it('cancel add role dialog', () => {
-			throw new Error();
-		})
+		it('cancel add role dialog', async () => {
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1, role2]
+			});
+			mockGetAllUsers(userList);
 
-		it('cancel remove user dialog', () => {
-			throw new Error();
-		})
+			await doRender(testHistory);
 
-		it('cancel remove role dialog', () => {
+			const userListItem = screen.getByText(
+				`${user1.firstName} ${user1.lastName}`
+			);
+			userEvent.click(userListItem);
+
+			expect(screen.queryByLabelText('Role')).not.toBeInTheDocument();
+
+			const addRoleButton = screen.getByRole('button', {
+				name: 'Add Role'
+			});
+			expect(addRoleButton).not.toBeDisabled();
+
+			await waitFor(() => userEvent.click(screen.getByText('Add Role')));
+			expect(screen.queryByLabelText('Role')).toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+			await waitFor(() =>
+				expect(screen.queryByLabelText('Role')).not.toBeInTheDocument()
+			);
+		});
+
+		it('cancel remove user dialog', async () => {
 			throw new Error();
-		})
+		});
+
+		it('cancel remove role dialog', async () => {
+			throw new Error();
+		});
 	});
 });
