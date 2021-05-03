@@ -590,14 +590,23 @@ describe('ClientGrants', () => {
 			);
 			userEvent.click(userListItem);
 
-			const removeRoleMessage = 'Are you sure you want to remove this role?';
+			const removeRoleMessage =
+				'Are you sure you want to remove this role?';
 
-			expect(screen.queryByText(removeRoleMessage)).not.toBeInTheDocument();
-			await waitFor(() => userEvent.click(screen.getAllByText('Remove')[1]));
+			expect(
+				screen.queryByText(removeRoleMessage)
+			).not.toBeInTheDocument();
+			await waitFor(() =>
+				userEvent.click(screen.getAllByText('Remove')[1])
+			);
 			expect(screen.queryByText(removeRoleMessage)).toBeInTheDocument();
 
 			await waitFor(() => userEvent.click(screen.getByText('Cancel')));
-			await waitFor(() => expect(screen.queryByText(removeRoleMessage)).not.toBeInTheDocument());
+			await waitFor(() =>
+				expect(
+					screen.queryByText(removeRoleMessage)
+				).not.toBeInTheDocument()
+			);
 		});
 	});
 });
