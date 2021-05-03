@@ -136,6 +136,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 		loadEverything();
 	}, [loadEverything]);
 
+	// TODO refactor this
 	const saveAddRole = (roleId: number) =>
 		pipe(
 			state.selectedUser,

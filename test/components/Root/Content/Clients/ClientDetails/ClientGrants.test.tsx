@@ -14,7 +14,7 @@ import {
 	removeUserFromClient
 } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
-import { getAllUsers } from '../../../../../../src/services/UserService';
+import { addRoleToUser, getAllUsers } from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
 import { Role } from '../../../../../../src/types/role';
@@ -26,7 +26,8 @@ jest.mock('../../../../../../src/services/ClientService', () => ({
 }));
 
 jest.mock('../../../../../../src/services/UserService', () => ({
-	getAllUsers: jest.fn()
+	getAllUsers: jest.fn(),
+	addRoleToUser: jest.fn()
 }));
 
 const [TestReduxProvider] = createTestReduxProvider({});
@@ -112,6 +113,9 @@ const mockAddUserToClient = () =>
 const mockRemoveUserFromClient = () =>
 	(removeUserFromClient as jest.Mock).mockImplementation(() => TE.right([]));
 
+const mockAddRoleToUser = () =>
+	(addRoleToUser as jest.Mock).mockImplementation(() => TE.right([]));
+
 const getAddUserBtn = () =>
 	screen.getByRole('button', {
 		name: 'Add User'
@@ -126,6 +130,7 @@ describe('ClientGrants', () => {
 
 		mockAddUserToClient();
 		mockRemoveUserFromClient();
+		mockAddRoleToUser();
 	});
 
 	describe('rendering', () => {
@@ -341,6 +346,8 @@ describe('ClientGrants', () => {
 				.not.toBeInTheDocument();
 			expect(screen.queryByText('Add Role'))
 				.not.toBeInTheDocument();
+			expect(screen.queryByText('MyRole'))
+				.not.toBeInTheDocument();
 
 			const userListItem = screen.getByText(
 				`${user1.firstName} ${user1.lastName}`
@@ -358,10 +365,41 @@ describe('ClientGrants', () => {
 				name: 'Add Role'
 			})));
 
-			// TODO finish this
+			expect(screen.queryByText('Select'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Cancel'))
+				.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByLabelText('Role')));
+			await waitFor(() => userEvent.click(screen.getByText('MyRole')));
+
+			expect(screen.getByLabelText('Role'))
+				.toHaveValue('MyRole');
+
+			await waitFor(() => userEvent.click(screen.getByRole('button', {
+				name: 'Select'
+			})));
+
+			await waitFor(() => expect(screen.queryByText('Select'))
+				.not.toBeInTheDocument());
+
+			expect(screen.queryByText('No Roles'))
+				.not.toBeInTheDocument();
+			expect(screen.queryByText('MyRole'))
+				.toBeInTheDocument();
+
+			expect(addRoleToUser).toHaveBeenCalledWith(1, 1, 1);
 		});
 
 		it('selects a user and removes a role', async () => {
+			throw new Error();
+		});
+
+		it('all dialogs can be canclled', () => {
+			// TODO add user
+			// TODO add role
+			// TODO remove user
+			// TODO remove role
 			throw new Error();
 		});
 	});
