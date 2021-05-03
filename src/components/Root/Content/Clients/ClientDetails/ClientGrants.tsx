@@ -132,32 +132,35 @@ const ClientGrants = (props: Props): JSX.Element => {
 			})
 		)();
 
-	useEffect(() => {
-		loadEverything();
-	}, [loadEverything]);
-
-	// TODO refactor this
 	const saveAddRole = (roleId: number) =>
 		pipe(
 			state.selectedUser,
-			oMap(async (selectedUser) => {
-				await addRoleToUser(selectedUser.id, state.clientId, roleId)();
-				// TODO need to redo load all
-				// await loadAll();
-				setState((draft) => {
-					pipe(
-						draft.selectedUser,
-						oMap((oldSelectedUser) => {
-							draft.selectedUser = fromNullable(
-								draft.clientUsers.find(
-									(user) => user.id === oldSelectedUser.id
-								)
+			oMap((selectedUser) =>
+				pipe(
+					addRoleToUser(selectedUser.id, state.clientId, roleId),
+					TE.map(() => {
+						setState((draft) => {
+							pipe(
+								draft.selectedUser,
+								oMap((oldSelectedUser) => {
+									draft.selectedUser = fromNullable(
+										draft.clientUsers.find(
+											(user) =>
+												user.id === oldSelectedUser.id
+										)
+									);
+								})
 							);
-						})
-					);
-				});
-			})
+						});
+						loadEverything();
+					})
+				)
+			)
 		);
+
+	useEffect(() => {
+		loadEverything();
+	}, [loadEverything]);
 
 	const removeRole = (roleId: number) =>
 		pipe(

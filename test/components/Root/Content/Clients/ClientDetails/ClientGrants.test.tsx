@@ -14,7 +14,10 @@ import {
 	removeUserFromClient
 } from '../../../../../../src/services/ClientService';
 import * as TE from 'fp-ts/es6/TaskEither';
-import { addRoleToUser, getAllUsers } from '../../../../../../src/services/UserService';
+import {
+	addRoleToUser,
+	getAllUsers
+} from '../../../../../../src/services/UserService';
 import { UserDetails, UserList } from '../../../../../../src/types/user';
 import userEvent from '@testing-library/user-event';
 import { Role } from '../../../../../../src/types/role';
@@ -313,80 +316,77 @@ describe('ClientGrants', () => {
 
 			await doRender(testHistory);
 
-			expect(screen.queryByText('No Roles'))
-				.not.toBeInTheDocument();
-			expect(screen.queryByText('Add Role'))
-				.not.toBeInTheDocument();
+			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
+			expect(screen.queryByText('Add Role')).not.toBeInTheDocument();
 
 			const userListItem = screen.getByText(
 				`${user1.firstName} ${user1.lastName}`
 			);
 			userEvent.click(userListItem);
 
-			expect(screen.queryByText('No Roles'))
-				.toBeInTheDocument();
-			expect(screen.queryByRole('button', {
-				name: 'Add Role'
-			}))
-				.toBeDisabled();
+			expect(screen.queryByText('No Roles')).toBeInTheDocument();
+			expect(
+				screen.queryByRole('button', {
+					name: 'Add Role'
+				})
+			).toBeDisabled();
 		});
 
 		it('selects a user and adds a role', async () => {
 			mockGetFullClientDetails({
 				...client,
-				roles: [
-					role1
-				]
+				roles: [role1]
 			});
 			mockGetAllUsers(userList);
 
 			await doRender(testHistory);
 
-			expect(screen.queryByText('No Roles'))
-				.not.toBeInTheDocument();
-			expect(screen.queryByText('Add Role'))
-				.not.toBeInTheDocument();
-			expect(screen.queryByText('MyRole'))
-				.not.toBeInTheDocument();
+			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
+			expect(screen.queryByText('Add Role')).not.toBeInTheDocument();
+			expect(screen.queryByText('MyRole')).not.toBeInTheDocument();
 
 			const userListItem = screen.getByText(
 				`${user1.firstName} ${user1.lastName}`
 			);
 			userEvent.click(userListItem);
 
-			expect(screen.queryByText('No Roles'))
-				.toBeInTheDocument();
-			expect(screen.queryByRole('button', {
-				name: 'Add Role'
-			}))
-				.not.toBeDisabled();
+			expect(screen.queryByText('No Roles')).toBeInTheDocument();
+			expect(
+				screen.queryByRole('button', {
+					name: 'Add Role'
+				})
+			).not.toBeDisabled();
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Add Role'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Add Role'
+					})
+				)
+			);
 
-			expect(screen.queryByText('Select'))
-				.toBeInTheDocument();
-			expect(screen.queryByText('Cancel'))
-				.toBeInTheDocument();
+			expect(screen.queryByText('Select')).toBeInTheDocument();
+			expect(screen.queryByText('Cancel')).toBeInTheDocument();
 
 			await waitFor(() => userEvent.click(screen.getByLabelText('Role')));
 			await waitFor(() => userEvent.click(screen.getByText('MyRole')));
 
-			expect(screen.getByLabelText('Role'))
-				.toHaveValue('MyRole');
+			expect(screen.getByLabelText('Role')).toHaveValue('MyRole');
 
-			await waitFor(() => userEvent.click(screen.getByRole('button', {
-				name: 'Select'
-			})));
+			await waitFor(() =>
+				userEvent.click(
+					screen.getByRole('button', {
+						name: 'Select'
+					})
+				)
+			);
 
-			await waitFor(() => expect(screen.queryByText('Select'))
-				.not.toBeInTheDocument());
+			await waitFor(() =>
+				expect(screen.queryByText('Select')).not.toBeInTheDocument()
+			);
 
-			expect(screen.queryByText('No Roles'))
-				.not.toBeInTheDocument();
-			expect(screen.queryByText('MyRole'))
-				.toBeInTheDocument();
+			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
+			expect(screen.queryByText('MyRole')).toBeInTheDocument();
 
 			expect(addRoleToUser).toHaveBeenCalledWith(1, 1, 1);
 		});
