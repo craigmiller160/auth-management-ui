@@ -132,36 +132,27 @@ const ClientGrants = (props: Props): JSX.Element => {
 			})
 		)();
 
-	// TODO cleanup handling of selected user
-	const saveAddRole = (roleId: number) =>
-		pipe(
+	const saveAddRole = (roleId: number) => {
+		const selectedUserId: number = pipe(
 			state.selectedUser,
-			oMap((selectedUser) => {
-				pipe(
-					addRoleToUser(selectedUser.id, state.clientId, roleId),
-					TE.map(() => {
-						// TODO after adding role, user should still be selected
-						setState((draft) => {
-
-
-
-							pipe(
-								draft.selectedUser,
-								oMap((oldSelectedUser) => {
-									draft.selectedUser = fromNullable(
-										draft.clientUsers.find(
-											(user) =>
-												user.id === oldSelectedUser.id
-										)
-									);
-								})
-							);
-						});
-					})
-				)();
-				loadEverything();
-			})
+			oMap((selectedUser) => selectedUser.id),
+			oGetOrElse(() => 0)
 		);
+
+		pipe(
+			addRoleToUser(selectedUserId, state.clientId, roleId),
+			TE.map(async () => {
+				await loadEverything();
+				setState((draft) => {
+					draft.selectedUser = fromNullable(
+						draft.clientUsers.find(
+							(user) => user.id === selectedUserId
+						)
+					);
+				});
+			})
+		)();
+	};
 
 	useEffect(() => {
 		loadEverything();

@@ -396,11 +396,8 @@ describe('ClientGrants', () => {
 				expect(screen.queryByText('Select')).not.toBeInTheDocument()
 			);
 
-			// TODO this should be able to be removed...
-			await waitFor(() => userEvent.click(screen.getByText(`${user1.firstName} ${user1.lastName}`)));
-
 			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
-			expect(screen.queryByText('MyRole')).toBeInTheDocument();
+			expect(screen.queryAllByText('MyRole')).toHaveLength(2);
 
 			expect(addRoleToUser).toHaveBeenCalledWith(1, 1, 1);
 		});
@@ -409,7 +406,7 @@ describe('ClientGrants', () => {
 			throw new Error();
 		});
 
-		it('all dialogs can be canclled', () => {
+		it('all dialogs can be cancelled', () => {
 			// TODO add user
 			// TODO add role
 			// TODO remove user
