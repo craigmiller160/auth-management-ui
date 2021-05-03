@@ -571,7 +571,33 @@ describe('ClientGrants', () => {
 		});
 
 		it('cancel remove role dialog', async () => {
-			throw new Error();
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1, role2]
+			});
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			const userListItem = screen.getByText(
+				`${user1.firstName} ${user1.lastName}`
+			);
+			userEvent.click(userListItem);
+
+			const removeRoleMessage = 'Are you sure you want to remove this role?';
+
+			expect(screen.queryByText(removeRoleMessage)).not.toBeInTheDocument();
+			await waitFor(() => userEvent.click(screen.getAllByText('Remove')[1]));
+			expect(screen.queryByText(removeRoleMessage)).toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+			await waitFor(() => expect(screen.queryByText(removeRoleMessage)).not.toBeInTheDocument());
 		});
 	});
 });
