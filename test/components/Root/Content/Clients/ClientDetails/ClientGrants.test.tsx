@@ -538,7 +538,36 @@ describe('ClientGrants', () => {
 		});
 
 		it('cancel remove user dialog', async () => {
-			throw new Error();
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1, role2]
+			});
+			mockGetAllUsers(userList);
+
+			await doRender(testHistory);
+
+			const removeUserMessage =
+				'Are you sure you want to remove this user?';
+
+			expect(
+				screen.queryByText(removeUserMessage)
+			).not.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByText('Remove')));
+			expect(screen.queryByText(removeUserMessage)).toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+			await waitFor(() =>
+				expect(
+					screen.queryByText(removeUserMessage)
+				).not.toBeInTheDocument()
+			);
 		});
 
 		it('cancel remove role dialog', async () => {
