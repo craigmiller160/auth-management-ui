@@ -435,9 +435,22 @@ describe('ClientGrants', () => {
 			expect(screen.queryByText('No Roles')).not.toBeInTheDocument();
 			expect(screen.queryAllByText('MyRole')).toHaveLength(2);
 
-			// TODO finish this
+			await waitFor(() => userEvent.click(screen.queryAllByText('Remove')[1]));
 
-			// expect(removeRoleFromUser).toHaveBeenCalledWith(1, 1, 1);
+			expect(screen.queryByText('Are you sure you want to remove this role?'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Confirm'))
+				.toBeInTheDocument();
+			expect(screen.queryByText('Cancel'))
+				.toBeInTheDocument();
+
+			await waitFor(() => userEvent.click(screen.getByText('Confirm')));
+			await waitFor(() => expect(screen.queryByText('Confirm')).not.toBeInTheDocument());
+
+			expect(screen.queryByText('No Roles')).toBeInTheDocument();
+			expect(screen.queryAllByText('MyRole')).not.toHaveLength(2);
+
+			expect(removeRoleFromUser).toHaveBeenCalledWith(1, 1, 1);
 		});
 
 		it('all dialogs can be cancelled', () => {
