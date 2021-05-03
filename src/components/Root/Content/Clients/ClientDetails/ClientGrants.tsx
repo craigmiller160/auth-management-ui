@@ -141,8 +141,8 @@ const ClientGrants = (props: Props): JSX.Element => {
 
 		pipe(
 			addRoleToUser(selectedUserId, state.clientId, roleId),
-			TE.map(async () => {
-				await loadEverything();
+			TE.chain(() => TE.tryCatch(loadEverything, (error) => error)),
+			TE.map(() => {
 				setState((draft) => {
 					draft.selectedUser = fromNullable(
 						draft.clientUsers.find(
@@ -154,9 +154,9 @@ const ClientGrants = (props: Props): JSX.Element => {
 		)();
 	};
 
-	useEffect(() => {
-		loadEverything();
-	}, [loadEverything]);
+	// const removeRole = (roleId: number) => {
+	//
+	// }
 
 	const removeRole = (roleId: number) =>
 		pipe(
@@ -183,6 +183,10 @@ const ClientGrants = (props: Props): JSX.Element => {
 				});
 			})
 		);
+
+	useEffect(() => {
+		loadEverything();
+	}, [loadEverything]);
 
 	const saveAddUser = (userId: number) =>
 		pipe(
