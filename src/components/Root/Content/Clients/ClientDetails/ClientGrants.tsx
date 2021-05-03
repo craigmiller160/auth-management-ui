@@ -135,7 +135,7 @@ const ClientGrants = (props: Props): JSX.Element => {
 	const saveAddRole = (roleId: number) =>
 		pipe(
 			state.selectedUser,
-			oMap((selectedUser) =>
+			oMap((selectedUser) => {
 				pipe(
 					addRoleToUser(selectedUser.id, state.clientId, roleId),
 					TE.map(() => {
@@ -152,10 +152,10 @@ const ClientGrants = (props: Props): JSX.Element => {
 								})
 							);
 						});
-						loadEverything();
 					})
-				)
-			)
+				)();
+				loadEverything();
+			})
 		);
 
 	useEffect(() => {

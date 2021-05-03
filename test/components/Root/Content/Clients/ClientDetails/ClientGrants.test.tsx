@@ -337,6 +337,17 @@ describe('ClientGrants', () => {
 				...client,
 				roles: [role1]
 			});
+			mockGetFullClientDetails({
+				...client,
+				users: [
+					{
+						...clientUser1,
+						roles: [role1]
+					}
+				],
+				roles: [role1]
+			});
+			mockGetAllUsers(userList);
 			mockGetAllUsers(userList);
 
 			await doRender(testHistory);
