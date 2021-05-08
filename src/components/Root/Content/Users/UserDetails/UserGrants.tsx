@@ -76,7 +76,7 @@ const UserGrants = (props: Props): JSX.Element => {
 						draft.user = user;
 					})
 				)
-			),
+			)(),
 		[state.userId, setState]
 	);
 
