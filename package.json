@@ -34,10 +34,10 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "web-config-scripts lint && web-config-scripts test && web-config-scripts webpack",
+    "build": "es-lint-scripts react-ts && web-config-scripts test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
-    "lint": "web-config-scripts lint",
+    "lint": "es-lint-scripts react-ts",
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js",
     "test": "web-config-scripts test"
@@ -46,9 +46,10 @@
     "es-abstract": "^1.18.0-next.1"
   },
   "devDependencies": {
+    "@craigmiller160/es-lint-config": "^1.0.0",
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/react-test-utils": "^2.1.2",
-    "@craigmiller160/react-web-config": "^2.9.0",
+    "@craigmiller160/react-web-config": "^2.10.0",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
