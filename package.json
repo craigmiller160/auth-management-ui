@@ -11,7 +11,6 @@
   "author": "craigmiller160",
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
-    "@craigmiller160/es-lint-config": "file:.yalc/@craigmiller160/es-lint-config",
     "@craigmiller160/react-hook-form-material-ui": "^1.1.2",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
     "@craigmiller160/react-protected-route": "^1.2.3",
@@ -47,9 +46,10 @@
     "es-abstract": "^1.18.0-next.1"
   },
   "devDependencies": {
+    "@craigmiller160/es-lint-config": "^1.0.0",
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/react-test-utils": "^2.1.2",
-    "@craigmiller160/react-web-config": "file:.yalc/@craigmiller160/react-web-config",
+    "@craigmiller160/react-web-config": "^2.10.0",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
