@@ -1151,8 +1151,10 @@
   dependencies:
     axios "^0.21.1"
 
-"@craigmiller160/ajax-error-handler@file:.yalc/@craigmiller160/ajax-error-handler":
-  version "1.0.0-beta"
+"@craigmiller160/ajax-error-handler@^1.0.0-beta":
+  version "1.0.0-beta.1"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/ajax-error-handler/-/ajax-error-handler-1.0.0-beta.1.tgz#48e5544c9317ab9b10f6858bbd233753a1eafc5f"
+  integrity sha512-ikkz5sdeGn5imajg/bTR5OKDgVlPNglt7iMel208b/l0CdWNCaBEJL/zq+WOB9VyXvKrALgyRYFd+uslBaYDfA==
 
 "@craigmiller160/es-lint-config@^1.0.0":
   version "1.0.0"
