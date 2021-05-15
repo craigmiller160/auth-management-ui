@@ -11,6 +11,7 @@
   "author": "craigmiller160",
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
+    "@craigmiller160/ajax-error-handler": "^1.0.0-beta",
     "@craigmiller160/react-hook-form-material-ui": "^1.1.2",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
     "@craigmiller160/react-protected-route": "^1.2.3",
