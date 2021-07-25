@@ -130,7 +130,7 @@ const UserConfig = (props: Props): JSX.Element => {
 				getUserDetails(state.userId),
 				TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
 				T.map((user) => reset(user))
-			);
+			)();
 
 		if (state.userId > 0) {
 			action();
