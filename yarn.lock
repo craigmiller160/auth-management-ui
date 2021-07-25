@@ -1106,7 +1106,7 @@
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
 
-"@craigmiller160/react-web-config@^2.9.0":
+"@craigmiller160/react-web-config@2.9.0":
   version "2.9.0"
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/react-web-config/-/react-web-config-2.9.0.tgz#080539933a1505c9378d3a152f4a18ecefa35e2d"
   integrity sha512-AoEBkEZu7m30ridd4YgXCqy4daUIs6qrQqDKb5GRr2a3sKS3dY1JBwCiXe8oMLehJ4yAsrvmpw8rDJwBGXPq/w==
