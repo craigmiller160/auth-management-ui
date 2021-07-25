@@ -129,7 +129,11 @@ const UserConfig = (props: Props): JSX.Element => {
 			pipe(
 				getUserDetails(state.userId),
 				TE.getOrElse((): T.Task<UserDetails> => T.of(defaultUser)),
-				T.map((user) => reset(user))
+				T.map((user) => reset({
+					...user,
+					password: '',
+					confirmPassword: ''
+				}))
 			)();
 
 		if (state.userId > 0) {
