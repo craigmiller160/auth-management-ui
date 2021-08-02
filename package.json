@@ -47,7 +47,7 @@
     "es-abstract": "^1.18.0-next.1"
   },
   "devDependencies": {
-    "@craigmiller160/es-lint-config": "^1.0.0",
+    "@craigmiller160/es-lint-config": "file:.yalc/@craigmiller160/es-lint-config",
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/react-test-utils": "^2.1.2",
     "@craigmiller160/react-web-config": "^2.10.0",
