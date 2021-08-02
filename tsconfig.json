@@ -22,7 +22,7 @@
   },
   "include": [
     "/home/craig/Development/Applications/auth-management-ui/src/**/*",
-    "/home/craig/Development/Applications/auth-management-ui/test/**/*"
+    "/home/craig/Development/Applications/auth-management-ui/test/**/*",
   ],
   "exclude": [
     "/home/craig/Development/Applications/auth-management-ui/node_modules",
