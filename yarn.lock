@@ -1076,6 +1076,13 @@
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/ajax-error-handler/-/ajax-error-handler-1.0.0-beta.1.tgz#48e5544c9317ab9b10f6858bbd233753a1eafc5f"
   integrity sha512-ikkz5sdeGn5imajg/bTR5OKDgVlPNglt7iMel208b/l0CdWNCaBEJL/zq+WOB9VyXvKrALgyRYFd+uslBaYDfA==
 
+"@craigmiller160/eslint-config-jest@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/eslint-config-jest/-/eslint-config-jest-1.0.0-beta.1.tgz#f660e092b4610853d32c6952ab272ae04559ac85"
+  integrity sha512-HelPQP/JbNoJkfiSUI8jgrXPUsxWVNXZXcrOKH0ylRtcyOCHDwwg6zb1ETcYkA9FqRFm0jOFW5NjAOllGdpRRw==
+  dependencies:
+    eslint-plugin-jest "^25.3.2"
+
 "@craigmiller160/eslint-config-js@^1.0.0-beta.2":
   version "1.0.0-beta.2"
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/eslint-config-js/-/eslint-config-js-1.0.0-beta.2.tgz#b63a44e93e38d0166bdec57d0cac61d8892f291e"
@@ -2067,7 +2074,7 @@
     semver "^7.3.5"
     tsutils "^3.21.0"
 
-"@typescript-eslint/experimental-utils@5.8.1":
+"@typescript-eslint/experimental-utils@5.8.1", "@typescript-eslint/experimental-utils@^5.0.0":
   version "5.8.1"
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@typescript-eslint/experimental-utils/-/experimental-utils-5.8.1.tgz#01861eb2f0749f07d02db342b794145a66ed346f"
   integrity sha512-fbodVnjIDU4JpeXWRDsG5IfIjYBxEvs8EBO8W1+YVdtrc2B9ppfof5sZhVEDOtgTfFHnYQJDI8+qdqLYO4ceww==
@@ -5302,6 +5309,13 @@ eslint-config-prettier@^8.3.0:
   version "8.3.0"
   resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
+eslint-plugin-jest@^25.3.2:
+  version "25.3.2"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/eslint-plugin-jest/-/eslint-plugin-jest-25.3.2.tgz#702801e37c502546fe4c4986888720f6eed3b129"
+  integrity sha512-1aPC7RRJkMCNgklHMDECw8fnzag3JBH53LaxmFkDTR7+PfMCO5V6f8XFRHoT2I+Fr4pVO9cPdRGlf7/haB2O5Q==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "^5.0.0"
 
 eslint-plugin-jsx-a11y@^6.5.1:
   version "6.5.1"

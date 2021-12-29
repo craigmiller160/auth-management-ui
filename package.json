@@ -45,6 +45,7 @@
     "test": "web-config-scripts test"
   },
   "devDependencies": {
+    "@craigmiller160/eslint-config-jest": "^1.0.0-beta.1",
     "@craigmiller160/eslint-config-js": "^1.0.0-beta.2",
     "@craigmiller160/eslint-config-prettier": "^1.0.0-beta.1",
     "@craigmiller160/eslint-config-tree-shaking-import-restrictions": "^1.0.0-beta.1",
