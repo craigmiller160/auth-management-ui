@@ -44,9 +44,6 @@
     "cypress": "node scripts/cypress-run.js",
     "test": "web-config-scripts test"
   },
-  "resolutions": {
-    "es-abstract": "^1.18.0-next.1"
-  },
   "devDependencies": {
     "@craigmiller160/eslint-config-js": "^1.0.0-beta.2",
     "@craigmiller160/eslint-config-prettier": "^1.0.0-beta.1",

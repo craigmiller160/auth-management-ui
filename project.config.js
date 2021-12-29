@@ -19,32 +19,30 @@
 const path = require('path');
 
 module.exports = {
-    title: 'OAuth Management',
-    devServerPort: 3000,
-    devServerHttps: true,
-    publicPath: '/auth-management',
-    devServerProxy: {
-        '/auth-management/api': {
-            target: 'https://localhost:7004',
-            changeOrigin: true,
-            secure: false,
-            pathRewrite: {
-                '^/auth-management/api': ''
-            },
-            logLevel: 'debug'
-        },
-        '/auth-management/oauth2': {
-            target: 'https://localhost:7003',
-            changeOrigin: true,
-            secure: false,
-            pathRewrite: {
-                '^/auth-management/oauth2': ''
-            },
-            logLevel: 'debug'
-        }
-    },
-    jestSetupFiles: [
-        path.resolve(process.cwd(), 'test/setupTests.ts')
-    ],
-    enzymeReactVersion: 17
-}
+	title: 'OAuth Management',
+	devServerPort: 3000,
+	devServerHttps: true,
+	publicPath: '/auth-management',
+	devServerProxy: {
+		'/auth-management/api': {
+			target: 'https://localhost:7004',
+			changeOrigin: true,
+			secure: false,
+			pathRewrite: {
+				'^/auth-management/api': ''
+			},
+			logLevel: 'debug'
+		},
+		'/auth-management/oauth2': {
+			target: 'https://localhost:7003',
+			changeOrigin: true,
+			secure: false,
+			pathRewrite: {
+				'^/auth-management/oauth2': ''
+			},
+			logLevel: 'debug'
+		}
+	},
+	jestSetupFiles: [path.resolve(process.cwd(), 'test/setupTests.ts')],
+	enzymeReactVersion: 17
+};
