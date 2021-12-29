@@ -1,2 +1,8 @@
-
-module.exports = require('@craigmiller160/es-lint-config/lint/.eslintrc.js');
+module.exports = {
+    extends: [
+        '@craigmiller160/eslint-config-js',
+        '@craigmiller160/eslint-config-ts',
+        '@craigmiller160/eslint-config-prettier',
+        '@craigmiller160/eslint-config-react'
+    ]
+};
