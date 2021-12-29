@@ -13,6 +13,8 @@
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
     "@craigmiller160/ajax-error-handler": "^1.0.0-beta",
     "@craigmiller160/eslint-config-react": "file:.yalc/@craigmiller160/eslint-config-react",
+    "@craigmiller160/jest-config": "file:.yalc/@craigmiller160/jest-config",
+    "@craigmiller160/jest-config-babel": "file:.yalc/@craigmiller160/jest-config-babel",
     "@craigmiller160/react-hook-form-material-ui": "^1.1.2",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
     "@craigmiller160/react-protected-route": "^1.2.3",
@@ -36,7 +38,7 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "es-lint-scripts react-ts && web-config-scripts test && web-config-scripts webpack",
+    "build": "yarn lint && yarn test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "eslint . --fix --max-warnings=0",
