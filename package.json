@@ -44,7 +44,7 @@
     "lint": "eslint . --fix --max-warnings=0",
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js",
-    "test": "web-config-scripts test"
+    "test": "jest"
   },
   "devDependencies": {
     "@craigmiller160/eslint-config-jest": "^1.0.0-beta.1",
