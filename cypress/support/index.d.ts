@@ -22,13 +22,20 @@ type HomePage = import('./commands/pages/homePage').HomePage;
 type NavbarPage = import('./commands/pages/navbarPage').NavbarPage;
 type LoginPage = import('./commands/pages/loginPage').LoginPage;
 type ClientsPage = import('./commands/pages/client/clientsPage').ClientsPage;
-type ClientDetailsPage = import('./commands/pages/client/clientDetailsPage').ClientDetailsPage;
-type ClientConfigPage = import('./commands/pages/client/clientConfigPage').ClientConfigPage;
-type ClientConfigDeleteDialog = import('./commands/pages/client/clientConfigDeleteDialog').ClientConfigDeleteDialog;
-type ClientConfigRedirectUris = import('./commands/pages/client/clientConfigRedirectUris').ClientConfigRedirectUris;
-type ClientAuthsPage = import('./commands/pages/client/clientAuthsPage').ClientAuthsPage;
-type ClientRolesPage = import('./commands/pages/client/clientRolesPage').ClientRolesPage;
-type ClientGrantsPage = import('./commands/pages/client/clientGrantsPage').ClientGrantsPage;
+type ClientDetailsPage =
+	import('./commands/pages/client/clientDetailsPage').ClientDetailsPage;
+type ClientConfigPage =
+	import('./commands/pages/client/clientConfigPage').ClientConfigPage;
+type ClientConfigDeleteDialog =
+	import('./commands/pages/client/clientConfigDeleteDialog').ClientConfigDeleteDialog;
+type ClientConfigRedirectUris =
+	import('./commands/pages/client/clientConfigRedirectUris').ClientConfigRedirectUris;
+type ClientAuthsPage =
+	import('./commands/pages/client/clientAuthsPage').ClientAuthsPage;
+type ClientRolesPage =
+	import('./commands/pages/client/clientRolesPage').ClientRolesPage;
+type ClientGrantsPage =
+	import('./commands/pages/client/clientGrantsPage').ClientGrantsPage;
 type AlertPage = import('./commands/pages/alertPage').AlertPage;
 
 type PageFunction<T> = (page: T) => void;

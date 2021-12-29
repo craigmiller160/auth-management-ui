@@ -45,39 +45,42 @@ const INSERT_ROLE_SQL =
 	'INSERT INTO dev.roles (name, client_id) VALUES ($1,$2)';
 /* eslint-enable max-len */
 
-export const insertClient = (pool: Pool) => async (
-	client: InsertClient
-): Promise<number> => {
-	const insertClientParams = [
-		client.name,
-		client.clientKey,
-		client.clientSecret,
-		client.enabled,
-		client.accessTokenTimeout,
-		client.refreshTokenTimeout,
-		client.authCodeTimeout
-	];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	await safelyExecuteQuery<any>(pool, INSERT_CLIENT_SQL, insertClientParams);
-
-	const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
-		pool,
-		SELECT_CLIENT_ID,
-		[client.name]
-	);
-	const clientId = result.rows[0].id;
-
-	const uriPromises = client.redirectUris.map((uri) =>
+export const insertClient =
+	(pool: Pool) =>
+	async (client: InsertClient): Promise<number> => {
+		const insertClientParams = [
+			client.name,
+			client.clientKey,
+			client.clientSecret,
+			client.enabled,
+			client.accessTokenTimeout,
+			client.refreshTokenTimeout,
+			client.authCodeTimeout
+		];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [clientId, uri])
-	);
-	await Promise.all(uriPromises);
+		await safelyExecuteQuery<any>(
+			pool,
+			INSERT_CLIENT_SQL,
+			insertClientParams
+		);
 
-	const rolePromises = client.roles.map((role) =>
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, [role, clientId])
-	);
-	await Promise.all(rolePromises);
+		const result: QueryResult<ClientIdRow> =
+			await safelyExecuteQuery<ClientIdRow>(pool, SELECT_CLIENT_ID, [
+				client.name
+			]);
+		const clientId = result.rows[0].id;
 
-	return clientId;
-};
+		const uriPromises = client.redirectUris.map((uri) =>
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			safelyExecuteQuery<any>(pool, INSERT_URI_SQL, [clientId, uri])
+		);
+		await Promise.all(uriPromises);
+
+		const rolePromises = client.roles.map((role) =>
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			safelyExecuteQuery<any>(pool, INSERT_ROLE_SQL, [role, clientId])
+		);
+		await Promise.all(rolePromises);
+
+		return clientId;
+	};

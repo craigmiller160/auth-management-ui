@@ -36,7 +36,7 @@ const {
 } = cypressConfig;
 
 const clearPastTests = () => {
-	console.log('Clearing past test data');
+	console.log('Clearing past test data'); // eslint-disable-line no-console
 	fs.rmdirSync(path.resolve(cwd, reportDir), { recursive: true });
 	fs.rmdirSync(path.resolve(cwd, videosFolder), { recursive: true });
 	fs.rmdirSync(path.resolve(cwd, screenshotsFolder), { recursive: true });
@@ -44,6 +44,7 @@ const clearPastTests = () => {
 };
 
 const runCypress = async () => {
+	/* eslint-disable-next-line no-unused-vars */
 	const results = await cypress.run({
 		headless: true,
 		browser: 'chrome',
@@ -66,6 +67,6 @@ runCypress()
 		opn(reportFile);
 	})
 	.catch((error) => {
-		console.log('Error executing test suite', error);
+		console.log('Error executing test suite', error); // eslint-disable-line no-console
 		process.exit(1);
 	});

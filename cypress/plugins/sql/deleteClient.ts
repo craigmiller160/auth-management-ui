@@ -35,37 +35,38 @@ interface ClientIdRow {
 	id: number;
 }
 
-export const deleteClient = (pool: Pool) => async (
-	clientName: string
-): Promise<void> => {
-	const result: QueryResult<ClientIdRow> = await safelyExecuteQuery<ClientIdRow>(
-		pool,
-		SELECT_CLIENT_ID_SQL,
-		[clientName]
-	);
-	if (result.rows?.[0]?.id) {
-		const clientId = result.rows[0].id;
+export const deleteClient =
+	(pool: Pool) =>
+	async (clientName: string): Promise<void> => {
+		const result: QueryResult<ClientIdRow> =
+			await safelyExecuteQuery<ClientIdRow>(pool, SELECT_CLIENT_ID_SQL, [
+				clientName
+			]);
+		if (result.rows?.[0]?.id) {
+			const clientId = result.rows[0].id;
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [
-			clientId
-		]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_REDIRECT_URIS_SQL, [
-			clientId
-		]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [
-			clientId
-		]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [
-			clientId
-		]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_ROLES_SQL, [clientId]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, DELETE_CLIENT_SQL, [clientId]);
-	}
-	return null;
-};
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, DELETE_REFRESH_TOKENS_SQL, [
+				clientId
+			]);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(
+				pool,
+				DELETE_CLIENT_REDIRECT_URIS_SQL,
+				[clientId]
+			);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USER_ROLES_SQL, [
+				clientId
+			]);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, DELETE_CLIENT_USERS_SQL, [
+				clientId
+			]);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, DELETE_ROLES_SQL, [clientId]);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, DELETE_CLIENT_SQL, [clientId]);
+		}
+		return null;
+	};

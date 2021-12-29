@@ -55,56 +55,56 @@ const INSERT_CLIENT_USER_ROLES_SQL =
 	'INSERT INTO dev.client_user_roles (user_id, client_id, role_id) VALUES ($1,$2,$3)';
 /* eslint-enable max-len */
 
-export const insertUser = (pool: Pool) => async (arg: Arg): Promise<number> => {
-	const { user, clientId } = arg;
-	const insertUserParams = [
-		user.email,
-		user.firstName,
-		user.lastName,
-		user.password,
-		user.enabled
-	];
+export const insertUser =
+	(pool: Pool) =>
+	async (arg: Arg): Promise<number> => {
+		const { user, clientId } = arg;
+		const insertUserParams = [
+			user.email,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.enabled
+		];
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	await safelyExecuteQuery<any>(pool, INSERT_USER_SQL, insertUserParams);
-
-	const result: QueryResult<UserIdRow> = await safelyExecuteQuery<UserIdRow>(
-		pool,
-		SELECT_USER_ID,
-		[user.email]
-	);
-
-	const userId = result.rows[0].id;
-
-	if (userId && clientId) {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [
-			userId,
-			clientId
-		]);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, [
-			'1',
-			'ABCDEFG',
-			clientId,
-			userId
-		]);
+		await safelyExecuteQuery<any>(pool, INSERT_USER_SQL, insertUserParams);
 
-		const roleResult: QueryResult<RoleRow> = await safelyExecuteQuery<RoleRow>(
-			pool,
-			SELECT_ROLES_SQL,
-			[clientId]
-		);
-		const rolePromises = roleResult.rows.map((role) =>
+		const result: QueryResult<UserIdRow> =
+			await safelyExecuteQuery<UserIdRow>(pool, SELECT_USER_ID, [
+				user.email
+			]);
+
+		const userId = result.rows[0].id;
+
+		if (userId && clientId) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [
+			await safelyExecuteQuery<any>(pool, INSERT_USER_CLIENT_SQL, [
 				userId,
+				clientId
+			]);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			await safelyExecuteQuery<any>(pool, INSERT_TOKEN_SQL, [
+				'1',
+				'ABCDEFG',
 				clientId,
-				role.id
-			])
-		);
-		await Promise.all(rolePromises);
-	}
+				userId
+			]);
 
-	return userId;
-};
+			const roleResult: QueryResult<RoleRow> =
+				await safelyExecuteQuery<RoleRow>(pool, SELECT_ROLES_SQL, [
+					clientId
+				]);
+			const rolePromises = roleResult.rows.map((role) =>
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				safelyExecuteQuery<any>(pool, INSERT_CLIENT_USER_ROLES_SQL, [
+					userId,
+					clientId,
+					role.id
+				])
+			);
+			await Promise.all(rolePromises);
+		}
+
+		return userId;
+	};

@@ -321,11 +321,12 @@ describe('UserService', () => {
                     }
                 }
             `;
-		const responseData: GraphQLQueryResponse<RemoveClientFromUserWrapper> = {
-			data: {
-				removeClientFromUser: [userClient]
-			}
-		};
+		const responseData: GraphQLQueryResponse<RemoveClientFromUserWrapper> =
+			{
+				data: {
+					removeClientFromUser: [userClient]
+				}
+			};
 		mockCsrfPreflight(mockAjaxApi, '/graphql');
 		mockAndValidateGraphQL({
 			mockApi: mockAjaxApi,
@@ -435,10 +436,8 @@ describe('UserService', () => {
 		mockAjaxApi
 			.onGet(`/users/auth/${userId}`)
 			.reply(200, userAuthDetailsList);
-		const result: Either<
-			Error,
-			UserAuthDetailsList
-		> = await getAllUserAuthDetails(userId)();
+		const result: Either<Error, UserAuthDetailsList> =
+			await getAllUserAuthDetails(userId)();
 		expect(result).toEqualRight(userAuthDetailsList);
 	});
 
