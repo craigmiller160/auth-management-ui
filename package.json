@@ -39,7 +39,7 @@
     "build": "es-lint-scripts react-ts && web-config-scripts test && web-config-scripts webpack",
     "forceBuild": "web-config-scripts webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
-    "lint": "es-lint-scripts react-ts",
+    "lint": "eslint . --fix --max-warnings=0",
     "cypress:open": "cypress open",
     "cypress": "node scripts/cypress-run.js",
     "test": "web-config-scripts test"
