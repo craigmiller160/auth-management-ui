@@ -15,6 +15,7 @@
     "@craigmiller160/eslint-config-react": "file:.yalc/@craigmiller160/eslint-config-react",
     "@craigmiller160/jest-config": "file:.yalc/@craigmiller160/jest-config",
     "@craigmiller160/jest-config-babel": "file:.yalc/@craigmiller160/jest-config-babel",
+    "@craigmiller160/jest-config-ts": "file:.yalc/@craigmiller160/jest-config-ts",
     "@craigmiller160/react-hook-form-material-ui": "^1.1.2",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
     "@craigmiller160/react-protected-route": "^1.2.3",
