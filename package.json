@@ -12,6 +12,8 @@
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
     "@craigmiller160/ajax-error-handler": "^1.0.0-beta",
+    "@craigmiller160/babel-config": "file:.yalc/@craigmiller160/babel-config",
+    "@craigmiller160/babel-config-react": "file:.yalc/@craigmiller160/babel-config-react",
     "@craigmiller160/eslint-config-react": "file:.yalc/@craigmiller160/eslint-config-react",
     "@craigmiller160/jest-config": "file:.yalc/@craigmiller160/jest-config",
     "@craigmiller160/jest-config-babel": "file:.yalc/@craigmiller160/jest-config-babel",
