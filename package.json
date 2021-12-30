@@ -12,7 +12,6 @@
   "dependencies": {
     "@craigmiller160/ajax-api-fp-ts": "^1.0.3",
     "@craigmiller160/ajax-error-handler": "^1.0.0-beta",
-    "@craigmiller160/babel-config": "file:.yalc/@craigmiller160/babel-config",
     "@craigmiller160/react-hook-form-material-ui": "^1.1.2",
     "@craigmiller160/react-material-ui-common": "^1.2.2",
     "@craigmiller160/react-protected-route": "^1.2.3",
@@ -51,6 +50,7 @@
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.16.5",
+    "@craigmiller160/babel-config": "^1.0.0-beta.2",
     "@craigmiller160/babel-config-react": "^1.0.0-beta.1",
     "@craigmiller160/config-merge": "^1.0.0",
     "@craigmiller160/eslint-config-jest": "^1.0.0-beta.1",
@@ -58,7 +58,7 @@
     "@craigmiller160/eslint-config-prettier": "^1.0.0-beta.1",
     "@craigmiller160/eslint-config-tree-shaking-import-restrictions": "^1.0.0-beta.1",
     "@craigmiller160/eslint-config-ts": "^1.0.0-beta.1",
-    "@craigmiller160/jest-config": "file:.yalc/@craigmiller160/jest-config",
+    "@craigmiller160/jest-config": "^1.0.0-beta.2",
     "@craigmiller160/jest-config-ts": "^1.0.0-beta.2",
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/prettier-config": "^1.0.0-beta.1",
