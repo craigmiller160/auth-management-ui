@@ -60,7 +60,6 @@
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/prettier-config": "^1.0.0-beta.1",
     "@craigmiller160/react-test-utils": "^2.1.2",
-    "@craigmiller160/react-web-config": "^2.10.0",
     "@relmify/jest-fp-ts": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
