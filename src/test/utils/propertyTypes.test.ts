@@ -140,7 +140,7 @@ describe('isPropertyType', () => {
 				assignProperty(obj, 'one', {});
 			} catch (ex) {
 				expect(ex).toBeInstanceOf(PropertyTypeError);
-				expect(ex.message).toEqual('Unsupported value type: object');
+				expect((ex as PropertyTypeError).message).toEqual('Unsupported value type: object');
 				return;
 			}
 			throw new Error("Test should've thrown error");
