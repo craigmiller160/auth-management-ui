@@ -41,7 +41,7 @@
   "scripts": {
     "start": "web-config-scripts devServer",
     "build": "yarn lint && yarn test && web-config-scripts webpack",
-    "forceBuild": "web-config-scripts webpack",
+    "forceBuild": "webpack",
     "prepDeploy": "web-config-scripts prepDeploy",
     "lint": "eslint . --fix --max-warnings=0",
     "cypress:open": "cypress open",
