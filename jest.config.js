@@ -4,7 +4,5 @@ const jestConfigTs = require('@craigmiller160/jest-config-ts');
 const path = require('path');
 
 module.exports = configMerge(jestConfig, jestConfigTs, {
-    setupFilesAfterEnv: [
-        path.join(process.cwd(), 'test', 'setupTests.ts')
-    ]
+	setupFilesAfterEnv: [path.join(process.cwd(), 'test', 'setupTests.ts')]
 });
