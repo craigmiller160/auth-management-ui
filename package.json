@@ -39,7 +39,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "build": "yarn lint && yarn test && yarn forceBuild",
     "forceBuild": "cross-env NODE_ENV=production webpack",
-    "lint3": "eslint {src/**/**.{js,jsx,ts,tsx},test/**/**.{js,jsx,ts,tsx}} --fix --max-warnings=0",
+    "lint": "eslint {src/**/**.{js,jsx,ts,tsx},test/**/**.{js,jsx,ts,tsx}} --fix --max-warnings=0",
     "test": "cross-env NODE_ENV=test jest"
   },
   "resolutions": {
