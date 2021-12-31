@@ -36,9 +36,9 @@
     "use-immer": "^0.4.2"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "start": "craig-webpack-dev",
     "build": "yarn lint && yarn test && yarn forceBuild",
-    "forceBuild": "cross-env NODE_ENV=production webpack",
+    "forceBuild": "craig-webpack",
     "lint": "craig-lint",
     "test": "craig-test"
   },
@@ -61,7 +61,7 @@
     "@craigmiller160/jest-matchers-common": "^1.0.2",
     "@craigmiller160/prettier-config": "^1.0.0-beta.1",
     "@craigmiller160/react-test-utils": "^2.1.2",
-    "@craigmiller160/webpack-config": "^1.0.0-beta.1",
+    "@craigmiller160/webpack-config": "^1.0.0-beta.2",
     "@craigmiller160/webpack-config-sass": "^1.0.0-beta.2",
     "@craigmiller160/webpack-config-ts": "^1.0.0-beta.1",
     "@relmify/jest-fp-ts": "^1.1.1",

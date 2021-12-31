@@ -1186,14 +1186,15 @@
   dependencies:
     ts-loader "^9.2.6"
 
-"@craigmiller160/webpack-config@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/webpack-config/-/webpack-config-1.0.0-beta.1.tgz#c1592fa31df78a6c2cd58bcb614faf8333f12586"
-  integrity sha512-D8z/Gvo4SbbIA4Tsx0oZ8vcKY/k92FvjcTzsYvPcGn1HZV/bpRTD9+YHXPpGIbTrQkQCs4/CQf0zaxXolo5o5Q==
+"@craigmiller160/webpack-config@^1.0.0-beta.2":
+  version "1.0.0-beta.2"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/webpack-config/-/webpack-config-1.0.0-beta.2.tgz#6149aaf41e1b32561ff0b62809acd7b603fb5733"
+  integrity sha512-fcE9bKfHMkGJuqlhTmSbCV+QJ7sP9g7t3Y/IffgdtCu8dwv03WFg8hCDn9EG/eDnT3lxfuCrb80m9rTTHcChqA==
   dependencies:
     "@craigmiller160/postcss-config" "^1.0.0-beta.1"
     clean-webpack-plugin "^4.0.0"
     copy-webpack-plugin "^10.2.0"
+    cross-spawn "^7.0.3"
     css-loader "^6.5.1"
     css-minimizer-webpack-plugin "^3.3.1"
     dotenv "^10.0.0"
