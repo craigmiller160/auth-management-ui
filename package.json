@@ -40,8 +40,8 @@
   },
   "scripts": {
     "start": "web-config-scripts devServer",
-    "build": "yarn lint && yarn test && web-config-scripts webpack",
-    "forceBuild": "webpack",
+    "build": "yarn lint && yarn test && yarn forceBuild",
+    "forceBuild": "cross-env NODE_ENV=production webpack",
     "lint": "eslint . --fix --max-warnings=0",
     "test": "cross-env NODE_ENV=test jest"
   },
