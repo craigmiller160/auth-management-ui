@@ -1177,8 +1177,10 @@
     sass "^1.45.2"
     sass-loader "^12.4.0"
 
-"@craigmiller160/webpack-config-ts@file:.yalc/@craigmiller160/webpack-config-ts":
-  version "1.0.0-beta"
+"@craigmiller160/webpack-config-ts@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/webpack-config-ts/-/webpack-config-ts-1.0.0-beta.1.tgz#714053bf186b6d6de9ff20be8f1dc5a46b7a89cb"
+  integrity sha512-CN1RKsw/m+bqo223j+JGtecpMB1I79/jTh46F212ZFHmPhMjy8ROzEa/1zW2AAkVA0RQXfDXl5JGo4QDg56tCg==
   dependencies:
     ts-loader "^9.2.6"
 
