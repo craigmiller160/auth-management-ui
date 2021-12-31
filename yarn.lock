@@ -1092,11 +1092,12 @@
     "@types/jest" "^27.0.3"
     ts-jest "^27.1.2"
 
-"@craigmiller160/jest-config@^1.0.0-beta.3":
-  version "1.0.0-beta.3"
-  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/jest-config/-/jest-config-1.0.0-beta.3.tgz#572929ddb7d881b63191148d2401b1f60b788ed6"
-  integrity sha512-7q+HFgXEzhMeEnq9z/5ZQ3Nr+fDGu25z8aIVYz1YzbxSu7+gri9HWYUK+XO8eRmiXovvcke2ho5629oDZ6GZag==
+"@craigmiller160/jest-config@^1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/jest-config/-/jest-config-1.0.0-beta.4.tgz#ed111f07928c47d229fba6764b212a4ea65cc62d"
+  integrity sha512-rGooBT5zA5T+H1NJAG5fn/GQFlDDEwzCkQ97qmJNTIbQk5BfHi6XbCfpcr/345hUNrJEv+mYOeqlS6SHdZB0pg==
   dependencies:
+    cross-spawn "^7.0.3"
     identity-obj-proxy "^3.0.0"
     jest "^27.4.5"
 
