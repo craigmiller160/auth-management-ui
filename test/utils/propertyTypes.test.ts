@@ -25,7 +25,7 @@ import {
 	isNumberProperty,
 	isStringProperty,
 	PropertyTypeError
-} from '../../utils/propertyTypes';
+} from '../../src/utils/propertyTypes';
 
 interface TestObject {
 	one: string;
@@ -136,11 +136,14 @@ describe('isPropertyType', () => {
 		});
 
 		it('unsupported property', () => {
+			console.log('foo');
 			try {
 				assignProperty(obj, 'one', {});
 			} catch (ex) {
 				expect(ex).toBeInstanceOf(PropertyTypeError);
-				expect((ex as PropertyTypeError).message).toEqual('Unsupported value type: object');
+				expect((ex as PropertyTypeError).message).toEqual(
+					'Unsupported value type: object'
+				);
 				return;
 			}
 			throw new Error("Test should've thrown error");
