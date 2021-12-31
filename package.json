@@ -43,7 +43,6 @@
     "build": "yarn lint && yarn test && web-config-scripts webpack",
     "forceBuild": "webpack",
     "lint": "eslint . --fix --max-warnings=0",
-    "cypress:open": "cypress open",
     "test": "cross-env NODE_ENV=test jest"
   },
   "resolutions": {
