@@ -136,7 +136,6 @@ describe('isPropertyType', () => {
 		});
 
 		it('unsupported property', () => {
-			console.log('foo');
 			try {
 				assignProperty(obj, 'one', {});
 			} catch (ex) {
