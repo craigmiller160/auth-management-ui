@@ -1168,8 +1168,10 @@
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
 
-"@craigmiller160/webpack-config-sass@file:.yalc/@craigmiller160/webpack-config-sass":
-  version "1.0.0-beta"
+"@craigmiller160/webpack-config-sass@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/webpack-config-sass/-/webpack-config-sass-1.0.0-beta.1.tgz#31660f07849bec2ccc7895cadfeafbd01b664f5a"
+  integrity sha512-cxkMQU0+Rka/Ydjy9ls2/DsJpGjThmFL5mB9YGFSQBmbk4wOlkhlKcV7B/qGe10kRtRLmyW7ppFHH6yzKrCOhQ==
   dependencies:
     "@craigmiller160/postcss-config" "^1.0.0-beta.1"
     sass "^1.45.2"
