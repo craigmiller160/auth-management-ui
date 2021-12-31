@@ -1091,10 +1091,10 @@
     "@types/jest" "^27.0.3"
     ts-jest "^27.1.2"
 
-"@craigmiller160/jest-config@^1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/jest-config/-/jest-config-1.0.0-beta.2.tgz#b045e81fe7026a4415541f7acc3c24b977d497a0"
-  integrity sha512-Gi19E3imBYSBByFHeBnBUjwz9aIP3eU4AkOKgAnwqXLRE0mn5PyukoCu25jE224tZPYd9m3mxdpPAx9c9qv0cg==
+"@craigmiller160/jest-config@^1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://craigmiller160.ddns.net:30003/repository/npm-group/@craigmiller160/jest-config/-/jest-config-1.0.0-beta.3.tgz#572929ddb7d881b63191148d2401b1f60b788ed6"
+  integrity sha512-7q+HFgXEzhMeEnq9z/5ZQ3Nr+fDGu25z8aIVYz1YzbxSu7+gri9HWYUK+XO8eRmiXovvcke2ho5629oDZ6GZag==
   dependencies:
     identity-obj-proxy "^3.0.0"
     jest "^27.4.5"
