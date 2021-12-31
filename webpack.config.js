@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge');
 const config = require('@craigmiller160/webpack-config');
 const sassConfig = require('@craigmiller160/webpack-config-sass');
+const tsConfig = require('@craigmiller160/webpack-config-ts');
 
 const localDevServerConfig = {
     devServer: {
@@ -29,7 +30,7 @@ const localDevServerConfig = {
     }
 };
 
-const parts = [config, sassConfig];
+const parts = [config, sassConfig, tsConfig];
 
 if (process.env.NODE_ENV === 'development') {
     parts.push(localDevServerConfig);

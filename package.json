@@ -17,6 +17,7 @@
     "@craigmiller160/react-protected-route": "^1.2.3",
     "@craigmiller160/webpack-config": "file:.yalc/@craigmiller160/webpack-config",
     "@craigmiller160/webpack-config-sass": "file:.yalc/@craigmiller160/webpack-config-sass",
+    "@craigmiller160/webpack-config-ts": "file:.yalc/@craigmiller160/webpack-config-ts",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
