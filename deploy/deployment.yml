@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth-management-ui
-          image: craigmiller160.ddns.net:30004/auth-management-ui:1.7.7
+          image: craigmiller160.ddns.net:30004/auth-management-ui:${KUBE_IMG_VERSION}
           ports:
             - containerPort: 443
           livenessProbe:
