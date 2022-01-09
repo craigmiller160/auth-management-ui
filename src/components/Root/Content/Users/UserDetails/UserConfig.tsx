@@ -111,7 +111,7 @@ const UserConfig = (props: Props): JSX.Element => {
 				);
 				history.push(path);
 			})
-		);
+		)();
 
 	const onSubmit = (values: UserForm) => {
 		const payload: UserInput = {

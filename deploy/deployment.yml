@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth-management-ui
-          image: craigmiller160.ddns.net:30004/auth-management-ui:latest
+          image: craigmiller160.ddns.net:30004/auth-management-ui:${KUBE_IMG_VERSION}
           ports:
             - containerPort: 443
           livenessProbe:
@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: auth-management-ui-service
 spec:
-  type: ClusterIP 
+  type: ClusterIP
   selector:
     app: auth-management-ui
   ports:
