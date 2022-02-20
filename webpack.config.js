@@ -5,7 +5,7 @@ const tsConfig = require('@craigmiller160/webpack-config-ts');
 
 const localDevServerConfig = {
     devServer: {
-        port: 3000,
+        port: 3001,
         https: true,
         proxy: {
             '/auth-management/api': {
