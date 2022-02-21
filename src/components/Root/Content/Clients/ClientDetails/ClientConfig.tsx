@@ -286,20 +286,16 @@ const ClientConfig = (props: Props): JSX.Element => {
 	const doDelete = () =>
 		pipe(
 			deleteClient(state.clientId),
-			TE.map(
-				(client: ClientDetails): ClientDetails => {
-					setState((draft) => {
-						draft.allowNavigationOverride = true;
-					});
-					history.push('/clients');
-					dispatch(
-						showSuccessReduxAlert(
-							`Successfully deleted client ${id}`
-						)
-					);
-					return client;
-				}
-			)
+			TE.map((client: ClientDetails): ClientDetails => {
+				setState((draft) => {
+					draft.allowNavigationOverride = true;
+				});
+				history.push('/clients');
+				dispatch(
+					showSuccessReduxAlert(`Successfully deleted client ${id}`)
+				);
+				return client;
+			})
 		)();
 
 	return (

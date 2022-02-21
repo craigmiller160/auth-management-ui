@@ -127,10 +127,8 @@ describe('ClientService', () => {
 			payload,
 			responseData
 		});
-		const result: Either<
-			Error,
-			ClientListResponse
-		> = await getAllClients()();
+		const result: Either<Error, ClientListResponse> =
+			await getAllClients()();
 		expect(result).toEqualRight(data);
 	});
 
@@ -176,10 +174,8 @@ describe('ClientService', () => {
 			payload,
 			responseData
 		});
-		const result: Either<
-			Error,
-			FullClientDetails
-		> = await getFullClientDetails(clientId)();
+		const result: Either<Error, FullClientDetails> =
+			await getFullClientDetails(clientId)();
 		expect(result).toEqualRight(fullClient);
 	});
 
@@ -411,9 +407,10 @@ describe('ClientService', () => {
 		const data: RemoveUserFromClientWrapper = {
 			removeUserFromClient: clientUsers
 		};
-		const responseData: GraphQLQueryResponse<RemoveUserFromClientWrapper> = {
-			data
-		};
+		const responseData: GraphQLQueryResponse<RemoveUserFromClientWrapper> =
+			{
+				data
+			};
 		mockCsrfPreflight(mockAjaxApi, '/graphql');
 		mockAndValidateGraphQL({
 			mockApi: mockAjaxApi,
@@ -476,10 +473,8 @@ describe('ClientService', () => {
 			]
 		};
 		mockAjaxApi.onGet(`/clients/auth/${clientId}`).reply(200, authDetails);
-		const result: Either<
-			Error,
-			ClientAuthDetails
-		> = await getAuthDetailsForClient(clientId)();
+		const result: Either<Error, ClientAuthDetails> =
+			await getAuthDetailsForClient(clientId)();
 		expect(result).toEqualRight(authDetails);
 	});
 });

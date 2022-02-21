@@ -60,13 +60,8 @@ interface State {
 }
 
 const UserClients = (props: Props): JSX.Element => {
-	const {
-		userClients,
-		userId,
-		updateClients,
-		selectedClient,
-		selectClient
-	} = props;
+	const { userClients, userId, updateClients, selectedClient, selectClient } =
+		props;
 
 	const history = useHistory();
 	const [state, setState] = useImmer<State>({

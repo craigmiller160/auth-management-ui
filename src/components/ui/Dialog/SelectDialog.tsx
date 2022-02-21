@@ -45,7 +45,7 @@ const defaultForm: SelectForm<any> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SelectDialog = <T extends any>(props: Props<T>): JSX.Element => {
+const SelectDialog = <T,>(props: Props<T>): JSX.Element => {
 	const { id, open, title, onSelect, onCancel, options, label } = props;
 
 	const { control, handleSubmit, errors, reset } = useForm<SelectForm<T>>({

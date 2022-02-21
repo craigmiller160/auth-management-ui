@@ -39,17 +39,9 @@ interface Props<R> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Autocomplete = <R extends any>(props: Props<R>): JSX.Element => {
-	const {
-		id,
-		name,
-		control,
-		error,
-		rules,
-		label,
-		options,
-		className
-	} = props;
+const Autocomplete = <R,>(props: Props<R>): JSX.Element => {
+	const { id, name, control, error, rules, label, options, className } =
+		props;
 
 	return (
 		<Controller

@@ -21,13 +21,13 @@
     "module": "es2015"
   },
   "include": [
-    "/home/craig/Development/Applications/auth-management-ui/src/**/*",
-    "/home/craig/Development/Applications/auth-management-ui/test/**/*"
+    "./src/**/*",
+    "./test/**/*"
   ],
   "exclude": [
-    "/home/craig/Development/Applications/auth-management-ui/node_modules",
-    "/home/craig/Development/Applications/auth-management-ui/lib",
-    "/home/craig/Development/Applications/auth-management-ui/build",
-    "/home/craig/Development/Applications/auth-management-ui/.yalc"
+    "./node_modules",
+    "./lib",
+    "./build",
+    "./.yalc"
   ]
 }

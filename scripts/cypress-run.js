@@ -29,39 +29,44 @@ const MA_REPORT_NAME = 'auth-ui-test-report.html';
 const TEST_SUITE = 'cypress/integration/**/*';
 
 const cwd = process.cwd();
-const { reporterOptions: { reportDir }, videosFolder, screenshotsFolder } = cypressConfig;
+const {
+	reporterOptions: { reportDir },
+	videosFolder,
+	screenshotsFolder
+} = cypressConfig;
 
 const clearPastTests = () => {
-    console.log('Clearing past test data');
-    fs.rmdirSync(path.resolve(cwd, reportDir), { recursive: true });
-    fs.rmdirSync(path.resolve(cwd, videosFolder), { recursive: true });
-    fs.rmdirSync(path.resolve(cwd, screenshotsFolder), { recursive: true });
-    fs.rmdirSync(path.resolve(cwd, MA_REPORT_DIR), { recursive: true });
+	console.log('Clearing past test data'); // eslint-disable-line no-console
+	fs.rmdirSync(path.resolve(cwd, reportDir), { recursive: true });
+	fs.rmdirSync(path.resolve(cwd, videosFolder), { recursive: true });
+	fs.rmdirSync(path.resolve(cwd, screenshotsFolder), { recursive: true });
+	fs.rmdirSync(path.resolve(cwd, MA_REPORT_DIR), { recursive: true });
 };
 
 const runCypress = async () => {
-    const results = await cypress.run({
-        headless: true,
-        browser: 'chrome',
-        spec: TEST_SUITE
-    });
+	/* eslint-disable-next-line no-unused-vars */
+	const results = await cypress.run({
+		headless: true,
+		browser: 'chrome',
+		spec: TEST_SUITE
+	});
 
-    const report = await merge({
-        files: [path.resolve(cwd, reportDir, '*.json')]
-    });
-    await reportGenerator.create(report, {
-        reportDir: path.resolve(cwd, MA_REPORT_DIR),
-        reportFilename: MA_REPORT_NAME
-    });
+	const report = await merge({
+		files: [path.resolve(cwd, reportDir, '*.json')]
+	});
+	await reportGenerator.create(report, {
+		reportDir: path.resolve(cwd, MA_REPORT_DIR),
+		reportFilename: MA_REPORT_NAME
+	});
 };
 
 clearPastTests();
 runCypress()
-    .then(() => {
-        const reportFile = path.resolve(cwd, MA_REPORT_DIR, MA_REPORT_NAME);
-        opn(reportFile);
-    })
-    .catch((error) => {
-        console.log('Error executing test suite', error);
-        process.exit(1);
-    });
+	.then(() => {
+		const reportFile = path.resolve(cwd, MA_REPORT_DIR, MA_REPORT_NAME);
+		opn(reportFile);
+	})
+	.catch((error) => {
+		console.log('Error executing test suite', error); // eslint-disable-line no-console
+		process.exit(1);
+	});
