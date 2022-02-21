@@ -20,7 +20,7 @@ const path = require('path');
 
 module.exports = {
     title: 'OAuth Management',
-    devServerPort: 3000,
+    devServerPort: 3001,
     devServerHttps: true,
     publicPath: '/auth-management',
     devServerProxy: {
