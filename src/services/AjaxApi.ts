@@ -30,6 +30,6 @@ const ajaxErrorHandler = createAjaxErrorHandler({
 
 export default createApi({
 	baseURL: '/auth-management/api',
-	useCsrf: true,
+	useCsrf: false,
 	defaultErrorHandler: ajaxErrorHandler
 });
