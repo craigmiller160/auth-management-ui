@@ -1178,10 +1178,10 @@
   resolved "https://nexus-craigmiller160.ddns.net/repository/npm-group/@craigmiller160/react-protected-route/-/react-protected-route-1.2.4.tgz#9adc3a198ba272dc7e61197aaa646e279010d82c"
   integrity sha512-V5mOaW/u6ytnoysAjg24AegDYWK6CNNvNLCO0q4Ne4P1w4Bcv0G2BMN9OYtzr/n0mtihohQJ/hM/SO91sGs1ig==
 
-"@craigmiller160/react-test-utils@^2.1.2":
-  version "2.1.3"
-  resolved "https://nexus-craigmiller160.ddns.net/repository/npm-group/@craigmiller160/react-test-utils/-/react-test-utils-2.1.3.tgz#9b796941e98a6c133030c9c8f781479492ffe633"
-  integrity sha512-unlEq0XZ/j45AN0D1kg8Fq47WjUaxschv9ZQxvIbrISzhKKu8waKSr251MsjCtmv6UEjwqEHEwP7YF/bPwLQYA==
+"@craigmiller160/react-test-utils@2.1.2":
+  version "2.1.2"
+  resolved "https://nexus-craigmiller160.ddns.net/repository/npm-group/@craigmiller160/react-test-utils/-/react-test-utils-2.1.2.tgz#f359505e4b05f679d13dfca0591098216ba135b7"
+  integrity sha512-UZ8jSxiFss/aJTz86TLvDxM35M2HyXJSLmmuPLI2yv0l+RGEIBELP54d+oTZi1Dy2irrvok3rvLEtp6R8JaONA==
   dependencies:
     redux-mock-store "^1.5.4"
     trace-error "^1.0.3"
