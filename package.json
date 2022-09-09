@@ -43,7 +43,8 @@
     "test": "craig-test"
   },
   "resolutions": {
-    "tslib": "2.3.1"
+    "tslib": "2.3.1",
+    "eslint": "8.22.0"
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.16.5",
