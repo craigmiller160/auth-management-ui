@@ -29,3 +29,4 @@ yalc.lock
 deploy/build
 test-reports
 reports
+deploy/chart/charts
