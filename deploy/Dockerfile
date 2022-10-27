@@ -1,4 +1,4 @@
-FROM nexus-docker-craigmiller160.ddns.net/nginx-base:1.1.0
+FROM nexus-docker-craigmiller160.ddns.net/nginx-base:1.1.3
 
 COPY build/auth-management-ui-*.tgz /var/www/auth-management-ui.tgz
 RUN tar xvf /var/www/auth-management-ui.tgz -C /var/www/
