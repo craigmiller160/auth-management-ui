@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.16.5",
-    "@craigmiller160/babel-config": "1.0.0",
-    "@craigmiller160/babel-config-react": "1.0.0",
+    "@craigmiller160/babel-config": "1.1.1",
+    "@craigmiller160/babel-config-react": "1.0.1",
     "@craigmiller160/config-merge": "^1.0.0",
     "@craigmiller160/eslint-config-jest": "1.0.0",
     "@craigmiller160/eslint-config-js": "1.0.0",
