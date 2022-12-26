@@ -8,3 +8,12 @@ app-deployment:
       path: /healthcheck
       port: 443
       scheme: HTTPS
+secure_ingress:
+  name: auth-management-ingress
+  backendIsHttps: true
+  hosts:
+    - name: apps-craigmiller160.ddns.net
+      services:
+        - path: /(auth-management(/.*)?)
+          serviceName: auth-management-ui
+          portNumber: 443
