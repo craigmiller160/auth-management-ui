@@ -1,6 +1,6 @@
 {
   "name": "@craigmiller160/auth-management-ui",
-  "version": "1.7.10",
+  "version": "1.7.11",
   "sideEffects": false,
   "files": [
     "build"
